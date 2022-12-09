@@ -84,7 +84,7 @@ export const initialState = {
   sovPPSRAmount: 0,
 
   //* LPI
-  awsCalculatedLpiCode: 'LPIFE',
+  awsCalculatedLpiCode: 'LPIUP',
   awsCalculatedLpiAmount: 0,
 
   //* Controls for LPI components
