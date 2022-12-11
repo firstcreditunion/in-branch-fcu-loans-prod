@@ -21,10 +21,12 @@ import { styled } from '@mui/material/styles'
 
 // * MUI
 import Box from '@mui/material/Box'
+import Chip from '@mui/material/Chip'
 import Stack from '@mui/material/Stack'
 import Alert from '@mui/material/Alert'
 import Paper from '@mui/material/Paper'
 import Button from '@mui/material/Button'
+import Divider from '@mui/material/Divider'
 import AlertTitle from '@mui/material/AlertTitle'
 import Typography from '@mui/material/Typography'
 import useMediaQuery from '@mui/material/useMediaQuery'
@@ -36,6 +38,7 @@ import CardContent from '@mui/material/CardContent'
 
 //* MUI - Icons
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined'
 
 import { fDateCustom } from '../../utils/formatDateTime'
 
@@ -147,23 +150,47 @@ export default function BankStatement() {
         </Paper>
       </Stack>
       <CreditSenseBorder sx={{ width: '100%' }}>
-        {!showCreditSense && (
-          <Stack direction='column' justifyContent='center' alignItems='center' spacing={10} sx={{ width: '100%' }}>
-            <Stack direction='row' sx={{ width: '100%' }} justifyContent='center' alignItems='center'>
-              <Stack direction='column' spacing={2} sx={{ width: '100%' }} justifyContent='center' alignItems='center'>
-                <Stack direction='column' sx={{ width: '100%' }} justifyContent='center' alignItems='center'>
-                  <Typography color='primary' variant='h6' sx={{ textAlign: 'center' }}>
-                    Secure Bank Statement Upload
-                  </Typography>
-                  <Typography variant='body2' sx={{ textAlign: 'center' }}>
-                    Use your internet banking login to securely upload your bank statements via Credit Sense. This is the preferred option as it allows us to quickly assess your application.
-                  </Typography>
-                </Stack>
-                <Button variant='contained' color='secondary' sx={{ width: 200 }} onClick={() => setShowCreditSense(true)}>
-                  Upload
-                </Button>
+        <Stack direction='column' justifyContent='center' alignItems='center' spacing={8} sx={{ width: '100%' }}>
+          <Stack direction='row' sx={{ width: '100%' }} justifyContent='center' alignItems='center'>
+            <Stack direction='column' spacing={2} sx={{ width: '100%' }} justifyContent='center' alignItems='center'>
+              <Stack direction='column' sx={{ width: '100%' }} justifyContent='center' alignItems='center'>
+                <Typography color='text.secondary' variant='h6' sx={{ textAlign: 'center', fontWeight: 'regular' }}>
+                  Secure Bank Statement Upload
+                </Typography>
+                <Typography variant='body1' sx={{ textAlign: 'center' }}>
+                  Use your internet banking login to securely upload your bank statements via Credit Sense.
+                </Typography>
+                <Typography variant='caption' sx={{ textAlign: 'center' }}>
+                  This is the preferred option as it allows us to quickly assess your application.
+                </Typography>
               </Stack>
-              {/* 
+              <Stack direction='column' spacing={2} sx={{ width: '100%' }} justifyContent='center' alignItems='center'>
+                {!showCreditSense && (
+                  <Button
+                    variant='contained'
+                    color='secondary'
+                    sx={{
+                      borderRadius: '49px',
+                      width: 200,
+                      border: 'none',
+                      textTransform: 'uppercase',
+                      fontWeight: 600,
+                      transition: '.5s',
+                    }}
+                    onClick={() => setShowCreditSense(true)}
+                    startIcon={<FileUploadOutlinedIcon />}
+                  >
+                    Upload
+                  </Button>
+                )}
+              </Stack>
+              {showCreditSense && (
+                <Stack component={motion.div} {...varSubtitle} direction='column' justifyContent='center' alignItems='center' spacing={3} sx={{ pt: 2, width: '100%' }}>
+                  <Iframe url={src} width='100%' height='800px' id='fcu-cs-iframe' display='block' position='relative' frameBorder='0' />
+                </Stack>
+              )}
+            </Stack>
+            {/* 
               <Box sx={{ minWidth: 275 }}>
                 <CardContent>
                   <Stack>
@@ -175,33 +202,27 @@ export default function BankStatement() {
                   
                 </CardContent>
               </Box> */}
-            </Stack>
-            <Stack direction='column' spacing={2} sx={{ width: '100%' }} justifyContent='center' alignItems='center'>
-              <Stack direction='row' spacing={2} sx={{ width: '100%' }} justifyContent='center' alignItems='center'>
-                {/* <Radio size='small' /> */}
-                <Stack direction='column' sx={{ width: '100%' }} justifyContent='center' alignItems='center'>
-                  <Typography color='primary' variant='h6' sx={{ textAlign: 'center' }}>
-                    Provide bank statements at a later date.{' '}
-                  </Typography>
-                  <Typography variant='body2' sx={{ textAlign: 'center' }}>
-                    A lender will be in contact and this may delay the processing of your application.
-                  </Typography>
-                </Stack>
+          </Stack>
+          <Divider variant='fullWidth' sx={{ width: '100%', maxWidth: 500 }}>
+            <Chip size='small' label='OR' />
+          </Divider>
+          <Stack direction='column' spacing={2} sx={{ width: '100%' }} justifyContent='center' alignItems='center'>
+            <Stack direction='row' spacing={2} sx={{ width: '100%' }} justifyContent='center' alignItems='center'>
+              {/* <Radio size='small' /> */}
+              <Stack direction='column' sx={{ width: '100%' }} justifyContent='center' alignItems='center'>
+                <Typography color='text.secondary' variant='h6' sx={{ textAlign: 'center', fontWeight: 'regular' }}>
+                  Provide bank statements at a later date.{' '}
+                </Typography>
+                <Typography variant='body2' sx={{ textAlign: 'center' }}>
+                  A lender will be in contact and this may delay the processing of your application.
+                </Typography>
+                <Typography variant='caption' sx={{ textAlign: 'center' }}>
+                  Please click <strong>next</strong> to continue.
+                </Typography>
               </Stack>
-              <Button variant='contained' color='secondary' sx={{ width: 200 }}>
-                continue
-              </Button>
             </Stack>
           </Stack>
-        )}
-        {showCreditSense && (
-          <Stack component={motion.div} {...varSubtitle} direction='column' justifyContent='center' alignItems='center' sx={{ pt: 2 }}>
-            <Iframe url={src} width='100%' height='800px' id='fcu-cs-iframe' display='block' position='relative' frameBorder='0' />
-            <Button variant='contained' color='secondary' sx={{ width: 200 }} onClick={() => setShowCreditSense(false)}>
-              back
-            </Button>
-          </Stack>
-        )}
+        </Stack>
       </CreditSenseBorder>
 
       {/* <DropZone customValidator={bankStatementValidator} files={acceptedFiles} accept={{ 'application/pdf': ['.pdf'] }} showFiles={true} onChange={handleFileSelect} /> */}
