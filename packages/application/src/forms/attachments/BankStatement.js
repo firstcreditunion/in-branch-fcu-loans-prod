@@ -119,7 +119,7 @@ export default function BankStatement() {
 
   function getAppRef() {
     const timestamp = new Date()
-    const appRef = lastName + '-' + fDateCustom(timestamp)
+    const appRef = 'testloans' + '-' + fDateCustom(timestamp)
 
     dispatch(bankStatementActions.setCreditSenseAppRef(appRef))
 
