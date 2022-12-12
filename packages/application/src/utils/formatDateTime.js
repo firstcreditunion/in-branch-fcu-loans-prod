@@ -37,8 +37,8 @@ export function convertUnixToUTCTimestamp(date) {
 
   const dateFormat = new Date(unixTimestamp)
 
-  const timeZoneOffsetInHours = (-1 * dateFormat.getTimezoneOffset()) / 60
-  dateFormat.setUTCHours(timeZoneOffsetInHours, 0, 0, 0)
+  // const timeZoneOffsetInHours = (-1 * dateFormat.getTimezoneOffset()) / 60
+  dateFormat.setUTCHours(0, 0, 0, 0)
 
   // const isoDate = dateFormat.toISOString()
   // console.log('UNIX iso date: ', isoDate)
@@ -58,8 +58,8 @@ export function convertToUTCTimestamp(date, callfrom) {
 
   const dateFormat = new Date(date)
 
-  const timeZoneOffsetInHours = (-1 * dateFormat.getTimezoneOffset()) / 60
-  dateFormat.setUTCHours(timeZoneOffsetInHours, 0, 0, 0)
+  // const timeZoneOffsetInHours = (-1 * dateFormat.getTimezoneOffset()) / 60
+  dateFormat.setUTCHours(0, 0, 0, 0)
 
   if (typeof dateFormat === 'number') {
     return convertUnixToUTCTimestamp(dateFormat)
