@@ -342,7 +342,6 @@ export default function LoanCalulator({ onLoanAmountChange, onInterestChange, on
       interestRate: interestRate,
       term: term,
       paymentFrequency: paymentFrequency,
-      startDate: convertToUTCTimestamp(defEffectiveDate, 'defEffectiveDate'),
       insurance: insurance
         .filter((item) => {
           return item?.selected === true

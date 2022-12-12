@@ -268,7 +268,6 @@ export default function FinancialDetails() {
       interestRate: interestRate,
       term: term,
       paymentFrequency: paymentFrequency,
-      startDate: convertToUTCTimestamp(defEffectiveDate, 'defEffectiveDate'),
       insurance: insurance
         .filter((item) => {
           return item?.selected === 'Y'
