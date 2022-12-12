@@ -6,9 +6,12 @@ import jQuery from 'jquery'
 // * Third-Party Imports
 import Iframe from 'react-iframe'
 
-// Framer motion
+//* Framer motion
 import { motion, AnimatePresence } from 'framer-motion'
 import { varFade } from '../../components/ui/animate'
+
+//* Loader
+import {} from '../../'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { bankStatementActions } from '../../redux/slices/bankStatementSlice'
@@ -23,11 +26,9 @@ import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Chip from '@mui/material/Chip'
 import Stack from '@mui/material/Stack'
-import Alert from '@mui/material/Alert'
 import Paper from '@mui/material/Paper'
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
-import AlertTitle from '@mui/material/AlertTitle'
 import Typography from '@mui/material/Typography'
 import useMediaQuery from '@mui/material/useMediaQuery'
 
@@ -39,6 +40,12 @@ import CardContent from '@mui/material/CardContent'
 //* MUI - Icons
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined'
+
+//* MUI - Alert
+import Alert from '@mui/material/Alert'
+import AlertTitle from '@mui/material/AlertTitle'
+
+import { genericStatusCodes, bankStatusCodes, supportingDocsStatusCodes } from './codes/CreditSense'
 
 import { fDateCustom } from '../../utils/formatDateTime'
 
@@ -63,11 +70,18 @@ function bankStatementValidator(file) {
   return null
 }
 
+let creditSenseAppId = null
+let creditSenseResponseCode = null
+
+const creditSenseCodes = [...genericStatusCodes, ...bankStatusCodes, ...supportingDocsStatusCodes]
+
 export default function BankStatement() {
-  const acceptedFiles = useSelector((state) => state.bankStatementReducer.acceptedFiles)
-  const iFrameLoaded = useSelector((state) => state.bankStatementReducer.iFrameLoaded)
+  // const acceptedFiles = useSelector((state) => state.bankStatementReducer.acceptedFiles)
+  // const iFrameLoaded = useSelector((state) => state.bankStatementReducer.iFrameLoaded)
 
   const [showCreditSense, setShowCreditSense] = React.useState(false)
+
+  // const [creditSenseIframeResposne, setCreditSenseIframeResposne] = React.useState(null)
 
   const employmentType = useSelector((state) => state.employmentReducer.employmentType)
   const lastName = useSelector((state) => state.yourPersonalDetailReducer.lastName)
@@ -77,24 +91,26 @@ export default function BankStatement() {
   const downMd = useMediaQuery((theme) => theme.breakpoints.down('md'))
   const downSm = useMediaQuery((theme) => theme.breakpoints.down('sm'))
 
+  const creditSenseCodes = [...genericStatusCodes, ...bankStatusCodes, ...supportingDocsStatusCodes]
+
   const varSubtitle = varFade({
     distance: 20,
     durationIn: 0.32,
     durationOut: 0.32,
   }).inLeft
 
-  const handleFileSelect = useCallback(
-    (acceptedFiles) => {
-      dispatch(bankStatementActions.setAcceptedFiles(acceptedFiles))
-    },
-    [acceptedFiles]
-  )
+  // const handleFileSelect = useCallback(
+  //   (acceptedFiles) => {
+  //     dispatch(bankStatementActions.setAcceptedFiles(acceptedFiles))
+  //   },
+  //   [acceptedFiles]
+  // )
 
   const src = `https://creditsense.co.nz/apply/FSCU01/?method=iframe`
 
-  function onApplicationSuccess() {
-    console.log('On Application Success Called')
-  }
+  // function onApplicationSuccess() {
+  //   console.log('On Application Success Called')
+  // }
 
   function logMsg(message) {
     if (typeof console == 'object') console.log(message)
@@ -109,6 +125,51 @@ export default function BankStatement() {
 
     return appRef
   }
+
+  function getCerditSenseAlert() {
+    creditSenseCodes?.filter((item) => {
+      return parseInt(item?.Code) === creditSenseResponseCode
+    })
+
+    console.log('CREDIT SENSE RESPONSE CODE: ', creditSenseResponseCode)
+
+    console.log(
+      'ALERT CONSOLE: ',
+      creditSenseCodes
+        ?.filter((item) => {
+          return parseInt(item?.Code) === creditSenseResponseCode
+        })
+        ?.map((item) => {
+          return item?.AlertTitle
+        })[0]
+    )
+  }
+
+  console.log('getCerditSenseAlert: ', getCerditSenseAlert())
+
+  // useEffect(() => {
+  //   console.log('-----USEEFFECT-----')
+  //   console.log('-----Current Response Code-----')
+  //   console.log('-----Current Find Code-----')
+
+  //   console.log(
+  //     creditSenseCodes.find((codes) => {
+  //       return codes?.Code === creditSenseIframeResponseCode
+  //     })
+  //   )
+
+  //   console.log('-----Current Find and Map Code-----')
+
+  //   console.log(
+  //     creditSenseCodes
+  //       .find((codes) => {
+  //         return codes?.Code === creditSenseIframeResponseCode
+  //       })
+  //       ?.map((item) => {
+  //         return { alertTitle: item?.AlertTitle, altertContent: item?.AlertContent, severity: item?.SeverityType }
+  //       })
+  //   )
+  // }, [creditSenseIframeResponseCode])
 
   jQuery(function () {
     $.CreditSense.Iframe({
@@ -125,8 +186,21 @@ export default function BankStatement() {
         askOnlineBanking: true,
       },
       callback: function (response, data) {
-        // console.log('iFrame Response =>', response)
-        dispatch(bankStatementActions.setIFrameLoaded(true))
+        console.log('MY CONSOLE LOG for IFRAME REPONSE =>', response)
+        console.log('MY CONSOLE LOG for IFRAME DATA: ', data)
+
+        if (creditSenseAppId == null) creditSenseAppId = data
+
+        if (Number(response)) {
+          if (creditSenseResponseCode === 100 || creditSenseResponseCode === response) return
+
+          creditSenseResponseCode = parseInt(response)
+          // dispatch(bankStatementActions.setCreditSenseResponseCode(parseInt(response)))
+          console.log('RESPONSE IS A NUMBER')
+          console.log('PARSE INT creditSenseIframeResponseCode: ', creditSenseResponseCode)
+          console.log('PARSE INT NUMBER: ', parseInt(response))
+        }
+        console.log('MY CONSOLE LOG for IFRAME creditSenseAppId: ', creditSenseAppId)
         switch (response) {
           case '99': // Example status code (Bank statcus success)
             logMsg('Bank details collected successfully')
@@ -183,9 +257,59 @@ export default function BankStatement() {
                     Upload
                   </Button>
                 )}
+                {/* <Button
+                  variant='contained'
+                  color='secondary'
+                  sx={{
+                    borderRadius: '49px',
+                    width: 200,
+                    border: 'none',
+                    textTransform: 'uppercase',
+                    fontWeight: 600,
+                    transition: '.5s',
+                  }}
+                  onClick={() => getCerditSenseAlert()}
+                >
+                  Get Current Status
+                </Button> */}
               </Stack>
               {showCreditSense && (
                 <Stack component={motion.div} {...varSubtitle} direction='column' justifyContent='center' alignItems='center' spacing={3} sx={{ pt: 2, width: '100%' }}>
+                  {/* <Alert
+                    variant='outlined'
+                    severity={
+                      creditSenseResponseCode == null
+                        ? 'info'
+                        : creditSenseCodes
+                            ?.filter((item) => {
+                              return parseInt(item?.Code) === creditSenseResponseCode
+                            })
+                            ?.map((item) => {
+                              return item?.SeverityType
+                            })[0]
+                    }
+                  >
+                    <AlertTitle>
+                      {creditSenseResponseCode == null
+                        ? 'Loading...'
+                        : creditSenseCodes
+                            ?.filter((item) => {
+                              return parseInt(item?.Code) === creditSenseResponseCode
+                            })
+                            ?.map((item) => {
+                              return item?.AlertTitle
+                            })[0]}
+                    </AlertTitle>
+                    {creditSenseResponseCode == null
+                      ? 'Please wait while we load the Credie Sense portal.'
+                      : creditSenseCodes
+                          ?.filter((item) => {
+                            return parseInt(item?.Code) === creditSenseResponseCode
+                          })
+                          ?.map((item) => {
+                            return item?.AlertContent
+                          })[0]}
+                  </Alert> */}
                   <Iframe url={src} width='100%' height='800px' id='fcu-cs-iframe' display='block' position='relative' frameBorder='0' />
                 </Stack>
               )}

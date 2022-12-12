@@ -20,6 +20,8 @@ export const initialState = {
   isValidBankStatement: true,
 
   creditSenseAppRef: null,
+  creditSenseAppID: null,
+  creditSenseResponseCode: null,
 }
 
 const bankStatementSlice = createSlice({
@@ -28,6 +30,12 @@ const bankStatementSlice = createSlice({
   reducers: {
     setCreditSenseAppRef: (state, action) => {
       state.creditSenseAppRef = action.payload
+    },
+    setCreditSenseAppID: (state, action) => {
+      state.creditSenseAppID = action.payload
+    },
+    setCreditSenseResponseCode: (state, action) => {
+      state.creditSenseResponseCode = action.payload
     },
     setBankStatement: (state, action) => {
       state.data = action.payload

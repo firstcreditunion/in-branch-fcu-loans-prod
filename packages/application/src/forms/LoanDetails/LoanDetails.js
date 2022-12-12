@@ -61,6 +61,8 @@ import LoanProtectionInsurance from './Sections/LoanProtectionInsurance'
 
 //* Utils
 import { fCurrency, fNumber } from '../../utils/formatNumber'
+import { convertToUTCTimestamp } from '../../utils/formatDateTime'
+import { conver } from '../../utils/formatDateTime'
 import { borderRadius, height } from '@mui/system'
 
 const SliderLabelTypography = styled(Typography)(({ theme }) => ({
@@ -176,6 +178,8 @@ export default function FinancialDetails() {
   const MIN_LOAN_AMOUNT = 499.9999
   const MAX_LOAN_AMOUNT = 50000.0001
 
+  const defEffectiveDate = new Date()
+
   const schema = yup.object().shape({
     loanAmount: yup.number().required(),
     loanAmountCust: yup
@@ -190,34 +194,6 @@ export default function FinancialDetails() {
   const dispatch = useDispatch()
   const downMd = useMediaQuery((theme) => theme.breakpoints.down('md'))
   const downSm = useMediaQuery((theme) => theme.breakpoints.down('sm'))
-
-  const defEffectiveDate = new Date()
-
-  function convertUnixToUTCTimestamp(date) {
-    const unixTimestamp = date
-
-    const dateFormat = new Date(unixTimestamp)
-
-    dateFormat.setUTCHours(0, 0, 0, 0)
-    const isoDate = dateFormat.toISOString()
-    return isoDate
-  }
-
-  function convertToUTCTimestamp(date, callfrom) {
-    if (date === null) {
-      return
-    }
-
-    if (typeof date === 'number') {
-      return convertUnixToUTCTimestamp(date)
-    }
-
-    date.setUTCHours(0, 0, 0, 0)
-
-    const isoDate = date.toISOString()
-
-    return isoDate
-  }
 
   function convertToDDMMMYYYY(date) {
     const newDate = new Date(date)
