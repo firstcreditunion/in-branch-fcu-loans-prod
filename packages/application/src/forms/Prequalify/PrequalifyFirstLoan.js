@@ -188,7 +188,7 @@ function PreliminaryQuestions() {
   }
 
   const handleVehicleRegistrationNumber = (event) => {
-    dispatch(vehicleSecurityActions.setVehicleRegistrationNumber(event.target.value))
+    dispatch(vehicleSecurityActions.setVehicleRegistrationNumber(event.target.value.toUpperCase()))
 
     if (event.target.value === '' || event.target.value == null) {
       dispatch(vehicleSecurityActions.setRegoProvidedInPrelimQuestions(false))
@@ -236,7 +236,7 @@ function PreliminaryQuestions() {
         <AnimatePresence>
           {vehicleRelatedLoanPurpose && (
             <Stack component={motion.div} {...varRegistrationNumberInput} direction={downMd ? 'column' : 'column'} justifyContent='center' alignItems='center' sx={{ width: '100%', maxWidth: 400 }} spacing={2}>
-              <Input name='vehicleRegistrationNumber' label='Registration Number' type='text' control={control} onInputChange={handleVehicleRegistrationNumber} hasTooltip={true} toolTipText='Please enter your vehicle registration number.' />
+              <Input name='vehicleRegistrationNumber' label='Registration Number' type='text' control={control} capitalise={true} onInputChange={handleVehicleRegistrationNumber} hasTooltip={true} toolTipText='Please enter your vehicle registration number.' />
             </Stack>
           )}
         </AnimatePresence>

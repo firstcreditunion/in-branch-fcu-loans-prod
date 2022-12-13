@@ -25,7 +25,7 @@ const Input = ({ name, label, control, defaultValue, type, onInputChange, value,
           <TextField_Cust
             label={label}
             variant={variant}
-            value={capitalise ? value.toUpperCase() : value}
+            value={capitalise ? value?.toUpperCase() : value}
             type={type}
             placeholder={placeholder}
             defaultValue={defaultValue}

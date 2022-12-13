@@ -213,8 +213,8 @@ export default function Submission() {
   const title = useSelector((state) => state.yourPersonalDetailReducer.title)
   const dob = useSelector((state) => state.yourPersonalDetailReducer.dob)
 
-//* Remove
-console.log('dob SUBMISSION: ', dob)
+  //* Remove
+  console.log('dob SUBMISSION: ', dob)
 
   const gender = useSelector((state) => state.yourPersonalDetailReducer.gender)
   const maritalStatus = useSelector((state) => state.yourPersonalDetailReducer.maritalStatus)
@@ -2219,25 +2219,865 @@ console.log('dob SUBMISSION: ', dob)
     })
   }
 
+  function createPdfData() {
+    if (secureSessionID) {
+      if (jointApplication) {
+        return {
+          primeDetails: {
+            applicationNumber: applicationReference,
+            individualDetails: {
+              title: title,
+              forename: forenames,
+              surname: lastName,
+              clientOtherNamesExist: otherNames === '' ? 'N' : 'Y',
+              gender: gender,
+              dateOfBirth: fDate(dob),
+              dateOfBirthRefused: 'N',
+              maritalStatus: maritalStatusMenuItems(maritalStatus.key)?.value,
+              countryOfResidence: resident,
+              countryOfCitizenship: citizen,
+              numberOfDependants: dependents.toString(),
+              accommodationDesc: getAccommodation(currResYears, residenceType)?.description,
+              resident: isNzCitizen === true ? 'Y' : 'N',
+              smoker: 'N',
+            },
+            identification: {
+              drLicence: {
+                isPresent: checkedIdentificationTypes.includes('DRVLSC') ? 'DRVLSC' : null,
+                reference: driversLicense,
+                driversLicenceVersion: driversLicenceVersion,
+                driversLicenceType: driversLicenseType,
+                issueDate: fDate(drLicenceIssueDate),
+                expiryDate: fDate(drLicenceExpiryDate),
+              },
+              passport: {
+                isPresent: checkedIdentificationTypes.includes('PASPRT') ? 'PASPRT' : null,
+                reference: passportNo,
+                issueDate: fDate(passportIssueDate),
+                expiryDate: fDate(passportExpiryDate),
+              },
+              firearmsLicence: {
+                isPresent: checkedIdentificationTypes.includes('FIRELICENS') ? 'FIRELICENS' : null,
+                reference: firearmsLicenceNo,
+                issueDate: fDate(firearmsLicenceIssueDate),
+                expiryDate: fDate(firearmsLicenceExpiryDate),
+              },
+              kiwiAccessCard: {
+                isPresent: checkedIdentificationTypes.includes('KIWACCCRD') ? 'KIWACCCRD' : null,
+                reference: kiwiAccessCardNo,
+                issueDate: fDate(kiwiAccessCardIssueDate),
+                expiryDate: fDate(kiwiAccessCardExpiryDate),
+              },
+              communityServiceCard: {
+                isPresent: checkedIdentificationTypes.includes('COMSERVCRD') ? 'COMSERVCRD' : null,
+                reference: commServiceCardNo,
+                issueDate: fDate(commServiceCardIssueDate),
+                expiryDate: fDate(commServiceCardExpiryDate),
+              },
+              birthCertificate: {
+                isPresent: checkedIdentificationTypes.includes('BIRTHCERT') ? 'BIRTHCERT' : null,
+                reference: birthCertificateRegNo,
+                issueDate: fDate(defEffectiveDate),
+              },
+              currentStudentId: {
+                isPresent: checkedIdentificationTypes.includes('CURSTUDID') ? 'CURSTUDID' : null,
+                reference: currStudentIdNo,
+                issueDate: fDate(currStudentIdIssueDate),
+                expiryDate: fDate(currStudentIdExpiryDate),
+              },
+              goldCard: {
+                isPresent: checkedIdentificationTypes.includes('GOLDCARD') ? 'GOLDCARD' : null,
+                reference: goldCardNo,
+                issueDate: fDate(goldCardValidFromDate),
+              },
+            },
+            address: {
+              primeCurrentResidence: {
+                addressLine1: currResAddressToDisplayLine1,
+                addressLine2: currResAddressToDisplayLine2,
+                addressLine3: currResAddressToDisplayLine3,
+                addressLine4: currResAddressToDisplayLine4,
+              },
+              primePreviousResidence: {
+                addressLine1: prevResAddressToDisplayLine1,
+                addressLine2: prevResAddressToDisplayLine2,
+                addressLine3: prevResAddressToDisplayLine3,
+                addressLine4: prevResAddressToDisplayLine4,
+              },
+            },
+            phone: primePhone.filter((phone) => {
+              return phone.number !== ''
+            })
+              ? primePhone.filter((phone) => {
+                  return phone.number !== ''
+                })
+              : null,
+            mobile: primeMobile.filter((mobile) => {
+              return mobile.number !== ''
+            })
+              ? primeMobile.filter((mobile) => {
+                  return mobile.number !== ''
+                })
+              : null,
+            email: primeEmail.filter((email) => {
+              return email.address !== ''
+            })
+              ? primeEmail.filter((email) => {
+                  return email.address !== ''
+                })
+              : null,
+            employemnt: employmentDetailsForPDF,
+            assets: primeAssets.filter((asset) => {
+              return asset.amount !== null
+            })
+              ? primeAssets.filter((asset) => {
+                  return asset.amount !== null
+                })
+              : null,
+            liabilities: primeLiabilities.filter((liability) => {
+              return liability.amount !== null
+            })
+              ? primeLiabilities.filter((liability) => {
+                  return liability.amount !== null
+                })
+              : null,
+            incomes: primeIncomeForPDF,
+            expenses: primeExpensesForPDF,
+          },
+          jointDetails: {
+            applicationNumber: applicationReference,
+            individualDetails: {
+              title: jointtitle,
+              forename: jointforenames,
+              surname: jointlastName,
+              clientOtherNamesExist: jointotherNames === '' ? 'N' : 'Y',
+              gender: jointgender,
+              dateOfBirth: fDate(jointdob),
+              dateOfBirthRefused: 'N',
+              maritalStatus: maritalStatusMenuItems(jointmaritalStatus.key)?.value,
+              countryOfResidence: 'NZD',
+              countryOfCitizenship: 'NZD',
+              numberOfDependants: jointdependents.toString(),
+              accommodationDesc: getAccommodation(jointcurrResYears, jointresidenceType)?.description,
+            },
+            identification: {
+              drLicence: {
+                isPresent: checkedJointIdentificationTypes.includes('DRVLSC') ? 'DRVLSC' : null,
+                reference: jointdriversLicense,
+                driversLicenceVersion: jointdriversLicenceVersion,
+                driversLicenceType: jointlicenceType,
+                issueDate: fDate(jointdrLicenceIssueDate),
+                expiryDate: fDate(jointdrLicenceExpiryDate),
+              },
+              passport: {
+                isPresent: checkedJointIdentificationTypes.includes('PASPRT') ? 'PASPRT' : null,
+                reference: jointpassportNo,
+                issueDate: fDate(jointpassportIssueDate),
+                expiryDate: fDate(jointpassportExpiryDate),
+              },
+              firearmsLicence: {
+                isPresent: checkedJointIdentificationTypes.includes('FIRELICENS') ? 'FIRELICENS' : null,
+                reference: jointfirearmsLicenceNo,
+                issueDate: fDate(jointfirearmsLicenceIssueDate),
+                expiryDate: fDate(jointfirearmsLicenceExpiryDate),
+              },
+              kiwiAccessCard: {
+                isPresent: checkedJointIdentificationTypes.includes('KIWACCCRD') ? 'KIWACCCRD' : null,
+                reference: jointkiwiAccessCardNo,
+                issueDate: fDate(jointkiwiAccessCardIssueDate),
+                expiryDate: fDate(jointkiwiAccessCardExpiryDate),
+              },
+              communityServiceCard: {
+                isPresent: checkedJointIdentificationTypes.includes('COMSERVCRD') ? 'COMSERVCRD' : null,
+                reference: jointcommServiceCardNo,
+                issueDate: fDate(jointcommServiceCardIssueDate),
+                expiryDate: fDate(jointcommServiceCardExpiryDate),
+              },
+              birthCertificate: {
+                isPresent: checkedJointIdentificationTypes.includes('BIRTHCERT') ? 'BIRTHCERT' : null,
+                reference: jointbirthCertificateRegNo,
+                issueDate: fDate(defEffectiveDate),
+              },
+              currentStudentId: {
+                isPresent: checkedJointIdentificationTypes.includes('CURSTUDID') ? 'CURSTUDID' : null,
+                reference: jointcurrStudentIdNo,
+                issueDate: fDate(jointcurrStudentIdIssueDate),
+                expiryDate: fDate(jointcurrStudentIdExpiryDate),
+              },
+              goldCard: {
+                isPresent: checkedJointIdentificationTypes.includes('GOLDCARD') ? 'GOLDCARD' : null,
+                reference: jointgoldCardNo,
+                issueDate: fDate(jointgoldCardValidFromDate),
+              },
+            },
+            address: {
+              jointCurrentResidence: {
+                addressLine1: jointcurrResAddressToDisplayLine1,
+                addressLine2: jointcurrResAddressToDisplayLine2,
+                addressLine3: jointcurrResAddressToDisplayLine3,
+                addressLine4: jointcurrResAddressToDisplayLine4,
+              },
+              jointPreviousResidence: {
+                addressLine1: jointprevResAddressToDisplayLine1,
+                addressLine2: jointprevResAddressToDisplayLine2,
+                addressLine3: jointprevResAddressToDisplayLine3,
+                addressLine4: jointprevResAddressToDisplayLine4,
+              },
+            },
+            phone: jointPhone.filter((phone) => {
+              return phone.number !== ''
+            })
+              ? jointPhone.filter((phone) => {
+                  return phone.number !== ''
+                })
+              : null,
+            mobile: jointMobile.filter((mobile) => {
+              return mobile.number !== ''
+            })
+              ? jointMobile.filter((mobile) => {
+                  return mobile.number !== ''
+                })
+              : null,
+            email: jointEmail.filter((email) => {
+              return email.address !== ''
+            })
+              ? jointEmail.filter((email) => {
+                  return email.address !== ''
+                })
+              : null,
+            employemnt: employmentDetailsForPDF,
+          },
+          financialDetails: {
+            loanAmount: loanAmount,
+            interestRate: interestRate,
+            repayAmount: sovInstalmentAmount,
+            repayFreq: repayFreq,
+            term: term,
+          },
+          preliminaryQuestions: {
+            loanPurpose: getLoanPurposeFromKey(loanPurpose)?.value,
+            tradingBranch: getTradingBranchFromKey(tradingBranch)?.value,
+            citizen: citizen,
+            isNzCitizen: isNzCitizen,
+            resident: resident,
+            isNzResident: isNzResident,
+            hasWorkPermit: hasWorkPermit,
+            hasRegularIncome: hasRegularIncome,
+            incomeCreditedToFCU: incomeCreditedToFCU,
+            wasDeclaredBankrupt: wasDeclaredBankrupt,
+            bankruptcyDate: bankruptcyDate,
+          },
+          privacyDeclaration: {
+            acceptCreditAssesment: declarationItems?.CreditAssesment?.accept,
+            acceptAuthoriseFCUToUseData: declarationItems?.AuthoriseFCU?.accept,
+            acceptTrueInformation: declarationItems?.TrueInformation?.accept,
+            acceptAMLCFTObligations: declarationItems?.AmlCftObligations?.accept,
+            acceptStorePersonalInfo: declarationItems?.StorePersonalInfo?.accept,
+          },
+        }
+      }
+
+      return {
+        primeDetails: {
+          applicationNumber: applicationReference,
+          individualDetails: {
+            title: title,
+            forename: forenames,
+            surname: lastName,
+            clientOtherNamesExist: otherNames === '' ? 'N' : 'Y',
+            gender: gender,
+            dateOfBirth: fDate(dob),
+            dateOfBirthRefused: 'N',
+            maritalStatus: maritalStatusMenuItems(maritalStatus.key)?.value,
+            countryOfResidence: resident,
+            countryOfCitizenship: citizen,
+            numberOfDependants: dependents.toString(),
+            accommodationDesc: getAccommodation(currResYears, residenceType)?.description,
+            resident: isNzCitizen === true ? 'Y' : 'N',
+            smoker: 'N',
+          },
+          identification: {
+            drLicence: {
+              isPresent: checkedIdentificationTypes.includes('DRVLSC') ? 'DRVLSC' : null,
+              reference: driversLicense,
+              driversLicenceVersion: driversLicenceVersion,
+              driversLicenceType: driversLicenseType,
+              issueDate: fDate(drLicenceIssueDate),
+              expiryDate: fDate(drLicenceExpiryDate),
+            },
+            passport: {
+              isPresent: checkedIdentificationTypes.includes('PASPRT') ? 'PASPRT' : null,
+              reference: passportNo,
+              issueDate: fDate(passportIssueDate),
+              expiryDate: fDate(passportExpiryDate),
+            },
+            firearmsLicence: {
+              isPresent: checkedIdentificationTypes.includes('FIRELICENS') ? 'FIRELICENS' : null,
+              reference: firearmsLicenceNo,
+              issueDate: fDate(firearmsLicenceIssueDate),
+              expiryDate: fDate(firearmsLicenceExpiryDate),
+            },
+            kiwiAccessCard: {
+              isPresent: checkedIdentificationTypes.includes('KIWACCCRD') ? 'KIWACCCRD' : null,
+              reference: kiwiAccessCardNo,
+              issueDate: fDate(kiwiAccessCardIssueDate),
+              expiryDate: fDate(kiwiAccessCardExpiryDate),
+            },
+            communityServiceCard: {
+              isPresent: checkedIdentificationTypes.includes('COMSERVCRD') ? 'COMSERVCRD' : null,
+              reference: commServiceCardNo,
+              issueDate: fDate(commServiceCardIssueDate),
+              expiryDate: fDate(commServiceCardExpiryDate),
+            },
+            birthCertificate: {
+              isPresent: checkedIdentificationTypes.includes('BIRTHCERT') ? 'BIRTHCERT' : null,
+              reference: birthCertificateRegNo,
+              issueDate: fDate(defEffectiveDate),
+            },
+            currentStudentId: {
+              isPresent: checkedIdentificationTypes.includes('CURSTUDID') ? 'CURSTUDID' : null,
+              reference: currStudentIdNo,
+              issueDate: fDate(currStudentIdIssueDate),
+              expiryDate: fDate(currStudentIdExpiryDate),
+            },
+            goldCard: {
+              isPresent: checkedIdentificationTypes.includes('GOLDCARD') ? 'GOLDCARD' : null,
+              reference: goldCardNo,
+              issueDate: fDate(goldCardValidFromDate),
+            },
+          },
+          address: {
+            primeCurrentResidence: {
+              addressLine1: currResAddressToDisplayLine1,
+              addressLine2: currResAddressToDisplayLine2,
+              addressLine3: currResAddressToDisplayLine3,
+              addressLine4: currResAddressToDisplayLine4,
+            },
+            primePreviousResidence: {
+              addressLine1: prevResAddressToDisplayLine1,
+              addressLine2: prevResAddressToDisplayLine2,
+              addressLine3: prevResAddressToDisplayLine3,
+              addressLine4: prevResAddressToDisplayLine4,
+            },
+          },
+          phone: primePhone.filter((phone) => {
+            return phone.number !== ''
+          })
+            ? primePhone.filter((phone) => {
+                return phone.number !== ''
+              })
+            : null,
+          mobile: primeMobile.filter((mobile) => {
+            return mobile.number !== ''
+          })
+            ? primeMobile.filter((mobile) => {
+                return mobile.number !== ''
+              })
+            : null,
+          email: primeEmail.filter((email) => {
+            return email.address !== ''
+          })
+            ? primeEmail.filter((email) => {
+                return email.address !== ''
+              })
+            : null,
+          employemnt: employmentDetailsForPDF,
+          assets: primeAssets.filter((asset) => {
+            return asset.amount !== null
+          })
+            ? primeAssets.filter((asset) => {
+                return asset.amount !== null
+              })
+            : null,
+          liabilities: primeLiabilities.filter((liability) => {
+            return liability.amount !== null
+          })
+            ? primeLiabilities.filter((liability) => {
+                return liability.amount !== null
+              })
+            : null,
+          incomes: primeIncomeForPDF,
+          expenses: primeExpensesForPDF,
+        },
+        financialDetails: {
+          loanAmount: loanAmount,
+          interestRate: interestRate,
+          repayAmount: sovInstalmentAmount,
+          repayFreq: repayFreq,
+          term: term,
+        },
+        preliminaryQuestions: {
+          loanPurpose: getLoanPurposeFromKey(loanPurpose)?.value,
+          tradingBranch: getTradingBranchFromKey(tradingBranch)?.value,
+          citizen: citizen,
+          isNzCitizen: isNzCitizen,
+          resident: resident,
+          isNzResident: isNzResident,
+          hasWorkPermit: hasWorkPermit,
+          hasRegularIncome: hasRegularIncome,
+          incomeCreditedToFCU: incomeCreditedToFCU,
+          wasDeclaredBankrupt: wasDeclaredBankrupt,
+          bankruptcyDate: bankruptcyDate,
+        },
+        privacyDeclaration: {
+          acceptCreditAssesment: declarationItems?.CreditAssesment?.accept,
+          acceptAuthoriseFCUToUseData: declarationItems?.AuthoriseFCU?.accept,
+          acceptTrueInformation: declarationItems?.TrueInformation?.accept,
+          acceptAMLCFTObligations: declarationItems?.AmlCftObligations?.accept,
+          acceptStorePersonalInfo: declarationItems?.StorePersonalInfo?.accept,
+        },
+      }
+    }
+
+    // For New Members
+
+    if (jointApplication) {
+      return {
+        primeDetails: {
+          applicationNumber: applicationReference,
+          individualDetails: {
+            title: title,
+            forename: forenames,
+            surname: lastName,
+            clientOtherNamesExist: otherNames === '' ? 'N' : 'Y',
+            gender: gender,
+            dateOfBirth: fDate(dob),
+            dateOfBirthRefused: 'N',
+            maritalStatus: maritalStatusMenuItems(maritalStatus.key)?.value,
+            countryOfResidence: resident,
+            countryOfCitizenship: citizen,
+            numberOfDependants: dependents.toString(),
+            accommodationDesc: getAccommodation(currResYears, residenceType)?.description,
+            resident: isNzCitizen === true ? 'Y' : 'N',
+            smoker: 'N',
+          },
+          identification: {
+            drLicence: {
+              isPresent: checkedIdentificationTypes.includes('DRVLSC') ? 'DRVLSC' : null,
+              reference: driversLicense,
+              driversLicenceVersion: driversLicenceVersion,
+              driversLicenceType: driversLicenseType,
+              issueDate: fDate(drLicenceIssueDate),
+              expiryDate: fDate(drLicenceExpiryDate),
+            },
+            passport: {
+              isPresent: checkedIdentificationTypes.includes('PASPRT') ? 'PASPRT' : null,
+              reference: passportNo,
+              issueDate: fDate(passportIssueDate),
+              expiryDate: fDate(passportExpiryDate),
+            },
+            firearmsLicence: {
+              isPresent: checkedIdentificationTypes.includes('FIRELICENS') ? 'FIRELICENS' : null,
+              reference: firearmsLicenceNo,
+              issueDate: fDate(firearmsLicenceIssueDate),
+              expiryDate: fDate(firearmsLicenceExpiryDate),
+            },
+            kiwiAccessCard: {
+              isPresent: checkedIdentificationTypes.includes('KIWACCCRD') ? 'KIWACCCRD' : null,
+              reference: kiwiAccessCardNo,
+              issueDate: convertToUTCTimestamp(kiwiAccessCardIssueDate),
+              expiryDate: convertToUTCTimestamp(kiwiAccessCardExpiryDate),
+            },
+            communityServiceCard: {
+              isPresent: checkedIdentificationTypes.includes('COMSERVCRD') ? 'COMSERVCRD' : null,
+              reference: commServiceCardNo,
+              issueDate: fDate(commServiceCardIssueDate),
+              expiryDate: fDate(commServiceCardExpiryDate),
+            },
+            birthCertificate: {
+              isPresent: checkedIdentificationTypes.includes('BIRTHCERT') ? 'BIRTHCERT' : null,
+              reference: birthCertificateRegNo,
+              issueDate: fDate(defEffectiveDate),
+            },
+            currentStudentId: {
+              isPresent: checkedIdentificationTypes.includes('CURSTUDID') ? 'CURSTUDID' : null,
+              reference: currStudentIdNo,
+              issueDate: fDate(currStudentIdIssueDate),
+              expiryDate: fDate(currStudentIdExpiryDate),
+            },
+            goldCard: {
+              isPresent: checkedIdentificationTypes.includes('GOLDCARD') ? 'GOLDCARD' : null,
+              reference: goldCardNo,
+              issueDate: fDate(goldCardValidFromDate),
+            },
+          },
+          address: {
+            primeCurrentResidence: {
+              addressLine1: currResAddressToDisplayLine1,
+              addressLine2: currResAddressToDisplayLine2,
+              addressLine3: currResAddressToDisplayLine3,
+              addressLine4: currResAddressToDisplayLine4,
+            },
+            primePreviousResidence: {
+              addressLine1: prevResAddressToDisplayLine1,
+              addressLine2: prevResAddressToDisplayLine2,
+              addressLine3: prevResAddressToDisplayLine3,
+              addressLine4: prevResAddressToDisplayLine4,
+            },
+          },
+          phone: primePhone.filter((phone) => {
+            return phone.number !== ''
+          })
+            ? primePhone.filter((phone) => {
+                return phone.number !== ''
+              })
+            : null,
+          mobile: primeMobile.filter((mobile) => {
+            return mobile.number !== ''
+          })
+            ? primeMobile.filter((mobile) => {
+                return mobile.number !== ''
+              })
+            : null,
+          email: primeEmail.filter((email) => {
+            return email.address !== ''
+          })
+            ? primeEmail.filter((email) => {
+                return email.address !== ''
+              })
+            : null,
+          employemnt: employmentDetailsForPDF,
+          assets: primeAssets.filter((asset) => {
+            return asset.amount !== null
+          })
+            ? primeAssets.filter((asset) => {
+                return asset.amount !== null
+              })
+            : null,
+          liabilities: primeLiabilities.filter((liability) => {
+            return liability.amount !== null
+          })
+            ? primeLiabilities.filter((liability) => {
+                return liability.amount !== null
+              })
+            : null,
+          incomes: primeIncomeForPDF,
+          expenses: primeExpensesForPDF,
+        },
+        jointDetails: {
+          applicationNumber: applicationReference,
+          individualDetails: {
+            title: jointtitle,
+            forename: jointforenames,
+            surname: jointlastName,
+            clientOtherNamesExist: jointotherNames === '' ? 'N' : 'Y',
+            gender: jointgender,
+            dateOfBirth: fDate(jointdob, 'jointdob'),
+            dateOfBirthRefused: 'N',
+            maritalStatus: maritalStatusMenuItems(jointmaritalStatus.key)?.value,
+            countryOfResidence: 'NZD',
+            countryOfCitizenship: 'NZD',
+            numberOfDependants: jointdependents.toString(),
+            accommodationDesc: getAccommodation(jointcurrResYears, jointresidenceType)?.description,
+          },
+          identification: {
+            drLicence: {
+              isPresent: checkedJointIdentificationTypes.includes('DRVLSC') ? 'DRVLSC' : null,
+              reference: jointdriversLicense,
+              driversLicenceVersion: jointdriversLicenceVersion,
+              driversLicenceType: jointlicenceType,
+              issueDate: fDate(jointdrLicenceIssueDate),
+              expiryDate: fDate(jointdrLicenceExpiryDate),
+            },
+            passport: {
+              isPresent: checkedJointIdentificationTypes.includes('PASPRT') ? 'PASPRT' : null,
+              reference: jointpassportNo,
+              issueDate: fDate(jointpassportIssueDate),
+              expiryDate: fDate(jointpassportExpiryDate),
+            },
+            firearmsLicence: {
+              isPresent: checkedJointIdentificationTypes.includes('FIRELICENS') ? 'FIRELICENS' : null,
+              reference: jointfirearmsLicenceNo,
+              issueDate: fDate(jointfirearmsLicenceIssueDate),
+              expiryDate: fDate(jointfirearmsLicenceExpiryDate),
+            },
+            kiwiAccessCard: {
+              isPresent: checkedJointIdentificationTypes.includes('KIWACCCRD') ? 'KIWACCCRD' : null,
+              reference: jointkiwiAccessCardNo,
+              issueDate: fDate(jointkiwiAccessCardIssueDate),
+              expiryDate: fDate(jointkiwiAccessCardExpiryDate),
+            },
+            communityServiceCard: {
+              isPresent: checkedJointIdentificationTypes.includes('COMSERVCRD') ? 'COMSERVCRD' : null,
+              reference: jointcommServiceCardNo,
+              issueDate: fDate(jointcommServiceCardIssueDate),
+              expiryDate: fDate(jointcommServiceCardExpiryDate),
+            },
+            birthCertificate: {
+              isPresent: checkedJointIdentificationTypes.includes('BIRTHCERT') ? 'BIRTHCERT' : null,
+              reference: jointbirthCertificateRegNo,
+              issueDate: fDate(defEffectiveDate),
+            },
+            currentStudentId: {
+              isPresent: checkedJointIdentificationTypes.includes('CURSTUDID') ? 'CURSTUDID' : null,
+              reference: jointcurrStudentIdNo,
+              issueDate: fDate(jointcurrStudentIdIssueDate),
+              expiryDate: fDate(jointcurrStudentIdExpiryDate),
+            },
+            goldCard: {
+              isPresent: checkedJointIdentificationTypes.includes('GOLDCARD') ? 'GOLDCARD' : null,
+              reference: jointgoldCardNo,
+              issueDate: fDate(jointgoldCardValidFromDate),
+            },
+          },
+          address: {
+            jointCurrentResidence: {
+              addressLine1: jointcurrResAddressToDisplayLine1,
+              addressLine2: jointcurrResAddressToDisplayLine2,
+              addressLine3: jointcurrResAddressToDisplayLine3,
+              addressLine4: jointcurrResAddressToDisplayLine14,
+            },
+            jointPreviousResidence: {
+              addressLine1: jointprevResAddressToDisplayLine1,
+              addressLine2: jointprevResAddressToDisplayLine2,
+              addressLine3: jointprevResAddressToDisplayLine3,
+              addressLine4: jointprevResAddressToDisplayLine4,
+            },
+          },
+          phone: jointPhone.filter((phone) => {
+            return phone.number !== ''
+          })
+            ? jointPhone.filter((phone) => {
+                return phone.number !== ''
+              })
+            : null,
+          mobile: jointMobile.filter((mobile) => {
+            return mobile.number !== ''
+          })
+            ? jointMobile.filter((mobile) => {
+                return mobile.number !== ''
+              })
+            : null,
+          email: jointEmail.filter((email) => {
+            return email.address !== ''
+          })
+            ? jointEmail.filter((email) => {
+                return email.address !== ''
+              })
+            : null,
+          employemnt: employmentDetailsForPDF,
+        },
+        financialDetails: {
+          loanAmount: loanAmount,
+          interestRate: interestRate,
+          repayAmount: sovInstalmentAmount,
+          repayFreq: repayFreq,
+          term: term,
+        },
+        preliminaryQuestions: {
+          loanPurpose: getLoanPurposeFromKey(loanPurpose)?.value,
+          tradingBranch: getTradingBranchFromKey(tradingBranch)?.value,
+          citizen: citizen,
+          isNzCitizen: isNzCitizen,
+          resident: resident,
+          isNzResident: isNzResident,
+          hasWorkPermit: hasWorkPermit,
+          hasRegularIncome: hasRegularIncome,
+          incomeCreditedToFCU: incomeCreditedToFCU,
+          wasDeclaredBankrupt: wasDeclaredBankrupt,
+          bankruptcyDate: bankruptcyDate,
+        },
+        privacyDeclaration: {
+          acceptCreditAssesment: declarationItems?.CreditAssesment?.accept,
+          acceptAuthoriseFCUToUseData: declarationItems?.AuthoriseFCU?.accept,
+          acceptTrueInformation: declarationItems?.TrueInformation?.accept,
+          acceptAMLCFTObligations: declarationItems?.AmlCftObligations?.accept,
+          acceptStorePersonalInfo: declarationItems?.StorePersonalInfo?.accept,
+        },
+      }
+    }
+
+    return {
+      primeDetails: {
+        applicationNumber: applicationReference,
+        individualDetails: {
+          title: title,
+          forename: forenames,
+          surname: lastName,
+          clientOtherNamesExist: otherNames === '' ? 'N' : 'Y',
+          gender: gender,
+          dateOfBirth: convertToUTCTimestamp(dob, 'dob'),
+          dateOfBirthRefused: 'N',
+          maritalStatus: maritalStatusMenuItems(maritalStatus.key)?.value,
+          countryOfResidence: resident,
+          countryOfCitizenship: citizen,
+          numberOfDependants: dependents.toString(),
+          accommodationDesc: getAccommodation(currResYears, residenceType)?.description,
+          resident: isNzCitizen === true ? 'Y' : 'N',
+          smoker: 'N',
+        },
+        identification: {
+          drLicence: {
+            isPresent: checkedIdentificationTypes.includes('DRVLSC') ? 'DRVLSC' : null,
+            reference: driversLicense,
+            driversLicenceVersion: driversLicenceVersion,
+            driversLicenceType: driversLicenseType,
+            issueDate: fDate(drLicenceIssueDate),
+            expiryDate: fDate(drLicenceExpiryDate),
+          },
+          passport: {
+            isPresent: checkedIdentificationTypes.includes('PASPRT') ? 'PASPRT' : null,
+            reference: passportNo,
+            issueDate: fDate(passportIssueDate),
+            expiryDate: fDate(passportExpiryDate),
+          },
+          firearmsLicence: {
+            isPresent: checkedIdentificationTypes.includes('FIRELICENS') ? 'FIRELICENS' : null,
+            reference: firearmsLicenceNo,
+            issueDate: fDate(firearmsLicenceIssueDate),
+            expiryDate: fDate(firearmsLicenceExpiryDate),
+          },
+          kiwiAccessCard: {
+            isPresent: checkedIdentificationTypes.includes('KIWACCCRD') ? 'KIWACCCRD' : null,
+            reference: kiwiAccessCardNo,
+            issueDate: fDate(kiwiAccessCardIssueDate),
+            expiryDate: fDate(kiwiAccessCardExpiryDate),
+          },
+          communityServiceCard: {
+            isPresent: checkedIdentificationTypes.includes('COMSERVCRD') ? 'COMSERVCRD' : null,
+            reference: commServiceCardNo,
+            issueDate: fDate(commServiceCardIssueDate),
+            expiryDate: fDate(commServiceCardExpiryDate),
+          },
+          birthCertificate: {
+            isPresent: checkedIdentificationTypes.includes('BIRTHCERT') ? 'BIRTHCERT' : null,
+            reference: birthCertificateRegNo,
+            issueDate: fDate(defEffectiveDate),
+          },
+          currentStudentId: {
+            isPresent: checkedIdentificationTypes.includes('CURSTUDID') ? 'CURSTUDID' : null,
+            reference: currStudentIdNo,
+            issueDate: fDate(currStudentIdIssueDate),
+            expiryDate: fDate(currStudentIdExpiryDate),
+          },
+          goldCard: {
+            isPresent: checkedIdentificationTypes.includes('GOLDCARD') ? 'GOLDCARD' : null,
+            reference: goldCardNo,
+            issueDate: fDate(goldCardValidFromDate),
+          },
+        },
+        address: {
+          primeCurrentResidence: {
+            addressLine1: currResAddressToDisplayLine1,
+            addressLine2: currResAddressToDisplayLine2,
+            addressLine3: currResAddressToDisplayLine3,
+            addressLine4: currResAddressToDisplayLine4,
+          },
+          primePreviousResidence: {
+            addressLine1: prevResAddressToDisplayLine1,
+            addressLine2: prevResAddressToDisplayLine2,
+            addressLine3: prevResAddressToDisplayLine3,
+            addressLine4: prevResAddressToDisplayLine4,
+          },
+        },
+        phone: primePhone.filter((phone) => {
+          return phone.number !== ''
+        })
+          ? primePhone.filter((phone) => {
+              return phone.number !== ''
+            })
+          : null,
+        mobile: primeMobile.filter((mobile) => {
+          return mobile.number !== ''
+        })
+          ? primeMobile.filter((mobile) => {
+              return mobile.number !== ''
+            })
+          : null,
+        email: primeEmail.filter((email) => {
+          return email.address !== ''
+        })
+          ? primeEmail.filter((email) => {
+              return email.address !== ''
+            })
+          : null,
+        employemnt: employmentDetailsForPDF,
+        assets: primeAssets.filter((asset) => {
+          return asset.amount !== null
+        })
+          ? primeAssets.filter((asset) => {
+              return asset.amount !== null
+            })
+          : null,
+        liabilities: primeLiabilities.filter((liability) => {
+          return liability.amount !== null
+        })
+          ? primeLiabilities.filter((liability) => {
+              return liability.amount !== null
+            })
+          : null,
+        incomes: primeIncomeForPDF,
+        expenses: primeExpensesForPDF,
+      },
+      financialDetails: {
+        loanAmount: loanAmount,
+        interestRate: interestRate,
+        repayAmount: sovInstalmentAmount,
+        repayFreq: repayFreq,
+        term: term,
+      },
+      preliminaryQuestions: {
+        loanPurpose: getLoanPurposeFromKey(loanPurpose)?.value,
+        tradingBranch: getTradingBranchFromKey(tradingBranch)?.value,
+        citizen: citizen,
+        isNzCitizen: isNzCitizen,
+        resident: resident,
+        isNzResident: isNzResident,
+        hasWorkPermit: hasWorkPermit,
+        hasRegularIncome: hasRegularIncome,
+        incomeCreditedToFCU: incomeCreditedToFCU,
+        wasDeclaredBankrupt: wasDeclaredBankrupt,
+        bankruptcyDate: bankruptcyDate,
+      },
+      privacyDeclaration: {
+        acceptCreditAssesment: declarationItems?.CreditAssesment?.accept,
+        acceptAuthoriseFCUToUseData: declarationItems?.AuthoriseFCU?.accept,
+        acceptTrueInformation: declarationItems?.TrueInformation?.accept,
+        acceptAMLCFTObligations: declarationItems?.AmlCftObligations?.accept,
+        acceptStorePersonalInfo: declarationItems?.StorePersonalInfo?.accept,
+      },
+    }
+  }
+
+  // useEffect(() => {
+  //   if (applicationReference == null) return
+
+  //   const generatePdfConfig = {
+  //     url: '/generate-pdf',
+  //     method: 'POST',
+  //     baseURL: `${processNodeEnv() === 'development' ? BASE_URL_LOCAL_APP : BASE_URL_AWS_APP}`,
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     timeout: 60000,
+  //     data: JSON.stringify({
+  //       applicationData: createPdfData(),
+  //       applicationNumber: applicationReference,
+  //     }),
+  //   }
+
+  //   dispatch(generateLoanApplicationReport(generatePdfConfig))
+  // }, [applicationReference])
+
   // For future use - Generate PDF
 
   const BASE_URL_DECODE = 'https://veg77hx11h.execute-api.ap-southeast-2.amazonaws.com'
 
   function getRequestConfig() {
-    if (secureSessionID) {
-      const secureConfig = {
-        url: '/submit-secure-app',
-        method: 'POST',
-        baseURL: `${processNodeEnv() === 'development' ? BASE_URL_LOCAL_APP : BASE_URL_AWS_APP}`,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        timeout: 60000,
-        withCredentials: true,
-        data: createSubmissionData(),
-      }
-      return secureConfig
-    }
+    // if (secureSessionID) {
+    //   const secureConfig = {
+    //     url: '/submit-secure-app',
+    //     method: 'POST',
+    //     baseURL: `${processNodeEnv() === 'development' ? BASE_URL_LOCAL_APP : BASE_URL_AWS_APP}`,
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     timeout: 60000,
+    //     withCredentials: true,
+    //     data: createSubmissionData(),
+    //   }
+    //   return secureConfig
+    // }
 
     const config = {
       url: '/submitonlineapp',
@@ -2246,11 +3086,10 @@ console.log('dob SUBMISSION: ', dob)
       headers: {
         'Content-Type': 'application/json',
         authorizationToken: onlinetoken,
+        _y: `${processNodeEnv() === 'development' ? 0 : 1}`,
       },
       timeout: 60000,
       data: createSubmissionData(),
-
-
 
       // data: JSON.stringify({ ...primeAndJointOnlyDataTest }),
     }
@@ -2827,846 +3666,6 @@ console.log('dob SUBMISSION: ', dob)
 //   )
 //   dispatch(generateLoanApplicationReport(generatePdfConfig))
 // }
-
-// function createPdfData() {
-//   if (secureSessionID) {
-//     if (jointApplication) {
-//       return {
-//         primeDetails: {
-//           applicationNumber: applicationReference,
-//           individualDetails: {
-//             title: title,
-//             forename: forenames,
-//             surname: lastName,
-//             clientOtherNamesExist: otherNames === '' ? 'N' : 'Y',
-//             gender: gender,
-//             dateOfBirth: fDate(dob),
-//             dateOfBirthRefused: 'N',
-//             maritalStatus: maritalStatusMenuItems(maritalStatus.key)?.value,
-//             countryOfResidence: resident,
-//             countryOfCitizenship: citizen,
-//             numberOfDependants: dependents.toString(),
-//             accommodationDesc: getAccommodation(currResYears, residenceType)?.description,
-//             resident: isNzCitizen === true ? 'Y' : 'N',
-//             smoker: 'N',
-//           },
-//           identification: {
-//             drLicence: {
-//               isPresent: checkedIdentificationTypes.includes('DRVLSC') ? 'DRVLSC' : null,
-//               reference: driversLicense,
-//               driversLicenceVersion: driversLicenceVersion,
-//               driversLicenceType: driversLicenseType,
-//               issueDate: fDate(drLicenceIssueDate),
-//               expiryDate: fDate(drLicenceExpiryDate),
-//             },
-//             passport: {
-//               isPresent: checkedIdentificationTypes.includes('PASPRT') ? 'PASPRT' : null,
-//               reference: passportNo,
-//               issueDate: fDate(passportIssueDate),
-//               expiryDate: fDate(passportExpiryDate),
-//             },
-//             firearmsLicence: {
-//               isPresent: checkedIdentificationTypes.includes('FIRELICENS') ? 'FIRELICENS' : null,
-//               reference: firearmsLicenceNo,
-//               issueDate: fDate(firearmsLicenceIssueDate),
-//               expiryDate: fDate(firearmsLicenceExpiryDate),
-//             },
-//             kiwiAccessCard: {
-//               isPresent: checkedIdentificationTypes.includes('KIWACCCRD') ? 'KIWACCCRD' : null,
-//               reference: kiwiAccessCardNo,
-//               issueDate: fDate(kiwiAccessCardIssueDate),
-//               expiryDate: fDate(kiwiAccessCardExpiryDate),
-//             },
-//             communityServiceCard: {
-//               isPresent: checkedIdentificationTypes.includes('COMSERVCRD') ? 'COMSERVCRD' : null,
-//               reference: commServiceCardNo,
-//               issueDate: fDate(commServiceCardIssueDate),
-//               expiryDate: fDate(commServiceCardExpiryDate),
-//             },
-//             birthCertificate: {
-//               isPresent: checkedIdentificationTypes.includes('BIRTHCERT') ? 'BIRTHCERT' : null,
-//               reference: birthCertificateRegNo,
-//               issueDate: fDate(defEffectiveDate),
-//             },
-//             currentStudentId: {
-//               isPresent: checkedIdentificationTypes.includes('CURSTUDID') ? 'CURSTUDID' : null,
-//               reference: currStudentIdNo,
-//               issueDate: fDate(currStudentIdIssueDate),
-//               expiryDate: fDate(currStudentIdExpiryDate),
-//             },
-//             goldCard: {
-//               isPresent: checkedIdentificationTypes.includes('GOLDCARD') ? 'GOLDCARD' : null,
-//               reference: goldCardNo,
-//               issueDate: fDate(goldCardValidFromDate),
-//             },
-//           },
-//           address: {
-//             primeCurrentResidence: {
-//               addressLine1: currResAddressToDisplayLine1,
-//               addressLine2: currResAddressToDisplayLine2,
-//               addressLine3: currResAddressToDisplayLine3,
-//               addressLine4: currResAddressToDisplayLine4,
-//             },
-//             primePreviousResidence: {
-//               addressLine1: prevResAddressToDisplayLine1,
-//               addressLine2: prevResAddressToDisplayLine2,
-//               addressLine3: prevResAddressToDisplayLine3,
-//               addressLine4: prevResAddressToDisplayLine4,
-//             },
-//           },
-//           phone: primePhone.filter((phone) => {
-//             return phone.number !== ''
-//           })
-//             ? primePhone.filter((phone) => {
-//                 return phone.number !== ''
-//               })
-//             : null,
-//           mobile: primeMobile.filter((mobile) => {
-//             return mobile.number !== ''
-//           })
-//             ? primeMobile.filter((mobile) => {
-//                 return mobile.number !== ''
-//               })
-//             : null,
-//           email: primeEmail.filter((email) => {
-//             return email.address !== ''
-//           })
-//             ? primeEmail.filter((email) => {
-//                 return email.address !== ''
-//               })
-//             : null,
-//           employemnt: employmentDetailsForPDF,
-//           assets: primeAssets.filter((asset) => {
-//             return asset.amount !== null
-//           })
-//             ? primeAssets.filter((asset) => {
-//                 return asset.amount !== null
-//               })
-//             : null,
-//           liabilities: primeLiabilities.filter((liability) => {
-//             return liability.amount !== null
-//           })
-//             ? primeLiabilities.filter((liability) => {
-//                 return liability.amount !== null
-//               })
-//             : null,
-//           incomes: primeIncomeForPDF,
-//           expenses: primeExpensesForPDF,
-//         },
-//         jointDetails: {
-//           applicationNumber: applicationReference,
-//           individualDetails: {
-//             title: jointtitle,
-//             forename: jointforenames,
-//             surname: jointlastName,
-//             clientOtherNamesExist: jointotherNames === '' ? 'N' : 'Y',
-//             gender: jointgender,
-//             dateOfBirth: fDate(jointdob),
-//             dateOfBirthRefused: 'N',
-//             maritalStatus: maritalStatusMenuItems(jointmaritalStatus.key)?.value,
-//             countryOfResidence: 'NZD',
-//             countryOfCitizenship: 'NZD',
-//             numberOfDependants: jointdependents.toString(),
-//             accommodationDesc: getAccommodation(jointcurrResYears, jointresidenceType)?.description,
-//           },
-//           identification: {
-//             drLicence: {
-//               isPresent: checkedJointIdentificationTypes.includes('DRVLSC') ? 'DRVLSC' : null,
-//               reference: jointdriversLicense,
-//               driversLicenceVersion: jointdriversLicenceVersion,
-//               driversLicenceType: jointlicenceType,
-//               issueDate: fDate(jointdrLicenceIssueDate),
-//               expiryDate: fDate(jointdrLicenceExpiryDate),
-//             },
-//             passport: {
-//               isPresent: checkedJointIdentificationTypes.includes('PASPRT') ? 'PASPRT' : null,
-//               reference: jointpassportNo,
-//               issueDate: fDate(jointpassportIssueDate),
-//               expiryDate: fDate(jointpassportExpiryDate),
-//             },
-//             firearmsLicence: {
-//               isPresent: checkedJointIdentificationTypes.includes('FIRELICENS') ? 'FIRELICENS' : null,
-//               reference: jointfirearmsLicenceNo,
-//               issueDate: fDate(jointfirearmsLicenceIssueDate),
-//               expiryDate: fDate(jointfirearmsLicenceExpiryDate),
-//             },
-//             kiwiAccessCard: {
-//               isPresent: checkedJointIdentificationTypes.includes('KIWACCCRD') ? 'KIWACCCRD' : null,
-//               reference: jointkiwiAccessCardNo,
-//               issueDate: fDate(jointkiwiAccessCardIssueDate),
-//               expiryDate: fDate(jointkiwiAccessCardExpiryDate),
-//             },
-//             communityServiceCard: {
-//               isPresent: checkedJointIdentificationTypes.includes('COMSERVCRD') ? 'COMSERVCRD' : null,
-//               reference: jointcommServiceCardNo,
-//               issueDate: fDate(jointcommServiceCardIssueDate),
-//               expiryDate: fDate(jointcommServiceCardExpiryDate),
-//             },
-//             birthCertificate: {
-//               isPresent: checkedJointIdentificationTypes.includes('BIRTHCERT') ? 'BIRTHCERT' : null,
-//               reference: jointbirthCertificateRegNo,
-//               issueDate: fDate(defEffectiveDate),
-//             },
-//             currentStudentId: {
-//               isPresent: checkedJointIdentificationTypes.includes('CURSTUDID') ? 'CURSTUDID' : null,
-//               reference: jointcurrStudentIdNo,
-//               issueDate: fDate(jointcurrStudentIdIssueDate),
-//               expiryDate: fDate(jointcurrStudentIdExpiryDate),
-//             },
-//             goldCard: {
-//               isPresent: checkedJointIdentificationTypes.includes('GOLDCARD') ? 'GOLDCARD' : null,
-//               reference: jointgoldCardNo,
-//               issueDate: fDate(jointgoldCardValidFromDate),
-//             },
-//           },
-//           address: {
-//             jointCurrentResidence: {
-//               addressLine1: jointcurrResAddressToDisplayLine1,
-//               addressLine2: jointcurrResAddressToDisplayLine2,
-//               addressLine3: jointcurrResAddressToDisplayLine3,
-//               addressLine4: jointcurrResAddressToDisplayLine4,
-//             },
-//             jointPreviousResidence: {
-//               addressLine1: jointprevResAddressToDisplayLine1,
-//               addressLine2: jointprevResAddressToDisplayLine2,
-//               addressLine3: jointprevResAddressToDisplayLine3,
-//               addressLine4: jointprevResAddressToDisplayLine4,
-//             },
-//           },
-//           phone: jointPhone.filter((phone) => {
-//             return phone.number !== ''
-//           })
-//             ? jointPhone.filter((phone) => {
-//                 return phone.number !== ''
-//               })
-//             : null,
-//           mobile: jointMobile.filter((mobile) => {
-//             return mobile.number !== ''
-//           })
-//             ? jointMobile.filter((mobile) => {
-//                 return mobile.number !== ''
-//               })
-//             : null,
-//           email: jointEmail.filter((email) => {
-//             return email.address !== ''
-//           })
-//             ? jointEmail.filter((email) => {
-//                 return email.address !== ''
-//               })
-//             : null,
-//           employemnt: employmentDetailsForPDF,
-//         },
-//         financialDetails: {
-//           loanAmount: loanAmount,
-//           interestRate: interestRate,
-//           repayAmount: sovInstalmentAmount,
-//           repayFreq: repayFreq,
-//           term: term,
-//         },
-//         preliminaryQuestions: {
-//           loanPurpose: getLoanPurposeFromKey(loanPurpose)?.value,
-//           tradingBranch: getTradingBranchFromKey(tradingBranch)?.value,
-//           citizen: citizen,
-//           isNzCitizen: isNzCitizen,
-//           resident: resident,
-//           isNzResident: isNzResident,
-//           hasWorkPermit: hasWorkPermit,
-//           hasRegularIncome: hasRegularIncome,
-//           incomeCreditedToFCU: incomeCreditedToFCU,
-//           wasDeclaredBankrupt: wasDeclaredBankrupt,
-//           bankruptcyDate: bankruptcyDate,
-//         },
-//         privacyDeclaration: {
-//           acceptCreditAssesment: declarationItems?.CreditAssesment?.accept,
-//           acceptAuthoriseFCUToUseData: declarationItems?.AuthoriseFCU?.accept,
-//           acceptTrueInformation: declarationItems?.TrueInformation?.accept,
-//           acceptAMLCFTObligations: declarationItems?.AmlCftObligations?.accept,
-//           acceptStorePersonalInfo: declarationItems?.StorePersonalInfo?.accept,
-//         },
-//       }
-//     }
-
-//     return {
-//       primeDetails: {
-//         applicationNumber: applicationReference,
-//         individualDetails: {
-//           title: title,
-//           forename: forenames,
-//           surname: lastName,
-//           clientOtherNamesExist: otherNames === '' ? 'N' : 'Y',
-//           gender: gender,
-//           dateOfBirth: fDate(dob),
-//           dateOfBirthRefused: 'N',
-//           maritalStatus: maritalStatusMenuItems(maritalStatus.key)?.value,
-//           countryOfResidence: resident,
-//           countryOfCitizenship: citizen,
-//           numberOfDependants: dependents.toString(),
-//           accommodationDesc: getAccommodation(currResYears, residenceType)?.description,
-//           resident: isNzCitizen === true ? 'Y' : 'N',
-//           smoker: 'N',
-//         },
-//         identification: {
-//           drLicence: {
-//             isPresent: checkedIdentificationTypes.includes('DRVLSC') ? 'DRVLSC' : null,
-//             reference: driversLicense,
-//             driversLicenceVersion: driversLicenceVersion,
-//             driversLicenceType: driversLicenseType,
-//             issueDate: fDate(drLicenceIssueDate),
-//             expiryDate: fDate(drLicenceExpiryDate),
-//           },
-//           passport: {
-//             isPresent: checkedIdentificationTypes.includes('PASPRT') ? 'PASPRT' : null,
-//             reference: passportNo,
-//             issueDate: fDate(passportIssueDate),
-//             expiryDate: fDate(passportExpiryDate),
-//           },
-//           firearmsLicence: {
-//             isPresent: checkedIdentificationTypes.includes('FIRELICENS') ? 'FIRELICENS' : null,
-//             reference: firearmsLicenceNo,
-//             issueDate: fDate(firearmsLicenceIssueDate),
-//             expiryDate: fDate(firearmsLicenceExpiryDate),
-//           },
-//           kiwiAccessCard: {
-//             isPresent: checkedIdentificationTypes.includes('KIWACCCRD') ? 'KIWACCCRD' : null,
-//             reference: kiwiAccessCardNo,
-//             issueDate: fDate(kiwiAccessCardIssueDate),
-//             expiryDate: fDate(kiwiAccessCardExpiryDate),
-//           },
-//           communityServiceCard: {
-//             isPresent: checkedIdentificationTypes.includes('COMSERVCRD') ? 'COMSERVCRD' : null,
-//             reference: commServiceCardNo,
-//             issueDate: fDate(commServiceCardIssueDate),
-//             expiryDate: fDate(commServiceCardExpiryDate),
-//           },
-//           birthCertificate: {
-//             isPresent: checkedIdentificationTypes.includes('BIRTHCERT') ? 'BIRTHCERT' : null,
-//             reference: birthCertificateRegNo,
-//             issueDate: fDate(defEffectiveDate),
-//           },
-//           currentStudentId: {
-//             isPresent: checkedIdentificationTypes.includes('CURSTUDID') ? 'CURSTUDID' : null,
-//             reference: currStudentIdNo,
-//             issueDate: fDate(currStudentIdIssueDate),
-//             expiryDate: fDate(currStudentIdExpiryDate),
-//           },
-//           goldCard: {
-//             isPresent: checkedIdentificationTypes.includes('GOLDCARD') ? 'GOLDCARD' : null,
-//             reference: goldCardNo,
-//             issueDate: fDate(goldCardValidFromDate),
-//           },
-//         },
-//         address: {
-//           primeCurrentResidence: {
-//             addressLine1: currResAddressToDisplayLine1,
-//             addressLine2: currResAddressToDisplayLine2,
-//             addressLine3: currResAddressToDisplayLine3,
-//             addressLine4: currResAddressToDisplayLine4,
-//           },
-//           primePreviousResidence: {
-//             addressLine1: prevResAddressToDisplayLine1,
-//             addressLine2: prevResAddressToDisplayLine2,
-//             addressLine3: prevResAddressToDisplayLine3,
-//             addressLine4: prevResAddressToDisplayLine4,
-//           },
-//         },
-//         phone: primePhone.filter((phone) => {
-//           return phone.number !== ''
-//         })
-//           ? primePhone.filter((phone) => {
-//               return phone.number !== ''
-//             })
-//           : null,
-//         mobile: primeMobile.filter((mobile) => {
-//           return mobile.number !== ''
-//         })
-//           ? primeMobile.filter((mobile) => {
-//               return mobile.number !== ''
-//             })
-//           : null,
-//         email: primeEmail.filter((email) => {
-//           return email.address !== ''
-//         })
-//           ? primeEmail.filter((email) => {
-//               return email.address !== ''
-//             })
-//           : null,
-//         employemnt: employmentDetailsForPDF,
-//         assets: primeAssets.filter((asset) => {
-//           return asset.amount !== null
-//         })
-//           ? primeAssets.filter((asset) => {
-//               return asset.amount !== null
-//             })
-//           : null,
-//         liabilities: primeLiabilities.filter((liability) => {
-//           return liability.amount !== null
-//         })
-//           ? primeLiabilities.filter((liability) => {
-//               return liability.amount !== null
-//             })
-//           : null,
-//         incomes: primeIncomeForPDF,
-//         expenses: primeExpensesForPDF,
-//       },
-//       financialDetails: {
-//         loanAmount: loanAmount,
-//         interestRate: interestRate,
-//         repayAmount: sovInstalmentAmount,
-//         repayFreq: repayFreq,
-//         term: term,
-//       },
-//       preliminaryQuestions: {
-//         loanPurpose: getLoanPurposeFromKey(loanPurpose)?.value,
-//         tradingBranch: getTradingBranchFromKey(tradingBranch)?.value,
-//         citizen: citizen,
-//         isNzCitizen: isNzCitizen,
-//         resident: resident,
-//         isNzResident: isNzResident,
-//         hasWorkPermit: hasWorkPermit,
-//         hasRegularIncome: hasRegularIncome,
-//         incomeCreditedToFCU: incomeCreditedToFCU,
-//         wasDeclaredBankrupt: wasDeclaredBankrupt,
-//         bankruptcyDate: bankruptcyDate,
-//       },
-//       privacyDeclaration: {
-//         acceptCreditAssesment: declarationItems?.CreditAssesment?.accept,
-//         acceptAuthoriseFCUToUseData: declarationItems?.AuthoriseFCU?.accept,
-//         acceptTrueInformation: declarationItems?.TrueInformation?.accept,
-//         acceptAMLCFTObligations: declarationItems?.AmlCftObligations?.accept,
-//         acceptStorePersonalInfo: declarationItems?.StorePersonalInfo?.accept,
-//       },
-//     }
-//   }
-
-//   // For New Members
-
-//   if (jointApplication) {
-//     return {
-//       primeDetails: {
-//         applicationNumber: applicationReference,
-//         individualDetails: {
-//           title: title,
-//           forename: forenames,
-//           surname: lastName,
-//           clientOtherNamesExist: otherNames === '' ? 'N' : 'Y',
-//           gender: gender,
-//           dateOfBirth: fDate(dob),
-//           dateOfBirthRefused: 'N',
-//           maritalStatus: maritalStatusMenuItems(maritalStatus.key)?.value,
-//           countryOfResidence: resident,
-//           countryOfCitizenship: citizen,
-//           numberOfDependants: dependents.toString(),
-//           accommodationDesc: getAccommodation(currResYears, residenceType)?.description,
-//           resident: isNzCitizen === true ? 'Y' : 'N',
-//           smoker: 'N',
-//         },
-//         identification: {
-//           drLicence: {
-//             isPresent: checkedIdentificationTypes.includes('DRVLSC') ? 'DRVLSC' : null,
-//             reference: driversLicense,
-//             driversLicenceVersion: driversLicenceVersion,
-//             driversLicenceType: driversLicenseType,
-//             issueDate: fDate(drLicenceIssueDate),
-//             expiryDate: fDate(drLicenceExpiryDate),
-//           },
-//           passport: {
-//             isPresent: checkedIdentificationTypes.includes('PASPRT') ? 'PASPRT' : null,
-//             reference: passportNo,
-//             issueDate: fDate(passportIssueDate),
-//             expiryDate: fDate(passportExpiryDate),
-//           },
-//           firearmsLicence: {
-//             isPresent: checkedIdentificationTypes.includes('FIRELICENS') ? 'FIRELICENS' : null,
-//             reference: firearmsLicenceNo,
-//             issueDate: fDate(firearmsLicenceIssueDate),
-//             expiryDate: fDate(firearmsLicenceExpiryDate),
-//           },
-//           kiwiAccessCard: {
-//             isPresent: checkedIdentificationTypes.includes('KIWACCCRD') ? 'KIWACCCRD' : null,
-//             reference: kiwiAccessCardNo,
-//             issueDate: convertToUTCTimestamp(kiwiAccessCardIssueDate),
-//             expiryDate: convertToUTCTimestamp(kiwiAccessCardExpiryDate),
-//           },
-//           communityServiceCard: {
-//             isPresent: checkedIdentificationTypes.includes('COMSERVCRD') ? 'COMSERVCRD' : null,
-//             reference: commServiceCardNo,
-//             issueDate: fDate(commServiceCardIssueDate),
-//             expiryDate: fDate(commServiceCardExpiryDate),
-//           },
-//           birthCertificate: {
-//             isPresent: checkedIdentificationTypes.includes('BIRTHCERT') ? 'BIRTHCERT' : null,
-//             reference: birthCertificateRegNo,
-//             issueDate: fDate(defEffectiveDate),
-//           },
-//           currentStudentId: {
-//             isPresent: checkedIdentificationTypes.includes('CURSTUDID') ? 'CURSTUDID' : null,
-//             reference: currStudentIdNo,
-//             issueDate: fDate(currStudentIdIssueDate),
-//             expiryDate: fDate(currStudentIdExpiryDate),
-//           },
-//           goldCard: {
-//             isPresent: checkedIdentificationTypes.includes('GOLDCARD') ? 'GOLDCARD' : null,
-//             reference: goldCardNo,
-//             issueDate: fDate(goldCardValidFromDate),
-//           },
-//         },
-//         address: {
-//           primeCurrentResidence: {
-//             addressLine1: currResAddressToDisplayLine1,
-//             addressLine2: currResAddressToDisplayLine2,
-//             addressLine3: currResAddressToDisplayLine3,
-//             addressLine4: currResAddressToDisplayLine4,
-//           },
-//           primePreviousResidence: {
-//             addressLine1: prevResAddressToDisplayLine1,
-//             addressLine2: prevResAddressToDisplayLine2,
-//             addressLine3: prevResAddressToDisplayLine3,
-//             addressLine4: prevResAddressToDisplayLine4,
-//           },
-//         },
-//         phone: primePhone.filter((phone) => {
-//           return phone.number !== ''
-//         })
-//           ? primePhone.filter((phone) => {
-//               return phone.number !== ''
-//             })
-//           : null,
-//         mobile: primeMobile.filter((mobile) => {
-//           return mobile.number !== ''
-//         })
-//           ? primeMobile.filter((mobile) => {
-//               return mobile.number !== ''
-//             })
-//           : null,
-//         email: primeEmail.filter((email) => {
-//           return email.address !== ''
-//         })
-//           ? primeEmail.filter((email) => {
-//               return email.address !== ''
-//             })
-//           : null,
-//         employemnt: employmentDetailsForPDF,
-//         assets: primeAssets.filter((asset) => {
-//           return asset.amount !== null
-//         })
-//           ? primeAssets.filter((asset) => {
-//               return asset.amount !== null
-//             })
-//           : null,
-//         liabilities: primeLiabilities.filter((liability) => {
-//           return liability.amount !== null
-//         })
-//           ? primeLiabilities.filter((liability) => {
-//               return liability.amount !== null
-//             })
-//           : null,
-//         incomes: primeIncomeForPDF,
-//         expenses: primeExpensesForPDF,
-//       },
-//       jointDetails: {
-//         applicationNumber: applicationReference,
-//         individualDetails: {
-//           title: jointtitle,
-//           forename: jointforenames,
-//           surname: jointlastName,
-//           clientOtherNamesExist: jointotherNames === '' ? 'N' : 'Y',
-//           gender: jointgender,
-//           dateOfBirth: fDate(jointdob, 'jointdob'),
-//           dateOfBirthRefused: 'N',
-//           maritalStatus: maritalStatusMenuItems(jointmaritalStatus.key)?.value,
-//           countryOfResidence: 'NZD',
-//           countryOfCitizenship: 'NZD',
-//           numberOfDependants: jointdependents.toString(),
-//           accommodationDesc: getAccommodation(jointcurrResYears, jointresidenceType)?.description,
-//         },
-//         identification: {
-//           drLicence: {
-//             isPresent: checkedJointIdentificationTypes.includes('DRVLSC') ? 'DRVLSC' : null,
-//             reference: jointdriversLicense,
-//             driversLicenceVersion: jointdriversLicenceVersion,
-//             driversLicenceType: jointlicenceType,
-//             issueDate: fDate(jointdrLicenceIssueDate),
-//             expiryDate: fDate(jointdrLicenceExpiryDate),
-//           },
-//           passport: {
-//             isPresent: checkedJointIdentificationTypes.includes('PASPRT') ? 'PASPRT' : null,
-//             reference: jointpassportNo,
-//             issueDate: fDate(jointpassportIssueDate),
-//             expiryDate: fDate(jointpassportExpiryDate),
-//           },
-//           firearmsLicence: {
-//             isPresent: checkedJointIdentificationTypes.includes('FIRELICENS') ? 'FIRELICENS' : null,
-//             reference: jointfirearmsLicenceNo,
-//             issueDate: fDate(jointfirearmsLicenceIssueDate),
-//             expiryDate: fDate(jointfirearmsLicenceExpiryDate),
-//           },
-//           kiwiAccessCard: {
-//             isPresent: checkedJointIdentificationTypes.includes('KIWACCCRD') ? 'KIWACCCRD' : null,
-//             reference: jointkiwiAccessCardNo,
-//             issueDate: fDate(jointkiwiAccessCardIssueDate),
-//             expiryDate: fDate(jointkiwiAccessCardExpiryDate),
-//           },
-//           communityServiceCard: {
-//             isPresent: checkedJointIdentificationTypes.includes('COMSERVCRD') ? 'COMSERVCRD' : null,
-//             reference: jointcommServiceCardNo,
-//             issueDate: fDate(jointcommServiceCardIssueDate),
-//             expiryDate: fDate(jointcommServiceCardExpiryDate),
-//           },
-//           birthCertificate: {
-//             isPresent: checkedJointIdentificationTypes.includes('BIRTHCERT') ? 'BIRTHCERT' : null,
-//             reference: jointbirthCertificateRegNo,
-//             issueDate: fDate(defEffectiveDate),
-//           },
-//           currentStudentId: {
-//             isPresent: checkedJointIdentificationTypes.includes('CURSTUDID') ? 'CURSTUDID' : null,
-//             reference: jointcurrStudentIdNo,
-//             issueDate: fDate(jointcurrStudentIdIssueDate),
-//             expiryDate: fDate(jointcurrStudentIdExpiryDate),
-//           },
-//           goldCard: {
-//             isPresent: checkedJointIdentificationTypes.includes('GOLDCARD') ? 'GOLDCARD' : null,
-//             reference: jointgoldCardNo,
-//             issueDate: fDate(jointgoldCardValidFromDate),
-//           },
-//         },
-//         address: {
-//           jointCurrentResidence: {
-//             addressLine1: jointcurrResAddressToDisplayLine1,
-//             addressLine2: jointcurrResAddressToDisplayLine2,
-//             addressLine3: jointcurrResAddressToDisplayLine3,
-//             addressLine4: jointcurrResAddressToDisplayLine14,
-//           },
-//           jointPreviousResidence: {
-//             addressLine1: jointprevResAddressToDisplayLine1,
-//             addressLine2: jointprevResAddressToDisplayLine2,
-//             addressLine3: jointprevResAddressToDisplayLine3,
-//             addressLine4: jointprevResAddressToDisplayLine4,
-//           },
-//         },
-//         phone: jointPhone.filter((phone) => {
-//           return phone.number !== ''
-//         })
-//           ? jointPhone.filter((phone) => {
-//               return phone.number !== ''
-//             })
-//           : null,
-//         mobile: jointMobile.filter((mobile) => {
-//           return mobile.number !== ''
-//         })
-//           ? jointMobile.filter((mobile) => {
-//               return mobile.number !== ''
-//             })
-//           : null,
-//         email: jointEmail.filter((email) => {
-//           return email.address !== ''
-//         })
-//           ? jointEmail.filter((email) => {
-//               return email.address !== ''
-//             })
-//           : null,
-//         employemnt: employmentDetailsForPDF,
-//       },
-//       financialDetails: {
-//         loanAmount: loanAmount,
-//         interestRate: interestRate,
-//         repayAmount: sovInstalmentAmount,
-//         repayFreq: repayFreq,
-//         term: term,
-//       },
-//       preliminaryQuestions: {
-//         loanPurpose: getLoanPurposeFromKey(loanPurpose)?.value,
-//         tradingBranch: getTradingBranchFromKey(tradingBranch)?.value,
-//         citizen: citizen,
-//         isNzCitizen: isNzCitizen,
-//         resident: resident,
-//         isNzResident: isNzResident,
-//         hasWorkPermit: hasWorkPermit,
-//         hasRegularIncome: hasRegularIncome,
-//         incomeCreditedToFCU: incomeCreditedToFCU,
-//         wasDeclaredBankrupt: wasDeclaredBankrupt,
-//         bankruptcyDate: bankruptcyDate,
-//       },
-//       privacyDeclaration: {
-//         acceptCreditAssesment: declarationItems?.CreditAssesment?.accept,
-//         acceptAuthoriseFCUToUseData: declarationItems?.AuthoriseFCU?.accept,
-//         acceptTrueInformation: declarationItems?.TrueInformation?.accept,
-//         acceptAMLCFTObligations: declarationItems?.AmlCftObligations?.accept,
-//         acceptStorePersonalInfo: declarationItems?.StorePersonalInfo?.accept,
-//       },
-//     }
-//   }
-
-//   return {
-//     primeDetails: {
-//       applicationNumber: applicationReference,
-//       individualDetails: {
-//         title: title,
-//         forename: forenames,
-//         surname: lastName,
-//         clientOtherNamesExist: otherNames === '' ? 'N' : 'Y',
-//         gender: gender,
-//         dateOfBirth: convertToUTCTimestamp(dob, 'dob'),
-//         dateOfBirthRefused: 'N',
-//         maritalStatus: maritalStatusMenuItems(maritalStatus.key)?.value,
-//         countryOfResidence: resident,
-//         countryOfCitizenship: citizen,
-//         numberOfDependants: dependents.toString(),
-//         accommodationDesc: getAccommodation(currResYears, residenceType)?.description,
-//         resident: isNzCitizen === true ? 'Y' : 'N',
-//         smoker: 'N',
-//       },
-//       identification: {
-//         drLicence: {
-//           isPresent: checkedIdentificationTypes.includes('DRVLSC') ? 'DRVLSC' : null,
-//           reference: driversLicense,
-//           driversLicenceVersion: driversLicenceVersion,
-//           driversLicenceType: driversLicenseType,
-//           issueDate: fDate(drLicenceIssueDate),
-//           expiryDate: fDate(drLicenceExpiryDate),
-//         },
-//         passport: {
-//           isPresent: checkedIdentificationTypes.includes('PASPRT') ? 'PASPRT' : null,
-//           reference: passportNo,
-//           issueDate: fDate(passportIssueDate),
-//           expiryDate: fDate(passportExpiryDate),
-//         },
-//         firearmsLicence: {
-//           isPresent: checkedIdentificationTypes.includes('FIRELICENS') ? 'FIRELICENS' : null,
-//           reference: firearmsLicenceNo,
-//           issueDate: fDate(firearmsLicenceIssueDate),
-//           expiryDate: fDate(firearmsLicenceExpiryDate),
-//         },
-//         kiwiAccessCard: {
-//           isPresent: checkedIdentificationTypes.includes('KIWACCCRD') ? 'KIWACCCRD' : null,
-//           reference: kiwiAccessCardNo,
-//           issueDate: fDate(kiwiAccessCardIssueDate),
-//           expiryDate: fDate(kiwiAccessCardExpiryDate),
-//         },
-//         communityServiceCard: {
-//           isPresent: checkedIdentificationTypes.includes('COMSERVCRD') ? 'COMSERVCRD' : null,
-//           reference: commServiceCardNo,
-//           issueDate: fDate(commServiceCardIssueDate),
-//           expiryDate: fDate(commServiceCardExpiryDate),
-//         },
-//         birthCertificate: {
-//           isPresent: checkedIdentificationTypes.includes('BIRTHCERT') ? 'BIRTHCERT' : null,
-//           reference: birthCertificateRegNo,
-//           issueDate: fDate(defEffectiveDate),
-//         },
-//         currentStudentId: {
-//           isPresent: checkedIdentificationTypes.includes('CURSTUDID') ? 'CURSTUDID' : null,
-//           reference: currStudentIdNo,
-//           issueDate: fDate(currStudentIdIssueDate),
-//           expiryDate: fDate(currStudentIdExpiryDate),
-//         },
-//         goldCard: {
-//           isPresent: checkedIdentificationTypes.includes('GOLDCARD') ? 'GOLDCARD' : null,
-//           reference: goldCardNo,
-//           issueDate: fDate(goldCardValidFromDate),
-//         },
-//       },
-//       address: {
-//         primeCurrentResidence: {
-//           addressLine1: currResAddressToDisplayLine1,
-//           addressLine2: currResAddressToDisplayLine2,
-//           addressLine3: currResAddressToDisplayLine3,
-//           addressLine4: currResAddressToDisplayLine4,
-//         },
-//         primePreviousResidence: {
-//           addressLine1: prevResAddressToDisplayLine1,
-//           addressLine2: prevResAddressToDisplayLine2,
-//           addressLine3: prevResAddressToDisplayLine3,
-//           addressLine4: prevResAddressToDisplayLine4,
-//         },
-//       },
-//       phone: primePhone.filter((phone) => {
-//         return phone.number !== ''
-//       })
-//         ? primePhone.filter((phone) => {
-//             return phone.number !== ''
-//           })
-//         : null,
-//       mobile: primeMobile.filter((mobile) => {
-//         return mobile.number !== ''
-//       })
-//         ? primeMobile.filter((mobile) => {
-//             return mobile.number !== ''
-//           })
-//         : null,
-//       email: primeEmail.filter((email) => {
-//         return email.address !== ''
-//       })
-//         ? primeEmail.filter((email) => {
-//             return email.address !== ''
-//           })
-//         : null,
-//       employemnt: employmentDetailsForPDF,
-//       assets: primeAssets.filter((asset) => {
-//         return asset.amount !== null
-//       })
-//         ? primeAssets.filter((asset) => {
-//             return asset.amount !== null
-//           })
-//         : null,
-//       liabilities: primeLiabilities.filter((liability) => {
-//         return liability.amount !== null
-//       })
-//         ? primeLiabilities.filter((liability) => {
-//             return liability.amount !== null
-//           })
-//         : null,
-//       incomes: primeIncomeForPDF,
-//       expenses: primeExpensesForPDF,
-//     },
-//     financialDetails: {
-//       loanAmount: loanAmount,
-//       interestRate: interestRate,
-//       repayAmount: sovInstalmentAmount,
-//       repayFreq: repayFreq,
-//       term: term,
-//     },
-//     preliminaryQuestions: {
-//       loanPurpose: getLoanPurposeFromKey(loanPurpose)?.value,
-//       tradingBranch: getTradingBranchFromKey(tradingBranch)?.value,
-//       citizen: citizen,
-//       isNzCitizen: isNzCitizen,
-//       resident: resident,
-//       isNzResident: isNzResident,
-//       hasWorkPermit: hasWorkPermit,
-//       hasRegularIncome: hasRegularIncome,
-//       incomeCreditedToFCU: incomeCreditedToFCU,
-//       wasDeclaredBankrupt: wasDeclaredBankrupt,
-//       bankruptcyDate: bankruptcyDate,
-//     },
-//     privacyDeclaration: {
-//       acceptCreditAssesment: declarationItems?.CreditAssesment?.accept,
-//       acceptAuthoriseFCUToUseData: declarationItems?.AuthoriseFCU?.accept,
-//       acceptTrueInformation: declarationItems?.TrueInformation?.accept,
-//       acceptAMLCFTObligations: declarationItems?.AmlCftObligations?.accept,
-//       acceptStorePersonalInfo: declarationItems?.StorePersonalInfo?.accept,
-//     },
-//   }
-// }
-
-// useEffect(() => {
-//   if (applicationReference == null) return
-
-//   const generatePdfConfig = {
-//     url: '/generate-pdf',
-//     method: 'POST',
-//     baseURL: `${processNodeEnv() === 'development' ? BASE_URL_LOCAL_APP : BASE_URL_AWS_APP}`,
-//     headers: {
-//       'Content-Type': 'application/json',
-//     },
-//     timeout: 60000,
-//     data: JSON.stringify({
-//       applicationData: createPdfData(),
-//       applicationNumber: applicationReference,
-//     }),
-//   }
-
-//   dispatch(generateLoanApplicationReport(generatePdfConfig))
-// }, [applicationReference])
 
 //! -------------  Secure Session Submission Data ----------------
 

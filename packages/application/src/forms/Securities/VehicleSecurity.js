@@ -53,7 +53,7 @@ export default function VehicleSecurity() {
   const isValidVehicleSecurityDetails = useSelector((state) => state.vehicleSecurityReducer.isValidVehicleSecurityDetails)
 
   const handleVehicleRegistrationNumber = (event) => {
-    dispatch(vehicleSecurityActions.setVehicleRegistrationNumber(event.target.value))
+    dispatch(vehicleSecurityActions.setVehicleRegistrationNumber(event.target.value.toUpperCase()))
   }
 
   const handleHasPurchasedVehicle = (event) => {
@@ -189,7 +189,7 @@ export default function VehicleSecurity() {
             {wouldYoulikeToProvideVehicleSecurity === 'Yes' && hasPurchsedVehicle === 'Yes' && !vehicleRelatedLoanPurpose && (
               <AnimatePresence exitBeforeEnter>
                 <Stack component={motion.div} {...varHasPurchasedVehicle} direction='column' justifyContent='center' alignItems='center' sx={{ width: '100%' }}>
-                  <Input name='vehicleRegistrationNumber' label='Registration Number' type='text' control={control} onInputChange={handleVehicleRegistrationNumber} hasTooltip={true} toolTipText='Please enter your vehicle registration number.' placeholder='Vehicle Rego' />
+                  <Input name='vehicleRegistrationNumber' label='Registration Number' type='text' control={control} capitalise={true} onInputChange={handleVehicleRegistrationNumber} hasTooltip={true} toolTipText='Please enter your vehicle registration number.' placeholder='Vehicle Rego' />
                 </Stack>
               </AnimatePresence>
             )}
