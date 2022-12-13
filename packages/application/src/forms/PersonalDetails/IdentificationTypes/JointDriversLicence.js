@@ -201,7 +201,7 @@ function JointDriverLicence() {
 
   // Driver Licence data handlers
   const handleDriversLicenceNo = (event) => {
-    dispatch(identificationActions.setJointdriversLicenceNo(event.target.value))
+    dispatch(identificationActions.setJointdriversLicenceNo(event.target.value.toUpperCase()))
   }
   const handleDriversLicenceVersion = (event) => {
     dispatch(identificationActions.setJointdriversLicenceVersion(event.target.value))
@@ -239,7 +239,7 @@ function JointDriverLicence() {
         </RadioGroups>
         <Grid container direction='row' justifyContent='flex-start' sx={{ m: 0, p: 0 }}>
           <Grid item sm={7} xs={7} sx={{ m: 0, pr: 1 }}>
-            <InputField name='driversLicenceNo' label='Drivers Licence Number' type='text' control={control} errorInput={!!errors.driversLicenceNo} helperTextInput={errors?.driversLicenceNo?.message} onInputChange={handleDriversLicenceNo} hasTooltip={false} />
+            <InputField name='driversLicenceNo' label='Drivers Licence Number' type='text' capitalise={true} control={control} errorInput={!!errors.driversLicenceNo} helperTextInput={errors?.driversLicenceNo?.message} onInputChange={handleDriversLicenceNo} hasTooltip={false} />
           </Grid>
           <Grid item sm={5} xs={5} sx={{ m: 0, p: 0 }}>
             <InputField name='driversLicenceVersion' label='Version' type='text' control={control} errorInput={!!errors.driversLicenceVersion} helperTextInput={errors?.driversLicenceVersion?.message} onInputChange={handleDriversLicenceVersion} hasTooltip={false} />

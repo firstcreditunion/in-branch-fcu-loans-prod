@@ -10,9 +10,6 @@ import Iframe from 'react-iframe'
 import { motion, AnimatePresence } from 'framer-motion'
 import { varFade } from '../../components/ui/animate'
 
-//* Loader
-import {} from '../../'
-
 import { useDispatch, useSelector } from 'react-redux'
 import { bankStatementActions } from '../../redux/slices/bankStatementSlice'
 
@@ -163,7 +160,7 @@ export default function BankStatement() {
   //   console.log(
   //     creditSenseCodes
   //       .find((codes) => {
-  //         return codes?.Code === creditSenseIframeResponseCode
+  //         return codes?.Code === credit SenseIframeResponseCode
   //       })
   //       ?.map((item) => {
   //         return { alertTitle: item?.AlertTitle, altertContent: item?.AlertContent, severity: item?.SeverityType }

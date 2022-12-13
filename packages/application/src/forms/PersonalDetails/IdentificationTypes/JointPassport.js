@@ -147,7 +147,7 @@ function JointPassport() {
   const dispatch = useDispatch()
 
   const handlePassportNo = (event) => {
-    dispatch(identificationActions.setJointPassportNo(event.target.value))
+    dispatch(identificationActions.setJointPassportNo(event.target.value.toUpperCase()))
   }
   const handlePassportIssueDate = (date) => {
     dispatch(identificationActions.setJointPassportIssueDate(date))
@@ -173,7 +173,7 @@ function JointPassport() {
   return (
     <Form>
       <Stack direction='column' spacing={3} justifyContent='flex-start' sx={{ pb: 5 }}>
-        <InputField name='passportNo' label='Passport Number' type='text' control={control} errorInput={!!errors.passportNo} helperTextInput={errors?.passportNo?.message} onInputChange={handlePassportNo} hasTooltip={false} />
+        <InputField name='passportNo' label='Passport Number' type='text' control={control} capitalise={true} errorInput={!!errors.passportNo} helperTextInput={errors?.passportNo?.message} onInputChange={handlePassportNo} hasTooltip={false} />
         <DatePicker id='passportIssueDate' name='passportIssueDate' onDateChange={handlePassportIssueDate} label='Issued Date' control={control} variant='outlined' openTo='year' format='dd/MM/yyyy' date={passportIssueDate} maxDate={defPassportIssueDate} minDate={issueDateLowerLimit} isRequired={true} />
         <DatePicker id='passportExpiryDate' name='passportExpiryDate' onDateChange={handlePassportExpiryDate} label='Expiry Date' control={control} variant='outlined' openTo='year' format='dd/MM/yyyy' date={passportExpiryDate} maxDate={expiryDateUpperLimit} minDate={defPassportExpiryDate} isRequired={true} />
         {/* <Box sx={{ mb: 5 }}>

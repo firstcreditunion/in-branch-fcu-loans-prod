@@ -707,7 +707,7 @@ export default function FirstLoanApplication({ loanAmount, interestRate, term, p
       return null
     }
 
-    history.push('/application/prequalify')
+    // history.push('/application/prequalify')
   }, [])
 
   useEffect(() => {
