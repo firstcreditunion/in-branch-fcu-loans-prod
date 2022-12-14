@@ -13,6 +13,8 @@ import { varFade } from '../../components/ui/animate'
 import { useDispatch, useSelector } from 'react-redux'
 import { bankStatementActions } from '../../redux/slices/bankStatementSlice'
 
+import { processNodeEnv } from '../../redux/utils/apiConstants'
+
 //* React Hook Form
 import { useForm, Controller } from 'react-hook-form'
 
@@ -116,7 +118,7 @@ export default function BankStatement() {
 
   function getAppRef() {
     const timestamp = new Date()
-    const appRef = 'testloans' + '-' + fDateCustom(timestamp)
+    const appRef = lastName + '-' + fDateCustom(timestamp)
 
     dispatch(bankStatementActions.setCreditSenseAppRef(appRef))
 
@@ -128,21 +130,21 @@ export default function BankStatement() {
       return parseInt(item?.Code) === creditSenseResponseCode
     })
 
-    console.log('CREDIT SENSE RESPONSE CODE: ', creditSenseResponseCode)
+    // console.log('CREDIT SENSE RESPONSE CODE: ', creditSenseResponseCode)
 
-    console.log(
-      'ALERT CONSOLE: ',
-      creditSenseCodes
-        ?.filter((item) => {
-          return parseInt(item?.Code) === creditSenseResponseCode
-        })
-        ?.map((item) => {
-          return item?.AlertTitle
-        })[0]
-    )
+    // console.log(
+    //   'ALERT CONSOLE: ',
+    //   creditSenseCodes
+    //     ?.filter((item) => {
+    //       return parseInt(item?.Code) === creditSenseResponseCode
+    //     })
+    //     ?.map((item) => {
+    //       return item?.AlertTitle
+    //     })[0]
+    // )
   }
 
-  console.log('getCerditSenseAlert: ', getCerditSenseAlert())
+  // console.log('getCerditSenseAlert: ', getCerditSenseAlert())
 
   // useEffect(() => {
   //   console.log('-----USEEFFECT-----')
@@ -170,21 +172,21 @@ export default function BankStatement() {
 
   jQuery(function () {
     $.CreditSense.Iframe({
-      client: 'FSCU01',
+      client: `${processNodeEnv() === 'development' ? 'FSCU03' : 'FSCU01'}`,
       elementSelector: '#fcu-cs-iframe',
       enableDynamicHeight: true,
       params: {
         appRef: `${getAppRef()}`,
         uniqueAppRef: true,
-        debugBanks: false,
+        debugBanks: `${processNodeEnv() === 'development' ? true : false}`,
         multibank: true,
         termsBeforeCredentials: true,
         centrelink: employmentType === 'Beneficiary' ? 'ask' : 'skip',
         askOnlineBanking: true,
       },
       callback: function (response, data) {
-        console.log('MY CONSOLE LOG for IFRAME REPONSE =>', response)
-        console.log('MY CONSOLE LOG for IFRAME DATA: ', data)
+        // console.log('MY CONSOLE LOG for IFRAME REPONSE =>', response)
+        // console.log('MY CONSOLE LOG for IFRAME DATA: ', data)
 
         if (creditSenseAppId == null) creditSenseAppId = data
 
@@ -193,11 +195,11 @@ export default function BankStatement() {
 
           creditSenseResponseCode = parseInt(response)
           // dispatch(bankStatementActions.setCreditSenseResponseCode(parseInt(response)))
-          console.log('RESPONSE IS A NUMBER')
-          console.log('PARSE INT creditSenseIframeResponseCode: ', creditSenseResponseCode)
-          console.log('PARSE INT NUMBER: ', parseInt(response))
+          // console.log('RESPONSE IS A NUMBER')
+          // console.log('PARSE INT creditSenseIframeResponseCode: ', creditSenseResponseCode)
+          // console.log('PARSE INT NUMBER: ', parseInt(response))
         }
-        console.log('MY CONSOLE LOG for IFRAME creditSenseAppId: ', creditSenseAppId)
+        // console.log('MY CONSOLE LOG for IFRAME creditSenseAppId: ', creditSenseAppId)
         switch (response) {
           case '99': // Example status code (Bank statcus success)
             logMsg('Bank details collected successfully')

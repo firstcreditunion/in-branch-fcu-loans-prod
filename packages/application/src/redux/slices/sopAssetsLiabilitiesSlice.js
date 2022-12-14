@@ -83,23 +83,24 @@ export const initialState = {
       autoComplete: { title: 'FCU Loan Provider', code: 'ALNPR' },
       sovereign: { key: 'ACCNTS6', value: 'Bank Account S6' },
     },
-    asset_other1: {
-      title: 'Other Asset 1',
-      groupBy: 'asset',
-      amount: null,
-      // frequency: { value: 1, unit: 'W', dialogTitleText: 'How often do you recive this income?' },
-      label: 'Other Asset 1',
-      autoComplete: { title: 'Other Asset 1', code: 'AOTH1' },
-      sovereign: { key: 'OTHASS1', value: 'Other Assets' },
-    },
-    asset_other2: {
-      title: 'Other Asset 2',
-      groupBy: 'asset',
-      amount: null,
-      // frequency: { value: 1, unit: 'W', dialogTitleText: 'How often do you recive this income?' },
-      label: 'Other Asset 2',
-      autoComplete: { title: 'Other Asset 2', code: 'AOTH2' },
-    },
+    // asset_other1: {
+    //   title: 'Other Asset 1',
+    //   groupBy: 'asset',
+    //   amount: null,
+    //   // frequency: { value: 1, unit: 'W', dialogTitleText: 'How often do you recive this income?' },
+    //   label: 'Other Asset 1',
+    //   autoComplete: { title: 'Other Asset 1', code: 'AOTH1' },
+    //   sovereign: { key: 'OTHASS1', value: 'Other Assets' },
+    // },
+    // asset_other2: {
+    //   title: 'Other Asset 2',
+    //   groupBy: 'asset',
+    //   amount: null,
+    //   // frequency: { value: 1, unit: 'W', dialogTitleText: 'How often do you recive this income?' },
+    //   label: 'Other Asset 2',
+    //   autoComplete: { title: 'Other Asset 2', code: 'AOTH2' },
+    //   sovereign: { key: 'OTHASS2', value: 'Other Assets' },
+    // },
   },
 
   //***** Liabilities *****/
@@ -155,26 +156,26 @@ export const initialState = {
       autoComplete: { title: 'Student Loan', code: 'LSLN' },
       sovereign: { key: 'STUDENTLO', value: 'Student Loan' },
     },
-    liability_otherliability1: {
-      title: 'Other Liability 1',
-      groupBy: 'liability',
-      amount: null,
-      // frequency: { value: 1, unit: 'W', dialogTitleText: 'How often do you pay rent?' },
-      label: 'Other Liability 1',
-      tooltip: { display: false, tip: '' },
-      autoComplete: { title: 'Other Liability 1', code: 'LOTH1' },
-      sovereign: { key: 'HOME', value: 'Home' },
-    },
-    liability_otherliability2: {
-      title: 'Other Liability 2',
-      groupBy: 'liability',
-      amount: null,
-      // frequency: { value: 1, unit: 'W', dialogTitleText: 'How often do you pay rent?' },
-      label: 'Other Liability 2',
-      tooltip: { display: false, tip: '' },
-      autoComplete: { title: 'Other Liability 2', code: 'LOTH2' },
-      sovereign: { key: 'HOME', value: 'Home' },
-    },
+    // liability_otherliability1: {
+    //   title: 'Other Liability 1',
+    //   groupBy: 'liability',
+    //   amount: null,
+    //   // frequency: { value: 1, unit: 'W', dialogTitleText: 'How often do you pay rent?' },
+    //   label: 'Other Liability 1',
+    //   tooltip: { display: false, tip: '' },
+    //   autoComplete: { title: 'Other Liability 1', code: 'LOTH1' },
+    //   sovereign: { key: 'HOME', value: 'Home' },
+    // },
+    // liability_otherliability2: {
+    //   title: 'Other Liability 2',
+    //   groupBy: 'liability',
+    //   amount: null,
+    //   // frequency: { value: 1, unit: 'W', dialogTitleText: 'How often do you pay rent?' },
+    //   label: 'Other Liability 2',
+    //   tooltip: { display: false, tip: '' },
+    //   autoComplete: { title: 'Other Liability 2', code: 'LOTH2' },
+    //   sovereign: { key: 'HOME', value: 'Home' },
+    // },
   },
 
   onSubmitSopAssetLiability: null,
@@ -235,12 +236,12 @@ const sopAssetLiabilitySlice = createSlice({
       state.asset.asset_s6.amount = action.payload
     },
 
-    setAssetOtherAsset1Amount: (state, action) => {
-      state.asset.asset_other1.amount = action.payload
-    },
-    setAssetOtherAsset2Amount: (state, action) => {
-      state.asset.asset_other2.amount = action.payload
-    },
+    // setAssetOtherAsset1Amount: (state, action) => {
+    //   state.asset.asset_other1.amount = action.payload
+    // },
+    // setAssetOtherAsset2Amount: (state, action) => {
+    //   state.asset.asset_other2.amount = action.payload
+    // },
 
     // ------ Setters for Liability -------- //
 
@@ -264,13 +265,13 @@ const sopAssetLiabilitySlice = createSlice({
       state.liability.liability_studentloan.amount = action.payload
     },
 
-    setLiabilityOtherLiability1Amount: (state, action) => {
-      state.liability.liability_otherliability1.amount = action.payload
-    },
+    // setLiabilityOtherLiability1Amount: (state, action) => {
+    //   state.liability.liability_otherliability1.amount = action.payload
+    // },
 
-    setLiabilityOtherLiability2Amount: (state, action) => {
-      state.liability.liability_otherliability2.amount = action.payload
-    },
+    // setLiabilityOtherLiability2Amount: (state, action) => {
+    //   state.liability.liability_otherliability2.amount = action.payload
+    // },
   },
 })
 

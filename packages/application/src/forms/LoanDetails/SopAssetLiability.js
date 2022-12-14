@@ -38,8 +38,6 @@ const schema = yup.object().shape({
   asset_kiwisaver: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Value should be greater than $0.00').nullable(),
   asset_nzsuper: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Value should be greater than $0.00').nullable(),
   asset_s6: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Value should be greater than $0.00').nullable(),
-  asset_other1: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Value should be greater than $0.00').nullable(),
-  asset_other2: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Value should be greater than $0.00').nullable(),
 
   // Liabilities
   liability_mortgage: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Amount should be greater than $0.00').nullable(),
@@ -47,8 +45,6 @@ const schema = yup.object().shape({
   liability_Mastercard: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Amount should be greater than $0.00').nullable(),
   liability_Visa: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Amount should be greater than $0.00').nullable(),
   liability_studentloan: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Amount should be greater than $0.00').nullable(),
-  liability_otherliability1: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Amount should be greater than $0.00').nullable(),
-  liability_otherliability2: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Amount should be greater than $0.00').nullable(),
 })
 
 export default function SopIncomeExpenditure() {
@@ -67,8 +63,8 @@ export default function SopIncomeExpenditure() {
   const asset_kiwisaver = useSelector((state) => state.sopAssetLiabilityReducer.asset.asset_kiwisaver)
   const asset_nzsuper = useSelector((state) => state.sopAssetLiabilityReducer.asset.asset_nzsuper)
   const asset_s6 = useSelector((state) => state.sopAssetLiabilityReducer.asset.asset_s6)
-  const asset_other1 = useSelector((state) => state.sopAssetLiabilityReducer.asset.asset_other1)
-  const asset_other2 = useSelector((state) => state.sopAssetLiabilityReducer.asset.asset_other2)
+  // const asset_other1 = useSelector((state) => state.sopAssetLiabilityReducer.asset.asset_other1)
+  // const asset_other2 = useSelector((state) => state.sopAssetLiabilityReducer.asset.asset_other2)
 
   //***************** Liability Selectors *********************/
 
@@ -78,8 +74,8 @@ export default function SopIncomeExpenditure() {
   const liability_Mastercard = useSelector((state) => state.sopAssetLiabilityReducer.liability.liability_Mastercard)
   const liability_Visa = useSelector((state) => state.sopAssetLiabilityReducer.liability.liability_Visa)
   const liability_studentloan = useSelector((state) => state.sopAssetLiabilityReducer.liability.liability_studentloan)
-  const liability_otherliability1 = useSelector((state) => state.sopAssetLiabilityReducer.liability.liability_otherliability1)
-  const liability_otherliability2 = useSelector((state) => state.sopAssetLiabilityReducer.liability.liability_otherliability2)
+  // const liability_otherliability1 = useSelector((state) => state.sopAssetLiabilityReducer.liability.liability_otherliability1)
+  // const liability_otherliability2 = useSelector((state) => state.sopAssetLiabilityReducer.liability.liability_otherliability2)
 
   // Form Submission
   const onSubmitSopAssetLiability = useSelector((state) => state.sopAssetLiabilityReducer.onSubmitSopAssetLiability)
@@ -150,14 +146,14 @@ export default function SopIncomeExpenditure() {
     dispatch(sopAssetLiabilityActions.setAssetFcuLoanProviderAmount(parseInt(event.target.value) - 0))
   }
 
-  //Other Asset1
-  const handleAssetOtherAssset1Amount = (event) => {
-    dispatch(sopAssetLiabilityActions.setAssetOtherAsset1Amount(parseInt(event.target.value) - 0))
-  }
-  //Other Asset2
-  const handleAssetOtherAsset2Amount = (event) => {
-    dispatch(sopAssetLiabilityActions.setAssetOtherAsset2Amount(parseInt(event.target.value) - 0))
-  }
+  // //Other Asset1
+  // const handleAssetOtherAssset1Amount = (event) => {
+  //   dispatch(sopAssetLiabilityActions.setAssetOtherAsset1Amount(parseInt(event.target.value) - 0))
+  // }
+  // //Other Asset2
+  // const handleAssetOtherAsset2Amount = (event) => {
+  //   dispatch(sopAssetLiabilityActions.setAssetOtherAsset2Amount(parseInt(event.target.value) - 0))
+  // }
 
   // -------------- End of Asset dispatch ----------------- //
 
@@ -189,15 +185,15 @@ export default function SopIncomeExpenditure() {
     dispatch(sopAssetLiabilityActions.setLiabilityStudentLoanAmount(parseInt(event.target.value) - 0))
   }
 
-  //OtherLiability1
-  const handleLiabilityOtherLiability1Amount = (event) => {
-    dispatch(sopAssetLiabilityActions.setLiabilityOtherLiability1Amount(parseInt(event.target.value) - 0))
-  }
+  // //OtherLiability1
+  // const handleLiabilityOtherLiability1Amount = (event) => {
+  //   dispatch(sopAssetLiabilityActions.setLiabilityOtherLiability1Amount(parseInt(event.target.value) - 0))
+  // }
 
-  //OtherLiability1
-  const handleLiabilityOtherLiability2Amount = (event) => {
-    dispatch(sopAssetLiabilityActions.setLiabilityOtherLiability1Amount(parseInt(event.target.value) - 0))
-  }
+  // //OtherLiability1
+  // const handleLiabilityOtherLiability2Amount = (event) => {
+  //   dispatch(sopAssetLiabilityActions.setLiabilityOtherLiability1Amount(parseInt(event.target.value) - 0))
+  // }
 
   // -------------- End of Liability dispatch ----------------- //
 
@@ -221,16 +217,12 @@ export default function SopIncomeExpenditure() {
       asset_kiwisaver: asset_kiwisaver.amount,
       asset_nzsuper: asset_nzsuper.amount,
       asset_s6: asset_s6.amount,
-      asset_other1: asset_other1.amount,
-      asset_other2: asset_other2.amount,
 
       liability_mortgage: liability_mortgage.amount,
       liability_storecard: liability_storecard.amount,
       liability_Mastercard: liability_Mastercard.amount,
       liability_Visa: liability_Visa.amount,
       liability_studentloan: liability_studentloan.amount,
-      liability_otherliability1: liability_otherliability1.amount,
-      liability_otherliability2: liability_otherliability2.amount,
     },
     mode: 'onBlur',
     resolver: yupResolver(schema),
@@ -356,30 +348,6 @@ export default function SopIncomeExpenditure() {
         durationOut: 0.32,
       }).outRight
 
-  const varotherasset1 = checkedAssetCodes.includes('AOTH1')
-    ? varFade({
-        distance: 100,
-        durationIn: 0.32,
-        durationOut: 0.32,
-      }).inRight
-    : varFade({
-        distance: 100,
-        durationIn: 0.32,
-        durationOut: 0.32,
-      }).outRight
-
-  const varotherasset2 = checkedAssetCodes.includes('AOTH2')
-    ? varFade({
-        distance: 100,
-        durationIn: 0.32,
-        durationOut: 0.32,
-      }).inRight
-    : varFade({
-        distance: 100,
-        durationIn: 0.32,
-        durationOut: 0.32,
-      }).outRight
-
   // Framaer Motion for Liability SOP text fields
 
   const varMortgage = checkedLiabilityCodes.includes('LMRG')
@@ -427,28 +395,6 @@ export default function SopIncomeExpenditure() {
         durationOut: 0.32,
       }).outRight
   const varStudentloan = checkedLiabilityCodes.includes('LSLN')
-    ? varFade({
-        distance: 100,
-        durationIn: 0.32,
-        durationOut: 0.32,
-      }).inRight
-    : varFade({
-        distance: 100,
-        durationIn: 0.32,
-        durationOut: 0.32,
-      }).outRight
-  const varOtherliability1 = checkedLiabilityCodes.includes('LOTH1')
-    ? varFade({
-        distance: 100,
-        durationIn: 0.32,
-        durationOut: 0.32,
-      }).inRight
-    : varFade({
-        distance: 100,
-        durationIn: 0.32,
-        durationOut: 0.32,
-      }).outRight
-  const varOtherliability2 = checkedLiabilityCodes.includes('LOTH2')
     ? varFade({
         distance: 100,
         durationIn: 0.32,
@@ -531,7 +477,7 @@ export default function SopIncomeExpenditure() {
                   </motion.div>
                 )}
               </AnimatePresence>
-              <AnimatePresence>
+              {/* <AnimatePresence>
                 {checkedAssetCodes.includes('AOTH1') && (
                   <motion.div {...varotherasset1}>
                     <SopTextFieldAssetLiability name='asset_other1' control={control} label={asset_other1.label} onSopTextFieldChange={handleAssetOtherAssset1Amount} />
@@ -544,7 +490,7 @@ export default function SopIncomeExpenditure() {
                     <SopTextFieldAssetLiability name='asset_other2' control={control} label={asset_other2.label} onSopTextFieldChange={handleAssetOtherAsset2Amount} />
                   </motion.div>
                 )}
-              </AnimatePresence>
+              </AnimatePresence> */}
             </Stack>
           </CardContent>
         </Card>
@@ -593,7 +539,7 @@ export default function SopIncomeExpenditure() {
                   </motion.div>
                 )}
               </AnimatePresence>
-              <AnimatePresence>
+              {/* <AnimatePresence>
                 {checkedLiabilityCodes.includes('LOTH1') && (
                   <motion.div {...varOtherliability1}>
                     <SopTextFieldAssetLiability name='liability_otherliability1' control={control} label={liability_otherliability1.label} onSopTextFieldChange={handleLiabilityOtherLiability1Amount} />
@@ -606,7 +552,7 @@ export default function SopIncomeExpenditure() {
                     <SopTextFieldAssetLiability name='liability_otherliability2' control={control} label={liability_otherliability2.label} onSopTextFieldChange={handleLiabilityOtherLiability2Amount} />
                   </motion.div>
                 )}
-              </AnimatePresence>
+              </AnimatePresence> */}
             </Stack>
           </CardContent>
         </Card>

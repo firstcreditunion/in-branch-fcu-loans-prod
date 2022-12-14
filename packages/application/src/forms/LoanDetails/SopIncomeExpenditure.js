@@ -39,8 +39,6 @@ const schema = yup.object().shape({
   income_childsupport: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Value should be greater than $0.00').nullable(),
   income_workingforfamilies: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Value should be greater than $0.00').nullable(),
   income_broaderincome: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Value should be greater than $0.00').nullable(),
-  income_otherincome1: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Value should be greater than $0.00').nullable(),
-  income_otherincome2: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Value should be greater than $0.00').nullable(),
 
   // Expenses
   expense_RentingBoarding: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Amount should be greater than $0.00').nullable(),
@@ -56,7 +54,6 @@ const schema = yup.object().shape({
   expense_Recreation: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Amount should be greater than $0.00').nullable(),
   expense_Tithing: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Amount should be greater than $0.00').nullable(),
   expense_Savings: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Amount should be greater than $0.00').nullable(),
-  expense_otherExpense1: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Amount should be greater than $0.00').nullable(),
 })
 
 export default function SopIncomeExpenditure() {
@@ -80,8 +77,6 @@ export default function SopIncomeExpenditure() {
   const income_childsupport = useSelector((state) => state.sopIncomeExpenditureReducer.income.income_childsupport)
   const income_workingforfamilies = useSelector((state) => state.sopIncomeExpenditureReducer.income.income_workingforfamilies)
   const income_broaderincome = useSelector((state) => state.sopIncomeExpenditureReducer.income.income_broaderincome)
-  const income_otherincome1 = useSelector((state) => state.sopIncomeExpenditureReducer.income.income_otherincome1)
-  const income_otherincome2 = useSelector((state) => state.sopIncomeExpenditureReducer.income.income_otherincome2)
 
   //***************** Expense Selectors *********************/
 
@@ -101,7 +96,6 @@ export default function SopIncomeExpenditure() {
   const expense_Recreation = useSelector((state) => state.sopIncomeExpenditureReducer.expense.expense_Recreation)
   const expense_Tithing = useSelector((state) => state.sopIncomeExpenditureReducer.expense.expense_Tithing)
   const expense_Savings = useSelector((state) => state.sopIncomeExpenditureReducer.expense.expense_Savings)
-  const expense_otherExpense1 = useSelector((state) => state.sopIncomeExpenditureReducer.expense.expense_otherExpense1)
 
   // Form submission
   const onSubmitSopIncomeExpenditure = useSelector((state) => state.sopIncomeExpenditureReducer.onSubmitSopIncomeExpenditure)
@@ -213,21 +207,21 @@ export default function SopIncomeExpenditure() {
     dispatch(sopIncomeExpenditureActions.setIncomeBroaderIncomeFrequency(event.target.value))
   }
 
-  //Other Income 1
-  const handleOtherIncome1Amount = (event) => {
-    dispatch(sopIncomeExpenditureActions.setIncomeOtherIncome1Amount(parseInt(event.target.value) - 0))
-  }
-  const handleOtherIncome1Frequency = (event) => {
-    dispatch(sopIncomeExpenditureActions.setIncomeOtherIncome1Frequency(event.target.value))
-  }
+  // //Other Income 1
+  // const handleOtherIncome1Amount = (event) => {
+  //   dispatch(sopIncomeExpenditureActions.setIncomeOtherIncome1Amount(parseInt(event.target.value) - 0))
+  // }
+  // const handleOtherIncome1Frequency = (event) => {
+  //   dispatch(sopIncomeExpenditureActions.setIncomeOtherIncome1Frequency(event.target.value))
+  // }
 
-  // Other Income 2
-  const handleOtherIncome2Amount = (event) => {
-    dispatch(sopIncomeExpenditureActions.setIncomeOtherIncome2Amount(parseInt(event.target.value) - 0))
-  }
-  const handleOtherIncome2Frequency = (event) => {
-    dispatch(sopIncomeExpenditureActions.setIncomeOtherIncome2Frequency(event.target.value))
-  }
+  // // Other Income 2
+  // const handleOtherIncome2Amount = (event) => {
+  //   dispatch(sopIncomeExpenditureActions.setIncomeOtherIncome2Amount(parseInt(event.target.value) - 0))
+  // }
+  // const handleOtherIncome2Frequency = (event) => {
+  //   dispatch(sopIncomeExpenditureActions.setIncomeOtherIncome2Frequency(event.target.value))
+  // }
   // -------------- End of Income dispatch ----------------- //
 
   //***************** Expense Disptach *********************/
@@ -354,13 +348,13 @@ export default function SopIncomeExpenditure() {
     dispatch(sopIncomeExpenditureActions.setExpenseSavingsFrequency(event.target.value))
   }
 
-  //Other Expense 1
-  const handleExpenseOtherExpense1Amount = (event) => {
-    dispatch(sopIncomeExpenditureActions.setExpenseOtherExpense1Amount(parseInt(event.target.value) - 0))
-  }
-  const handleExpenseOtherExpense1Frequency = (event) => {
-    dispatch(sopIncomeExpenditureActions.setExpenseOtherExpense1Frequency(event.target.value))
-  }
+  // //Other Expense 1
+  // const handleExpenseOtherExpense1Amount = (event) => {
+  //   dispatch(sopIncomeExpenditureActions.setExpenseOtherExpense1Amount(parseInt(event.target.value) - 0))
+  // }
+  // const handleExpenseOtherExpense1Frequency = (event) => {
+  //   dispatch(sopIncomeExpenditureActions.setExpenseOtherExpense1Frequency(event.target.value))
+  // }
 
   // -------------- End of Expense dispatch ----------------- //
 
@@ -386,8 +380,6 @@ export default function SopIncomeExpenditure() {
       income_childsupport: income_childsupport.amount,
       income_workingforfamilies: income_workingforfamilies.amount,
       income_broaderincome: income_broaderincome.amount,
-      income_otherincome1: income_otherincome1.amount,
-      income_otherincome2: income_otherincome2.amount,
 
       expense_RentingBoarding: expense_RentingBoarding.amount,
       expense_S6_or_Savings: expense_S6_or_Savings.amount,
@@ -402,7 +394,6 @@ export default function SopIncomeExpenditure() {
       expense_Recreation: expense_Recreation.amount,
       expense_Tithing: expense_Tithing.amount,
       expense_Savings: expense_Savings.amount,
-      expense_otherExpense1: expense_otherExpense1.amount,
     },
     mode: 'onBlur',
     resolver: yupResolver(schema),
@@ -541,30 +532,6 @@ export default function SopIncomeExpenditure() {
       }).outRight
 
   const varBroaderIncome1 = checkedIncomeCodes.includes('BRINC')
-    ? varFade({
-        distance: 100,
-        durationIn: 0.32,
-        durationOut: 0.32,
-      }).inRight
-    : varFade({
-        distance: 100,
-        durationIn: 0.32,
-        durationOut: 0.32,
-      }).outRight
-
-  const varOtherIncome1 = checkedIncomeCodes.includes('OTH1')
-    ? varFade({
-        distance: 100,
-        durationIn: 0.32,
-        durationOut: 0.32,
-      }).inRight
-    : varFade({
-        distance: 100,
-        durationIn: 0.32,
-        durationOut: 0.32,
-      }).outRight
-
-  const varOtherIncome2 = checkedIncomeCodes.includes('OTH2')
     ? varFade({
         distance: 100,
         durationIn: 0.32,
@@ -743,17 +710,6 @@ export default function SopIncomeExpenditure() {
         durationIn: 0.32,
         durationOut: 0.32,
       }).outRight
-  const varOtherExpense1 = checkedExpenseCodes.includes('OTHEX1')
-    ? varFade({
-        distance: 100,
-        durationIn: 0.32,
-        durationOut: 0.32,
-      }).inRight
-    : varFade({
-        distance: 100,
-        durationIn: 0.32,
-        durationOut: 0.32,
-      }).outRight
 
   //JSX
   return (
@@ -840,7 +796,7 @@ export default function SopIncomeExpenditure() {
                   </motion.div>
                 )}
               </AnimatePresence>
-              <AnimatePresence>
+              {/* <AnimatePresence>
                 {checkedIncomeCodes.includes('OTH1') && (
                   <motion.div {...varOtherIncome1}>
                     <SOPTextField control={control} name='income_otherincome1' label={income_otherincome1.label} frequencyUnit={income_otherincome1.frequency.unit} dialogContentText={income_otherincome1.frequency.dialogTitleText} onSopTextFieldChange={handleOtherIncome1Amount} frequencyChange={handleOtherIncome1Frequency} radioValue={income_otherincome1.frequency.unit} />
@@ -853,7 +809,7 @@ export default function SopIncomeExpenditure() {
                     <SOPTextField control={control} name='income_otherincome2' label={income_otherincome2.label} frequencyUnit={income_otherincome2.frequency.unit} dialogContentText={income_otherincome2.frequency.dialogTitleText} onSopTextFieldChange={handleOtherIncome2Amount} frequencyChange={handleOtherIncome2Frequency} radioValue={income_otherincome2.frequency.unit} />
                   </motion.div>
                 )}
-              </AnimatePresence>
+              </AnimatePresence> */}
             </Stack>
           </CardContent>
         </Card>
@@ -973,13 +929,13 @@ export default function SopIncomeExpenditure() {
                   </motion.div>
                 )}
               </AnimatePresence>
-              <AnimatePresence>
+              {/* <AnimatePresence>
                 {checkedExpenseCodes.includes('OTHEX1') && (
                   <motion.div {...varOtherExpense1}>
                     <SOPTextField control={control} name='expense_otherExpense1' label={expense_otherExpense1.label} frequencyUnit={expense_otherExpense1.frequency.unit} dialogContentText={expense_otherExpense1.frequency.dialogTitleText} onSopTextFieldChange={handleExpenseOtherExpense1Amount} frequencyChange={handleExpenseOtherExpense1Frequency} radioValue={expense_otherExpense1.frequency.unit} />
                   </motion.div>
                 )}
-              </AnimatePresence>
+              </AnimatePresence> */}
             </Stack>
           </CardContent>
         </Card>

@@ -108,26 +108,26 @@ export const initialState = {
       autoComplete: { title: 'Boarder Income', code: 'BRINC' },
       sovereign: { key: 'PYGBRD', value: 'Boarder Income' },
     },
-    income_otherincome1: {
-      title: 'Other Income 1',
-      groupBy: 'income',
-      amount: null,
-      frequency: { value: 1, unit: 'W', dialogTitleText: 'How often do you recive this income?' },
-      label: 'Other Income 1',
-      tooltip: { display: false, tip: '' },
-      autoComplete: { title: 'Other Income 1', code: 'OTH1' },
-      sovereign: { key: 'VISACARD', value: 'Visa Card' },
-    },
-    income_otherincome2: {
-      title: 'Other Income 2',
-      groupBy: 'income',
-      amount: null,
-      frequency: { value: 1, unit: 'W', dialogTitleText: 'How often do you recive this income?' },
-      label: 'Other Income 2',
-      tooltip: { display: false, tip: '' },
-      autoComplete: { title: 'Other Income 2', code: 'OTH2' },
-      sovereign: { key: 'VISACARD', value: 'Visa Card' },
-    },
+    // income_otherincome1: {
+    //   title: 'Other Income 1',
+    //   groupBy: 'income',
+    //   amount: null,
+    //   frequency: { value: 1, unit: 'W', dialogTitleText: 'How often do you recive this income?' },
+    //   label: 'Other Income 1',
+    //   tooltip: { display: false, tip: '' },
+    //   autoComplete: { title: 'Other Income 1', code: 'OTH1' },
+    //   sovereign: { key: 'VISACARD', value: 'Visa Card' },
+    // },
+    // income_otherincome2: {
+    //   title: 'Other Income 2',
+    //   groupBy: 'income',
+    //   amount: null,
+    //   frequency: { value: 1, unit: 'W', dialogTitleText: 'How often do you recive this income?' },
+    //   label: 'Other Income 2',
+    //   tooltip: { display: false, tip: '' },
+    //   autoComplete: { title: 'Other Income 2', code: 'OTH2' },
+    //   sovereign: { key: 'VISACARD', value: 'Visa Card' },
+    // },
   },
 
   //***** Expense *****/
@@ -370,18 +370,18 @@ const sopIncomeExpenditureSlice = createSlice({
     setIncomeBroaderIncomeFrequency: (state, action) => {
       state.income.income_broaderincome.frequency.unit = action.payload
     },
-    setIncomeOtherIncome1Amount: (state, action) => {
-      state.income.income_otherincome1.amount = action.payload
-    },
-    setIncomeOtherIncome1Frequency: (state, action) => {
-      state.income.income_otherincome1.frequency.unit = action.payload
-    },
-    setIncomeOtherIncome2Amount: (state, action) => {
-      state.income.income_otherincome2.amount = action.payload
-    },
-    setIncomeOtherIncome2Frequency: (state, action) => {
-      state.income.income_otherincome2.frequency.unit = action.payload
-    },
+    // setIncomeOtherIncome1Amount: (state, action) => {
+    //   state.income.income_otherincome1.amount = action.payload
+    // },
+    // setIncomeOtherIncome1Frequency: (state, action) => {
+    //   state.income.income_otherincome1.frequency.unit = action.payload
+    // },
+    // setIncomeOtherIncome2Amount: (state, action) => {
+    //   state.income.income_otherincome2.amount = action.payload
+    // },
+    // setIncomeOtherIncome2Frequency: (state, action) => {
+    //   state.income.income_otherincome2.frequency.unit = action.payload
+    // },
 
     //------ Setters for Expense -------- //
 

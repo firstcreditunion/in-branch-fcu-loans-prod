@@ -178,7 +178,7 @@ export default function ButtonAppBar(props) {
                 </SignOut>
               )} */}
               </Box>
-              <MaterialUISwitch sx={{ m: 1 }} value={'light'} defaultChecked onChange={handleTheme} />
+              {/* <MaterialUISwitch sx={{ m: 1 }} value={'light'} defaultChecked onChange={handleTheme} /> */}
             </Stack>
           </Toolbar>
         </AppBar>
