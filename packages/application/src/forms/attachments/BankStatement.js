@@ -176,7 +176,7 @@ export default function BankStatement() {
       params: {
         appRef: `${getAppRef()}`,
         uniqueAppRef: true,
-        debugBanks: true,
+        debugBanks: false,
         multibank: true,
         termsBeforeCredentials: true,
         centrelink: employmentType === 'Beneficiary' ? 'ask' : 'skip',
