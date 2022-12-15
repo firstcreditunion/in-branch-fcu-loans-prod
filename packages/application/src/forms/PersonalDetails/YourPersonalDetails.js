@@ -233,8 +233,6 @@ const YourPersonalDetails = () => {
   }
 
   const handleDateofBirth = (date) => {
-    console.log('Date Picker Date:', date)
-
     dispatch(yourPersonalDetailsActions.setDob(date))
   }
 

@@ -43,7 +43,6 @@ export function convertUnixToUTCTimestamp(date) {
   // const isoDate = dateFormat.toISOString()
   // console.log('UNIX iso date: ', isoDate)
   const sovereignDate = fDateYYYY_MM_DD(dateFormat)
-  console.log('sovereignDate UNIX: ', sovereignDate)
   return sovereignDate
 }
 
@@ -66,8 +65,6 @@ export function convertToUTCTimestamp(date, callfrom) {
   }
 
   const sovereignDate = fDateYYYY_MM_DD(dateFormat)
-
-  console.log('sovereignDate UTC: ', sovereignDate)
 
   // console.log('BEFORE ISO CONVERSION: ', dateFormat)
   // const isoDate = dateFormat.toISOString()

@@ -17,6 +17,15 @@ export const HTTP_STATUS = Object.freeze({
   IDLE: 'IDLE',
 })
 
+export const AXIOS_NETWOR_ERROR = Object.freeze({
+  CODE: 'ERR_NETWORK',
+  MESSAGE: 'Network Error',
+})
+
+export const SUBMISSION_STATUS = Object.freeze({
+  CODE: 200,
+})
+
 export const HEADER_CONSTANTS = Object.freeze({
   clientID: 'boss.test22!',
   ClientSecret: '2022Collingwood!',

@@ -51,6 +51,15 @@ export const sendCipherText = createAsyncThunk(`${namespace}/sendCipherText`, as
 })
 
 export const initialState = {
+  submissionStatusCode: null,
+  submissionFulfilled: null,
+
+  axiosCode: null,
+  axiosCodeMessage: null,
+  axiosCodeName: null,
+  axiosRequestStatus: null,
+  axiosRequestStatusText: null,
+
   loading: HTTP_STATUS.IDLE,
   currentRequestId: null,
   error: null,
@@ -119,8 +128,20 @@ const submissionSlice = createSlice({
       })
       .addCase(submitLoanApplication.fulfilled, (state, action) => {
         const { requestId } = action.meta
-        // console.log('Submit Application FULFILLED META: ', action.meta)
-        // console.log('Submit Application FULFILLED PAYLOAD: ', action.payload)
+        console.log('Submit Application FULFILLED META: ', action.meta)
+        console.log('Submit Application FULFILLED PAYLOAD: ', action.payload)
+        console.log('Submit Application FULFILLED TYPE: ', action.type)
+
+        state.submissionFulfilled = true
+
+        state.axiosCode = action.payload?.code
+        state.axiosCodeMessage = action.payload?.message
+        state.axiosCodeName = action.payload?.name
+        state.axiosRequestStatus = action.payload?.request?.status
+        state.axiosRequestStatusText = action.payload?.request?.statusText
+
+        state.submissionStatusCode = action.payload?.statusCode
+
         if (state.loadingSubmission === 'PENDING' && state.currentRequestIdSubmission === requestId) {
           state.loadingSubmission = HTTP_STATUS.IDLE
           state.currentRequestIdSubmission = null
@@ -136,6 +157,10 @@ const submissionSlice = createSlice({
       })
       .addCase(submitLoanApplication.rejected, (state, action) => {
         const { requestId } = action.meta
+
+        console.log('Submit Application REJECTED META: ', action.meta)
+        console.log('Submit Application REJECTED PAYLOAD: ', action.payload)
+        console.log('Submit Application REJECTED TYPE: ', action.type)
 
         if (action.payload) {
           state.errorSubmission = action.payload?.errorMessage
@@ -156,6 +181,11 @@ const submissionSlice = createSlice({
       })
       .addCase(generateLoanApplicationReport.fulfilled, (state, action) => {
         const { requestId } = action.meta
+
+        console.log('PDF FULFILLED META: ', action.meta)
+        console.log('PDF FULFILLED PAYLOAD: ', action.payload)
+        console.log('PDF FULFILLED TYPE: ', action.type)
+
         if (state.loadingGeneratePdf === 'PENDING' && state.currentRequestIdGeneratePdf === requestId) {
           state.loadingGeneratePdf = HTTP_STATUS.IDLE
           state.currentRequestIdGeneratePdf = null
@@ -217,32 +247,32 @@ const submissionSlice = createSlice({
         }
       })
 
-      .addCase(sendCipherText.pending, (state, action) => {
-        if (state.loadingCipherText === 'IDLE') {
-          state.loadingCipherText = HTTP_STATUS.PENDING
-          state.currentRequestIdCipherText = action.meta.requestId
-        }
-      })
-      .addCase(sendCipherText.fulfilled, (state, action) => {
-        const { requestId } = action.meta
-        if (state.loadingCipherText === 'PENDING' && state.currentRequestIdCipherText === requestId) {
-          state.loadingCipherText = HTTP_STATUS.IDLE
-          state.currentRequestIdCipherText = null
-        }
-      })
-      .addCase(sendCipherText.rejected, (state, action) => {
-        const { requestId } = action.meta
-        if (action.payload) {
-          state.errorCipherText = action.payload?.errorMessage
-        } else {
-          state.errorCipherText = action.error?.message
-        }
-        if (state.loadingCipherText === 'PENDING' && state.currentRequestIdCipherText === requestId) {
-          state.loadingCipherText = 'IDLE'
-          state.errorCipherText = action.error
-          state.currentRequestIdCipherText = null
-        }
-      })
+    // .addCase(sendCipherText.pending, (state, action) => {
+    //   if (state.loadingCipherText === 'IDLE') {
+    //     state.loadingCipherText = HTTP_STATUS.PENDING
+    //     state.currentRequestIdCipherText = action.meta.requestId
+    //   }
+    // })
+    // .addCase(sendCipherText.fulfilled, (state, action) => {
+    //   const { requestId } = action.meta
+    //   if (state.loadingCipherText === 'PENDING' && state.currentRequestIdCipherText === requestId) {
+    //     state.loadingCipherText = HTTP_STATUS.IDLE
+    //     state.currentRequestIdCipherText = null
+    //   }
+    // })
+    // .addCase(sendCipherText.rejected, (state, action) => {
+    //   const { requestId } = action.meta
+    //   if (action.payload) {
+    //     state.errorCipherText = action.payload?.errorMessage
+    //   } else {
+    //     state.errorCipherText = action.error?.message
+    //   }
+    //   if (state.loadingCipherText === 'PENDING' && state.currentRequestIdCipherText === requestId) {
+    //     state.loadingCipherText = 'IDLE'
+    //     state.errorCipherText = action.error
+    //     state.currentRequestIdCipherText = null
+    //   }
+    // })
   },
 })
 
