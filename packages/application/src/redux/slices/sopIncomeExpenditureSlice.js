@@ -263,16 +263,16 @@ export const initialState = {
       autoComplete: { title: 'Savings', code: 'ESAV' },
       sovereign: { key: 'SAVG', value: 'Savings' },
     },
-    expense_otherExpense1: {
-      title: 'Other Expense',
-      groupBy: 'expense',
-      amount: null,
-      frequency: { value: 1, unit: 'W', dialogTitleText: 'How often do you have other expense?' },
-      label: 'Other Expense',
-      tooltip: { display: false, tip: '' },
-      autoComplete: { title: 'Other Expense', code: 'OTHEX1' },
-      sovereign: { key: 'VISACARD', value: 'Visa Card' },
-    },
+    // expense_otherExpense1: {
+    //   title: 'Other Expense',
+    //   groupBy: 'expense',
+    //   amount: null,
+    //   frequency: { value: 1, unit: 'W', dialogTitleText: 'How often do you have other expense?' },
+    //   label: 'Other Expense',
+    //   tooltip: { display: false, tip: '' },
+    //   autoComplete: { title: 'Other Expense', code: 'OTHEX1' },
+    //   sovereign: { key: 'VISACARD', value: 'Visa Card' },
+    // },
   },
 
   onSubmitSopIncomeExpenditure: null,
@@ -490,12 +490,12 @@ const sopIncomeExpenditureSlice = createSlice({
       state.expense.expense_Savings.frequency.unit = action.payload
     },
 
-    setExpenseOtherExpense1Amount: (state, action) => {
-      state.expense.expense_otherExpense1.amount = action.payload
-    },
-    setExpenseOtherExpense1Frequency: (state, action) => {
-      state.expense.expense_otherExpense1.frequency.unit = action.payload
-    },
+    // setExpenseOtherExpense1Amount: (state, action) => {
+    //   state.expense.expense_otherExpense1.amount = action.payload
+    // },
+    // setExpenseOtherExpense1Frequency: (state, action) => {
+    //   state.expense.expense_otherExpense1.frequency.unit = action.payload
+    // },
   },
 })
 
