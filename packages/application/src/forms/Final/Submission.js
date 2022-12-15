@@ -2653,10 +2653,8 @@ export default function Submission() {
   }
 
   useEffect(() => {
-    console.log('submissionFulfilled: ', submissionFulfilled)
-
     if (submissionFulfilled == null) return
-    console.log('SENDING PDF REQUEST')
+
     const timestamp = new Date()
     const generatePdfConfig = {
       url: '/generate-pdf',

@@ -128,9 +128,9 @@ const submissionSlice = createSlice({
       })
       .addCase(submitLoanApplication.fulfilled, (state, action) => {
         const { requestId } = action.meta
-        console.log('Submit Application FULFILLED META: ', action.meta)
-        console.log('Submit Application FULFILLED PAYLOAD: ', action.payload)
-        console.log('Submit Application FULFILLED TYPE: ', action.type)
+        // console.log('Submit Application FULFILLED META: ', action.meta)
+        // console.log('Submit Application FULFILLED PAYLOAD: ', action.payload)
+        // console.log('Submit Application FULFILLED TYPE: ', action.type)
 
         state.submissionFulfilled = true
 
@@ -158,9 +158,9 @@ const submissionSlice = createSlice({
       .addCase(submitLoanApplication.rejected, (state, action) => {
         const { requestId } = action.meta
 
-        console.log('Submit Application REJECTED META: ', action.meta)
-        console.log('Submit Application REJECTED PAYLOAD: ', action.payload)
-        console.log('Submit Application REJECTED TYPE: ', action.type)
+        // console.log('Submit Application REJECTED META: ', action.meta)
+        // console.log('Submit Application REJECTED PAYLOAD: ', action.payload)
+        // console.log('Submit Application REJECTED TYPE: ', action.type)
 
         if (action.payload) {
           state.errorSubmission = action.payload?.errorMessage
@@ -182,9 +182,9 @@ const submissionSlice = createSlice({
       .addCase(generateLoanApplicationReport.fulfilled, (state, action) => {
         const { requestId } = action.meta
 
-        console.log('PDF FULFILLED META: ', action.meta)
-        console.log('PDF FULFILLED PAYLOAD: ', action.payload)
-        console.log('PDF FULFILLED TYPE: ', action.type)
+        // console.log('PDF FULFILLED META: ', action.meta)
+        // console.log('PDF FULFILLED PAYLOAD: ', action.payload)
+        // console.log('PDF FULFILLED TYPE: ', action.type)
 
         if (state.loadingGeneratePdf === 'PENDING' && state.currentRequestIdGeneratePdf === requestId) {
           state.loadingGeneratePdf = HTTP_STATUS.IDLE
