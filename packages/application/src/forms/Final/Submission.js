@@ -2652,27 +2652,27 @@ export default function Submission() {
     }
   }
 
-  useEffect(() => {
-    if (submissionFulfilled == null) return
+  // useEffect(() => {
+  //   if (submissionFulfilled == null) return
 
-    const timestamp = new Date()
-    const generatePdfConfig = {
-      url: '/generate-pdf',
-      method: 'POST',
-      baseURL: `${processNodeEnv() === 'development' ? BASE_URL_LOCAL_APP : BASE_URL_AWS_APP}`,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      timeout: 60000,
-      data: JSON.stringify({
-        applicationData: createPdfData(),
-        applicationNumber: applicationReference == null ? forenames + ' ' + lastName + ' ' + fDateCustom(timestamp) : applicationReference + ' - ' + fDateCustom(timestamp),
-        submissionError: axiosCode,
-      }),
-    }
+  //   const timestamp = new Date()
+  //   const generatePdfConfig = {
+  //     url: '/generate-pdf',
+  //     method: 'POST',
+  //     baseURL: `${processNodeEnv() === 'development' ? BASE_URL_LOCAL_APP : BASE_URL_AWS_APP}`,
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     timeout: 60000,
+  //     data: JSON.stringify({
+  //       applicationData: createPdfData(),
+  //       applicationNumber: applicationReference == null ? forenames + ' ' + lastName + ' ' + fDateCustom(timestamp) : applicationReference + ' - ' + fDateCustom(timestamp),
+  //       submissionError: axiosCode,
+  //     }),
+  //   }
 
-    dispatch(generateLoanApplicationReport(generatePdfConfig))
-  }, [submissionFulfilled])
+  //   dispatch(generateLoanApplicationReport(generatePdfConfig))
+  // }, [submissionFulfilled])
 
   function getRequestConfig() {
     const config = {
