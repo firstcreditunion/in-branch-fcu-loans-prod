@@ -87,7 +87,6 @@ const yourPersonalDetailsSlice = createSlice({
       state.gender = action.payload
     },
     setDob: (state, action) => {
-      console.log('action.payload Date:', action.payload)
       state.dob = action.payload
     },
     setMaritalStatus: (state, action) => {

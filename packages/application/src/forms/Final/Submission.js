@@ -25,7 +25,9 @@ import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import Paper from '@mui/material/Paper'
 import Button from '@mui/material/Button'
+import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
+import useMediaQuery from '@mui/material/useMediaQuery'
 import SendRoundedIcon from '@mui/icons-material/SendRounded'
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded'
 
@@ -57,7 +59,7 @@ const ContentStyle = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
   color: theme.palette.common.white,
   boxSizing: 'border-box',
-  backgroundImage: `linear-gradient( 135deg,${theme.palette.primary.main} 0%,${theme.palette.primary.dark} 100%)`,
+  backgroundImage: `linear-gradient( 135deg,${theme.palette.primary.light} 0%,${theme.palette.primary.dark} 100%)`,
 }))
 
 const SummaryLabel = styled(Typography)(({ theme }) => ({
@@ -137,6 +139,9 @@ export default function Submission() {
   const [submit, triggerSubmit] = React.useState(null)
   const [loanSubmissionData, setLoanSubmissionData] = React.useState(null)
 
+  const downMd = useMediaQuery((theme) => theme.breakpoints.down('md'))
+  const downSm = useMediaQuery((theme) => theme.breakpoints.down('sm'))
+
   // Back-end response to application submission
   const loading = useSelector((state) => state.submissionReducer.loading)
   const onlinetoken = useSelector((state) => state.submissionReducer.onlinetoken)
@@ -195,7 +200,13 @@ export default function Submission() {
   // -------------- Fees --------------
 
   //* Loan Cost recovery Fees
-  const creditCheck = useSelector((state) => state.globalReducer.secureClientID)
+  const creditCheckAmount = useSelector((state) => state.financialDetailsReducer.creditCheckAmount)
+  const creditSenseAmount = useSelector((state) => state.financialDetailsReducer.creditSenseAmount)
+  const cloudCheckIdVerificationAmount = useSelector((state) => state.financialDetailsReducer.cloudCheckIdVerificationAmount)
+  const cloudCheckPEPSanctionsAmount = useSelector((state) => state.financialDetailsReducer.cloudCheckPEPSanctionsAmount)
+  const motorwebCheckAmount = useSelector((state) => state.financialDetailsReducer.motorwebCheckAmount)
+  const docusignAmount = useSelector((state) => state.financialDetailsReducer.docusignAmount)
+  const ppsrAmount = useSelector((state) => state.financialDetailsReducer.ppsrAmount)
 
   // ************* Lending Criteria Details ************* //
 
@@ -2652,28 +2663,28 @@ export default function Submission() {
     }
   }
 
-  // useEffect(() => {
-  //   if (submissionFulfilled == null) return
+  useEffect(() => {
+    if (submissionFulfilled == null) return
 
-  //   const timestamp = new Date()
-  //   const generatePdfConfig = {
-  //     url: '/generate-pdf',
-  //     method: 'POST',
-  //     baseURL: `${processNodeEnv() === 'development' ? BASE_URL_LOCAL_APP : BASE_URL_AWS_APP}`,
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     timeout: 60000,
-  //     data: JSON.stringify({
-  //       // applicationData: createPdfData(),
-  //       applicationData: { ...primeAndJointPDFData },
-  //       applicationNumber: applicationReference == null ? forenames + ' ' + lastName + ' ' + fDateCustom(timestamp) : applicationReference + ' - ' + fDateCustom(timestamp),
-  //       submissionError: axiosCode,
-  //     }),
-  //   }
+    const timestamp = new Date()
+    const generatePdfConfig = {
+      url: '/generate-pdf',
+      method: 'POST',
+      baseURL: `${processNodeEnv() === 'development' ? BASE_URL_LOCAL_APP : BASE_URL_AWS_APP}`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      timeout: 60000,
+      data: JSON.stringify({
+        applicationData: createPdfData(),
+        // applicationData: { ...primeAndJointPDFData },
+        applicationNumber: applicationReference == null ? forenames + ' ' + lastName + ' ' + fDateCustom(timestamp) : applicationReference,
+        submissionError: axiosCode,
+      }),
+    }
 
-  //   dispatch(generateLoanApplicationReport(generatePdfConfig))
-  // }, [submissionFulfilled])
+    dispatch(generateLoanApplicationReport(generatePdfConfig))
+  }, [submissionFulfilled])
 
   function getRequestConfig() {
     const config = {
@@ -2690,7 +2701,7 @@ export default function Submission() {
 
       // data: JSON.stringify({ ...primeAndJointOnlyDataTest }),
     }
-    // console.log('Submission Strigified: ', createSubmissionData())
+
     return config
   }
 
@@ -2764,6 +2775,23 @@ export default function Submission() {
               <Stack direction='row' justifyContent='space-between' alignItems='center'>
                 <SummaryLabel>Loan Amount</SummaryLabel>
                 <ValueTypography>{fCurrency(loanAmount)}</ValueTypography>
+              </Stack>
+              <Stack direction='row' justifyContent='space-between' alignItems='center'>
+                <SummaryLabel>Loan Protection Insurance</SummaryLabel>
+                <ValueTypography>{fCurrency(awsCalculatedLpiAmount)}</ValueTypography>
+              </Stack>
+              <Stack direction='row' justifyContent='space-between' alignItems='center'>
+                <SummaryLabel variant={downSm ? 'caption' : 'subtitle2'}>Loan Cost Recovery Fees</SummaryLabel>
+                <ValueTypography>{fCurrency(creditCheckAmount + creditSenseAmount + motorwebCheckAmount + cloudCheckIdVerificationAmount + cloudCheckPEPSanctionsAmount + ppsrAmount + docusignAmount)}</ValueTypography>
+              </Stack>
+              <Divider sx={{ backgroundColor: 'secondary.main', width: '100%' }} />
+              <Stack direction='row' justifyContent='space-between' alignItems='center'>
+                <SummaryLabel variant={downSm ? 'caption' : 'subtitle2'} sx={{ fontWeight: 'medium' }}>
+                  Principal Amount
+                </SummaryLabel>
+                <ValueTypography variant={downSm ? 'caption' : 'subtitle2'} sx={{ fontWeight: 'medium' }}>
+                  {fCurrency(loanAmount + awsCalculatedLpiAmount + creditCheckAmount + creditSenseAmount + cloudCheckIdVerificationAmount + cloudCheckPEPSanctionsAmount + motorwebCheckAmount + docusignAmount + ppsrAmount)}
+                </ValueTypography>
               </Stack>
               <Stack direction='row' justifyContent='space-between' alignItems='center'>
                 <SummaryLabel>Loan Term</SummaryLabel>

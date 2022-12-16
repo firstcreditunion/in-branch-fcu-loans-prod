@@ -366,7 +366,6 @@ const employmentSlice = createSlice({
     // ************* Prime Employment Details - Address Finder *************** //
 
     setEmpAddressFinderConfig: (state, action) => {
-      console.log('action.payload Config: ', action.payload)
       state.empAddressFinderConfig = action.payload
     },
     setEmpAddressSelectedAddress: (state, action) => {
