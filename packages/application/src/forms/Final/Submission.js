@@ -1527,79 +1527,105 @@ export default function Submission() {
 
   const primeExpensesUnfiltered = [
     {
-      cust_amount: { value: expense.expense_RentingBoarding.amount },
+      cust_amount: {
+        value: expense.expense_RentingBoarding.amount,
+      },
       description: expense.expense_RentingBoarding.sovereign.value,
       frequency: expense.expense_RentingBoarding.frequency.unit,
       code: expense.expense_RentingBoarding.sovereign.key,
     },
     {
-      cust_amount: { value: expense.expense_S6_or_Savings.amount },
+      cust_amount: {
+        value: expense.expense_S6_or_Savings.amount,
+      },
       description: expense.expense_S6_or_Savings.sovereign.value,
       frequency: expense.expense_S6_or_Savings.frequency.unit,
       code: expense.expense_S6_or_Savings.sovereign.key,
     },
     {
-      cust_amount: { value: expense.expense_Groceries.amount },
+      cust_amount: {
+        value: expense.expense_Groceries.amount,
+      },
       description: expense.expense_Groceries.sovereign.value,
       frequency: expense.expense_Groceries.frequency.unit,
       code: expense.expense_Groceries.sovereign.key,
     },
     {
-      cust_amount: { value: expense.expense_Power_or_Gas.amount },
+      cust_amount: {
+        value: expense.expense_Power_or_Gas.amount,
+      },
       description: expense.expense_Power_or_Gas.sovereign.value,
       frequency: expense.expense_Power_or_Gas.frequency.unit,
       code: expense.expense_Power_or_Gas.sovereign.key,
     },
     {
-      cust_amount: { value: expense.expense_Phone_or_Internet.amount },
+      cust_amount: {
+        value: expense.expense_Phone_or_Internet.amount,
+      },
       description: expense.expense_Phone_or_Internet.sovereign.value,
       frequency: expense.expense_Phone_or_Internet.frequency.unit,
       code: expense.expense_Phone_or_Internet.sovereign.key,
     },
     {
-      cust_amount: { value: expense.expense_Fuel.amount },
+      cust_amount: {
+        value: expense.expense_Fuel.amount,
+      },
       description: expense.expense_Fuel.sovereign.value,
       frequency: expense.expense_Fuel.frequency.unit,
       code: expense.expense_Fuel.sovereign.key,
     },
     {
-      cust_amount: { value: expense.expense_Wof_Rego.amount },
+      cust_amount: {
+        value: expense.expense_Wof_Rego.amount,
+      },
       description: expense.expense_Wof_Rego.sovereign.value,
       frequency: expense.expense_Wof_Rego.frequency.unit,
       code: expense.expense_Wof_Rego.sovereign.key,
     },
     {
-      cust_amount: { value: expense.expense_Clothing.amount },
+      cust_amount: {
+        value: expense.expense_Clothing.amount,
+      },
       description: expense.expense_Clothing.sovereign.value,
       frequency: expense.expense_Clothing.frequency.unit,
       code: expense.expense_Clothing.sovereign.key,
     },
     {
-      cust_amount: { value: expense.expense_MedicalExpense.amount },
+      cust_amount: {
+        value: expense.expense_MedicalExpense.amount,
+      },
       description: expense.expense_MedicalExpense.sovereign.value,
       frequency: expense.expense_MedicalExpense.frequency.unit,
       code: expense.expense_MedicalExpense.sovereign.key,
     },
     {
-      cust_amount: { value: expense.expense_Gym.amount },
+      cust_amount: {
+        value: expense.expense_Gym.amount,
+      },
       description: expense.expense_Gym.sovereign.value,
       frequency: expense.expense_Gym.frequency.unit,
       code: expense.expense_Gym.sovereign.key,
     },
     {
-      cust_amount: { value: expense.expense_Recreation.amount },
+      cust_amount: {
+        value: expense.expense_Recreation.amount,
+      },
       description: expense.expense_Recreation.sovereign.value,
       frequency: expense.expense_Recreation.frequency.unit,
       code: expense.expense_Recreation.sovereign.key,
     },
     {
-      cust_amount: { value: expense.expense_Tithing.amount },
+      cust_amount: {
+        value: expense.expense_Tithing.amount,
+      },
       description: expense.expense_Tithing.sovereign.value,
       frequency: expense.expense_Tithing.frequency.unit,
       code: expense.expense_Tithing.sovereign.key,
     },
     {
-      cust_amount: { value: expense.expense_Savings.amount },
+      cust_amount: {
+        value: expense.expense_Savings.amount,
+      },
       description: expense.expense_Savings.sovereign.value,
       frequency: expense.expense_Savings.frequency.unit,
       code: expense.expense_Savings.sovereign.key,
@@ -1611,7 +1637,11 @@ export default function Submission() {
       return expenseType?.frequency === 'W' && !(expenseType?.cust_amount?.value == null)
     })
     .map((expenseType) => {
-      return { amount1: expenseType?.cust_amount, description: expenseType?.description, code: expenseType?.code }
+      return {
+        amount1: expenseType?.cust_amount,
+        description: expenseType?.description,
+        code: expenseType?.code,
+      }
     })
 
   const primeExpensesFortnightly = primeExpensesUnfiltered
@@ -1619,7 +1649,11 @@ export default function Submission() {
       return expenseType?.frequency === 'F' && !(expenseType?.cust_amount?.value == null)
     })
     .map((expenseType) => {
-      return { amount2: expenseType?.cust_amount, description: expenseType?.description, code: expenseType?.code }
+      return {
+        amount2: expenseType?.cust_amount,
+        description: expenseType?.description,
+        code: expenseType?.code,
+      }
     })
 
   const primeExpensesMonthly = primeExpensesUnfiltered
@@ -1627,7 +1661,11 @@ export default function Submission() {
       return expenseType?.frequency === 'M' && !(expenseType?.cust_amount?.value == null)
     })
     .map((expenseType) => {
-      return { amount3: expenseType?.cust_amount, description: expenseType?.description, code: expenseType?.code }
+      return {
+        amount3: expenseType?.cust_amount,
+        description: expenseType?.description,
+        code: expenseType?.code,
+      }
     })
 
   const primeExpenses = [...primeExpensesWeekly, ...primeExpensesFortnightly, ...primeExpensesMonthly]
@@ -1780,12 +1818,19 @@ export default function Submission() {
 
   const expireIdentificationRelationships = [
     primeClientIdentificationSecureToExpire.map((item) => {
-      return { type: item?.type, id: item?.id }
+      return {
+        type: item?.type,
+        id: item?.id,
+      }
     }),
   ]
 
   const expireIdentificationIncluded = primeClientIdentificationSecureToExpire.map((item) => {
-    return { type: item?.type, id: item?.id, attributes: item?.attributes }
+    return {
+      type: item?.type,
+      id: item?.id,
+      attributes: item?.attributes,
+    }
   })
 
   const expireEmploymentRelationships = [
@@ -1795,7 +1840,11 @@ export default function Submission() {
   ]
 
   const expireEmploymentIncluded = primeClientEmploymentSecureToExpire.map((item) => {
-    return { type: item?.type, id: item?.id, attributes: item?.attributes }
+    return {
+      type: item?.type,
+      id: item?.id,
+      attributes: item?.attributes,
+    }
   })
 
   const expireIncluded = [...expireIdentificationIncluded, ...expireEmploymentIncluded]

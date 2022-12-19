@@ -37,12 +37,12 @@ export default function SOPTextFieldAssetLiabilities({ control, label, name, onS
       render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
         <Stack direction='column' justifyContent='flex-start' alignItems='flex-start'>
           <TextField_Cust
-            label={label}
-            value={value}
-            type={type}
             size='small'
-            error={error}
             fullWidth
+            type={type}
+            label={label}
+            value={parseInt(value)}
+            error={error}
             placeholder='0.00'
             helperText={
               <Typography variant='caption' sx={{ p: 0, m: 0, fontSize: 10 }}>
@@ -50,8 +50,8 @@ export default function SOPTextFieldAssetLiabilities({ control, label, name, onS
               </Typography>
             }
             InputProps={{
-              inputComponent: AmountFormat,
               startAdornment: <InputAdornment position='start'>$</InputAdornment>,
+              inputComponent: AmountFormat,
             }}
             {...props}
             onChange={(value) => {
