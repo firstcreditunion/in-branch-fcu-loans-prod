@@ -260,8 +260,6 @@ export default function FinancialDetails() {
       },
     ]
 
-    console.table('Insurance: ', insurance)
-
     var financialData = JSON.stringify({
       product: 'PERN',
       costOfGoods: loanAmount,
