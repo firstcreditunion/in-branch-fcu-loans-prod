@@ -2686,8 +2686,8 @@ export default function Submission() {
       },
       timeout: 60000,
       data: JSON.stringify({
-        // applicationData: createPdfData(),
-        applicationData: { ...primeAndJointPDFData },
+        applicationData: createPdfData(),
+        // applicationData: { ...primeAndJointPDFData },
         applicationNumber: applicationReference == null ? forenames + ' ' + lastName + ' ' + fDateCustom(timestamp) : applicationReference,
         submissionError: axiosCode,
       }),
@@ -2707,7 +2707,7 @@ export default function Submission() {
         _y: `${processNodeEnv() === 'development' ? 0 : 1}`,
       },
       timeout: 60000,
-      data: createSubmissionData(),
+      // data: createSubmissionData(),
 
       // data: JSON.stringify({ ...primeAndJointOnlyDataTest }),
     }
