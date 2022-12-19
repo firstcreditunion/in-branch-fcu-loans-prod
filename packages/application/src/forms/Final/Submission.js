@@ -2688,7 +2688,16 @@ export default function Submission() {
       data: JSON.stringify({
         applicationData: createPdfData(),
         applicationNumber: applicationReference == null ? forenames + ' ' + lastName + ' ' + fDateCustom(timestamp) : applicationReference,
-        submissionError: axiosCode,
+        submissionAPIResults: {
+          axiosCode: axiosCode,
+          axiosCodeMessage: axiosCodeMessage,
+          axiosCodeName: axiosCodeName,
+          axiosRequestStatus: axiosRequestStatus,
+          axiosRequestStatusText: axiosRequestStatusText,
+          submissionStatusCode: submissionStatusCode,
+          submissionFulfilled: submissionFulfilled,
+          serverErrorSubmission: serverErrorSubmission,
+        },
       }),
     }
 
