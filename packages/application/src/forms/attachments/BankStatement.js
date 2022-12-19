@@ -176,7 +176,7 @@ export default function BankStatement() {
       elementSelector: '#fcu-cs-iframe',
       enableDynamicHeight: true,
       params: {
-        appRef: 12345,
+        appRef: '12345abc',
         uniqueAppRef: true,
         debugBanks: `${processNodeEnv() === 'development' ? true : false}`,
         multibank: true,
