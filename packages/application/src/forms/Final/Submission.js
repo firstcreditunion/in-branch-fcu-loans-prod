@@ -2230,8 +2230,18 @@ export default function Submission() {
         },
         loanProtectionInsurance: {
           totalPremium: awsCalculatedLpiAmount,
-          prime: { death: hasLpiPrimeDeath, disability: hasLpiPrimeDisability, bankrptcy: hasLpiPrimeBankruptcy, criticalIllness: hasLpiPrimeCriticalIllness },
-          coborrower: { death: hasLpiJointDeath, disability: hasLpiJointDisability, bankrptcy: hasLpiJointBankruptcy, criticalIllness: hasLpiJointCriticalIllness },
+          prime: {
+            death: hasLpiPrimeDeath ? 'Yes' : 'No',
+            disability: hasLpiPrimeDisability ? 'Yes' : 'No',
+            bankrptcy: hasLpiPrimeBankruptcy ? 'Yes' : 'No',
+            criticalIllness: hasLpiPrimeCriticalIllness ? 'Yes' : 'No',
+          },
+          coborrower: {
+            death: hasLpiJointDeath ? 'Yes' : 'No',
+            disability: hasLpiJointDisability ? 'Yes' : 'No',
+            bankrptcy: hasLpiJointBankruptcy ? 'Yes' : 'No',
+            criticalIllness: hasLpiJointCriticalIllness ? 'Yes' : 'No',
+          },
         },
         securityDetails: {
           vehicle: {
@@ -2502,7 +2512,7 @@ export default function Submission() {
       },
       loanProtectionInsurance: {
         totalPremium: awsCalculatedLpiAmount,
-        prime: { death: hasLpiPrimeDeath, disability: hasLpiPrimeDisability, bankrptcy: hasLpiPrimeBankruptcy, criticalIllness: hasLpiPrimeCriticalIllness },
+        prime: { death: hasLpiPrimeDeath ? 'Yes' : 'No', disability: hasLpiPrimeDisability ? 'Yes' : 'No', bankrptcy: hasLpiPrimeBankruptcy ? 'Yes' : 'No', criticalIllness: hasLpiPrimeCriticalIllness ? 'Yes' : 'No' },
       },
       securityDetails: {
         vehicle: {
