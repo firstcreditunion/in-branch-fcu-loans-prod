@@ -178,7 +178,8 @@ export default function BankStatement() {
       params: {
         appRef: '12345abc',
         uniqueAppRef: true,
-        debugBanks: `${processNodeEnv() === 'development' ? true : false}`,
+        debugBanks: true,
+        // debugBanks: `${processNodeEnv() === 'development' ? true : false}`,
         multibank: true,
         termsBeforeCredentials: true,
         centrelink: employmentType === 'Beneficiary' ? 'ask' : 'skip',
