@@ -105,7 +105,16 @@ export default function BankStatement() {
   //   [acceptedFiles]
   // )
 
-  const src = `https://creditsense.co.nz/apply/FSCU03/?method=iframe&uniqueAppRef=true&appRef=201222_4&debugBanks=true&termsBeforeCredentials=true&winz=force`
+  function getAppRef() {
+    const timestamp = new Date()
+    const appRef = lastName + '-' + fDateCustom(timestamp)
+
+    dispatch(bankStatementActions.setCreditSenseAppRef(appRef))
+
+    return appRef
+  }
+
+  const src = `https://creditsense.co.nz/apply/FSCU03/?method=iframe&uniqueAppRef=true&appRef=${getAppRef()}&debugBanks=true&termsBeforeCredentials=true&winz=force`
 
   // function onApplicationSuccess() {
   //   console.log('On Application Success Called')
@@ -114,15 +123,6 @@ export default function BankStatement() {
   function logMsg(message) {
     if (typeof console == 'object') console.log(message)
     else alert(message)
-  }
-
-  function getAppRef() {
-    const timestamp = new Date()
-    const appRef = lastName + '-' + fDateCustom(timestamp)
-
-    dispatch(bankStatementActions.setCreditSenseAppRef(appRef))
-
-    return appRef
   }
 
   function getCerditSenseAlert() {
@@ -170,48 +170,48 @@ export default function BankStatement() {
   //   )
   // }, [creditSenseIframeResponseCode])
 
-  // jQuery(function () {
-  //   $.CreditSense.Iframe({
-  //     client: `${processNodeEnv() === 'development' ? 'FSCU03' : 'FSCU01'}`,
-  //     elementSelector: '#fcu-cs-iframe',
-  //     enableDynamicHeight: true,
-  //     params: {
-  //       appRef: getAppRef(),
-  //       uniqueAppRef: true,
-  //       debugBanks: true,
-  //       // debugBanks: `${processNodeEnv() === 'development' ? true : false}`,
-  //       multibank: true,
-  //       termsBeforeCredentials: true,
-  //       centrelink: employmentType === 'Beneficiary' ? 'ask' : 'skip',
-  //       askOnlineBanking: true,
-  //     },
-  //     callback: function (response, data) {
-  //       // console.log('MY CONSOLE LOG for IFRAME REPONSE =>', response)
-  //       // console.log('MY CONSOLE LOG for IFRAME DATA: ', data)
+  jQuery(function () {
+    $.CreditSense.Iframe({
+      client: `${processNodeEnv() === 'development' ? 'FSCU03' : 'FSCU01'}`,
+      elementSelector: '#fcu-cs-iframe',
+      enableDynamicHeight: true,
+      params: {
+        appRef: getAppRef(),
+        uniqueAppRef: true,
+        debugBanks: true,
+        // debugBanks: `${processNodeEnv() === 'development' ? true : false}`,
+        multibank: true,
+        termsBeforeCredentials: true,
+        centrelink: employmentType === 'Beneficiary' ? 'ask' : 'skip',
+        askOnlineBanking: true,
+      },
+      callback: function (response, data) {
+        // console.log('MY CONSOLE LOG for IFRAME REPONSE =>', response)
+        // console.log('MY CONSOLE LOG for IFRAME DATA: ', data)
 
-  //       if (creditSenseAppId == null) creditSenseAppId = data
+        if (creditSenseAppId == null) creditSenseAppId = data
 
-  //       if (Number(response)) {
-  //         if (creditSenseResponseCode === 100 || creditSenseResponseCode === response) return
+        if (Number(response)) {
+          if (creditSenseResponseCode === 100 || creditSenseResponseCode === response) return
 
-  //         creditSenseResponseCode = parseInt(response)
-  //         // dispatch(bankStatementActions.setCreditSenseResponseCode(parseInt(response)))
-  //         // console.log('RESPONSE IS A NUMBER')
-  //         // console.log('PARSE INT creditSenseIframeResponseCode: ', creditSenseResponseCode)
-  //         // console.log('PARSE INT NUMBER: ', parseInt(response))
-  //       }
-  //       // console.log('MY CONSOLE LOG for IFRAME creditSenseAppId: ', creditSenseAppId)
-  //       switch (response) {
-  //         case '99': // Example status code (Bank statcus success)
-  //           logMsg('Bank details collected successfully')
-  //           break
-  //         case '100': // Example status code
-  //           // console.log('Credit Sense Statement Upload Complete')
-  //           break
-  //       }
-  //     },
-  //   })
-  // })
+          creditSenseResponseCode = parseInt(response)
+          // dispatch(bankStatementActions.setCreditSenseResponseCode(parseInt(response)))
+          // console.log('RESPONSE IS A NUMBER')
+          // console.log('PARSE INT creditSenseIframeResponseCode: ', creditSenseResponseCode)
+          // console.log('PARSE INT NUMBER: ', parseInt(response))
+        }
+        // console.log('MY CONSOLE LOG for IFRAME creditSenseAppId: ', creditSenseAppId)
+        switch (response) {
+          case '99': // Example status code (Bank statcus success)
+            logMsg('Bank details collected successfully')
+            break
+          case '100': // Example status code
+            // console.log('Credit Sense Statement Upload Complete')
+            break
+        }
+      },
+    })
+  })
 
   return (
     <Stack direction='column' spacing={downMd ? 2 : 5} justifyContent='center' alignItems='center'>

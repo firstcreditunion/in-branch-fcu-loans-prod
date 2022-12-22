@@ -222,7 +222,7 @@ export default function FirstLoanApplication({ loanAmount, interestRate, term, p
   const jointonSubmitPrevResidenceDetails = useSelector((state) => state.conatctDetailsReducer.jointonSubmitPrevResidenceDetails)
   const jointisValidPrevResidenceDetails = useSelector((state) => state.conatctDetailsReducer.jointisValidPrevResidenceDetails)
 
-  //* -----------------  Common ----------------- //
+  //* -----------------  Common  ----------------- //
 
   //* Vehicle Security
   const onSubmitVehicleSecurityDetails = useSelector((state) => state.vehicleSecurityReducer.onSubmitVehicleSecurityDetails)
@@ -294,31 +294,31 @@ export default function FirstLoanApplication({ loanAmount, interestRate, term, p
   ]
 
   const children = [
-    { index: 0, root: 0, code: 'PPD', label: 'Your Personal Details', render: <BankStatement />, fullwidth: false, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Prime' },
-    { index: 1, root: 0, code: 'JPD', label: 'Joint Applicant Personal Details', render: <JointApplicantPersonalDetails />, fullwidth: false, showtitle: true, showProgress: true, skipStep: !jointApplication, dataRelatedTo: 'Joint' },
-    { index: 2, root: 0, code: 'PAI', label: 'Identifications', render: <Identifications />, fullwidth: false, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Prime' },
-    { index: 3, root: 0, code: 'JAI', label: 'Joint Applicant Identifications', render: <JointApplicantIdentification />, fullwidth: false, showtitle: true, showProgress: true, skipStep: !jointApplication, dataRelatedTo: 'Joint' },
+    { index: 0, root: 0, stepCount: 1, code: 'PPD', label: 'Your Personal Details', render: <YourPersonalDetails />, fullwidth: false, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Prime' },
+    { index: 1, root: 0, stepCount: 2, code: 'JPD', label: 'Joint Applicant Personal Details', render: <JointApplicantPersonalDetails />, fullwidth: false, showtitle: true, showProgress: true, skipStep: !jointApplication, dataRelatedTo: 'Joint' },
+    { index: 2, root: 0, stepCount: 3, code: 'PAI', label: 'Identifications', render: <Identifications />, fullwidth: false, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Prime' },
+    { index: 3, root: 0, stepCount: 4, code: 'JAI', label: 'Joint Applicant Identifications', render: <JointApplicantIdentification />, fullwidth: false, showtitle: true, showProgress: true, skipStep: !jointApplication, dataRelatedTo: 'Joint' },
 
-    { index: 0, root: 1, code: 'PED', label: 'Employment Details', render: <EmploymentStatus />, fullwidth: false, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Prime' },
-    { index: 1, root: 1, code: 'PEH', label: 'Employment History', render: <EmployementHistory />, fullwidth: false, showtitle: true, showProgress: true, skipStep: !showEmploymentDetails || !showPrevEmp, dataRelatedTo: 'Prime' },
-    { index: 2, root: 1, code: 'JED', label: 'Joint Applicant Employment Details', render: <JointEmploymentStatus />, fullwidth: false, showtitle: true, showProgress: true, skipStep: !jointApplication, dataRelatedTo: 'Joint' },
-    { index: 3, root: 1, code: 'JEH', label: 'Joint Applicant Employment History', render: <JointEmploymentHistory />, fullwidth: false, showtitle: true, showProgress: true, skipStep: !jointApplication || !jointshowEmploymentDetails || !jointshowPrevEmp, dataRelatedTo: 'Joint' },
+    { index: 0, root: 1, stepCount: 5, code: 'PED', label: 'Employment Details', render: <EmploymentStatus />, fullwidth: false, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Prime' },
+    { index: 1, root: 1, stepCount: 6, code: 'PEH', label: 'Employment History', render: <EmployementHistory />, fullwidth: false, showtitle: true, showProgress: true, skipStep: !showEmploymentDetails || !showPrevEmp, dataRelatedTo: 'Prime' },
+    { index: 2, root: 1, stepCount: 7, code: 'JED', label: 'Joint Applicant Employment Details', render: <JointEmploymentStatus />, fullwidth: false, showtitle: true, showProgress: true, skipStep: !jointApplication, dataRelatedTo: 'Joint' },
+    { index: 3, root: 1, stepCount: 8, code: 'JEH', label: 'Joint Applicant Employment History', render: <JointEmploymentHistory />, fullwidth: false, showtitle: true, showProgress: true, skipStep: !jointApplication || !jointshowEmploymentDetails || !jointshowPrevEmp, dataRelatedTo: 'Joint' },
 
-    { index: 0, root: 2, code: 'PCD', label: 'Your Contact Details', render: <YourContactDetails />, fullwidth: false, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Prime' },
-    { index: 1, root: 2, code: 'PRA', label: 'Residential Address', render: <ResidentialAddress />, fullwidth: false, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Prime' },
-    { index: 2, root: 2, code: 'PPRA', label: 'Previous Residential Address', render: <PreviousResidentialAddress />, fullwidth: false, showtitle: true, showProgress: true, skipStep: skipPrevResidence, dataRelatedTo: 'Prime' },
-    { index: 3, root: 2, code: 'JCD', label: 'Joint Applicant Contact Details', render: <JointContactDetails />, fullwidth: false, showtitle: true, showProgress: true, skipStep: !jointApplication, dataRelatedTo: 'Joint' },
-    { index: 4, root: 2, code: 'JRA', label: 'Joint Applicant Residential Address', render: <JointResidentialAddress />, fullwidth: false, showtitle: true, showProgress: true, skipStep: !jointApplication, dataRelatedTo: 'Joint' },
-    { index: 5, root: 2, code: 'JPRA', label: 'Joint Applicant Previous Residential Address', render: <JointPreviousResidentialAddress />, fullwidth: false, showtitle: true, showProgress: true, skipStep: !jointApplication || jointskipPrevResidence, dataRelatedTo: 'Joint' },
+    { index: 0, root: 2, stepCount: 9, code: 'PCD', label: 'Your Contact Details', render: <YourContactDetails />, fullwidth: false, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Prime' },
+    { index: 1, root: 2, stepCount: 10, code: 'PRA', label: 'Residential Address', render: <ResidentialAddress />, fullwidth: false, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Prime' },
+    { index: 2, root: 2, stepCount: 11, code: 'PPRA', label: 'Previous Residential Address', render: <PreviousResidentialAddress />, fullwidth: false, showtitle: true, showProgress: true, skipStep: !skipPrevResidence, dataRelatedTo: 'Prime' },
+    { index: 3, root: 2, stepCount: 12, code: 'JCD', label: 'Joint Applicant Contact Details', render: <JointContactDetails />, fullwidth: false, showtitle: true, showProgress: true, skipStep: !jointApplication, dataRelatedTo: 'Joint' },
+    { index: 4, root: 2, stepCount: 13, code: 'JRA', label: 'Joint Applicant Residential Address', render: <JointResidentialAddress />, fullwidth: false, showtitle: true, showProgress: true, skipStep: !jointApplication, dataRelatedTo: 'Joint' },
+    { index: 5, root: 2, stepCount: 14, code: 'JPRA', label: 'Joint Applicant Previous Residential Address', render: <JointPreviousResidentialAddress />, fullwidth: false, showtitle: true, showProgress: true, skipStep: !jointApplication || !jointskipPrevResidence, dataRelatedTo: 'Joint' },
 
-    { index: 0, root: 3, code: 'PVSD', label: 'Vehicle Details', render: <VehicleSecurity />, fullwidth: false, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Common' },
-    { index: 1, root: 3, code: 'PFD', label: 'Financial Details', render: <LoanDetails />, fullwidth: false, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Common' },
-    { index: 2, root: 3, code: 'PAL', label: 'Asset and Liabilities', render: <SopAssetLiability />, fullwidth: true, showtitle: false, showProgress: true, skipStep: false, dataRelatedTo: 'Common' },
-    { index: 3, root: 3, code: 'PIE', label: 'Income and Expenditure', render: <SopIncomeExpenditure />, fullwidth: true, showtitle: false, showProgress: true, skipStep: false, dataRelatedTo: 'Common' },
-    { index: 4, root: 3, code: 'PSTMT', label: 'Bank Statement & Supporting Documents', render: <BankStatement />, fullwidth: true, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Common' },
+    { index: 0, root: 3, stepCount: 15, code: 'PVSD', label: 'Vehicle Details', render: <VehicleSecurity />, fullwidth: false, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Common' },
+    { index: 1, root: 3, stepCount: 16, code: 'PFD', label: 'Financial Details', render: <LoanDetails />, fullwidth: false, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Common' },
+    { index: 2, root: 3, stepCount: 17, code: 'PAL', label: 'Asset and Liabilities', render: <SopAssetLiability />, fullwidth: true, showtitle: false, showProgress: true, skipStep: false, dataRelatedTo: 'Common' },
+    { index: 3, root: 3, stepCount: 18, code: 'PIE', label: 'Income and Expenditure', render: <SopIncomeExpenditure />, fullwidth: true, showtitle: false, showProgress: true, skipStep: false, dataRelatedTo: 'Common' },
+    { index: 4, root: 3, stepCount: 19, code: 'PSTMT', label: 'Bank Statement & Supporting Documents', render: <BankStatement />, fullwidth: true, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Common' },
 
-    { index: 0, root: 4, code: 'PPAD', label: 'Privacy Act Declaration', render: <PrivacyActDeclaration />, fullwidth: true, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Common' },
-    { index: 1, root: 4, code: 'SUB', label: 'Submission', render: <Submission />, fullwidth: false, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Common' },
+    { index: 0, root: 4, stepCount: 20, code: 'PPAD', label: 'Privacy Act Declaration', render: <PrivacyActDeclaration />, fullwidth: true, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Common' },
+    { index: 1, root: 4, stepCount: 21, code: 'SUB', label: 'Submission', render: <Submission />, fullwidth: false, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Common' },
   ]
 
   const currentChildrenSteps = children.filter((child) => {
@@ -703,6 +703,7 @@ export default function FirstLoanApplication({ loanAmount, interestRate, term, p
   useEffect(() => {
     if (!(preQualifyCompleted == null)) {
       numberOfChildren = childrenSteps?.length
+      console.log('Children Steps: ', childrenSteps)
       currentChildCount = activeChildNode + 1
       return null
     }
@@ -744,8 +745,22 @@ export default function FirstLoanApplication({ loanAmount, interestRate, term, p
   useEffect(() => {
     if (isPrevNode != null) {
       handleChildNodeBack_PreviousRootNode()
-      currentChildCount = currentChildCount - 1
+      numberOfChildren = childrenSteps?.length
+      // currentChildCount = currentChildCount - 1
+      currentChildCount =
+        childrenSteps?.filter((step) => {
+          return step?.stepCount <= getCurrentStep()?.stepCount
+        })?.length + 1
+
       setProgress((currentChildCount / numberOfChildren) * 100)
+      console.log(
+        'All Steps Cmpleted ON PREVIOUS',
+        childrenSteps?.filter((step) => {
+          return step?.stepCount <= getCurrentStep()?.stepCount
+        })
+      )
+      console.log('Children length ON PREVIOUS: ', childrenSteps?.length)
+      console.log('Calculated Progress on PREVIOUS: ', (currentChildCount / numberOfChildren) * 100)
     }
   }, [isPrevNode])
 
@@ -753,11 +768,30 @@ export default function FirstLoanApplication({ loanAmount, interestRate, term, p
     if (isOkayToProceed) {
       changeChildNodeNext()
       setIsOkayToProceed(!isOkayToProceed)
-      currentChildCount = currentChildCount + 1
+      numberOfChildren = childrenSteps?.length
+      // currentChildCount = currentChildCount + 1
+      currentChildCount =
+        childrenSteps?.filter((step) => {
+          return step?.stepCount <= getCurrentStep()?.stepCount
+        })?.length + 1
+
       setProgress((currentChildCount / numberOfChildren) * 100)
+      console.log(
+        'All Steps Cmpleted ON PREVIOUS',
+        childrenSteps?.filter((step) => {
+          return step?.stepCount <= getCurrentStep()?.stepCount
+        })
+      )
+      console.log('Children length ON NEXT: ', childrenSteps?.length)
+      console.log('Calculated Progress ON NEXT: ', (currentChildCount / numberOfChildren) * 100)
       return
     }
   }, [isOkayToProceed])
+
+  useEffect(() => {
+    console.log('currentChildCount: ', currentChildCount)
+    console.log('numberOfChildren: ', numberOfChildren)
+  }, [currentChildCount, numberOfChildren])
 
   return (
     <RootStyle title='Personal Loan Application | FCU'>
