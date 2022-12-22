@@ -2111,7 +2111,11 @@ export default function Submission() {
           return item?.selected === 'Y'
         })
         .map((item) => {
-          return { component: item?.component, joint: item?.joint, discount: item?.discount }
+          return {
+            component: item?.component,
+            joint: item?.joint,
+            discount: item?.discount,
+          }
         }),
       associatedClients: {
         data: [
