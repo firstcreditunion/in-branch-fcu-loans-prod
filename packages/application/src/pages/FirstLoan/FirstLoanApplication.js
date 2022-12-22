@@ -306,10 +306,10 @@ export default function FirstLoanApplication({ loanAmount, interestRate, term, p
 
     { index: 0, root: 2, stepCount: 9, code: 'PCD', label: 'Your Contact Details', render: <YourContactDetails />, fullwidth: false, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Prime' },
     { index: 1, root: 2, stepCount: 10, code: 'PRA', label: 'Residential Address', render: <ResidentialAddress />, fullwidth: false, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Prime' },
-    { index: 2, root: 2, stepCount: 11, code: 'PPRA', label: 'Previous Residential Address', render: <PreviousResidentialAddress />, fullwidth: false, showtitle: true, showProgress: true, skipStep: !skipPrevResidence, dataRelatedTo: 'Prime' },
+    { index: 2, root: 2, stepCount: 11, code: 'PPRA', label: 'Previous Residential Address', render: <PreviousResidentialAddress />, fullwidth: false, showtitle: true, showProgress: true, skipStep: skipPrevResidence, dataRelatedTo: 'Prime' },
     { index: 3, root: 2, stepCount: 12, code: 'JCD', label: 'Joint Applicant Contact Details', render: <JointContactDetails />, fullwidth: false, showtitle: true, showProgress: true, skipStep: !jointApplication, dataRelatedTo: 'Joint' },
     { index: 4, root: 2, stepCount: 13, code: 'JRA', label: 'Joint Applicant Residential Address', render: <JointResidentialAddress />, fullwidth: false, showtitle: true, showProgress: true, skipStep: !jointApplication, dataRelatedTo: 'Joint' },
-    { index: 5, root: 2, stepCount: 14, code: 'JPRA', label: 'Joint Applicant Previous Residential Address', render: <JointPreviousResidentialAddress />, fullwidth: false, showtitle: true, showProgress: true, skipStep: !jointApplication || !jointskipPrevResidence, dataRelatedTo: 'Joint' },
+    { index: 5, root: 2, stepCount: 14, code: 'JPRA', label: 'Joint Applicant Previous Residential Address', render: <JointPreviousResidentialAddress />, fullwidth: false, showtitle: true, showProgress: true, skipStep: !jointApplication || jointskipPrevResidence, dataRelatedTo: 'Joint' },
 
     { index: 0, root: 3, stepCount: 15, code: 'PVSD', label: 'Vehicle Details', render: <VehicleSecurity />, fullwidth: false, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Common' },
     { index: 1, root: 3, stepCount: 16, code: 'PFD', label: 'Financial Details', render: <LoanDetails />, fullwidth: false, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Common' },
@@ -753,14 +753,14 @@ export default function FirstLoanApplication({ loanAmount, interestRate, term, p
         })?.length + 1
 
       setProgress((currentChildCount / numberOfChildren) * 100)
-      console.log(
-        'All Steps Cmpleted ON PREVIOUS',
-        childrenSteps?.filter((step) => {
-          return step?.stepCount <= getCurrentStep()?.stepCount
-        })
-      )
-      console.log('Children length ON PREVIOUS: ', childrenSteps?.length)
-      console.log('Calculated Progress on PREVIOUS: ', (currentChildCount / numberOfChildren) * 100)
+      // console.log(
+      //   'All Steps Cmpleted ON PREVIOUS',
+      //   childrenSteps?.filter((step) => {
+      //     return step?.stepCount <= getCurrentStep()?.stepCount
+      //   })
+      // )
+      // console.log('Children length ON PREVIOUS: ', childrenSteps?.length)
+      // console.log('Calculated Progress on PREVIOUS: ', (currentChildCount / numberOfChildren) * 100)
     }
   }, [isPrevNode])
 
@@ -776,22 +776,22 @@ export default function FirstLoanApplication({ loanAmount, interestRate, term, p
         })?.length + 1
 
       setProgress((currentChildCount / numberOfChildren) * 100)
-      console.log(
-        'All Steps Cmpleted ON PREVIOUS',
-        childrenSteps?.filter((step) => {
-          return step?.stepCount <= getCurrentStep()?.stepCount
-        })
-      )
-      console.log('Children length ON NEXT: ', childrenSteps?.length)
-      console.log('Calculated Progress ON NEXT: ', (currentChildCount / numberOfChildren) * 100)
+      // console.log(
+      //   'All Steps Cmpleted ON PREVIOUS',
+      //   childrenSteps?.filter((step) => {
+      //     return step?.stepCount <= getCurrentStep()?.stepCount
+      //   })
+      // )
+      // console.log('Children length ON NEXT: ', childrenSteps?.length)
+      // console.log('Calculated Progress ON NEXT: ', (currentChildCount / numberOfChildren) * 100)
       return
     }
   }, [isOkayToProceed])
 
-  useEffect(() => {
-    console.log('currentChildCount: ', currentChildCount)
-    console.log('numberOfChildren: ', numberOfChildren)
-  }, [currentChildCount, numberOfChildren])
+  // useEffect(() => {
+  //   console.log('currentChildCount: ', currentChildCount)
+  //   console.log('numberOfChildren: ', numberOfChildren)
+  // }, [currentChildCount, numberOfChildren])
 
   return (
     <RootStyle title='Personal Loan Application | FCU'>

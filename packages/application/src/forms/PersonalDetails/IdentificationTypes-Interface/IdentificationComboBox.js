@@ -51,7 +51,7 @@ export default function IdentificationComboBox({ name, label, control, defualtVa
 
   const labelId = `${name}-label`
 
-  console.log('Auto Complete Items: ', autoCompleteItems)
+  // console.log('Auto Complete Items: ', autoCompleteItems)
   return (
     <CustFormControl component='fieldset' margin='normal' fullWidth variant='outlined'>
       <Controller
