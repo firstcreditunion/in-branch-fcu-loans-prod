@@ -300,7 +300,10 @@ export const initialState = {
   jointprevResAddressSelectedUnitType: null,
   jointprevResAddressSelectedApartment: null,
   jointprevResAddressSelectedBuilding: null,
-  jointprevResAddressSelectedStreetNumber: { from: '', to: '' },
+  jointprevResAddressSelectedStreetNumber: {
+    from: '',
+    to: '',
+  },
   jointprevResAddressSelectedAlpha: null,
   jointprevResAddressSelectedStreetOrPostalName: null,
   jointprevResAddressSelectedStreetDirection: null,
