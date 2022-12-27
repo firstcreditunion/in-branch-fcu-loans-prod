@@ -19,7 +19,7 @@ import { PRIMARY, SECONDARY } from '../../theme/palette'
 
 // Custom Components
 import AutocompleteIDTypes from './IdentificationTypes-Interface/AutocompleteIDTypes'
-import IdentificationComboBox from './IdentificationTypes-Interface/IdentificationComboBox'
+// import IdentificationComboBox from './IdentificationTypes-Interface/IdentificationComboBox'
 
 //Identification Components
 import GoldCard from './IdentificationTypes/GoldCard'
@@ -70,6 +70,12 @@ export default function Identifications() {
   const validIdsRedux = useSelector((state) => state.identificationReducer.validIds)
   const idsRequiredRedux = useSelector((state) => state.identificationReducer.idsRequired)
 
+  const identificationTypes = useSelector((state) => state.identificationReducer.identificationTypes)
+  const idTypeValues = Object.values(identificationTypes)
+  const selectBoxItems = idTypeValues.map((identification) => {
+    return identification.autoComplete
+  })
+
   const drivers_licence = useSelector((state) => state.identificationReducer.identificationTypes.drivers_licence.data.driversLicenceNo)
   const passport = useSelector((state) => state.identificationReducer.identificationTypes.passport.data.passportNo)
   const firearms_licence = useSelector((state) => state.identificationReducer.identificationTypes.firearms_licence.data.firearmsLicenceNo)
@@ -112,14 +118,60 @@ export default function Identifications() {
     dispatch(identificationActions.setSelectedIdentificationTypes(checkedIDCodesAutocomplete))
     dispatch(identificationActions.setIdsSelected(checkedIDCodesAutocomplete.length))
 
+    dispatch(identificationActions.setIDsRequired(1))
+
     // if (checkedIDCodesAutocomplete.includes('PASPRT') || checkedIDCodesAutocomplete.includes('FIRELICENS')) {
     //   dispatch(identificationActions.setIDsRequired(1))
     // } else {
     //   dispatch(identificationActions.setIDsRequired(2))
     // }
-
-    dispatch(identificationActions.setIDsRequired(1))
   }
+
+  // const handleIdentificationComboTypeChange = (event, newValue) => {
+  //   // console.log('EVENT:', event)
+  //   // console.log('EVENT TARGET VALUE:', event.target.value)
+
+  //   // console.log('Select Box Items:', selectBoxItems)
+
+  //   const selectedEventTargetValues = event.target.value
+
+  //   // const selectedIds = selectedEventTargetValues?.map((value) => {
+  //   //   return selectBoxItems?.map((id) => {
+  //   //     console.log('ID from selectedBoxItems VALUE: ', value)
+  //   //     console.log('ID from selectedBoxItems TITLE: ', id?.title)
+  //   //     id?.title === value
+  //   //   })
+  //   // })
+
+  //   const SelectedIdsFilter = selectBoxItems?.filter((id) => {
+  //     console.log('id?.title: ', id?.title)
+  //     console.log('selectedEventTargetValues: ', selectedEventTargetValues)
+  //     return selectedEventTargetValues?.includes(id?.title)
+  //   })
+  //   // console.log('Selected IDS:', selectedIds)
+  //   console.log('Selected IDS Filtered:', SelectedIdsFilter)
+
+  //   // const checkedIDCodesAutocomplete = newValue.map((Id) => {
+  //   //   return Id.code
+  //   // })
+
+  //   // const selectedIdsComboBox = event?.target?.value
+
+  //   dispatch(identificationActions.setSelectedIdentificationTypes(SelectedIdsFilter))
+  //   dispatch(identificationActions.setIdsSelected(SelectedIdsFilter.length))
+
+  //   dispatch(identificationActions.setIDsRequired(1))
+
+  //   // if (checkedIDCodesAutocomplete.includes('PASPRT') || checkedIDCodesAutocomplete.includes('FIRELICENS')) {
+  //   //   dispatch(identificationActions.setIDsRequired(1))
+  //   // } else {
+  //   //   dispatch(identificationActions.setIDsRequired(2))
+  //   // }
+  // }
+
+  // const removeIdentificationFromSelect = (data) => {
+  //   console.log('Data from onDELETE Chip:', data)
+  // }
 
   //* React-Hook-Form
   const {
@@ -438,7 +490,7 @@ export default function Identifications() {
       </AnimatePresence>
       <Box sx={{ pt: 2 }}>
         <AutocompleteIDTypes name='identification-types' control={control} onIdentificationChange={handleIdentificationTypeChange} helperTextInput='' />
-        {/* <IdentificationComboBox name='identification-types-combo' control={control} onSelectChange={handleIdentificationComboTypeChange} /> */}
+        {/* <IdentificationComboBox name='identification-types-combo' control={control} onSelectChange={handleIdentificationComboTypeChange} removeIdentification={removeIdentificationFromSelect} /> */}
       </Box>
       {/* Driver Licence  Card */}
       <AnimatePresence>

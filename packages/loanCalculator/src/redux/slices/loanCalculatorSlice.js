@@ -84,8 +84,15 @@ export const initialState = {
   sovPPSRAmount: 0,
 
   //* LPI
-  awsCalculatedLpiCode: 'LPIUP',
-  awsCalculatedLpiAmount: 0,
+  awsCalculatedLpiDeathCode: 'FCUL',
+  awsCalculatedLpiDisabilityCode: 'FCUD',
+  awsCalculatedLpiCriticalIllnessCode: 'FCUT',
+  awsCalculatedLpiBankruptcyCode: 'FCUB',
+
+  awsCalculatedLpiDeathAmount: 0,
+  awsCalculatedLpiDisabilityAmount: 0,
+  awsCalculatedLpiCriticalIllnessAmount: 0,
+  awsCalculatedLpiBankruptcyAmount: 0,
 
   //* Controls for LPI components
   lpiDeathCode: 'DEATH',
@@ -212,10 +219,27 @@ const loanCalculatorSlice = createSlice({
 
           //* ---------- Fees ----------
 
-          //* LPI
+          //* LPI Premium Amounts
 
-          state.awsCalculatedLpiAmount = action.payload.body?.data?.attributes?.fees?.fee?.filter((feeItem) => {
-            return feeItem?.code === state.awsCalculatedLpiCode
+          //* Death
+
+          state.awsCalculatedLpiDeathAmount = action.payload.body?.data?.attributes?.fees?.fee?.filter((feeItem) => {
+            return feeItem?.code === state.awsCalculatedLpiDeathCode
+          })[0]?.amount
+
+          //* Disability
+          state.awsCalculatedLpiDisabilityAmount = action.payload.body?.data?.attributes?.fees?.fee?.filter((feeItem) => {
+            return feeItem?.code === state.awsCalculatedLpiDisabilityCode
+          })[0]?.amount
+
+          //* Critical Illness
+          state.awsCalculatedLpiCriticalIllnessAmount = action.payload.body?.data?.attributes?.fees?.fee?.filter((feeItem) => {
+            return feeItem?.code === state.awsCalculatedLpiCriticalIllnessCode
+          })[0]?.amount
+
+          //* Bankruptcy
+          state.awsCalculatedLpiBankruptcyAmount = action.payload.body?.data?.attributes?.fees?.fee?.filter((feeItem) => {
+            return feeItem?.code === state.awsCalculatedLpiBankruptcyCode
           })[0]?.amount
 
           //* ----- Loan Cost Recovery Fees -----

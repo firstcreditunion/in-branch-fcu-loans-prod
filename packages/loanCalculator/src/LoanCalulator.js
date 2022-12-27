@@ -218,7 +218,10 @@ export default function LoanCalulator({ onLoanAmountChange, onInterestChange, on
   //* ----------- Fees -----------
 
   //* LPI
-  const awsCalculatedLpiAmount = useSelector((state) => state.loanCalculatorReducer.awsCalculatedLpiAmount)
+  const awsCalculatedLpiDeathAmount = useSelector((state) => state.loanCalculatorReducer.awsCalculatedLpiDeathAmount)
+  const awsCalculatedLpiDisabilityAmount = useSelector((state) => state.loanCalculatorReducer.awsCalculatedLpiDisabilityAmount)
+  const awsCalculatedLpiCriticalIllnessAmount = useSelector((state) => state.loanCalculatorReducer.awsCalculatedLpiCriticalIllnessAmount)
+  const awsCalculatedLpiBankruptcyAmount = useSelector((state) => state.loanCalculatorReducer.awsCalculatedLpiBankruptcyAmount)
 
   //* Loan Cost Recovery Fees
   const sovCreditCheckAmount = useSelector((state) => state.loanCalculatorReducer.sovCreditCheckAmount)
@@ -653,7 +656,7 @@ export default function LoanCalulator({ onLoanAmountChange, onInterestChange, on
                         </Stack>
                         <Stack direction='row' justifyContent='space-between' alignItems='center'>
                           <DataLabelTypography variant='subtitle1'>Loan Protection Insurance</DataLabelTypography>
-                          <DataValueTypography variant='subtitle1'>{fCurrency(awsCalculatedLpiAmount)}</DataValueTypography>
+                          <DataValueTypography variant='subtitle1'>{fCurrency(awsCalculatedLpiDeathAmount + awsCalculatedLpiDisabilityAmount + awsCalculatedLpiBankruptcyAmount + awsCalculatedLpiDisabilityAmount)}</DataValueTypography>
                         </Stack>
                         <Stack direction='column' spacing={2}>
                           <Stack direction='row' justifyContent='space-between' alignItems='center'>
@@ -667,7 +670,7 @@ export default function LoanCalulator({ onLoanAmountChange, onInterestChange, on
                                 Principal Amount
                               </Typography>
                               <Typography variant='subtitle1' sx={{ fontWeight: '500' }}>
-                                {fCurrency((loanAmount == null ? 0 : loanAmount) + (awsCalculatedLpiAmount == null ? 0 : awsCalculatedLpiAmount) + (sovCreditCheckAmount == null ? 0 : sovCreditCheckAmount) + (sovCreditSenseAmount == null ? 0 : sovCreditSenseAmount) + (sovCloudCheckIdVerificationAmount == null ? 0 : sovCloudCheckIdVerificationAmount) + (sovCloudCheckPEPSanctionsAmount == null ? 0 : sovCloudCheckPEPSanctionsAmount) + (sovMotorwebCheckAmount == null ? 0 : sovMotorwebCheckAmount) + (sovDocusignAmount == null ? 0 : sovDocusignAmount) + (sovPPSRAmount == null ? 0 : sovPPSRAmount))}
+                                {fCurrency((loanAmount == null ? 0 : loanAmount) + (awsCalculatedLpiDeathAmount + awsCalculatedLpiDisabilityAmount + awsCalculatedLpiBankruptcyAmount + awsCalculatedLpiDisabilityAmount == null ? 0 : awsCalculatedLpiDeathAmount + awsCalculatedLpiDisabilityAmount + awsCalculatedLpiBankruptcyAmount + awsCalculatedLpiDisabilityAmount) + (sovCreditCheckAmount == null ? 0 : sovCreditCheckAmount) + (sovCreditSenseAmount == null ? 0 : sovCreditSenseAmount) + (sovCloudCheckIdVerificationAmount == null ? 0 : sovCloudCheckIdVerificationAmount) + (sovCloudCheckPEPSanctionsAmount == null ? 0 : sovCloudCheckPEPSanctionsAmount) + (sovMotorwebCheckAmount == null ? 0 : sovMotorwebCheckAmount) + (sovDocusignAmount == null ? 0 : sovDocusignAmount) + (sovPPSRAmount == null ? 0 : sovPPSRAmount))}
                               </Typography>
                             </Stack>
                           </Stack>

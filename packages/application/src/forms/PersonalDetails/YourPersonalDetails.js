@@ -237,6 +237,13 @@ const YourPersonalDetails = () => {
   }
 
   const handleMaritalStatus = (event) => {
+    console.log(
+      'Marital Status Menu: ',
+      maritalStatusMenu.find((maritalStatusMenu) => {
+        return maritalStatusMenu.value === event.target.value
+      })
+    )
+
     dispatch(
       yourPersonalDetailsActions.setMaritalStatus(
         maritalStatusMenu.find((maritalStatusMenu) => {
