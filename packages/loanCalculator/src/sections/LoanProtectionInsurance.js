@@ -110,7 +110,7 @@ export default function LoanProtectionInsurance({ sethasLpiPrimeDeath, sethasLpi
         <FormControlLabel control={<Checkbox checked={hasLpiPrimeCriticalIllness} onChange={handlePrimeCriticalIllnessCover} />} label='Critical Illness' />
         <FormControlLabel control={<Checkbox checked={hasLpiPrimeBankruptcy} onChange={handlePrimeBankruptcyCover} />} label='Bankruptcy' />
       </FormGroup>
-      //? Team decision not to ask for joint cover in financial calculator in the landing page
+      {/* Team decision not to ask for joint cover in the financial calculator landing page  */}
       {/* <Divider sx={{ width: '100%', py: 2  }} /> */}
       {/* 
       <Box sx={{ py: 2 }}>
