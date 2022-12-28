@@ -284,7 +284,7 @@ const financialDetailsSlice = createSlice({
           //* Bankruptcy
           state.awsCalculatedLpiBankruptcyAmount = action.payload.body?.data?.attributes?.fees?.fee?.filter((feeItem) => {
             return feeItem?.code === state.awsCalculatedLpiBankruptcyCode
-          })[0]?.amountv
+          })[0]?.amount
 
           //* ----- Loan Cost Recovery Fees -----
 
