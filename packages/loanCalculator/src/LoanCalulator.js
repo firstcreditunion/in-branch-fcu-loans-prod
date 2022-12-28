@@ -223,6 +223,13 @@ export default function LoanCalulator({ onLoanAmountChange, onInterestChange, on
   const awsCalculatedLpiCriticalIllnessAmount = useSelector((state) => state.loanCalculatorReducer.awsCalculatedLpiCriticalIllnessAmount)
   const awsCalculatedLpiBankruptcyAmount = useSelector((state) => state.loanCalculatorReducer.awsCalculatedLpiBankruptcyAmount)
 
+  const deathPremium = awsCalculatedLpiDeathAmount == null ? 0 : awsCalculatedLpiDeathAmount
+  const disabilityPremium = awsCalculatedLpiDisabilityAmount == null ? 0 : awsCalculatedLpiDisabilityAmount
+  const criticalIllnessPremium = awsCalculatedLpiCriticalIllnessAmount == null ? 0 : awsCalculatedLpiCriticalIllnessAmount
+  const bankruptcyPremium = awsCalculatedLpiBankruptcyAmount == null ? 0 : awsCalculatedLpiBankruptcyAmount
+
+  const totalLpiPremium = deathPremium + disabilityPremium + criticalIllnessPremium + bankruptcyPremium
+
   //* Loan Cost Recovery Fees
   const sovCreditCheckAmount = useSelector((state) => state.loanCalculatorReducer.sovCreditCheckAmount)
   const sovCreditSenseAmount = useSelector((state) => state.loanCalculatorReducer.sovCreditSenseAmount)
@@ -656,7 +663,7 @@ export default function LoanCalulator({ onLoanAmountChange, onInterestChange, on
                         </Stack>
                         <Stack direction='row' justifyContent='space-between' alignItems='center'>
                           <DataLabelTypography variant='subtitle1'>Loan Protection Insurance</DataLabelTypography>
-                          <DataValueTypography variant='subtitle1'>{fCurrency(awsCalculatedLpiDeathAmount + awsCalculatedLpiDisabilityAmount + awsCalculatedLpiBankruptcyAmount + awsCalculatedLpiDisabilityAmount)}</DataValueTypography>
+                          <DataValueTypography variant='subtitle1'>{fCurrency(totalLpiPremium)}</DataValueTypography>
                         </Stack>
                         <Stack direction='column' spacing={2}>
                           <Stack direction='row' justifyContent='space-between' alignItems='center'>
@@ -670,7 +677,7 @@ export default function LoanCalulator({ onLoanAmountChange, onInterestChange, on
                                 Principal Amount
                               </Typography>
                               <Typography variant='subtitle1' sx={{ fontWeight: '500' }}>
-                                {fCurrency((loanAmount == null ? 0 : loanAmount) + (awsCalculatedLpiDeathAmount + awsCalculatedLpiDisabilityAmount + awsCalculatedLpiBankruptcyAmount + awsCalculatedLpiDisabilityAmount == null ? 0 : awsCalculatedLpiDeathAmount + awsCalculatedLpiDisabilityAmount + awsCalculatedLpiBankruptcyAmount + awsCalculatedLpiDisabilityAmount) + (sovCreditCheckAmount == null ? 0 : sovCreditCheckAmount) + (sovCreditSenseAmount == null ? 0 : sovCreditSenseAmount) + (sovCloudCheckIdVerificationAmount == null ? 0 : sovCloudCheckIdVerificationAmount) + (sovCloudCheckPEPSanctionsAmount == null ? 0 : sovCloudCheckPEPSanctionsAmount) + (sovMotorwebCheckAmount == null ? 0 : sovMotorwebCheckAmount) + (sovDocusignAmount == null ? 0 : sovDocusignAmount) + (sovPPSRAmount == null ? 0 : sovPPSRAmount))}
+                                {fCurrency((loanAmount == null ? 0 : loanAmount) + totalLpiPremium + (sovCreditCheckAmount == null ? 0 : sovCreditCheckAmount) + (sovCreditSenseAmount == null ? 0 : sovCreditSenseAmount) + (sovCloudCheckIdVerificationAmount == null ? 0 : sovCloudCheckIdVerificationAmount) + (sovCloudCheckPEPSanctionsAmount == null ? 0 : sovCloudCheckPEPSanctionsAmount) + (sovMotorwebCheckAmount == null ? 0 : sovMotorwebCheckAmount) + (sovDocusignAmount == null ? 0 : sovDocusignAmount) + (sovPPSRAmount == null ? 0 : sovPPSRAmount))}
                               </Typography>
                             </Stack>
                           </Stack>
