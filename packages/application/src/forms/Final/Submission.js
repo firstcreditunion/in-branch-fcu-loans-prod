@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 // API Constants
 import { BASE_URL_LOCAL_APP, BASE_URL_AWS_APP, BASE_URL_LOCAL_AUTH, BASE_URL_AWS_AUTH, AXIOS_NETWOR_ERROR, SUBMISSION_STATUS, processNodeEnv } from '../../redux/utils/apiConstants'
 import { HEADER_CONSTANTS } from '../../redux/utils/apiConstants'
+import { getCloudFrontEnvironment } from '../../redux/utils/apiConstants'
 
 import { PRIMARY } from '../../theme/palette'
 
@@ -2739,7 +2740,7 @@ export default function Submission() {
 
     const timestamp = new Date()
     const generatePdfConfig = {
-      url: '/generate-pdf',
+      url: `${getCloudFrontEnvironment() === 'SS-PROD' ? '/generate-pdf' : '/generate-pdf-test'}`,
       method: 'POST',
       baseURL: `${processNodeEnv() === 'development' ? BASE_URL_LOCAL_APP : BASE_URL_AWS_APP}`,
       headers: {

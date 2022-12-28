@@ -40,7 +40,7 @@ export const processNodeEnv = () => {
   return process.env.NODE_ENV
 }
 
-function getCloudFrontEnvironment() {
+export function getCloudFrontEnvironment() {
   if (location_origin === 'https://d26kpxwzomgzm2.cloudfront.net' || location_origin === 'https://loans.firstcreditunion.co.nz') {
     return 'SS-PROD'
   }
