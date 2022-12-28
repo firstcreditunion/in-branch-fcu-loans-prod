@@ -56,7 +56,10 @@ export default function LoanProtectionInsurance({ sethasLpiPrimeDeath, sethasLpi
   const hasLpiJointBankruptcy = useSelector((state) => state.loanCalculatorReducer.hasLpiJointBankruptcy)
   const hasLpiJointCriticalIllness = useSelector((state) => state.loanCalculatorReducer.hasLpiJointCriticalIllness)
 
-  const awsCalculatedLpiAmount = useSelector((state) => state.loanCalculatorReducer.awsCalculatedLpiAmount)
+  const awsCalculatedLpiDeathAmount = useSelector((state) => state.loanCalculatorReducer.awsCalculatedLpiDeathAmount)
+  const awsCalculatedLpiDisabilityAmount = useSelector((state) => state.loanCalculatorReducer.awsCalculatedLpiDisabilityAmount)
+  const awsCalculatedLpiCriticalIllnessAmount = useSelector((state) => state.loanCalculatorReducer.awsCalculatedLpiCriticalIllnessAmount)
+  const awsCalculatedLpiBankruptcyAmount = useSelector((state) => state.loanCalculatorReducer.awsCalculatedLpiBankruptcyAmount)
 
   //* Setters for Prime LPI Components
   const handlePrimeDeathCover = (event) => {
@@ -98,9 +101,14 @@ export default function LoanProtectionInsurance({ sethasLpiPrimeDeath, sethasLpi
     sethasLpiPrimeCriticalIllness(hasLpiPrimeCriticalIllness)
     sethasLpiPrimeBankruptcy(hasLpiPrimeBankruptcy)
 
+    const deathPremium = awsCalculatedLpiDeathAmount == null ? 0 : awsCalculatedLpiDeathAmount
+    const disabilityPremium = awsCalculatedLpiDisabilityAmount == null ? 0 : awsCalculatedLpiDisabilityAmount
+    const criticalIllnessPremium = awsCalculatedLpiCriticalIllnessAmount == null ? 0 : awsCalculatedLpiCriticalIllnessAmount
+    const bankruptcyPremium = awsCalculatedLpiBankruptcyAmount == null ? 0 : awsCalculatedLpiBankruptcyAmount
+
     //* LPI Fee Calculated by an external program in AES set to the useState declared in container/routes/index
-    setLPIUpfrontFee(awsCalculatedLpiAmount)
-  }, [awsCalculatedLpiAmount, hasLpiPrimeDeath, hasLpiPrimeDisability, hasLpiPrimeCriticalIllness, hasLpiPrimeBankruptcy])
+    setLPIUpfrontFee(deathPremium + disabilityPremium + criticalIllnessPremium + bankruptcyPremium)
+  }, [hasLpiPrimeDeath, hasLpiPrimeDisability, hasLpiPrimeCriticalIllness, hasLpiPrimeBankruptcy])
 
   return (
     <div>

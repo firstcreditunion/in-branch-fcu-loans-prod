@@ -1307,7 +1307,15 @@ export default function Submission() {
   const hasLpiJointCriticalIllness = useSelector((state) => state.financialDetailsReducer.hasLpiJointCriticalIllness)
 
   //* LPI Upfront Fee Calculated using an external program (received from AWS during LPI Calculation or when user gets to the loan details panel)
-  const awsCalculatedLpiAmount = useSelector((state) => state.financialDetailsReducer.awsCalculatedLpiAmount)
+  const awsCalculatedLpiDeathAmount = useSelector((state) => state.financialDetailsReducer.awsCalculatedLpiDeathAmount)
+  const awsCalculatedLpiDisabilityAmount = useSelector((state) => state.financialDetailsReducer.awsCalculatedLpiDisabilityAmount)
+  const awsCalculatedLpiCriticalIllnessAmount = useSelector((state) => state.financialDetailsReducer.awsCalculatedLpiCriticalIllnessAmount)
+  const awsCalculatedLpiBankruptcyAmount = useSelector((state) => state.financialDetailsReducer.awsCalculatedLpiBankruptcyAmount)
+
+  const deathPremium = awsCalculatedLpiDeathAmount == null ? 0 : awsCalculatedLpiDeathAmount
+  const disabilityPremium = awsCalculatedLpiDisabilityAmount == null ? 0 : awsCalculatedLpiDisabilityAmount
+  const criticalIllnessPremium = awsCalculatedLpiCriticalIllnessAmount == null ? 0 : awsCalculatedLpiCriticalIllnessAmount
+  const bankruptcyPremium = awsCalculatedLpiBankruptcyAmount == null ? 0 : awsCalculatedLpiBankruptcyAmount
 
   let insurance = [
     {
@@ -1849,7 +1857,7 @@ export default function Submission() {
 
   const expireIncluded = [...expireIdentificationIncluded, ...expireEmploymentIncluded]
 
-  const preliminaryQuestions_MemoLines = ['', '------ Credit Sense ------', '', `Reference: ${creditSenseAppRef == null ? 'N/A' : creditSenseAppRef}`, '', '------ Loan Protection Insurance ------', '', `Total Premium: $${awsCalculatedLpiAmount}`, '', `Prime Borrower Covers: ${hasLpiPrimeDeath ? 'Death' : ''} ${hasLpiPrimeDisability ? ', Disability' : ''} ${hasLpiPrimeBankruptcy ? ', Bankruptcy' : ''} ${hasLpiPrimeCriticalIllness ? ', Critical Illness' : ''}`, '', `Co-Borrower Covers: ${hasLpiJointDeath ? 'Death' : ''} ${hasLpiJointDisability ? ', Disability' : ''} ${hasLpiJointBankruptcy ? ', Bankruptcy' : ''} ${hasLpiJointCriticalIllness ? ', Critical Illness' : ''}`, '', '------ Vehicle Details for Security ------', '', `Vehicle-related Loan Purpose? : ${vehicleRelatedLoanPurpose ? 'Yes' : 'No'}`, '', `Would you like to provide vehicle as loan security? : ${!vehicleRelatedLoanPurpose || vehicleRelatedLoanPurpose == null ? wouldYoulikeToProvideVehicleSecurity : 'N/A'}`, '', `Have you purchased the vehicle yet? : ${hasPurchsedVehicle}`, '', `Vehicle Rego : ${vehicleRegistrationNumber}`, '', '------ Preliminary Questions ------', '', `Are you applying for a joint loan? : ${jointApplication_key}`, '', `What is the purpose of this loan? : ${getLoanPurposeFromKey(loanPurpose)?.value}`, '', `Trading Branch : ${getTradingBranchFromKey(tradingBranch)?.value}`, '', `Citizenship? : ${getCountryFromKey(citizen)?.label}`, '', `Residency : ${isNzCitizen ? 'N/A' : getCountryFromKey(resident)?.label}`, '', `Do you have a work permit? : ${isNzResident ? 'N/A' : hasWorkPermit?.key}`, '', `Do you have a regular income? : ${hasRegularIncome?.key}`, '', `Is your income credited to your FCU Account?: ${incomeCreditedToFCU?.key}`, '', `Have you been declared bankrupt before? : ${wasDeclaredBankrupt?.key}`, '', `Bankruptcy Date: ${wasDeclaredBankrupt?.key === 'No' ? 'N/A' : fDate(bankruptcyDate)}`, '', '------ Privacy Declaration -------', '', `1. Accepted Credit Assesment Checks- ${declarationItems?.CreditAssesment?.accept === true ? 'Yes' : 'No'}`, '', `2. Authorise FCU to disclose data to third parties - ${declarationItems?.AuthoriseFCU?.accept === true ? 'Yes' : 'No'}`, '', `3. Information is true and correct - ${declarationItems?.TrueInformation?.accept === true ? 'Yes' : 'No'}`, '', `4. Comply with AML/CFT obligations - ${declarationItems?.AmlCftObligations?.accept === true ? 'Yes' : 'No'}`, '', `5. Authorise FCU to collect, use and store data - ${declarationItems?.StorePersonalInfo?.accept === true ? 'Yes' : 'No'}`]
+  const preliminaryQuestions_MemoLines = ['', '------ Credit Sense ------', '', `Reference: ${creditSenseAppRef == null ? 'N/A' : creditSenseAppRef}`, '', '------ Loan Protection Insurance ------', '', `Total Premium: $${deathPremium + disabilityPremium + criticalIllnessPremium + bankruptcyPremium}`, '', `Prime Borrower Covers: ${hasLpiPrimeDeath ? 'Death' : ''} ${hasLpiPrimeDisability ? ', Disability' : ''} ${hasLpiPrimeBankruptcy ? ', Bankruptcy' : ''} ${hasLpiPrimeCriticalIllness ? ', Critical Illness' : ''}`, '', `Co-Borrower Covers: ${hasLpiJointDeath ? 'Death' : ''} ${hasLpiJointDisability ? ', Disability' : ''} ${hasLpiJointBankruptcy ? ', Bankruptcy' : ''} ${hasLpiJointCriticalIllness ? ', Critical Illness' : ''}`, '', '------ Vehicle Details for Security ------', '', `Vehicle-related Loan Purpose? : ${vehicleRelatedLoanPurpose ? 'Yes' : 'No'}`, '', `Would you like to provide vehicle as loan security? : ${!vehicleRelatedLoanPurpose || vehicleRelatedLoanPurpose == null ? wouldYoulikeToProvideVehicleSecurity : 'N/A'}`, '', `Have you purchased the vehicle yet? : ${hasPurchsedVehicle}`, '', `Vehicle Rego : ${vehicleRegistrationNumber}`, '', '------ Preliminary Questions ------', '', `Are you applying for a joint loan? : ${jointApplication_key}`, '', `What is the purpose of this loan? : ${getLoanPurposeFromKey(loanPurpose)?.value}`, '', `Trading Branch : ${getTradingBranchFromKey(tradingBranch)?.value}`, '', `Citizenship? : ${getCountryFromKey(citizen)?.label}`, '', `Residency : ${isNzCitizen ? 'N/A' : getCountryFromKey(resident)?.label}`, '', `Do you have a work permit? : ${isNzResident ? 'N/A' : hasWorkPermit?.key}`, '', `Do you have a regular income? : ${hasRegularIncome?.key}`, '', `Is your income credited to your FCU Account?: ${incomeCreditedToFCU?.key}`, '', `Have you been declared bankrupt before? : ${wasDeclaredBankrupt?.key}`, '', `Bankruptcy Date: ${wasDeclaredBankrupt?.key === 'No' ? 'N/A' : fDate(bankruptcyDate)}`, '', '------ Privacy Declaration -------', '', `1. Accepted Credit Assesment Checks- ${declarationItems?.CreditAssesment?.accept === true ? 'Yes' : 'No'}`, '', `2. Authorise FCU to disclose data to third parties - ${declarationItems?.AuthoriseFCU?.accept === true ? 'Yes' : 'No'}`, '', `3. Information is true and correct - ${declarationItems?.TrueInformation?.accept === true ? 'Yes' : 'No'}`, '', `4. Comply with AML/CFT obligations - ${declarationItems?.AmlCftObligations?.accept === true ? 'Yes' : 'No'}`, '', `5. Authorise FCU to collect, use and store data - ${declarationItems?.StorePersonalInfo?.accept === true ? 'Yes' : 'No'}`]
 
   const dispatch = useDispatch()
 
@@ -2282,7 +2290,7 @@ export default function Submission() {
           reference: `${creditSenseAppRef == null ? 'N/A' : creditSenseAppRef}`,
         },
         loanProtectionInsurance: {
-          totalPremium: awsCalculatedLpiAmount,
+          totalPremium: deathPremium + disabilityPremium + criticalIllnessPremium + bankruptcyPremium,
           prime: {
             death: hasLpiPrimeDeath ? 'Yes' : 'No',
             disability: hasLpiPrimeDisability ? 'Yes' : 'No',
@@ -2564,7 +2572,7 @@ export default function Submission() {
         reference: `${creditSenseAppRef == null ? 'N/A' : creditSenseAppRef}`,
       },
       loanProtectionInsurance: {
-        totalPremium: awsCalculatedLpiAmount,
+        totalPremium: deathPremium + disabilityPremium + criticalIllnessPremium + bankruptcyPremium,
         prime: { death: hasLpiPrimeDeath ? 'Yes' : 'No', disability: hasLpiPrimeDisability ? 'Yes' : 'No', bankrptcy: hasLpiPrimeBankruptcy ? 'Yes' : 'No', criticalIllness: hasLpiPrimeCriticalIllness ? 'Yes' : 'No' },
       },
       securityDetails: {
@@ -2847,7 +2855,7 @@ export default function Submission() {
               </Stack>
               <Stack direction='row' justifyContent='space-between' alignItems='center'>
                 <SummaryLabel>Loan Protection Insurance</SummaryLabel>
-                <ValueTypography>{fCurrency(awsCalculatedLpiAmount)}</ValueTypography>
+                <ValueTypography>{fCurrency(deathPremium + disabilityPremium + criticalIllnessPremium + bankruptcyPremium)}</ValueTypography>
               </Stack>
               <Stack direction='row' justifyContent='space-between' alignItems='center'>
                 <SummaryLabel variant={downSm ? 'caption' : 'subtitle2'}>Loan Cost Recovery Fees</SummaryLabel>
@@ -2859,7 +2867,7 @@ export default function Submission() {
                   Principal Amount
                 </SummaryLabel>
                 <ValueTypography variant={downSm ? 'caption' : 'subtitle2'} sx={{ fontWeight: 'medium' }}>
-                  {fCurrency(loanAmount + awsCalculatedLpiAmount + creditCheckAmount + creditSenseAmount + cloudCheckIdVerificationAmount + cloudCheckPEPSanctionsAmount + motorwebCheckAmount + docusignAmount + ppsrAmount)}
+                  {fCurrency(loanAmount + deathPremium + disabilityPremium + criticalIllnessPremium + bankruptcyPremium + creditCheckAmount + creditSenseAmount + cloudCheckIdVerificationAmount + cloudCheckPEPSanctionsAmount + motorwebCheckAmount + docusignAmount + ppsrAmount)}
                 </ValueTypography>
               </Stack>
               <Stack direction='row' justifyContent='space-between' alignItems='center'>

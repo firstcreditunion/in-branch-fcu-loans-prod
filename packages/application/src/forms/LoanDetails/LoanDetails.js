@@ -167,7 +167,15 @@ export default function FinancialDetails() {
   const hasLpiJointCriticalIllness = useSelector((state) => state.financialDetailsReducer.hasLpiJointCriticalIllness)
 
   //* LPI Upfront Fee Calculated using an external program (received from AWS during LPI Calculation or when user gets to the loan details panel)
-  const awsCalculatedLpiAmount = useSelector((state) => state.financialDetailsReducer.awsCalculatedLpiAmount)
+  const awsCalculatedLpiDeathAmount = useSelector((state) => state.financialDetailsReducer.awsCalculatedLpiDeathAmount)
+  const awsCalculatedLpiDisabilityAmount = useSelector((state) => state.financialDetailsReducer.awsCalculatedLpiDisabilityAmount)
+  const awsCalculatedLpiCriticalIllnessAmount = useSelector((state) => state.financialDetailsReducer.awsCalculatedLpiCriticalIllnessAmount)
+  const awsCalculatedLpiBankruptcyAmount = useSelector((state) => state.financialDetailsReducer.awsCalculatedLpiBankruptcyAmount)
+
+  const deathPremium = awsCalculatedLpiDeathAmount == null ? 0 : awsCalculatedLpiDeathAmount
+  const disabilityPremium = awsCalculatedLpiDisabilityAmount == null ? 0 : awsCalculatedLpiDisabilityAmount
+  const criticalIllnessPremium = awsCalculatedLpiCriticalIllnessAmount == null ? 0 : awsCalculatedLpiCriticalIllnessAmount
+  const bankruptcyPremium = awsCalculatedLpiBankruptcyAmount == null ? 0 : awsCalculatedLpiBankruptcyAmount
 
   //* Joint Applicant Insurance Toggle
   const doYouNeedCoverForJoint = useSelector((state) => state.financialDetailsReducer.doYouNeedCoverForJoint)
@@ -494,7 +502,7 @@ export default function FinancialDetails() {
                       </Stack>
                       <Stack direction='row' justifyContent='space-between' alignItems='center'>
                         <SummaryLabel variant={downSm ? 'caption' : 'subtitle2'}>Loan Protection Insurance</SummaryLabel>
-                        <ValueTypography variant={downSm ? 'caption' : 'subtitle2'}>{fCurrency(awsCalculatedLpiAmount)}</ValueTypography>
+                        <ValueTypography variant={downSm ? 'caption' : 'subtitle2'}>{fCurrency(deathPremium + disabilityPremium + criticalIllnessPremium + bankruptcyPremium)}</ValueTypography>
                       </Stack>
                       <Stack direction='row' justifyContent='space-between' alignItems='center'>
                         <SummaryLabel variant={downSm ? 'caption' : 'subtitle2'}>Loan Cost Recovery Fees</SummaryLabel>
@@ -503,7 +511,7 @@ export default function FinancialDetails() {
                       <Divider sx={{ backgroundColor: 'secondary.main', width: '100%' }} />
                       <Stack direction='row' justifyContent='space-between' alignItems='center'>
                         <ValueTypography variant={downSm ? 'caption' : 'subtitle2'}>Principal Amount</ValueTypography>
-                        <ValueTypography variant={downSm ? 'caption' : 'subtitle2'}>{fCurrency(loanAmount + awsCalculatedLpiAmount + creditCheckAmount + creditSenseAmount + cloudCheckIdVerificationAmount + cloudCheckPEPSanctionsAmount + motorwebCheckAmount + docusignAmount + ppsrAmount)}</ValueTypography>
+                        <ValueTypography variant={downSm ? 'caption' : 'subtitle2'}>{fCurrency(loanAmount + deathPremium + disabilityPremium + criticalIllnessPremium + bankruptcyPremium + creditCheckAmount + creditSenseAmount + cloudCheckIdVerificationAmount + cloudCheckPEPSanctionsAmount + motorwebCheckAmount + docusignAmount + ppsrAmount)}</ValueTypography>
                       </Stack>
                     </Stack>
                   </Box>
@@ -526,7 +534,7 @@ export default function FinancialDetails() {
                       </Stack>
                       <Stack direction='row' justifyContent='space-between' alignItems='center'>
                         <SummaryLabel variant={downSm ? 'caption' : 'subtitle2'}>Loan Protection Insurance</SummaryLabel>
-                        <ValueTypography variant={downSm ? 'caption' : 'subtitle2'}>{fCurrency(awsCalculatedLpiAmount)}</ValueTypography>
+                        <ValueTypography variant={downSm ? 'caption' : 'subtitle2'}>{fCurrency(deathPremium + disabilityPremium + criticalIllnessPremium + bankruptcyPremium)}</ValueTypography>
                       </Stack>
                       <Stack direction='row' justifyContent='space-between' alignItems='center'>
                         <SummaryLabel variant={downSm ? 'caption' : 'subtitle2'}>Loan Cost Recovery Fees</SummaryLabel>
@@ -538,7 +546,7 @@ export default function FinancialDetails() {
                           Principal Amount
                         </SummaryLabel>
                         <ValueTypography variant={downSm ? 'caption' : 'subtitle2'} sx={{ fontWeight: 'medium' }}>
-                          {fCurrency(loanAmount + awsCalculatedLpiAmount + creditCheckAmount + creditSenseAmount + cloudCheckIdVerificationAmount + cloudCheckPEPSanctionsAmount + motorwebCheckAmount + docusignAmount + ppsrAmount)}
+                          {fCurrency(loanAmount + deathPremium + disabilityPremium + criticalIllnessPremium + bankruptcyPremium + creditCheckAmount + creditSenseAmount + cloudCheckIdVerificationAmount + cloudCheckPEPSanctionsAmount + motorwebCheckAmount + docusignAmount + ppsrAmount)}
                         </ValueTypography>
                       </Stack>
                     </Stack>

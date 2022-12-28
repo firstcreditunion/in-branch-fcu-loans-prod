@@ -77,7 +77,10 @@ export default function LoanProtectionInsurance() {
   const hasLpiJointBankruptcy = useSelector((state) => state.financialDetailsReducer.hasLpiJointBankruptcy)
   const hasLpiJointCriticalIllness = useSelector((state) => state.financialDetailsReducer.hasLpiJointCriticalIllness)
 
-  const awsCalculatedLpiAmount = useSelector((state) => state.financialDetailsReducer.awsCalculatedLpiAmount)
+  const awsCalculatedLpiDeathAmount = useSelector((state) => state.loanCalculatorReducer.awsCalculatedLpiDeathAmount)
+  const awsCalculatedLpiDisabilityAmount = useSelector((state) => state.loanCalculatorReducer.awsCalculatedLpiDisabilityAmount)
+  const awsCalculatedLpiCriticalIllnessAmount = useSelector((state) => state.loanCalculatorReducer.awsCalculatedLpiCriticalIllnessAmount)
+  const awsCalculatedLpiBankruptcyAmount = useSelector((state) => state.loanCalculatorReducer.awsCalculatedLpiBankruptcyAmount)
 
   //* Animation for Prime LPI Componenets
 
