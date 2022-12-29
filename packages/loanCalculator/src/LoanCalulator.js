@@ -167,8 +167,8 @@ function convertToUTCTimestamp(date, callfrom) {
 
   const dateFormat = new Date(date)
 
-  // const timeZoneOffsetInHours = (-1 * dateFormat.getTimezoneOffset()) / 60
-  dateFormat.setUTCHours(0, 0, 0, 0)
+  const timeZoneOffsetInHours = (-1 * dateFormat.getTimezoneOffset()) / 60
+  dateFormat.setUTCHours(timeZoneOffsetInHours, 0, 0, 0)
 
   if (typeof dateFormat === 'number') {
     return convertUnixToUTCTimestamp(dateFormat)
@@ -199,6 +199,8 @@ export default function LoanCalulator({ onLoanAmountChange, onInterestChange, on
     setExpanded(!expanded)
   }
 
+  // console.log(convertToUTCTimestamp(defEffectiveDate, 'Logging'))
+
   const defLoanAmount = useSelector((state) => state.loanCalculatorReducer.defLoanAmount)
   const defIntererstRate = useSelector((state) => state.loanCalculatorReducer.defIntererstRate)
   const defTerm = useSelector((state) => state.loanCalculatorReducer.defTerm.value)
@@ -210,6 +212,7 @@ export default function LoanCalulator({ onLoanAmountChange, onInterestChange, on
   const term = useSelector((state) => state.loanCalculatorReducer.term.value)
   const paymentFrequency = useSelector((state) => state.loanCalculatorReducer.paymentFrequency.unit)
 
+  const sovAmountFinanced = useSelector((state) => state.loanCalculatorReducer.sovAmountFinanced)
   const sovInterestAmount = useSelector((state) => state.loanCalculatorReducer.sovInterestAmount)
   const sovAmountPayable = useSelector((state) => state.loanCalculatorReducer.sovAmountPayable)
   const sovPaymentFrequencyType1 = useSelector((state) => state.loanCalculatorReducer.sovPaymentFrequencyType1)
@@ -218,17 +221,9 @@ export default function LoanCalulator({ onLoanAmountChange, onInterestChange, on
   //* ----------- Fees -----------
 
   //* LPI
-  const awsCalculatedLpiDeathAmount = useSelector((state) => state.loanCalculatorReducer.awsCalculatedLpiDeathAmount)
-  const awsCalculatedLpiDisabilityAmount = useSelector((state) => state.loanCalculatorReducer.awsCalculatedLpiDisabilityAmount)
-  const awsCalculatedLpiCriticalIllnessAmount = useSelector((state) => state.loanCalculatorReducer.awsCalculatedLpiCriticalIllnessAmount)
-  const awsCalculatedLpiBankruptcyAmount = useSelector((state) => state.loanCalculatorReducer.awsCalculatedLpiBankruptcyAmount)
+  const awsCalculatedLpiGrossPremiumAmount = useSelector((state) => state.loanCalculatorReducer.awsCalculatedLpiGrossPremiumAmount)
 
-  const deathPremium = awsCalculatedLpiDeathAmount == null ? 0 : awsCalculatedLpiDeathAmount
-  const disabilityPremium = awsCalculatedLpiDisabilityAmount == null ? 0 : awsCalculatedLpiDisabilityAmount
-  const criticalIllnessPremium = awsCalculatedLpiCriticalIllnessAmount == null ? 0 : awsCalculatedLpiCriticalIllnessAmount
-  const bankruptcyPremium = awsCalculatedLpiBankruptcyAmount == null ? 0 : awsCalculatedLpiBankruptcyAmount
-
-  const totalLpiPremium = deathPremium + disabilityPremium + criticalIllnessPremium + bankruptcyPremium
+  const lpiGrossPremium = awsCalculatedLpiGrossPremiumAmount == null ? 0 : awsCalculatedLpiGrossPremiumAmount
 
   //* Loan Cost Recovery Fees
   const sovCreditCheckAmount = useSelector((state) => state.loanCalculatorReducer.sovCreditCheckAmount)
@@ -349,6 +344,7 @@ export default function LoanCalulator({ onLoanAmountChange, onInterestChange, on
       interestRate: interestRate,
       term: term,
       paymentFrequency: paymentFrequency,
+      startDate: convertToUTCTimestamp(defEffectiveDate, 'useEffect'),
       insurance: insurance
         .filter((item) => {
           return item?.selected === true
@@ -663,7 +659,7 @@ export default function LoanCalulator({ onLoanAmountChange, onInterestChange, on
                         </Stack>
                         <Stack direction='row' justifyContent='space-between' alignItems='center'>
                           <DataLabelTypography variant='subtitle1'>Loan Protection Insurance</DataLabelTypography>
-                          <DataValueTypography variant='subtitle1'>{fCurrency(totalLpiPremium)}</DataValueTypography>
+                          <DataValueTypography variant='subtitle1'>{fCurrency(lpiGrossPremium)}</DataValueTypography>
                         </Stack>
                         <Stack direction='column' spacing={2}>
                           <Stack direction='row' justifyContent='space-between' alignItems='center'>
@@ -677,7 +673,7 @@ export default function LoanCalulator({ onLoanAmountChange, onInterestChange, on
                                 Principal Amount
                               </Typography>
                               <Typography variant='subtitle1' sx={{ fontWeight: '500' }}>
-                                {fCurrency((loanAmount == null ? 0 : loanAmount) + totalLpiPremium + (sovCreditCheckAmount == null ? 0 : sovCreditCheckAmount) + (sovCreditSenseAmount == null ? 0 : sovCreditSenseAmount) + (sovCloudCheckIdVerificationAmount == null ? 0 : sovCloudCheckIdVerificationAmount) + (sovCloudCheckPEPSanctionsAmount == null ? 0 : sovCloudCheckPEPSanctionsAmount) + (sovMotorwebCheckAmount == null ? 0 : sovMotorwebCheckAmount) + (sovDocusignAmount == null ? 0 : sovDocusignAmount) + (sovPPSRAmount == null ? 0 : sovPPSRAmount))}
+                                {fCurrency(sovAmountFinanced)}
                               </Typography>
                             </Stack>
                           </Stack>
