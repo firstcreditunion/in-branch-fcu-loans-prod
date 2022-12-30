@@ -365,7 +365,7 @@ export default function LoanCalulator({ onLoanAmountChange, onInterestChange, on
     }
     // Finacial Calculator request
     const loanSchedule = dispatch(getLoanRepaymentSchedule(config))
-  }, [loanAmount, loanAmountCust, interestRate, term, paymentFrequency, hasLpiPrimeDeath, hasLpiPrimeDisability, hasLpiPrimeBankruptcy, hasLpiPrimeCriticalIllness])
+  }, [awsCalculatedLpiGrossPremiumAmount, loanAmount, loanAmountCust, interestRate, term, paymentFrequency, hasLpiPrimeDeath, hasLpiPrimeDisability, hasLpiPrimeBankruptcy, hasLpiPrimeCriticalIllness])
 
   const {
     formState: { errors },

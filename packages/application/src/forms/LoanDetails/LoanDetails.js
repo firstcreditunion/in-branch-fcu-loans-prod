@@ -289,7 +289,7 @@ export default function FinancialDetails() {
     }
     // Finacial Calculator request
     const loanSchedule = dispatch(getLoanRepayments(config))
-  }, [loanAmount, loanAmountCust, interestRate, term, paymentFrequency, doYouNeedCoverForJoint, hasLpiPrimeDeath, hasLpiJointDeath, hasLpiPrimeDisability, hasLpiJointDisability, hasLpiPrimeBankruptcy, hasLpiJointBankruptcy, hasLpiPrimeCriticalIllness, hasLpiJointCriticalIllness])
+  }, [awsCalculatedLpiGrossPremiumAmount, loanAmount, loanAmountCust, interestRate, term, paymentFrequency, doYouNeedCoverForJoint, hasLpiPrimeDeath, hasLpiJointDeath, hasLpiPrimeDisability, hasLpiJointDisability, hasLpiPrimeBankruptcy, hasLpiJointBankruptcy, hasLpiPrimeCriticalIllness, hasLpiJointCriticalIllness])
 
   const {
     formState: { isValid },
