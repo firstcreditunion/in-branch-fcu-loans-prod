@@ -44,6 +44,7 @@ import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined'
 import Alert from '@mui/material/Alert'
 import AlertTitle from '@mui/material/AlertTitle'
 
+import { getCloudFrontEnvironment } from '../../redux/utils/apiConstants'
 import { genericStatusCodes, bankStatusCodes, supportingDocsStatusCodes } from './codes/CreditSense'
 
 import { fDateCustom } from '../../utils/formatDateTime'
@@ -114,7 +115,7 @@ export default function BankStatement() {
     return appRef
   }
 
-  const src = `https://creditsense.co.nz/apply/FSCU01/?method=iframe&uniqueAppRef=true&appRef=${getAppRef()}&debugBanks=false&termsBeforeCredentials=true&winz=force`
+  const src = `https://creditsense.co.nz/apply/${getCloudFrontEnvironment() === 'SS-PROD' ? 'FSCU01' : 'FSCU03'}/?method=iframe&uniqueAppRef=true&appRef=${getAppRef()}&debugBanks=${getCloudFrontEnvironment() === 'SS-PROD' ? 'false' : 'true'}&termsBeforeCredentials=true&winz=force`
 
   // function onApplicationSuccess() {
   //   console.log('On Application Success Called')
