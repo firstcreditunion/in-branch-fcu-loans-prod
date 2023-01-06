@@ -140,7 +140,7 @@ export const initialState = {
       frequency: { value: 1, unit: 'W', dialogTitleText: 'How often do you pay rent?' },
       label: 'Renting or Boarding',
       tooltip: { display: false, tip: '' },
-      autoComplete: { title: 'Renting or Boarding', code: 'ERTBR' },
+      autoComplete: { title: 'Rent / Board / Mortgage', code: 'ERTBR' },
       sovereign: { key: 'RENTI', value: 'Renting or Boarding' },
     },
     expense_Power_or_Gas: {
@@ -150,7 +150,7 @@ export const initialState = {
       frequency: { value: 1, unit: 'W', dialogTitleText: 'How often do you pay for Power or Gas?' },
       label: 'Power or Gas',
       tooltip: { display: false, tip: '' },
-      autoComplete: { title: 'Power or Gas', code: 'EPG' },
+      autoComplete: { title: 'Power and/or Gas', code: 'EPG' },
       sovereign: { key: 'POWER', value: 'Power or Gas' },
     },
     expense_Groceries: {
@@ -170,7 +170,7 @@ export const initialState = {
       frequency: { value: 1, unit: 'W', dialogTitleText: 'How often do you pay for you Phone or Internet?' },
       label: 'Phone or Internet',
       tooltip: { display: false, tip: '' },
-      autoComplete: { title: 'Phone or Internet', code: 'EPHO' },
+      autoComplete: { title: 'Phone and/or Internet', code: 'EPHO' },
       sovereign: { key: 'PHONE', value: 'Phone or Internet' },
     },
     expense_Fuel: {
@@ -188,9 +188,9 @@ export const initialState = {
       groupBy: 'expense',
       amount: null,
       frequency: { value: 1, unit: 'W', dialogTitleText: 'How often do you have s6 expense?' },
-      label: 'S6 or Savings',
+      label: 'S6 Loan Provider',
       tooltip: { display: false, tip: '' },
-      autoComplete: { title: 'S6 or Savings', code: 'ESVG' },
+      autoComplete: { title: 'S6 Loan Provider', code: 'ESVG' },
       sovereign: { key: 'S6', value: 'S6/Savings' },
     },
     expense_Wof_Rego: {
