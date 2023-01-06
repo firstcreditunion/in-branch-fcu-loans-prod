@@ -114,7 +114,7 @@ export default function BankStatement() {
     return appRef
   }
 
-  const src = `https://creditsense.co.nz/apply/FSCU03/?method=iframe&uniqueAppRef=true&appRef=${getAppRef()}&debugBanks=true&termsBeforeCredentials=true&winz=force`
+  const src = `https://creditsense.co.nz/apply/FSCU01/?method=iframe&uniqueAppRef=true&appRef=${getAppRef()}&debugBanks=false&termsBeforeCredentials=true&winz=force`
 
   // function onApplicationSuccess() {
   //   console.log('On Application Success Called')
