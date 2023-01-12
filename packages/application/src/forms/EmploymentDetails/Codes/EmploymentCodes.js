@@ -14,7 +14,7 @@ export const employmentTypeMenu = [
   { key: 'TMP', value: 'Temporary Employment' },
   { key: 'SEM', value: 'Self Employed' },
   { key: 'CAS', value: 'Casual' },
-  { key: 'UNE', value: 'Unemployed' },
+  { key: 'UEM', value: 'Unemployed' },
 ]
 
 export const occupationMenu = [
