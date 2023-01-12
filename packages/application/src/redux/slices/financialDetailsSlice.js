@@ -62,7 +62,7 @@ export const initialState = {
   ppsrAmount: 0,
 
   //* LPI
-  awsCalculatedLpiGrossPremiumCode: 'LPIBB',
+  awsCalculatedLpiGrossPremiumCode: 'LPIBA',
 
   awsCalculatedLpiAmount: 0,
   awsCalculatedLpiGrossPremiumAmount: 0,

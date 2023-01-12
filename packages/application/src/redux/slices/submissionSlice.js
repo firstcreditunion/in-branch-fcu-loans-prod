@@ -128,15 +128,12 @@ const submissionSlice = createSlice({
       })
       .addCase(submitLoanApplication.fulfilled, (state, action) => {
         const { requestId } = action.meta
-        // console.log('Submit Application FULFILLED META: ', action.meta)
-        // console.log('Submit Application FULFILLED PAYLOAD: ', action.payload)
-        // console.log('Submit Application FULFILLED TYPE: ', action.type)
 
         state.submissionFulfilled = true
 
         let errorArray = action.payload?.body?.appErrors
 
-        state.axiosCodeMessage = errorArray.map((obj) => obj.errorMessage).join(', ')
+        state.axiosCodeMessage = errorArray?.map((obj) => obj?.errorMessage)?.join(', ')
 
         state.axiosCodeName = action.payload?.name
         state.axiosRequestStatus = action.payload?.request?.status
