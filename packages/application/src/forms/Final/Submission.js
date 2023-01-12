@@ -2602,7 +2602,7 @@ export default function Submission() {
           surname: lastName,
           clientOtherNamesExist: otherNames === '' ? 'N' : 'Y',
           gender: gender,
-          dateOfBirth: convertToUTCTimestamp(dob, 'dob'),
+          dateOfBirth: fDate(convertToUTCTimestamp(dob, 'dob')),
           dateOfBirthRefused: 'N',
           maritalStatus: maritalStatusMenuItems(maritalStatus.key)?.value,
           countryOfResidence: resident,

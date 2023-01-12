@@ -134,8 +134,10 @@ const submissionSlice = createSlice({
 
         state.submissionFulfilled = true
 
-        state.axiosCode = action.payload?.code
-        state.axiosCodeMessage = action.payload?.message
+        let errorArray = action.payload?.body?.appErrors
+
+        state.axiosCodeMessage = errorArray.map((obj) => obj.errorMessage).join(', ')
+
         state.axiosCodeName = action.payload?.name
         state.axiosRequestStatus = action.payload?.request?.status
         state.axiosRequestStatusText = action.payload?.request?.statusText
