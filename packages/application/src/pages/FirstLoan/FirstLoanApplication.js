@@ -295,7 +295,7 @@ export default function FirstLoanApplication({ loanAmount, interestRate, term, p
   ]
 
   const children = [
-    { index: 0, root: 0, stepCount: 1, code: 'PPD', label: 'Your Personal Details', render: <YourPersonalDetails />, fullwidth: true, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Prime' },
+    { index: 0, root: 0, stepCount: 1, code: 'PPD', label: 'Your Personal Details', render: <YourPersonalDetails />, fullwidth: false, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Prime' },
     { index: 1, root: 0, stepCount: 2, code: 'JPD', label: 'Joint Applicant Personal Details', render: <JointApplicantPersonalDetails />, fullwidth: false, showtitle: true, showProgress: true, skipStep: !jointApplication, dataRelatedTo: 'Joint' },
     { index: 2, root: 0, stepCount: 3, code: 'PAI', label: 'Identifications', render: <Identifications />, fullwidth: false, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Prime' },
     { index: 3, root: 0, stepCount: 4, code: 'JAI', label: 'Joint Applicant Identifications', render: <JointApplicantIdentification />, fullwidth: false, showtitle: true, showProgress: true, skipStep: !jointApplication, dataRelatedTo: 'Joint' },
