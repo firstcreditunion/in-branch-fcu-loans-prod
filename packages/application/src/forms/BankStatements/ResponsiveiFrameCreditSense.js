@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 //*  jQuery
-// import jQuery from 'jquery'
+import jQuery from 'jquery'
 
 // * Third-Party Imports
 import Iframe from 'react-iframe'
@@ -26,6 +26,7 @@ import Box from '@mui/material/Box'
 import Chip from '@mui/material/Chip'
 import Stack from '@mui/material/Stack'
 import Paper from '@mui/material/Paper'
+import Modal from '@mui/material/Modal'
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
@@ -45,7 +46,9 @@ import Alert from '@mui/material/Alert'
 import AlertTitle from '@mui/material/AlertTitle'
 
 import { getCloudFrontEnvironment } from '../../redux/utils/apiConstants'
-// import { genericStatusCodes, bankStatusCodes, supportingDocsStatusCodes } from './codes/CreditSense'
+import { genericStatusCodes, bankStatusCodes, supportingDocsStatusCodes } from './codes/CreditSense'
+
+import LoadingScreen from '../../components/LoadingScreen'
 
 import { fDateCustom } from '../../utils/formatDateTime'
 
@@ -53,16 +56,41 @@ const maxLength = 50
 
 const CreditSenseBorder = styled('div')(({ theme }) => ({
   outline: 'none',
-  overflow: 'hidden',
   position: 'relative',
+  height: '100%',
   transition: theme.transitions.create('padding'),
 }))
 
+let creditSenseAppId = null
+var creditSenseResponseCode = null
+
+const useCreditsense = () => {
+  const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    console.log('useStopwatch useEffect')
+    const interval = setInterval(() => {
+      console.log(`Count = ${count}`)
+      setCount((prev) => prev + 1)
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [])
+
+  return count
+}
+
 export default function BankStatement() {
   const [showCreditSense, setShowCreditSense] = React.useState(false)
+  const [creditSenseResponse, setCreditSenseResponse] = React.useState(null)
+  const [reRender, setReRender] = React.useState(false)
+  const creditSenseCodes = [...genericStatusCodes, ...bankStatusCodes, ...supportingDocsStatusCodes]
+  const [creditSenseIframeResposne, setCreditSenseIframeResposne] = React.useState(null)
+
+  const handleClose = () => setShowCreditSense(false)
 
   const employmentType = useSelector((state) => state.employmentReducer.employmentType)
   const lastName = useSelector((state) => state.yourPersonalDetailReducer.lastName)
+  // const creditSenseResponseCode = useSelector((state) => state.bankStatementReducer.creditSenseResponseCode)
 
   const dispatch = useDispatch()
 
@@ -84,10 +112,65 @@ export default function BankStatement() {
     return appRef
   }
 
-  const src = `https://creditsense.co.nz/apply/${getCloudFrontEnvironment() === 'SS-PROD' ? 'FSCU01' : 'FSCU03'}/?method=iframe&uniqueAppRef=true&appRef=${getAppRef()}&debugBanks=${getCloudFrontEnvironment() === 'SS-PROD' ? 'false' : 'true'}&termsBeforeCredentials=true&winz=${employmentType === 'Beneficiary' ? 'ask' : 'skip'}`
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: downMd ? '100%' : 970,
+    height: downMd ? '90%' : '580px',
+    bgcolor: 'background.paper',
+    border: '2px solid #fff',
+    borderRadius: 2,
+    boxShadow: 24,
+    p: downMd ? 2 : 4,
+  }
 
+  //? Standard iFrame - const src = `https://creditsense.co.nz/apply/${getCloudFrontEnvironment() === 'SS-PROD' ? 'FSCU01' : 'FSCU03'}/?method=iframe&uniqueAppRef=true&appRef=${getAppRef()}&debugBanks=${getCloudFrontEnvironment() === 'SS-PROD' ? 'false' : 'true'}&termsBeforeCredentials=true&winz=${employmentType === 'Beneficiary' ? 'ask' : 'skip'}`
+
+  const src = `https://creditsense.co.nz/apply/${getCloudFrontEnvironment() === 'SS-PROD' ? 'FSCU01' : 'FSCU03'}/?method=iframe`
+
+  function logMsg(message) {
+    if (typeof console == 'object') console.log(message)
+    else alert(message)
+  }
+
+  jQuery(function () {
+    $.CreditSense.Iframe({
+      client: `${getCloudFrontEnvironment() === 'SS-PROD' ? 'FSCU01' : 'FSCU03'}`,
+      elementSelector: '#fcu-cs-iframe',
+      enableDynamicHeight: true,
+      params: {
+        appRef: getAppRef(),
+        uniqueAppRef: true,
+        debugBanks: `${getCloudFrontEnvironment() === 'SS-PROD' ? false : true}`,
+        multibank: true,
+        termsBeforeCredentials: true,
+        winz: `${employmentType === 'Beneficiary' ? 'ask' : 'skip'}`,
+        askOnlineBanking: true,
+      },
+      callback: function (response, data) {
+        if (creditSenseAppId == null) creditSenseAppId = data
+
+        if (Number(response)) {
+          if (creditSenseResponseCode === 100 || creditSenseResponseCode === response) return
+          creditSenseResponseCode = parseInt(response)
+          console.log('PARSE INT NUMBER: ', parseInt(response))
+        }
+
+        switch (response) {
+          case '99': // Example status code (Bank statcus success)
+            logMsg('Bank details collected successfully')
+            break
+          case '100': // Example status code
+            console.log('Credit Sense Statement Upload Complete')
+            break
+        }
+      },
+    })
+  })
   return (
-    <Stack direction='column' spacing={downMd ? 2 : 5} justifyContent='center' alignItems='center'>
+    <Stack direction='column' spacing={downMd ? 2 : 5} justifyContent='center' alignItems='center' sx={{ minHeight: '100%' }}>
       <Stack component={motion.div} {...varFade({ distance: 25, durationIn: 0.5, durationOut: 0.5 }).inDown}>
         <Paper elevation={8} sx={{ mt: 2 }}>
           <Alert sx={{ textAlign: 'center' }} variant='standard' color='info' icon={<InfoOutlinedIcon fontSize='medium' />}>
@@ -95,76 +178,103 @@ export default function BankStatement() {
           </Alert>
         </Paper>
       </Stack>
-      <CreditSenseBorder sx={{ width: '100%' }}>
-        <Stack direction='column' justifyContent='center' alignItems='center' spacing={8} sx={{ width: '100%' }}>
-          <Stack direction='row' sx={{ width: '100%' }} justifyContent='center' alignItems='center'>
-            <Stack direction='column' spacing={2} sx={{ width: '100%' }} justifyContent='center' alignItems='center'>
-              <Stack direction='column' sx={{ width: '100%' }} justifyContent='center' alignItems='center'>
-                <Typography color='text.secondary' variant='h6' sx={{ textAlign: 'center', fontWeight: 'regular' }}>
-                  Secure Bank Statement Upload
-                </Typography>
-                <Typography variant='body1' sx={{ textAlign: 'center' }}>
-                  Use your internet banking login to securely upload your bank statements via Credit Sense.
-                </Typography>
-                <Typography variant='caption' sx={{ textAlign: 'center' }}>
-                  This is the preferred option as it allows us to quickly assess your application.
-                </Typography>
-              </Stack>
-              <Stack direction='column' spacing={2} sx={{ width: '100%' }} justifyContent='center' alignItems='center'>
-                {!showCreditSense && (
+      <Stack direction='column' justifyContent='center' alignItems='center' spacing={8} sx={{ width: '100%', height: '100%', minHeight: '100%' }}>
+        <Stack direction='column' sx={{ width: '100%', height: '100%', minHeight: '100%' }} justifyContent='center' alignItems='center'>
+          <Stack direction='column' spacing={2} sx={{ width: '100%', height: '100%', minHeight: '100%' }} justifyContent='center' alignItems='center'>
+            <Stack direction='column' sx={{ width: '100%' }} justifyContent='center' alignItems='center'>
+              <Typography color='text.secondary' variant='h6' sx={{ textAlign: 'center', fontWeight: 'regular' }}>
+                Secure Bank Statement Upload
+              </Typography>
+              <Typography variant='body1' sx={{ textAlign: 'center' }}>
+                Use your internet banking login to securely upload your bank statements via Credit Sense.
+              </Typography>
+              <Typography variant='caption' sx={{ textAlign: 'center' }}>
+                This is the preferred option as it allows us to quickly assess your application.
+              </Typography>
+            </Stack>
+            <Stack
+              direction='column'
+              spacing={2}
+              sx={{
+                width: '100%',
+                height: '100%',
+                minHeight: '100%',
+              }}
+              justifyContent='center'
+              alignItems='center'
+            >
+              {!showCreditSense && (
+                <Button
+                  variant='contained'
+                  color='secondary'
+                  sx={{
+                    borderRadius: '49px',
+                    width: 200,
+                    border: 'none',
+                    textTransform: 'uppercase',
+                    fontWeight: 600,
+                    transition: '.5s',
+                  }}
+                  onClick={() => setShowCreditSense(true)}
+                  startIcon={<FileUploadOutlinedIcon />}
+                >
+                  Upload
+                </Button>
+              )}
+              <Modal open={showCreditSense} onClose={handleClose} aria-labelledby='modal-modal-title' aria-describedby='modal-modal-description'>
+                <Stack direction='column' justifyContent='center' alignItems='center' spacing={3} sx={style}>
+                  <Iframe id='fcu-cs-iframe' url={src} width='100%' height='100%' display='block' overflow='visible' frameBorder='0' />
                   <Button
                     variant='contained'
-                    color='secondary'
+                    color='primary'
                     sx={{
                       borderRadius: '49px',
-                      width: 200,
+                      width: 400,
                       border: 'none',
-                      textTransform: 'uppercase',
                       fontWeight: 600,
                       transition: '.5s',
                     }}
-                    onClick={() => setShowCreditSense(true)}
-                    startIcon={<FileUploadOutlinedIcon />}
+                    onClick={handleClose}
                   >
-                    Upload
+                    Return to Application
                   </Button>
-                )}
-              </Stack>
-              {showCreditSense && (
-                <Stack component={motion.div} {...varSubtitle} direction='column' justifyContent='center' alignItems='center' spacing={3} sx={{ pt: 2, width: '100%', zIndex: 'tooltip' }}>
-                  <Iframe url={src} width='100%' height='650px' id='fcu-cs-iframe' display='block' position='relative' frameBorder='0' />
                 </Stack>
-              )}
-            </Stack>
-          </Stack>
-          <Divider
-            variant='fullWidth'
-            sx={{
-              width: '100%',
-              maxWidth: 500,
-            }}
-          >
-            <Chip size='small' label='OR' />
-          </Divider>
-          <Stack direction='column' spacing={2} sx={{ width: '100%' }} justifyContent='center' alignItems='center'>
-            <Stack direction='row' spacing={2} sx={{ width: '100%' }} justifyContent='center' alignItems='center'>
-              <Stack direction='column' sx={{ width: '100%' }} justifyContent='center' alignItems='center'>
-                <Typography color='text.secondary' variant='h6' sx={{ textAlign: 'center', fontWeight: 'regular' }}>
-                  Provide bank statements at a later date.{' '}
-                </Typography>
-                <Typography variant='body2' sx={{ textAlign: 'center' }}>
-                  A lender will be in contact and this may delay the processing of your application.
-                </Typography>
-                <Typography variant='caption' sx={{ textAlign: 'center' }}>
-                  Please click <strong>next</strong> to continue.
-                </Typography>
-              </Stack>
+              </Modal>
             </Stack>
           </Stack>
         </Stack>
-      </CreditSenseBorder>
+        <Divider
+          variant='fullWidth'
+          sx={{
+            width: '100%',
+            maxWidth: 500,
+          }}
+        >
+          <Chip size='small' label='OR' />
+        </Divider>
+        <Stack direction='column' spacing={2} sx={{ width: '100%' }} justifyContent='center' alignItems='center'>
+          <Stack direction='row' spacing={2} sx={{ width: '100%' }} justifyContent='center' alignItems='center'>
+            <Stack direction='column' sx={{ width: '100%' }} justifyContent='center' alignItems='center'>
+              <Typography color='text.secondary' variant='h6' sx={{ textAlign: 'center', fontWeight: 'regular' }}>
+                Provide bank statements at a later date.{' '}
+              </Typography>
+              <Typography variant='body2' sx={{ textAlign: 'center' }}>
+                A lender will be in contact and this may delay the processing of your application.
+              </Typography>
+              <Typography variant='caption' sx={{ textAlign: 'center' }}>
+                Please click <strong>next</strong> to continue.
+              </Typography>
+            </Stack>
+          </Stack>
+        </Stack>
+      </Stack>
+      {/* </CreditSenseBorder> */}
     </Stack>
   )
+}
+
+function AlertModal() {
+  return <Typography>Response Code Text</Typography>
 }
 
 //! -------------------------------------------------------- Responsive iFrame --------------------------------------------------------
@@ -211,11 +321,6 @@ export default function BankStatement() {
 
 // function onApplicationSuccess() {
 //   console.log('On Application Success Called')
-// }
-
-// function logMsg(message) {
-//   if (typeof console == 'object') console.log(message)
-//   else alert(message)
 // }
 
 // function getCerditSenseAlert() {

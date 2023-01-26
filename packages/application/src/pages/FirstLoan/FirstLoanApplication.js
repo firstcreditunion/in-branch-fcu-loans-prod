@@ -91,7 +91,7 @@ import SopAssetLiability from '../../forms/LoanDetails/SopAssetLiability'
 import SopIncomeExpenditure from '../../forms/LoanDetails/SopIncomeExpenditure'
 
 //* Attachments
-import BankStatement from '../../forms/attachments/BankStatement'
+import ResponsiveiFrameCreditSense from '../../forms/BankStatements/ResponsiveiFrameCreditSense'
 
 //* Final
 import PrivacyActDeclaration from '../../forms/Final/PrivacyActDeclaration'
@@ -243,6 +243,7 @@ export default function FirstLoanApplication({ loanAmount, interestRate, term, p
   //* Credit Sense and Bank Statement
   const onSubmitBankStatement = useSelector((state) => state.bankStatementReducer.onSubmitBankStatement)
   const isValidBankStatement = useSelector((state) => state.bankStatementReducer.isValidBankStatement)
+  const creditSenseResponseCode = useSelector((state) => state.bankStatementReducer.creditSenseResponseCode)
 
   //* Privacy declaration
   const onSubmitPrivacyActDeclaration = useSelector((state) => state.privacyDeclarationReducer.onSubmitPrivacyActDeclaration)
@@ -294,7 +295,7 @@ export default function FirstLoanApplication({ loanAmount, interestRate, term, p
   ]
 
   const children = [
-    { index: 0, root: 0, stepCount: 1, code: 'PPD', label: 'Your Personal Details', render: <YourPersonalDetails />, fullwidth: false, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Prime' },
+    { index: 0, root: 0, stepCount: 1, code: 'PPD', label: 'Your Personal Details', render: <ResponsiveiFrameCreditSense />, fullwidth: true, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Prime' },
     { index: 1, root: 0, stepCount: 2, code: 'JPD', label: 'Joint Applicant Personal Details', render: <JointApplicantPersonalDetails />, fullwidth: false, showtitle: true, showProgress: true, skipStep: !jointApplication, dataRelatedTo: 'Joint' },
     { index: 2, root: 0, stepCount: 3, code: 'PAI', label: 'Identifications', render: <Identifications />, fullwidth: false, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Prime' },
     { index: 3, root: 0, stepCount: 4, code: 'JAI', label: 'Joint Applicant Identifications', render: <JointApplicantIdentification />, fullwidth: false, showtitle: true, showProgress: true, skipStep: !jointApplication, dataRelatedTo: 'Joint' },
@@ -315,7 +316,7 @@ export default function FirstLoanApplication({ loanAmount, interestRate, term, p
     { index: 1, root: 3, stepCount: 16, code: 'PFD', label: 'Financial Details', render: <LoanDetails />, fullwidth: false, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Common' },
     { index: 2, root: 3, stepCount: 17, code: 'PAL', label: 'Asset and Liabilities', render: <SopAssetLiability />, fullwidth: true, showtitle: false, showProgress: true, skipStep: false, dataRelatedTo: 'Common' },
     { index: 3, root: 3, stepCount: 18, code: 'PIE', label: 'Income and Expenditure', render: <SopIncomeExpenditure />, fullwidth: true, showtitle: false, showProgress: true, skipStep: false, dataRelatedTo: 'Common' },
-    { index: 4, root: 3, stepCount: 19, code: 'PSTMT', label: 'Bank Statement & Supporting Documents', render: <BankStatement />, fullwidth: true, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Common' },
+    { index: 4, root: 3, stepCount: 19, code: 'PSTMT', label: 'Bank Statement & Supporting Documents', render: <ResponsiveiFrameCreditSense />, fullwidth: true, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Common' },
 
     { index: 0, root: 4, stepCount: 20, code: 'PPAD', label: 'Privacy Act Declaration', render: <PrivacyActDeclaration />, fullwidth: true, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Common' },
     { index: 1, root: 4, stepCount: 21, code: 'SUB', label: 'Submission', render: <Submission />, fullwidth: false, showtitle: true, showProgress: true, skipStep: false, dataRelatedTo: 'Common' },
