@@ -11,7 +11,7 @@ import IconButton from '@mui/material/IconButton'
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded'
 // import useMediaQuery from '@mui/material/useMediaQuery'
 
-const Input = ({ name, label, control, defaultValue, type, onInputChange, value, capitalise = false, placeholder = null, errorInput, variant = 'outlined', disabled = false, helperTextInput, hasTooltip = false, hasStartAdornment = false, StartAdornmentIcon, toolTipText, inputProps, stretch, customWidth, ...props }) => {
+const Input = ({ name, label, control, defaultValue, type, onInputChange, value, capitalise = false, required = false, placeholder = null, errorInput, variant = 'outlined', disabled = false, helperTextInput, hasTooltip = false, hasStartAdornment = false, StartAdornmentIcon, toolTipText, inputProps, stretch, customWidth, ...props }) => {
   // const downMd = useMediaQuery((theme) => theme.breakpoints.down('md'))
   // const downSm = useMediaQuery((theme) => theme.breakpoints.down('sm'))
 
@@ -27,6 +27,7 @@ const Input = ({ name, label, control, defaultValue, type, onInputChange, value,
             variant={variant}
             value={capitalise ? value?.toUpperCase() : value}
             type={type}
+            required={required}
             placeholder={placeholder}
             defaultValue={defaultValue}
             fullWidth={true}

@@ -19,6 +19,7 @@ export const initialState = {
   title: '',
   preferredTitle: '',
   forenames: '',
+  middleNames: '',
   lastName: '',
   otherNames: '',
   gender: '',
@@ -33,6 +34,7 @@ export const initialState = {
   jointtitle: '',
   jointpreferredTitle: '',
   jointforenames: '',
+  jointMiddleNames: '',
   jointlastName: '',
   jointotherNames: '',
   jointgender: '',
@@ -77,6 +79,9 @@ const yourPersonalDetailsSlice = createSlice({
     setForenames: (state, action) => {
       state.forenames = action.payload
     },
+    setMiddleNames: (state, action) => {
+      state.middleNames = action.payload
+    },
     setLastName: (state, action) => {
       state.lastName = action.payload
     },
@@ -105,6 +110,9 @@ const yourPersonalDetailsSlice = createSlice({
     },
     setJointForenames: (state, action) => {
       state.jointforenames = action.payload
+    },
+    setJointMiddleNames: (state, action) => {
+      state.jointMiddleNames = action.payload
     },
     setJointLastName: (state, action) => {
       state.jointlastName = action.payload

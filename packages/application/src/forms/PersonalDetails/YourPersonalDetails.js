@@ -61,6 +61,7 @@ const YourPersonalDetails = () => {
   const title = useSelector((state) => state.yourPersonalDetailReducer.title)
   const preferredTitle = useSelector((state) => state.yourPersonalDetailReducer.preferredTitle)
   const forenames = useSelector((state) => state.yourPersonalDetailReducer.forenames)
+  const middleNames = useSelector((state) => state.yourPersonalDetailReducer.middleNames)
   const lastName = useSelector((state) => state.yourPersonalDetailReducer.lastName)
   const otherNames = useSelector((state) => state.yourPersonalDetailReducer.otherNames)
   const gender = useSelector((state) => state.yourPersonalDetailReducer.gender)
@@ -93,6 +94,7 @@ const YourPersonalDetails = () => {
       .string()
       .required('First names are required')
       .matches(/^([^0-9]*)$/, 'First name(s) should not contain numbers'),
+    middleNames: yup.string().matches(/^([^0-9]*)$/, 'Middle Name(s) should not contain numbers'),
     lastName: yup
       .string()
       .required('Last name is a required field')
@@ -167,6 +169,7 @@ const YourPersonalDetails = () => {
       title: title,
       preferredTitle: preferredTitle,
       firstNames: forenames,
+      middleNames: middleNames,
       lastName: lastName,
       otherNames: otherNames,
       gender: gender,
@@ -218,6 +221,10 @@ const YourPersonalDetails = () => {
 
   const handleFornames = (event) => {
     dispatch(yourPersonalDetailsActions.setForenames(event.target.value))
+  }
+
+  const handleMiddleNames = (event) => {
+    dispatch(yourPersonalDetailsActions.setMiddleNames(event.target.value))
   }
 
   const handleLastName = (event) => {
@@ -279,7 +286,8 @@ const YourPersonalDetails = () => {
               </motion.div>
             )}
           </AnimatePresence>
-          <InputField name='firstNames' label='First Names' type='text' control={control} onInputChange={handleFornames} hasTooltip={false} disabled={secureSessionID !== null && forenames !== '' && forenames !== undefined && validSovereignPersonalDetailsForenames === true} placeholder='First Names' hasStartAdornment={true} StartAdornmentIcon={<PersonRoundedIcon color='primary' />} />
+          <InputField name='firstNames' label='First Name' type='text' control={control} onInputChange={handleFornames} hasTooltip={false} disabled={secureSessionID !== null && forenames !== '' && forenames !== undefined && validSovereignPersonalDetailsForenames === true} placeholder='First Name' hasStartAdornment={true} StartAdornmentIcon={<PersonRoundedIcon color='primary' />} />
+          <InputField name='middleNames' label='Middle Names' type='text' control={control} onInputChange={handleMiddleNames} hasTooltip={false} disabled={false} placeholder='Middle Names' hasStartAdornment={true} StartAdornmentIcon={<PersonRoundedIcon color='primary' />} />
           <InputField name='lastName' label='Last Name' type='text' control={control} onInputChange={handleLastName} hasTooltip={false} disabled={secureSessionID !== null && lastName !== '' && lastName !== undefined && validSovereignPersonalDetailsSurname === true} placeholder='Last Name' hasStartAdornment={true} StartAdornmentIcon={<PersonRoundedIcon color='primary' />} />
           {/* <InputField name='otherNames' label='Other Names' type='text' control={control} onInputChange={handleOtherName} helperTextInput='Have you ever been know by another name?' hasTooltip={false} /> */}
           <RadioGroups id='gender' name='gender' onRadioChange={handleGender} control={control} label='Gender' value={gender} defaultValue={gender || ''} hasTooltip={false} row={true}>

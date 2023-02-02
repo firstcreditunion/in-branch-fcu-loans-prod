@@ -79,6 +79,93 @@ const useCreditsense = () => {
   return count
 }
 
+function updateCreditSenseResponse(response) {
+  // const dispatch = useDispatch()
+
+  switch (response) {
+    case '-99': // Example status code (Bank statcus success)
+      console.log('RESPONSE in -99 - ', response)
+      // dispatch(bankStatementActions.setCreditSenseResponseCode(response))
+      break
+    case '-98': // Example status code (Bank statcus success)
+      console.log('RESPONSE in -98 - ', response)
+      // dispatch(bankStatementActions.setCreditSenseResponseCode(response))
+      break
+    case '1': // Example status code (Bank statcus success)
+      console.log('RESPONSE in 1 - ', response)
+      // dispatch(bankStatementActions.setCreditSenseResponseCode(response))
+      break
+    case '3': // Example status code (Bank statcus success)
+      console.log('RESPONSE in 3 - ', response)
+      // dispatch(bankStatementActions.setCreditSenseResponseCode(response))
+      break
+    case '97': // Example status code (Bank statcus success)
+      console.log('RESPONSE in 97 - ', response)
+      // dispatch(bankStatementActions.setCreditSenseResponseCode(response))
+      break
+    case '100': // Example status code (Bank statcus success)
+      console.log('RESPONSE in 100 - ', response)
+      // dispatch(bankStatementActions.setCreditSenseResponseCode(response))
+      break
+    case '-4': // Example status code (Bank statcus success)
+      console.log('RESPONSE in -4 - ', response)
+      // dispatch(bankStatementActions.setCreditSenseResponseCode(response))
+      break
+    case '-3': // Example status code
+      console.log('RESPONSE in -3 - ', response)
+      // dispatch(bankStatementActions.setCreditSenseResponseCode(response))
+      break
+    case '-2': // Example status code
+      console.log('RESPONSE in -2 - ', response)
+      // dispatch(bankStatementActions.setCreditSenseResponseCode(response))
+      break
+    case '99': // Example status code
+      console.log('RESPONSE in 99 - ', response)
+      // dispatch(bankStatementActions.setCreditSenseResponseCode(response))
+      break
+    case '150': // Example status code
+      console.log('RESPONSE in 150 - ', response)
+      // dispatch(bankStatementActions.setCreditSenseResponseCode(response))
+      break
+    case '151': // Example status code
+      console.log('RESPONSE in 151 - ', response)
+      // dispatch(bankStatementActions.setCreditSenseResponseCode(response))
+      break
+    case '152': // Example status code
+      console.log('RESPONSE in 152 - ', response)
+      // dispatch(bankStatementActions.setCreditSenseResponseCode(response))
+      break
+    case '153': // Example status code
+      console.log('RESPONSE in 153 - ', response)
+      // dispatch(bankStatementActions.setCreditSenseResponseCode(response))
+      break
+    case '400': // Example status code
+      console.log('RESPONSE in 400 - ', response)
+      // dispatch(bankStatementActions.setCreditSenseResponseCode(response))
+      break
+    case '-18': // Example status code
+      console.log('RESPONSE in -18 - ', response)
+      // dispatch(bankStatementActions.setCreditSenseResponseCode(response))
+      break
+    case '-17': // Example status code
+      console.log('RESPONSE in -17 - ', response)
+      // dispatch(bankStatementActions.setCreditSenseResponseCode(response))
+      break
+    case '-16': // Example status code
+      console.log('RESPONSE in -16 - ', response)
+      // dispatch(bankStatementActions.setCreditSenseResponseCode(response))
+      break
+    case '-15': // Example status code
+      console.log('RESPONSE in -15 - ', response)
+      // dispatch(bankStatementActions.setCreditSenseResponseCode(response))
+      break
+    case '98': // Example status code
+      console.log('RESPONSE in 98 - ', response)
+      // dispatch(bankStatementActions.setCreditSenseResponseCode(response))
+      break
+  }
+}
+
 export default function BankStatement() {
   const [showCreditSense, setShowCreditSense] = React.useState(false)
   const [creditSenseResponse, setCreditSenseResponse] = React.useState(null)
@@ -155,16 +242,7 @@ export default function BankStatement() {
         if (Number(response)) {
           if (creditSenseResponseCode === 100 || creditSenseResponseCode === response) return
           creditSenseResponseCode = parseInt(response)
-          console.log('PARSE INT NUMBER: ', parseInt(response))
-        }
-
-        switch (response) {
-          case '99': // Example status code (Bank statcus success)
-            logMsg('Bank details collected successfully')
-            break
-          case '100': // Example status code
-            console.log('Credit Sense Statement Upload Complete')
-            break
+          // updateCreditSenseResponse(response)
         }
       },
     })

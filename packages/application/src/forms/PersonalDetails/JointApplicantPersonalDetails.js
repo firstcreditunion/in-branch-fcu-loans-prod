@@ -56,6 +56,7 @@ const JointApplicantPersonalDetails = () => {
   const jointtitle = useSelector((state) => state.yourPersonalDetailReducer.jointtitle)
   const jointpreferredTitle = useSelector((state) => state.yourPersonalDetailReducer.jointpreferredTitle)
   const jointforenames = useSelector((state) => state.yourPersonalDetailReducer.jointforenames)
+  const jointMiddleNames = useSelector((state) => state.yourPersonalDetailReducer.jointMiddleNames)
   const jointlastName = useSelector((state) => state.yourPersonalDetailReducer.jointlastName)
   const jointotherNames = useSelector((state) => state.yourPersonalDetailReducer.jointotherNames)
   const jointgender = useSelector((state) => state.yourPersonalDetailReducer.jointgender)
@@ -77,6 +78,7 @@ const JointApplicantPersonalDetails = () => {
       .string()
       .required('First name(s) are required')
       .matches(/^([^0-9]*)$/, 'First name(s) should not contain numbers'),
+    jointMiddleNames: yup.string().matches(/^([^0-9]*)$/, 'Middle name(s) should not contain numbers'),
     jointlastName: yup
       .string()
       .required('Last name is a required field')
@@ -151,6 +153,7 @@ const JointApplicantPersonalDetails = () => {
       jointtitle: jointtitle,
       jointpreferredTitle: jointpreferredTitle,
       jointfirstNames: jointforenames,
+      jointMiddleNames: jointMiddleNames,
       jointlastName: jointlastName,
       jointotherNames: jointotherNames,
       jointgender: jointgender,
@@ -193,6 +196,10 @@ const JointApplicantPersonalDetails = () => {
 
   const handleFornames = (event) => {
     dispatch(yourPersonalDetailsActions.setJointForenames(event.target.value))
+  }
+
+  const handleMiddleNames = (event) => {
+    dispatch(yourPersonalDetailsActions.setJointMiddleNames(event.target.value))
   }
 
   const handleLastName = (event) => {
@@ -247,9 +254,10 @@ const JointApplicantPersonalDetails = () => {
               </motion.div>
             )}
           </AnimatePresence>
-          <InputField name='jointfirstNames' label='First Names' type='text' control={control} onInputChange={handleFornames} hasTooltip={false} placeholder='First Names' hasStartAdornment={true} StartAdornmentIcon={<PeopleRoundedIcon color='secondary' />} />
+          <InputField name='jointfirstNames' label='First Name' type='text' control={control} onInputChange={handleFornames} hasTooltip={false} placeholder='First Name' hasStartAdornment={true} StartAdornmentIcon={<PeopleRoundedIcon color='secondary' />} />
+          <InputField name='jointMiddleNames' label='Middles Names' type='text' control={control} onInputChange={handleMiddleNames} hasTooltip={false} placeholder='Middle Names' hasStartAdornment={true} StartAdornmentIcon={<PeopleRoundedIcon color='secondary' />} />
           <InputField name='jointlastName' label='Last Name' type='text' control={control} onInputChange={handleLastName} hasTooltip={false} placeholder='Surname' hasStartAdornment={true} StartAdornmentIcon={<PeopleRoundedIcon color='secondary' />} />
-          {/* <InputField name='jointotherNames' label='Other Names' type='text' control={control} onInputChange={handleOtherName} helperTextInput='Have you ever been know by another name?' hasTooltip={false} /> */}
+          {/* <InputField name='jointotherNames' label='Other Names' type='text' control={control} onInputChange={handleLastName} helperTextInput='Have you ever been know by another name?' hasTooltip={false} /> */}
           <RadioGroups id='jointgender' name='jointgender' onRadioChange={handleGender} control={control} label='Gender' value={jointgender} defaultValue={jointgender || ''} hasTooltip={false} row={true}>
             <FormControlLabel value='Male' control={<Radio size='small' />} label='Male' key='Male' />
             <FormControlLabel value='Female' control={<Radio size='small' />} label='Female' key='Female' />

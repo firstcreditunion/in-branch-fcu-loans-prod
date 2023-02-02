@@ -8,6 +8,7 @@ export const genericStatusCodes = [
     AlertTitle: 'Error',
     AlertContent: 'Credit Sense cannot be reached!',
     SeverityType: 'error',
+    SovereignMemoCSOutcome: 'Credit Sense could not be reached.',
     Description: 'Returned when the Credit Sense server cannot be reached. This can occur at any stage in the application journey.',
   },
   {
@@ -17,6 +18,7 @@ export const genericStatusCodes = [
     AlertTitle: 'Error',
     AlertContent: 'The Terms&Conditions were Declined!',
     SeverityType: 'error',
+    SovereignMemoCSOutcome: 'he Terms&Conditions were Declined.',
     Description: 'Returned when the customer clicks the decline button on the Terms and Conditions screen.',
   },
   {
@@ -26,6 +28,7 @@ export const genericStatusCodes = [
     AlertTitle: 'Info',
     AlertContent: 'Credit Sense Portal Initialised',
     SeverityType: 'info',
+    SovereignMemoCSOutcome: 'Credit Sense Portal Initialised',
     Description: 'Returned once the iframe has been successfully initialised.',
   },
   {
@@ -35,6 +38,7 @@ export const genericStatusCodes = [
     AlertTitle: 'Select Bank',
     AlertContent: 'Please select the bank from which you would like to upload your statements.',
     SeverityType: 'info',
+    SovereignMemoCSOutcome: 'Bank selection panel.',
     Description: 'Returned once an App ID has been generated for the current application.',
   },
   {
@@ -44,6 +48,7 @@ export const genericStatusCodes = [
     AlertTitle: 'Login Details Sent',
     AlertContent: 'Login Details Sent to Credit Sense',
     SeverityType: 'info',
+    SovereignMemoCSOutcome: 'Login details sent to Credit Sense',
     Description: 'Returned when the user hits the status stage of the application journey and their credentials have been sent to our server.',
   },
   {
@@ -53,6 +58,7 @@ export const genericStatusCodes = [
     AlertTitle: 'Login Success',
     AlertContent: 'You have successfully logged in!',
     SeverityType: 'info',
+    SovereignMemoCSOutcome: 'Logged in successfully',
     Description: 'Returned when the application successfully completes with successes for all logins.',
   },
 ]
@@ -65,6 +71,7 @@ export const bankStatusCodes = [
     AlertTitle: 'Internet Banking Error',
     AlertContent: 'The internet banking service for your bank is not operational!',
     SeverityType: 'error',
+    SovereignMemoCSOutcome: 'The internet banking service of chosen bank was not available',
     Description: 'Returned when communications to the bank cannot be made. e.g. The banks service is down, or the bank is not supported.',
   },
   {
@@ -74,6 +81,7 @@ export const bankStatusCodes = [
     AlertTitle: 'Too Many Attempts',
     AlertContent: 'You failed to log into your internet banking 3 times.',
     SeverityType: 'error',
+    SovereignMemoCSOutcome: 'Failed to login to internet banking after 3 attempts.',
     Description: 'Returned when three attempts to log into the account fail.',
   },
   {
@@ -83,6 +91,7 @@ export const bankStatusCodes = [
     AlertTitle: 'Incorrect Credentials',
     AlertContent: 'Your login details are incorrect!',
     SeverityType: 'error',
+    SovereignMemoCSOutcome: 'Unable to login due to incorrect credentials.',
     Description: 'Returned when the provided credentials cannot be used to log into the account.',
   },
   {
@@ -92,6 +101,7 @@ export const bankStatusCodes = [
     AlertTitle: 'Login Success',
     AlertContent: 'Your bank statements were uploaded successfully!',
     SeverityType: 'info',
+    SovereignMemoCSOutcome: 'Bank Statements uploaded successfully.',
     Description: 'Returned when a success response has been received for the provided credentials.',
   },
   {
@@ -101,6 +111,7 @@ export const bankStatusCodes = [
     AlertTitle: 'Verification Code',
     AlertContent: 'Please enter the verification code!',
     SeverityType: 'info',
+    SovereignMemoCSOutcome: 'Entering MFA verifiacation code.',
     Description: 'Returned when the MFA form is shown to the customer.',
   },
   {
@@ -110,6 +121,7 @@ export const bankStatusCodes = [
     AlertTitle: 'Refreshing MFA',
     AlertContent: 'MFA Form Expired. Refreshing MFA!',
     SeverityType: 'info',
+    SovereignMemoCSOutcome: 'MFA form refreshed.',
     Description: 'Returned when the user hits the refresh button on the MFA form after it has expired. You can expect a 1001 status code at the point that the MFA has expired before this code is sent.',
   },
   {
@@ -119,6 +131,7 @@ export const bankStatusCodes = [
     AlertTitle: 'Code Submitted',
     AlertContent: 'You verification code has been submitted!',
     SeverityType: 'info',
+    SovereignMemoCSOutcome: 'MFA verification code submitted.',
     Description: 'Returned when the user submits the MFA form.',
   },
   {
@@ -128,6 +141,7 @@ export const bankStatusCodes = [
     AlertTitle: 'Change Bank',
     AlertContent: 'Please choose another bank!',
     SeverityType: 'info',
+    SovereignMemoCSOutcome: 'Change bank form clicked',
     Description: 'Returned when the user clicks the change bank button.',
   },
   {
@@ -137,6 +151,7 @@ export const bankStatusCodes = [
     AlertTitle: 'Login Failed',
     AlertContent: 'Inetrnet Banking Login Failed!',
     SeverityType: 'error',
+    SovereignMemoCSOutcome: 'Internet banking login failed.',
     Description: 'Returned when a bank login attempt fails; followed by a -2 status code. The code will indicate the specific error that was encountered.',
   },
 ]
@@ -149,6 +164,7 @@ export const supportingDocsStatusCodes = [
     AlertTitle: 'Service Unavalable',
     AlertContent: 'WINZ or myGov services are not accessible! Please try again.',
     SeverityType: 'error',
+    SovereignMemoCSOutcome: '',
     Description: 'Returned when the myGov or WINZ websites are inaccessible and the user will need to try again later.',
   },
   {
@@ -158,6 +174,7 @@ export const supportingDocsStatusCodes = [
     AlertTitle: 'Internal Error',
     AlertContent: '',
     SeverityType: 'error',
+    SovereignMemoCSOutcome: 'Failed due to government agency service error.',
     Description: 'Returned when an error is encountered and the request is unable to be completed.',
   },
   {
@@ -167,6 +184,7 @@ export const supportingDocsStatusCodes = [
     AlertTitle: 'Error',
     AlertContent: 'Please refresh!',
     SeverityType: 'error',
+    SovereignMemoCSOutcome: 'Failed due to client-side error.',
     Description: 'Returned when an error within the iframe prevents the credentials from being submitted.',
   },
   {
@@ -176,6 +194,7 @@ export const supportingDocsStatusCodes = [
     AlertTitle: 'Authentication Fail',
     AlertContent: 'You credentials were cannot be authenticated!',
     SeverityType: 'error',
+    SovereignMemoCSOutcome: 'WINZ not yet authenticated.',
     Description: 'Returned when the users credentials arent able to be authenticated.',
   },
   {
@@ -185,6 +204,7 @@ export const supportingDocsStatusCodes = [
     AlertTitle: 'Documents retrieved',
     AlertContent: 'Your supporting docuemts have been retrieved successfully!',
     SeverityType: 'success',
+    SovereignMemoCSOutcome: 'Winz document retrieved successfully.',
     Description: 'Returned when the users credentials arent able to be authenticated.',
   },
 ]
