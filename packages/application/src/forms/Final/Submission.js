@@ -2838,8 +2838,8 @@ export default function Submission() {
     }
   }, [submit])
 
-  // **************** useEffect for generating PDF - To be completed in the next release *************** //
-
+  // ************** useEffect for generating PDF - To be completed in the next release *************** //
+  
   useEffect(() => {
     console.log('Credit Sense Reference - ', creditSenseAppRef)
     console.log('Credit Sense CODE - ', creditSenseResponseCode)
