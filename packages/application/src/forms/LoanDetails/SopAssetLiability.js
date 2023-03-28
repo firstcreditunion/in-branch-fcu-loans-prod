@@ -45,6 +45,7 @@ const schema = yup.object().shape({
   liability_Mastercard: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Amount should be greater than $0.00').nullable(),
   liability_Visa: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Amount should be greater than $0.00').nullable(),
   liability_studentloan: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Amount should be greater than $0.00').nullable(),
+  liability_otherloan1: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Amount should be greater than $0.00').nullable(),
 })
 
 export default function SopIncomeExpenditure() {
@@ -74,6 +75,7 @@ export default function SopIncomeExpenditure() {
   const liability_Mastercard = useSelector((state) => state.sopAssetLiabilityReducer.liability.liability_Mastercard)
   const liability_Visa = useSelector((state) => state.sopAssetLiabilityReducer.liability.liability_Visa)
   const liability_studentloan = useSelector((state) => state.sopAssetLiabilityReducer.liability.liability_studentloan)
+  const liability_otherloan1 = useSelector((state) => state.sopAssetLiabilityReducer.liability.liability_otherloan1)
   // const liability_otherliability1 = useSelector((state) => state.sopAssetLiabilityReducer.liability.liability_otherliability1)
   // const liability_otherliability2 = useSelector((state) => state.sopAssetLiabilityReducer.liability.liability_otherliability2)
 
@@ -181,8 +183,12 @@ export default function SopIncomeExpenditure() {
   }
 
   // StudentLoan
-  const handleeLiabilityStudentLoanAmount = (event) => {
+  const handleLiabilityStudentLoanAmount = (event) => {
     dispatch(sopAssetLiabilityActions.setLiabilityStudentLoanAmount(parseInt(event.target.value) - 0))
+  }
+
+  const handleLiabilityOtherLoan1Amount = (event) => {
+    dispatch(sopAssetLiabilityActions.setLiabilityOtherLoan1Amount(parseInt(event.target.value) - 0))
   }
 
   // //OtherLiability1
@@ -223,6 +229,7 @@ export default function SopIncomeExpenditure() {
       liability_Mastercard: liability_Mastercard.amount,
       liability_Visa: liability_Visa.amount,
       liability_studentloan: liability_studentloan.amount,
+      liability_otherloan1: liability_otherloan1.amouont,
     },
     mode: 'onBlur',
     resolver: yupResolver(schema),
@@ -406,6 +413,18 @@ export default function SopIncomeExpenditure() {
         durationOut: 0.32,
       }).outRight
 
+  const varOtherloan1 = checkedLiabilityCodes.includes('LOTHLOAN1')
+    ? varFade({
+        distance: 100,
+        durationIn: 0.32,
+        durationOut: 0.32,
+      }).inRight
+    : varFade({
+        distance: 100,
+        durationIn: 0.32,
+        durationOut: 0.32,
+      }).outRight
+
   //JSX
   return (
     <Box sx={{ px: 0, height: '100%' }}>
@@ -535,7 +554,14 @@ export default function SopIncomeExpenditure() {
               <AnimatePresence>
                 {checkedLiabilityCodes.includes('LSLN') && (
                   <motion.div {...varStudentloan}>
-                    <SopTextFieldAssetLiability name='liability_studentloan' control={control} label={liability_studentloan.label} onSopTextFieldChange={handleeLiabilityStudentLoanAmount} />
+                    <SopTextFieldAssetLiability name='liability_studentloan' control={control} label={liability_studentloan.label} onSopTextFieldChange={handleLiabilityStudentLoanAmount} />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              <AnimatePresence>
+                {checkedLiabilityCodes.includes('LOTHLOAN1') && (
+                  <motion.div {...varOtherloan1}>
+                    <SopTextFieldAssetLiability name='liability_otherloan1' control={control} label={liability_otherloan1.label} onSopTextFieldChange={handleLiabilityOtherLoan1Amount} />
                   </motion.div>
                 )}
               </AnimatePresence>

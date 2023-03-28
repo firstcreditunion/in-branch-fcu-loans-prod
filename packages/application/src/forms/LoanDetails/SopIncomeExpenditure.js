@@ -53,6 +53,7 @@ const schema = yup.object().shape({
   expense_Gym: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Amount should be greater than $0.00').nullable(),
   expense_Recreation: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Amount should be greater than $0.00').nullable(),
   expense_Tithing: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Amount should be greater than $0.00').nullable(),
+  expense_Insurance: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Amount should be greater than $0.00').nullable(),
   expense_Savings: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Amount should be greater than $0.00').nullable(),
 })
 
@@ -95,6 +96,7 @@ export default function SopIncomeExpenditure() {
   const expense_Gym = useSelector((state) => state.sopIncomeExpenditureReducer.expense.expense_Gym)
   const expense_Recreation = useSelector((state) => state.sopIncomeExpenditureReducer.expense.expense_Recreation)
   const expense_Tithing = useSelector((state) => state.sopIncomeExpenditureReducer.expense.expense_Tithing)
+  const expense_Insurance = useSelector((state) => state.sopIncomeExpenditureReducer.expense.expense_Insurance)
   const expense_Savings = useSelector((state) => state.sopIncomeExpenditureReducer.expense.expense_Savings)
 
   // Form submission
@@ -341,6 +343,14 @@ export default function SopIncomeExpenditure() {
   }
 
   //Savings
+  const handleExpenseInsuranceAmount = (event) => {
+    dispatch(sopIncomeExpenditureActions.setExpenseInsuranceAmount(parseInt(event.target.value) - 0))
+  }
+  const handleExpenseInsuranceFrequency = (event) => {
+    dispatch(sopIncomeExpenditureActions.setExpenseInsuranceFrequency(event.target.value))
+  }
+
+  //Savings
   const handleExpenseSavingsAmount = (event) => {
     dispatch(sopIncomeExpenditureActions.setExpenseSavingsAmount(parseInt(event.target.value) - 0))
   }
@@ -393,6 +403,7 @@ export default function SopIncomeExpenditure() {
       expense_Gym: expense_Gym.amount,
       expense_Recreation: expense_Recreation.amount,
       expense_Tithing: expense_Tithing.amount,
+      expense_Insurance: expense_Insurance.amount,
       expense_Savings: expense_Savings.amount,
     },
     mode: 'onBlur',
@@ -699,6 +710,17 @@ export default function SopIncomeExpenditure() {
         durationIn: 0.32,
         durationOut: 0.32,
       }).outRight
+  const varInsurance = checkedExpenseCodes.includes('EINSURE')
+    ? varFade({
+        distance: 100,
+        durationIn: 0.32,
+        durationOut: 0.32,
+      }).inRight
+    : varFade({
+        distance: 100,
+        durationIn: 0.32,
+        durationOut: 0.32,
+      }).outRight
   const varSavings = checkedExpenseCodes.includes('ESAV')
     ? varFade({
         distance: 100,
@@ -919,6 +941,13 @@ export default function SopIncomeExpenditure() {
                 {checkedExpenseCodes.includes('ETITH') && (
                   <motion.div {...varTithing}>
                     <SOPTextField control={control} name='expense_Tithing' label={expense_Tithing.label} frequencyUnit={expense_Tithing.frequency.unit} dialogContentText={expense_Tithing.frequency.dialogTitleText} onSopTextFieldChange={handleExpenseTithingAmount} frequencyChange={handleExpenseTithingFrequency} radioValue={expense_Tithing.frequency.unit} />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              <AnimatePresence>
+                {checkedExpenseCodes.includes('EINSURE') && (
+                  <motion.div {...varInsurance}>
+                    <SOPTextField control={control} name='expense_Insurance' label={expense_Insurance.label} frequencyUnit={expense_Insurance.frequency.unit} dialogContentText={expense_Insurance.frequency.dialogTitleText} onSopTextFieldChange={handleExpenseInsuranceAmount} frequencyChange={handleExpenseInsuranceFrequency} radioValue={expense_Insurance.frequency.unit} />
                   </motion.div>
                 )}
               </AnimatePresence>

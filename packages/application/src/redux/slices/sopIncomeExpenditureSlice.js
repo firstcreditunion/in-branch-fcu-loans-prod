@@ -253,6 +253,16 @@ export const initialState = {
       autoComplete: { title: 'Tithing', code: 'ETITH' },
       sovereign: { key: 'TITH', value: 'Tithing' },
     },
+    expense_Insurance: {
+      title: 'Insurance',
+      groupBy: 'expense',
+      amount: null,
+      frequency: { value: 1, unit: 'W', dialogTitleText: 'How often do you pay for your insurance?' },
+      label: 'Insurance',
+      tooltip: { display: false, tip: '' },
+      autoComplete: { title: 'Insurance', code: 'EINSURE' },
+      sovereign: { key: 'INSURE', value: 'Insurance' },
+    },
     expense_Savings: {
       title: 'Savings',
       groupBy: 'expense',
@@ -481,6 +491,13 @@ const sopIncomeExpenditureSlice = createSlice({
     },
     setExpenseTithingFrequency: (state, action) => {
       state.expense.expense_Tithing.frequency.unit = action.payload
+    },
+
+    setExpenseInsuranceAmount: (state, action) => {
+      state.expense.expense_Insurance.amount = action.payload
+    },
+    setExpenseInsuranceFrequency: (state, action) => {
+      state.expense.expense_Insurance.frequency.unit = action.payload
     },
 
     setExpenseSavingsAmount: (state, action) => {

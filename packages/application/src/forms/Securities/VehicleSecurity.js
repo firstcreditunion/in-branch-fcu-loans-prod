@@ -101,6 +101,14 @@ export default function VehicleSecurity() {
     }
   }, [onSubmitVehicleSecurityDetails])
 
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    })
+  }, [])
+
   function onSubmit() {
     console.log('Financial Details Submitted')
   }

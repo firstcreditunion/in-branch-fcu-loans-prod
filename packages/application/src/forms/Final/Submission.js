@@ -190,11 +190,6 @@ export default function Submission() {
 
   const creditSenseAppRef = useSelector((state) => state.bankStatementReducer.creditSenseAppRef)
   const creditSenseResponseCode = useSelector((state) => state.bankStatementReducer.creditSenseResponseCode)
-  const creditSenseCodes = [...genericStatusCodes, ...bankStatusCodes, ...supportingDocsStatusCodes]
-
-  const finalCreditSenseresponse = creditSenseCodes.filter((code) => {
-    return code?.Code === creditSenseResponseCode
-  })
 
   //* ------------ Security Details ------------ //
 
@@ -222,6 +217,7 @@ export default function Submission() {
   const jointApplication = useSelector((state) => state.lendingCritetiaQnsReducer.jointApplication.value)
   const jointApplicantClientNo = useSelector((state) => state.lendingCritetiaQnsReducer.jointApplicantClientNo)
   const jointApplication_key = useSelector((state) => state.lendingCritetiaQnsReducer.jointApplication.key)
+  const existingMember = useSelector((state) => state.lendingCritetiaQnsReducer.existingMember?.value)
 
   const citizen = useSelector((state) => state.lendingCritetiaQnsReducer.citizenship)
   const isNzCitizen = useSelector((state) => state.lendingCritetiaQnsReducer.isNzCitizen.value)
@@ -1885,7 +1881,7 @@ export default function Submission() {
 
   const expireIncluded = [...expireIdentificationIncluded, ...expireEmploymentIncluded]
 
-  const preliminaryQuestions_MemoLines = ['', '------ Credit Sense ------', '', `Reference: ${creditSenseAppRef == null ? 'N/A' : creditSenseAppRef}`, '', `Credit Sense Outcome : ${finalCreditSenseresponse == null ? 'Credit Sense report was not completed by member' : finalCreditSenseresponse}`, '', '------ Loan Protection Insurance ------', '', `Total Premium: $${lpiGrossPremium === null ? 0 : lpiGrossPremium}`, '', `Prime Borrower Covers: ${hasLpiPrimeDeath ? 'Death' : ''} ${hasLpiPrimeDisability ? ', Disability' : ''} ${hasLpiPrimeBankruptcy ? ', Bankruptcy' : ''} ${hasLpiPrimeCriticalIllness ? ', Critical Illness' : ''}`, '', `Co-Borrower Covers: ${hasLpiJointDeath ? 'Death' : ''} ${hasLpiJointDisability ? ', Disability' : ''} ${hasLpiJointBankruptcy ? ', Bankruptcy' : ''} ${hasLpiJointCriticalIllness ? ', Critical Illness' : ''}`, '', '------ Vehicle Details for Security ------', '', `Vehicle-related Loan Purpose? : ${vehicleRelatedLoanPurpose ? 'Yes' : 'No'}`, '', `Would you like to provide vehicle as loan security? : ${!vehicleRelatedLoanPurpose || vehicleRelatedLoanPurpose == null ? wouldYoulikeToProvideVehicleSecurity : 'N/A'}`, '', `Have you purchased the vehicle yet? : ${hasPurchsedVehicle}`, '', `Vehicle Rego : ${vehicleRegistrationNumber}`, '', '------ Preliminary Questions ------', '', `Are you applying for a joint loan? : ${jointApplication_key}`, '', `What is the purpose of this loan? : ${getLoanPurposeFromKey(loanPurpose)?.value}`, '', `Trading Branch : ${getTradingBranchFromKey(tradingBranch)?.value}`, '', `Citizenship? : ${getCountryFromKey(citizen)?.label}`, '', `Residency : ${isNzCitizen ? 'N/A' : getCountryFromKey(resident)?.label}`, '', `Do you have a work permit? : ${isNzResident ? 'N/A' : hasWorkPermit?.key}`, '', `Do you have a regular income? : ${hasRegularIncome?.key}`, '', `Is your income credited to your FCU Account?: ${incomeCreditedToFCU?.key}`, '', `Have you been declared bankrupt before? : ${wasDeclaredBankrupt?.key}`, '', `Bankruptcy Date: ${wasDeclaredBankrupt?.key === 'No' ? 'N/A' : fDate(bankruptcyDate)}`, '', '------ Privacy Declaration -------', '', `1. Accepted Credit Assesment Checks- ${declarationItems?.CreditAssesment?.accept === true ? 'Yes' : 'No'}`, '', `2. Authorise FCU to disclose data to third parties - ${declarationItems?.AuthoriseFCU?.accept === true ? 'Yes' : 'No'}`, '', `3. Information is true and correct - ${declarationItems?.TrueInformation?.accept === true ? 'Yes' : 'No'}`, '', `4. Comply with AML/CFT obligations - ${declarationItems?.AmlCftObligations?.accept === true ? 'Yes' : 'No'}`, '', `5. Authorise FCU to collect, use and store data - ${declarationItems?.StorePersonalInfo?.accept === true ? 'Yes' : 'No'}`]
+  const preliminaryQuestions_MemoLines = ['', '------ Credit Sense ------', '', `Reference: ${creditSenseAppRef == null ? 'Credit Sense Skipped' : !(creditSenseAppRef == null) && creditSenseResponseCode}`, '', '------ Loan Protection Insurance ------', '', `Total Premium: $${lpiGrossPremium === null ? 0 : lpiGrossPremium}`, '', `Prime Borrower Covers: ${hasLpiPrimeDeath ? 'Death' : ''} ${hasLpiPrimeDisability ? ', Disability' : ''} ${hasLpiPrimeBankruptcy ? ', Bankruptcy' : ''} ${hasLpiPrimeCriticalIllness ? ', Critical Illness' : ''}`, '', `Co-Borrower Covers: ${hasLpiJointDeath ? 'Death' : ''} ${hasLpiJointDisability ? ', Disability' : ''} ${hasLpiJointBankruptcy ? ', Bankruptcy' : ''} ${hasLpiJointCriticalIllness ? ', Critical Illness' : ''}`, '', '------ Vehicle Details for Security ------', '', `Vehicle-related Loan Purpose? : ${vehicleRelatedLoanPurpose ? 'Yes' : 'No'}`, '', `Would you like to provide vehicle as loan security? : ${!vehicleRelatedLoanPurpose || vehicleRelatedLoanPurpose == null ? wouldYoulikeToProvideVehicleSecurity : 'N/A'}`, '', `Have you purchased the vehicle yet? : ${hasPurchsedVehicle}`, '', `Vehicle Rego : ${vehicleRegistrationNumber}`, '', '------ Preliminary Questions ------', '', `Are you applying for a joint loan? : ${jointApplication_key}`, '', `Existing Member? - ${existingMember === true ? 'Yes' : 'No'}`, '', `What is the purpose of this loan? : ${getLoanPurposeFromKey(loanPurpose)?.value}`, '', `Trading Branch : ${getTradingBranchFromKey(tradingBranch)?.value}`, '', `Citizenship? : ${getCountryFromKey(citizen)?.label}`, '', `Residency : ${isNzCitizen ? 'N/A' : getCountryFromKey(resident)?.label}`, '', `Do you have a work permit? : ${isNzResident ? 'N/A' : hasWorkPermit?.key}`, '', `Do you have a regular income? : ${hasRegularIncome?.key}`, '', `Is your income credited to your FCU Account?: ${incomeCreditedToFCU?.key}`, '', `Have you been declared bankrupt before? : ${wasDeclaredBankrupt?.key}`, '', `Bankruptcy Date: ${wasDeclaredBankrupt?.key === 'No' ? 'N/A' : fDate(bankruptcyDate)}`, '', '------ Privacy Declaration -------', '', `1. Accepted Credit Assesment Checks- ${declarationItems?.CreditAssesment?.accept === true ? 'Yes' : 'No'}`, '', `2. Authorise FCU to disclose data to third parties - ${declarationItems?.AuthoriseFCU?.accept === true ? 'Yes' : 'No'}`, '', `3. Information is true and correct - ${declarationItems?.TrueInformation?.accept === true ? 'Yes' : 'No'}`, '', `4. Comply with AML/CFT obligations - ${declarationItems?.AmlCftObligations?.accept === true ? 'Yes' : 'No'}`, '', `5. Authorise FCU to collect, use and store data - ${declarationItems?.StorePersonalInfo?.accept === true ? 'Yes' : 'No'}`]
 
   const dispatch = useDispatch()
 
@@ -2839,14 +2835,8 @@ export default function Submission() {
   }, [submit])
 
   // ************** useEffect for generating PDF - To be completed in the next release *************** //
-  
+
   useEffect(() => {
-    console.log('Credit Sense Reference - ', creditSenseAppRef)
-    console.log('Credit Sense CODE - ', creditSenseResponseCode)
-
-    console.log('ALL Credit Sense Codes: ', creditSenseCodes)
-    console.log('Final response code: ', finalCreditSenseresponse[0]?.SovereignMemoCSOutcome)
-
     window.scrollTo({
       top: 0,
       left: 0,

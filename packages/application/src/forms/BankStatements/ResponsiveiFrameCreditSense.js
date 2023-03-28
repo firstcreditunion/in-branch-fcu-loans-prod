@@ -168,10 +168,10 @@ function updateCreditSenseResponse(response) {
 
 export default function BankStatement() {
   const [showCreditSense, setShowCreditSense] = React.useState(false)
-  const [creditSenseResponse, setCreditSenseResponse] = React.useState(null)
-  const [reRender, setReRender] = React.useState(false)
-  const creditSenseCodes = [...genericStatusCodes, ...bankStatusCodes, ...supportingDocsStatusCodes]
-  const [creditSenseIframeResposne, setCreditSenseIframeResposne] = React.useState(null)
+  // const [creditSenseResponse, setCreditSenseResponse] = React.useState(null)
+  // const [reRender, setReRender] = React.useState(false)
+  // const creditSenseCodes = [...genericStatusCodes, ...bankStatusCodes, ...supportingDocsStatusCodes]
+  // const [creditSenseIframeResposne, setCreditSenseIframeResposne] = React.useState(null)
 
   const handleClose = () => setShowCreditSense(false)
 
@@ -180,6 +180,14 @@ export default function BankStatement() {
   // const creditSenseResponseCode = useSelector((state) => state.bankStatementReducer.creditSenseResponseCode)
 
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    })
+  }, [])
 
   const downMd = useMediaQuery((theme) => theme.breakpoints.down('md'))
   const downSm = useMediaQuery((theme) => theme.breakpoints.down('sm'))
@@ -197,6 +205,30 @@ export default function BankStatement() {
     dispatch(bankStatementActions.setCreditSenseAppRef(appRef))
 
     return appRef
+  }
+
+  function onAppIDGenerated(message, responseCode, data) {
+    console.log(message, responseCode, data)
+
+    dispatch(bankStatementActions.setCreditSenseResponseCode(responseCode))
+  }
+
+  function onAccountCredentialsSubmitted(message, responseCode, data) {
+    console.log(message, responseCode, data)
+
+    dispatch(bankStatementActions.setCreditSenseResponseCode(responseCode))
+  }
+
+  function onStatementUploadSuccess(message, responseCode, data) {
+    console.log(message, responseCode, data)
+
+    dispatch(bankStatementActions.setCreditSenseResponseCode(responseCode))
+  }
+
+  function onApplicationSuccess(message, responseCode, data) {
+    console.log(message, responseCode, data)
+
+    dispatch(bankStatementActions.setCreditSenseResponseCode(responseCode))
   }
 
   const style = {
@@ -222,7 +254,7 @@ export default function BankStatement() {
     else alert(message)
   }
 
-  jQuery(function () {
+  $.when($.ready).then(function () {
     $.CreditSense.Iframe({
       client: `${getCloudFrontEnvironment() === 'SS-PROD' ? 'FSCU01' : 'FSCU03'}`,
       elementSelector: '#fcu-cs-iframe',
@@ -237,16 +269,27 @@ export default function BankStatement() {
         askOnlineBanking: true,
       },
       callback: function (response, data) {
-        if (creditSenseAppId == null) creditSenseAppId = data
+        console.log('Logging from Callback Function')
 
-        if (Number(response)) {
-          if (creditSenseResponseCode === 100 || creditSenseResponseCode === response) return
-          creditSenseResponseCode = parseInt(response)
-          // updateCreditSenseResponse(response)
+        switch (response) {
+          case '99':
+            onStatementUploadSuccess('CUSTOM MESSAGE FCU: Statement Upload Success', response, data)
+            break
+          case '100':
+            onApplicationSuccess('CUSTOM MESSAGE FCU: Bank details collected successfully', response, data)
+            break
         }
+
+        // if (Number(response)) {
+        //   if (creditSenseResponseCode === 100 || creditSenseResponseCode === response) return
+        //   creditSenseResponseCode = parseInt(response)
+        //   // updateCreditSenseResponse(response)
+
+        // }
       },
     })
   })
+
   return (
     <Stack direction='column' spacing={downMd ? 2 : 5} justifyContent='center' alignItems='center' sx={{ minHeight: '100%' }}>
       <Stack component={motion.div} {...varFade({ distance: 25, durationIn: 0.5, durationOut: 0.5 }).inDown}>
@@ -307,7 +350,7 @@ export default function BankStatement() {
                     color='primary'
                     sx={{
                       borderRadius: '49px',
-                      width: 400,
+                      width: downMd ? 300 : 400,
                       border: 'none',
                       fontWeight: 600,
                       transition: '.5s',

@@ -861,7 +861,7 @@ export default function FirstLoanApplication({ loanAmount, interestRate, term, p
                       bgcolor: 'primary.main',
                       color: 'common.white',
                       borderRadius: '49px',
-                      width: '100px',
+                      width: '130px',
                       border: 'none',
                       textTransform: 'uppercase',
                       fontWeight: 600,
@@ -870,7 +870,7 @@ export default function FirstLoanApplication({ loanAmount, interestRate, term, p
                     variant='contained'
                     onClick={handleNextCurrentStep}
                   >
-                    Next
+                    Continue
                   </Button>
                 </Stack>
               )}

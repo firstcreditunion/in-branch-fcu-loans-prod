@@ -156,6 +156,16 @@ export const initialState = {
       autoComplete: { title: 'Student Loan', code: 'LSLN' },
       sovereign: { key: 'STUDENTLO', value: 'Student Loan' },
     },
+    liability_otherloan1: {
+      title: 'Other Loan 1',
+      groupBy: 'liability',
+      amount: null,
+      // frequency: { value: 1, unit: 'W', dialogTitleText: 'How often do you pay rent?' },
+      label: 'Other Loan 1',
+      tooltip: { display: false, tip: '' },
+      autoComplete: { title: 'Other Loan 1', code: 'LOTHLOAN1' },
+      sovereign: { key: 'OTHLOAN1', value: 'Other Loan 1' },
+    },
     // liability_otherliability1: {
     //   title: 'Other Liability 1',
     //   groupBy: 'liability',
@@ -263,6 +273,10 @@ const sopAssetLiabilitySlice = createSlice({
 
     setLiabilityStudentLoanAmount: (state, action) => {
       state.liability.liability_studentloan.amount = action.payload
+    },
+
+    setLiabilityOtherLoan1Amount: (state, action) => {
+      state.liability.liability_otherloan1.amount = action.payload
     },
 
     // setLiabilityOtherLiability1Amount: (state, action) => {
