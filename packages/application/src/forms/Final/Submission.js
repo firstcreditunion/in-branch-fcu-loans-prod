@@ -1463,6 +1463,11 @@ export default function Submission() {
       description: liability.liability_studentloan.sovereign.value,
       code: liability.liability_studentloan.sovereign.key,
     },
+    {
+      amount: liability.liability_otherloan1.amount,
+      description: liability.liability_otherloan1.sovereign.value,
+      code: liability.liability_otherloan1.sovereign.key,
+    },
   ]
   // *****  Prime Income *********** //
 
@@ -1568,11 +1573,11 @@ export default function Submission() {
     },
     {
       cust_amount: {
-        value: expense.expense_S6_or_Savings.amount,
+        value: expense.expense_Power_or_Gas.amount,
       },
-      description: expense.expense_S6_or_Savings.sovereign.value,
-      frequency: expense.expense_S6_or_Savings.frequency.unit,
-      code: expense.expense_S6_or_Savings.sovereign.key,
+      description: expense.expense_Power_or_Gas.sovereign.value,
+      frequency: expense.expense_Power_or_Gas.frequency.unit,
+      code: expense.expense_Power_or_Gas.sovereign.key,
     },
     {
       cust_amount: {
@@ -1581,14 +1586,6 @@ export default function Submission() {
       description: expense.expense_Groceries.sovereign.value,
       frequency: expense.expense_Groceries.frequency.unit,
       code: expense.expense_Groceries.sovereign.key,
-    },
-    {
-      cust_amount: {
-        value: expense.expense_Power_or_Gas.amount,
-      },
-      description: expense.expense_Power_or_Gas.sovereign.value,
-      frequency: expense.expense_Power_or_Gas.frequency.unit,
-      code: expense.expense_Power_or_Gas.sovereign.key,
     },
     {
       cust_amount: {
@@ -1605,6 +1602,14 @@ export default function Submission() {
       description: expense.expense_Fuel.sovereign.value,
       frequency: expense.expense_Fuel.frequency.unit,
       code: expense.expense_Fuel.sovereign.key,
+    },
+    {
+      cust_amount: {
+        value: expense.expense_S6_or_Savings.amount,
+      },
+      description: expense.expense_S6_or_Savings.sovereign.value,
+      frequency: expense.expense_S6_or_Savings.frequency.unit,
+      code: expense.expense_S6_or_Savings.sovereign.key,
     },
     {
       cust_amount: {
@@ -1653,6 +1658,14 @@ export default function Submission() {
       description: expense.expense_Tithing.sovereign.value,
       frequency: expense.expense_Tithing.frequency.unit,
       code: expense.expense_Tithing.sovereign.key,
+    },
+    {
+      cust_amount: {
+        value: expense.expense_Insurance.amount,
+      },
+      description: expense.expense_Insurance.sovereign.value,
+      frequency: expense.expense_Insurance.frequency.unit,
+      code: expense.expense_Insurance.sovereign.key,
     },
     {
       cust_amount: {
@@ -1841,6 +1854,12 @@ export default function Submission() {
       frequency: expense.expense_Tithing.frequency.unit,
     },
     {
+      amount: expense.expense_Insurance.amount,
+      code: expense.expense_Insurance.sovereign.key,
+      description: expense.expense_Insurance.sovereign.value,
+      frequency: expense.expense_Insurance.frequency.unit,
+    },
+    {
       amount: expense.expense_Savings.amount,
       code: expense.expense_Savings.sovereign.key,
       description: expense.expense_Savings.sovereign.value,
@@ -1848,14 +1867,14 @@ export default function Submission() {
     },
   ]
 
-  const expireIdentificationRelationships = [
-    primeClientIdentificationSecureToExpire.map((item) => {
-      return {
-        type: item?.type,
-        id: item?.id,
-      }
-    }),
-  ]
+  // const expireIdentificationRelationships = [
+  //   primeClientIdentificationSecureToExpire.map((item) => {
+  //     return {
+  //       type: item?.type,
+  //       id: item?.id,
+  //     }
+  //   }),
+  // ]
 
   const expireIdentificationIncluded = primeClientIdentificationSecureToExpire.map((item) => {
     return {
@@ -1865,11 +1884,11 @@ export default function Submission() {
     }
   })
 
-  const expireEmploymentRelationships = [
-    primeClientEmploymentSecureToExpire.map((item) => {
-      return { type: item?.type, id: item?.id }
-    }),
-  ]
+  // const expireEmploymentRelationships = [
+  //   primeClientEmploymentSecureToExpire.map((item) => {
+  //     return { type: item?.type, id: item?.id }
+  //   }),
+  // ]
 
   const expireEmploymentIncluded = primeClientEmploymentSecureToExpire.map((item) => {
     return {
@@ -2003,10 +2022,10 @@ export default function Submission() {
                     return liability.amount !== null
                   }),
                   incomes: primeIncome.filter((income) => {
-                    return income.amount3 !== null
+                    return income?.amount1 !== null || income.amount2 !== null || income.amount3 !== null
                   }),
                   expenses: primeExpenses.filter((expense) => {
-                    return expense.amount3 !== null
+                    return expense?.amount1 !== null || expense?.amount2 !== null || expense?.amount3 !== null
                   }),
                 },
                 mode: 'Add',
@@ -2246,10 +2265,10 @@ export default function Submission() {
                   return liability.amount !== null
                 }),
                 incomes: primeIncome.filter((income) => {
-                  return income?.amount3?.value !== null
+                  return income?.amount1 !== null || income.amount2 !== null || income.amount3 !== null
                 }),
                 expenses: primeExpenses.filter((expense) => {
-                  return expense?.amount3?.value !== null
+                  return expense?.amount1 !== null || expense?.amount2 !== null || expense?.amount3 !== null
                 }),
               },
               mode: 'Add',
