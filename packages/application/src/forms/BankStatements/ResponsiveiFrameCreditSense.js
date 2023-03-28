@@ -269,14 +269,14 @@ export default function BankStatement() {
         askOnlineBanking: true,
       },
       callback: function (response, data) {
-        console.log('Logging from Callback Function')
-
         switch (response) {
           case '99':
-            onStatementUploadSuccess('CUSTOM MESSAGE FCU: Statement Upload Success', response, data)
+            console.log('Success')
+            // onStatementUploadSuccess('CUSTOM MESSAGE FCU: Statement Upload Success', response, data)
             break
           case '100':
-            onApplicationSuccess('CUSTOM MESSAGE FCU: Bank details collected successfully', response, data)
+            console.log('Success')
+            // onApplicationSuccess('CUSTOM MESSAGE FCU: Bank details collected successfully', response, data)
             break
         }
 
