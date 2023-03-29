@@ -94,7 +94,7 @@ export const initialState = {
   lpiDisabilityCode: 'DISABILITY',
   lpiCriticalIllnessCode: 'CRITICLILL',
 
-  hasLpiPrimeDeath: true,
+  hasLpiPrimeDeath: false,
   hasLpiPrimeDisability: false,
   hasLpiPrimeBankruptcy: false,
   hasLpiPrimeCriticalIllness: false,
