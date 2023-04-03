@@ -239,10 +239,6 @@ export default function Submission() {
   const middleNames = useSelector((state) => state.yourPersonalDetailReducer.middleNames)
   const concatForenames = forenames.concat(middleNames === '' ? '' : ' ' + middleNames)
 
-  console.log('FIRST NAME: ', forenames)
-  console.log('MIDDLE NAMES: ', middleNames)
-  console.log('FORENAMES NAMES: ', concatForenames)
-
   const lastName = useSelector((state) => state.yourPersonalDetailReducer.lastName)
   const title = useSelector((state) => state.yourPersonalDetailReducer.title)
   const dob = useSelector((state) => state.yourPersonalDetailReducer.dob)
