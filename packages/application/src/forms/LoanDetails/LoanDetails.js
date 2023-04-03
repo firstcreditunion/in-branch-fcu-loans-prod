@@ -216,7 +216,6 @@ export default function FinancialDetails() {
     return (...args) => {
       clearTimeout(timeout)
       timeout = setTimeout(() => {
-        console.log('Running Callback', ...args)
         callbackFunction(...args)
       }, delay)
     }

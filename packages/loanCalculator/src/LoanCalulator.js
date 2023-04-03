@@ -292,8 +292,6 @@ export default function LoanCalulator({ onLoanAmountChange, onInterestChange, on
     return (...args) => {
       clearTimeout(timeout)
       timeout = setTimeout(() => {
-        console.log('SOV AMount FIna - ', sovAmountFinanced, sovAmountPayable, sovCostOfGoods)
-        console.log('ARGS - ', ...args)
         callbackFunction(...args)
       }, delay)
     }
