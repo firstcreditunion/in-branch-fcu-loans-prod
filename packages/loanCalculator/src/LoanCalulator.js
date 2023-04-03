@@ -214,6 +214,7 @@ export default function LoanCalulator({ onLoanAmountChange, onInterestChange, on
 
   const sovAmountFinanced = useSelector((state) => state.loanCalculatorReducer.sovAmountFinanced)
   const sovInterestAmount = useSelector((state) => state.loanCalculatorReducer.sovInterestAmount)
+  const sovCostOfGoods = useSelector((state) => state.loanCalculatorReducer.sovCostOfGoods)
   const sovAmountPayable = useSelector((state) => state.loanCalculatorReducer.sovAmountPayable)
   const sovPaymentFrequencyType1 = useSelector((state) => state.loanCalculatorReducer.sovPaymentFrequencyType1)
   const sovInstalmentAmount = useSelector((state) => state.loanCalculatorReducer.sovInstalmentAmount)
@@ -245,7 +246,7 @@ export default function LoanCalulator({ onLoanAmountChange, onInterestChange, on
   const hasLpiPrimeCriticalIllness = useSelector((state) => state.loanCalculatorReducer.hasLpiPrimeCriticalIllness)
 
   const MIN_LOAN_AMOUNT = 499.9999
-  const MAX_LOAN_AMOUNT = 50000.0001
+  const MAX_LOAN_AMOUNT = 100000.0001
 
   const schema = yup.object().shape({
     loanAmount: yup.number().required(),
@@ -286,6 +287,22 @@ export default function LoanCalulator({ onLoanAmountChange, onInterestChange, on
 
   const defEffectiveDate = new Date()
 
+  function debounceLoanCalculator(callbackFunction, delay = 50) {
+    let timeout
+    return (...args) => {
+      clearTimeout(timeout)
+      timeout = setTimeout(() => {
+        console.log('SOV AMount FIna - ', sovAmountFinanced, sovAmountPayable, sovCostOfGoods)
+        console.log('ARGS - ', ...args)
+        callbackFunction(...args)
+      }, delay)
+    }
+  }
+
+  const loanScheduleUpdate = debounceLoanCalculator((config) => {
+    dispatch(getLoanRepaymentSchedule(config))
+  }, 250)
+
   useEffect(() => {
     if (downMd && expanded) {
       setExpanded(!expanded)
@@ -308,7 +325,9 @@ export default function LoanCalulator({ onLoanAmountChange, onInterestChange, on
   }
 
   useEffect(() => {
-    // if (loanAmount < MIN_LOAN_AMOUNT || loanAmount > MAX_LOAN_AMOUNT) return
+    if (loanAmountCust < MIN_LOAN_AMOUNT || loanAmountCust > MAX_LOAN_AMOUNT) {
+      return
+    }
     // Finacial Calculator API Data
 
     let insurance = [
@@ -364,8 +383,10 @@ export default function LoanCalulator({ onLoanAmountChange, onInterestChange, on
       data: financialData,
     }
     // Finacial Calculator request
-    const loanSchedule = dispatch(getLoanRepaymentSchedule(config))
-  }, [awsCalculatedLpiGrossPremiumAmount, loanAmount, loanAmountCust, interestRate, term, paymentFrequency, hasLpiPrimeDeath, hasLpiPrimeDisability, hasLpiPrimeBankruptcy, hasLpiPrimeCriticalIllness])
+    dispatch(getLoanRepaymentSchedule(config))
+
+    loanScheduleUpdate(config)
+  }, [awsCalculatedLpiGrossPremiumAmount, sovInstalmentAmount, sovCostOfGoods, sovAmountPayable, loanAmountCust, interestRate, term, paymentFrequency, hasLpiPrimeDeath, hasLpiPrimeDisability, hasLpiPrimeBankruptcy, hasLpiPrimeCriticalIllness])
 
   const {
     formState: { errors },
@@ -454,9 +475,9 @@ export default function LoanCalulator({ onLoanAmountChange, onInterestChange, on
                           inputComponent: AmountFormat,
                           startAdornment: <InputAdornment position='start'>$</InputAdornment>,
                         }}
-                        error={loanAmount < 500 || loanAmount > 50000 ? true : false}
+                        error={loanAmount < MIN_LOAN_AMOUNT || loanAmount > MAX_LOAN_AMOUNT ? true : false}
                       />
-                      {(loanAmount < 500 || loanAmount > 50000) && (
+                      {(loanAmount < MIN_LOAN_AMOUNT || loanAmount > MAX_LOAN_AMOUNT) && (
                         <FormHelperText error id='laonamount-error-text'>
                           Amount to borrow should be between ${fNumber(MIN_LOAN_AMOUNT)} and ${fNumber(MAX_LOAN_AMOUNT)}
                         </FormHelperText>
@@ -511,7 +532,7 @@ export default function LoanCalulator({ onLoanAmountChange, onInterestChange, on
                   </Stack>
                 </Stack>
                 <Stack direction='row' justifyContent='flex-end' alignItems='center'>
-                  <Button variant='contained' color='secondary' onClick={handleOnClick} sx={{ borderRadius: 32 }} component={RouterLink} to={'/LoanPrerequisites'}>
+                  <Button variant='contained' color='secondary' onClick={handleOnClick} sx={{ borderRadius: 32 }} component={RouterLink} to={loanAmountCust < MIN_LOAN_AMOUNT || loanAmountCust > MAX_LOAN_AMOUNT ? '/' : '/LoanPrerequisites'}>
                     Start your Application
                   </Button>
                 </Stack>
@@ -587,9 +608,9 @@ export default function LoanCalulator({ onLoanAmountChange, onInterestChange, on
                               inputComponent: AmountFormat,
                               startAdornment: <InputAdornment position='start'>$</InputAdornment>,
                             }}
-                            error={loanAmount < 500 || loanAmount > 50000 ? true : false}
+                            error={loanAmount < MIN_LOAN_AMOUNT || loanAmount > MAX_LOAN_AMOUNT ? true : false}
                           />
-                          {(loanAmount < 500 || loanAmount > 50000) && (
+                          {(loanAmount < MIN_LOAN_AMOUNT || loanAmount > MAX_LOAN_AMOUNT) && (
                             <FormHelperText error id='laonamount-error-text'>
                               Amount to borrow should be between ${fNumber(MIN_LOAN_AMOUNT)} and ${fNumber(MAX_LOAN_AMOUNT)}
                             </FormHelperText>

@@ -179,7 +179,7 @@ export default function FinancialDetails() {
   const onSubmitYourFinancialDetails = useSelector((state) => state.financialDetailsReducer.onSubmitYourFinancialDetails)
 
   const MIN_LOAN_AMOUNT = 499.9999
-  const MAX_LOAN_AMOUNT = 50000.0001
+  const MAX_LOAN_AMOUNT = 100000.0001
 
   const defEffectiveDate = new Date()
 
@@ -211,7 +211,26 @@ export default function FinancialDetails() {
     return formatedDate
   }
 
+  function debounceLoanCalculator(callbackFunction, delay = 100) {
+    let timeout
+    return (...args) => {
+      clearTimeout(timeout)
+      timeout = setTimeout(() => {
+        console.log('Running Callback', ...args)
+        callbackFunction(...args)
+      }, delay)
+    }
+  }
+
+  const loanScheduleUpdate = debounceLoanCalculator((config) => {
+    dispatch(getLoanRepayments(config))
+  }, 200)
+
   useEffect(() => {
+    if (loanAmountCust < MIN_LOAN_AMOUNT || loanAmountCust > MAX_LOAN_AMOUNT) {
+      return
+    }
+
     let insurance = [
       {
         component: lpiDeathCode,
@@ -288,8 +307,9 @@ export default function FinancialDetails() {
       data: financialData,
     }
     // Finacial Calculator request
-    const loanSchedule = dispatch(getLoanRepayments(config))
-  }, [awsCalculatedLpiGrossPremiumAmount, loanAmount, loanAmountCust, interestRate, term, paymentFrequency, doYouNeedCoverForJoint, hasLpiPrimeDeath, hasLpiJointDeath, hasLpiPrimeDisability, hasLpiJointDisability, hasLpiPrimeBankruptcy, hasLpiJointBankruptcy, hasLpiPrimeCriticalIllness, hasLpiJointCriticalIllness])
+    dispatch(getLoanRepayments(config))
+    loanScheduleUpdate(config)
+  }, [awsCalculatedLpiGrossPremiumAmount, loanAmount, loanAmountCust, sovInstalmentAmount, sovAmountFinanced, interestRate, term, paymentFrequency, doYouNeedCoverForJoint, hasLpiPrimeDeath, hasLpiJointDeath, hasLpiPrimeDisability, hasLpiJointDisability, hasLpiPrimeBankruptcy, hasLpiJointBankruptcy, hasLpiPrimeCriticalIllness, hasLpiJointCriticalIllness])
 
   const {
     formState: { isValid },
@@ -387,9 +407,9 @@ export default function FinancialDetails() {
                     inputComponent: AmountFormat,
                     startAdornment: <InputAdornment position='start'>$</InputAdornment>,
                   }}
-                  error={loanAmount < 500 || loanAmount > 50000 ? true : false}
+                  error={loanAmount < MIN_LOAN_AMOUNT || loanAmount > MAX_LOAN_AMOUNT ? true : false}
                 />
-                {(loanAmount < 500 || loanAmount > 50000) && (
+                {(loanAmount < MIN_LOAN_AMOUNT || loanAmount > MAX_LOAN_AMOUNT) && (
                   <FormHelperText error id='laonamount-error-text'>
                     Amount to borrow should be between ${fNumber(MIN_LOAN_AMOUNT)} and ${fNumber(MAX_LOAN_AMOUNT)}
                   </FormHelperText>
