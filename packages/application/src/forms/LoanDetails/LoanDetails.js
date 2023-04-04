@@ -60,7 +60,7 @@ import CostRecoveryModal from './Sections/CostRecoveryModal'
 import LoanProtectionInsurance from './Sections/LoanProtectionInsurance'
 
 //* Utils
-import { fCurrency, fNumber } from '../../utils/formatNumber'
+import { fCurrency, fNumber, fNumberCust } from '../../utils/formatNumber'
 import { convertToUTCTimestamp } from '../../utils/formatDateTime'
 import { conver } from '../../utils/formatDateTime'
 import { borderRadius, height } from '@mui/system'
@@ -724,32 +724,32 @@ export default function FinancialDetails() {
             <Stack direction='column' spacing={2} sx={{ width: '100%' }}>
               <Stack direction='row' justifyContent='space-between' alignItems='center'>
                 <Typography variant='body1'>Credit Check</Typography>
-                <Typography variant='body1'>{fCurrency(creditCheckAmount)}</Typography>
+                <Typography variant='body1'>{fCurrency(fNumberCust(creditCheckAmount))}</Typography>
               </Stack>
               <Stack direction='row' justifyContent='space-between' alignItems='center'>
                 <Typography variant='body1'>Credit Sense</Typography>
-                <Typography variant='body1'>{fCurrency(creditSenseAmount)}</Typography>
+                <Typography variant='body1'>{fCurrency(fNumberCust(creditSenseAmount))}</Typography>
               </Stack>
               <Stack direction='row' justifyContent='space-between' alignItems='center'>
                 <Typography variant='body1'>Motorweb Check</Typography>
-                <Typography variant='body1'>{fCurrency(motorwebCheckAmount)}</Typography>
+                <Typography variant='body1'>{fCurrency(fNumberCust(motorwebCheckAmount))}</Typography>
               </Stack>
               <Stack direction='row' justifyContent='space-between' alignItems='center'>
                 <Typography variant='body1'>PPSR Registration</Typography>
-                <Typography variant='body1'>{fCurrency(ppsrAmount)}</Typography>
+                <Typography variant='body1'>{fCurrency(fNumberCust(ppsrAmount))}</Typography>
               </Stack>
               <Stack direction='row' justifyContent='space-between' alignItems='center'>
                 <Typography variant='body1'>Docusign (Remote signing) </Typography>
-                <Typography variant='body1'>{fCurrency(docusignAmount)}</Typography>
+                <Typography variant='body1'>{fCurrency(fNumberCust(docusignAmount))}</Typography>
               </Stack>
               <Stack direction='row' justifyContent='space-between' alignItems='center'>
                 <Typography variant='body1'>Cloud Check - ID Verification</Typography>
-                <Typography variant='body1'>{fCurrency(cloudCheckIdVerificationAmount)}</Typography>
+                <Typography variant='body1'>{fCurrency(fNumberCust(cloudCheckIdVerificationAmount))}</Typography>
               </Stack>
               <Stack direction='column' spacing={2}>
                 <Stack direction='row' justifyContent='space-between' alignItems='center'>
                   <Typography variant='body1'>Cloud Check PEP & Sanctions</Typography>
-                  <Typography variant='body1'>{fCurrency(cloudCheckPEPSanctionsAmount)}</Typography>
+                  <Typography variant='body1'>{fCurrency(fNumberCust(cloudCheckPEPSanctionsAmount))}</Typography>
                 </Stack>
                 <Divider sx={{ width: '100%' }} />
                 <Stack direction='row' justifyContent='space-between' alignItems='center'>

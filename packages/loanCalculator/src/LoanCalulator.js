@@ -60,7 +60,7 @@ import DonutChart from './components/charts/DonutChart'
 import LoanProtectionInsurance from './sections/LoanProtectionInsurance'
 import CostRecoveryFeesModal from './sections/CostRecoveryFeesModal'
 
-import { fCurrency, fNumber } from './utils/formatNumber'
+import { fCurrency, fNumber, fNumberCust } from './utils/formatNumber'
 
 import { Link as RouterLink } from 'react-router-dom'
 import { PATH_PAGE } from './links/externalLinks'
@@ -772,32 +772,32 @@ export default function LoanCalulator({ onLoanAmountChange, onInterestChange, on
               <Stack direction='column' spacing={2} sx={{ width: '100%' }}>
                 <Stack direction='row' justifyContent='space-between' alignItems='center'>
                   <Typography variant='body1'>Credit Check</Typography>
-                  <Typography variant='body1'>{fCurrency(sovCreditCheckAmount)}</Typography>
+                  <Typography variant='body1'>{fCurrency(fNumberCust(sovCreditCheckAmount))}</Typography>
                 </Stack>
                 <Stack direction='row' justifyContent='space-between' alignItems='center'>
                   <Typography variant='body1'>Credit Sense</Typography>
-                  <Typography variant='body1'>{fCurrency(sovCreditSenseAmount)}</Typography>
+                  <Typography variant='body1'>{fCurrency(fNumberCust(sovCreditSenseAmount))}</Typography>
                 </Stack>
                 <Stack direction='row' justifyContent='space-between' alignItems='center'>
                   <Typography variant='body1'>Motorweb Check</Typography>
-                  <Typography variant='body1'>{fCurrency(sovMotorwebCheckAmount)}</Typography>
+                  <Typography variant='body1'>{fCurrency(fNumberCust(sovMotorwebCheckAmount))}</Typography>
                 </Stack>
                 <Stack direction='row' justifyContent='space-between' alignItems='center'>
                   <Typography variant='body1'>PPSR Registration</Typography>
-                  <Typography variant='body1'>{fCurrency(sovPPSRAmount)}</Typography>
+                  <Typography variant='body1'>{fCurrency(fNumberCust(sovPPSRAmount))}</Typography>
                 </Stack>
                 <Stack direction='row' justifyContent='space-between' alignItems='center'>
                   <Typography variant='body1'>Docusign (Remote signing) </Typography>
-                  <Typography variant='body1'>{fCurrency(sovDocusignAmount)}</Typography>
+                  <Typography variant='body1'>{fCurrency(fNumberCust(sovDocusignAmount))}</Typography>
                 </Stack>
                 <Stack direction='row' justifyContent='space-between' alignItems='center'>
                   <Typography variant='body1'>Cloud Check - ID Verification</Typography>
-                  <Typography variant='body1'>{fCurrency(sovCloudCheckIdVerificationAmount)}</Typography>
+                  <Typography variant='body1'>{fCurrency(fNumberCust(sovCloudCheckIdVerificationAmount))}</Typography>
                 </Stack>
                 <Stack direction='column' spacing={2}>
                   <Stack direction='row' justifyContent='space-between' alignItems='center'>
                     <Typography variant='body1'>Cloud Check PEP & Sanctions</Typography>
-                    <Typography variant='body1'>{fCurrency(sovCloudCheckPEPSanctionsAmount)}</Typography>
+                    <Typography variant='body1'>{fCurrency(fNumberCust(sovCloudCheckPEPSanctionsAmount))}</Typography>
                   </Stack>
                   <Divider sx={{ width: '100%' }} />
                   <Stack direction='row' justifyContent='space-between' alignItems='center'>

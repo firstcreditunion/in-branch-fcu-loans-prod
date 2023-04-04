@@ -87,8 +87,8 @@ export default function RouterMain(props) {
   const [creditSense, setcreditSense] = useState(3.8)
   const [motorWebCheck, setmotorWebCheck] = useState(4.8)
   const [ppsrRegistration, setppsrRegistration] = useState(8.05)
-  const [docuSignSigning, setdocuSignSigning] = useState(5)
-  const [cloudCheckIdVerification, setcloudCheckIdVerification] = useState(3)
+  const [docuSignSigning, setdocuSignSigning] = useState(5.32)
+  const [cloudCheckIdVerification, setcloudCheckIdVerification] = useState(3.0)
   const [cloudCheckPEP, setcloudCheckPEP] = useState(0.25)
 
   //* LPI useStates
