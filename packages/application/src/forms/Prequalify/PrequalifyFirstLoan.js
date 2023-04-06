@@ -650,7 +650,7 @@ function QualifyForIncome() {
           <Stack component={motion.div} {...varBankruptcyDate} direction={downMd ? 'column' : 'column'} justifyContent='center' alignItems='center' sx={{ width: '100%' }} spacing={2}>
             <Stack direction='column' justifyContent='center' alignItems='center' sx={{ maxWidth: 400 }} spacing={2}>
               <LabelStyle sx={{ textAlign: 'center' }}>When were you insolvent?</LabelStyle>
-              <DatePicker id='bankruptcyDate' name='bankruptcyDate' onDateChange={handleBankruptcyDate} label='Insolvency Date' control={control} variant='outlined' helperText='Month and Year. Eg: June 2020' openTo='year' format='MMMM yyyy' date={bankruptcyDate} maxDate={upperLimitForInsovencyDate} isRequired={true} views={['year', 'month']} />
+              <DatePicker id='bankruptcyDate' name='bankruptcyDate' onDateChange={handleBankruptcyDate} label='Insolvency Date' control={control} variant='outlined' helperText='Month and Year. Eg: June 2020' openTo='year' format='MMMM YYYY' date={bankruptcyDate} maxDate={upperLimitForInsovencyDate} isRequired={true} views={['year', 'month']} />
             </Stack>
           </Stack>
         )}
