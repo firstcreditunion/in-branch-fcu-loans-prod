@@ -120,9 +120,9 @@ const YourPersonalDetails = () => {
       .string()
       .required('Date of Birth is required')
       .test('cannot be lower than 1900', 'Invalid Date of Birth. Date Format: DD/MM/YYYY', function (dateOfBirth) {
-        console.log('Yup Raw dateOfBirth: ', dateOfBirth)
+        // console.log('Yup Raw dateOfBirth: ', dateOfBirth)
         // console.log('Yup Raw dateOfBirth Formatted: ', dateOfBirth)
-        console.log('Redux Date: ', dob)
+        // console.log('Redux Date: ', dob)
         if (dateOfBirth === 'Invalid Date') {
           return false
         }
@@ -249,12 +249,12 @@ const YourPersonalDetails = () => {
   }
 
   const handleMaritalStatus = (event) => {
-    console.log(
-      'Marital Status Menu: ',
-      maritalStatusMenu.find((maritalStatusMenu) => {
-        return maritalStatusMenu.value === event.target.value
-      })
-    )
+    // console.log(
+    //   'Marital Status Menu: ',
+    //   maritalStatusMenu.find((maritalStatusMenu) => {
+    //     return maritalStatusMenu.value === event.target.value
+    //   })
+    // )
 
     dispatch(
       yourPersonalDetailsActions.setMaritalStatus(

@@ -240,7 +240,7 @@ function DriverLicence() {
     dispatch(identificationActions.setdrLicenceIssueDate(date))
   }
   const handleDrLicenceExpiryDate = (date) => {
-    console.log('Issued Date Raw: ', date)
+    // console.log('Issued Date Raw: ', date)
     dispatch(identificationActions.setdrLicenceExpiryDate(date))
   }
   const handleDrLicencePhotoUrl = (file, preview) => {

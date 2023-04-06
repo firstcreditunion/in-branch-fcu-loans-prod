@@ -704,7 +704,7 @@ export default function FirstLoanApplication({ loanAmount, interestRate, term, p
   useEffect(() => {
     if (!(preQualifyCompleted == null)) {
       numberOfChildren = childrenSteps?.length
-      console.log('Children Steps: ', childrenSteps)
+      // console.log('Children Steps: ', childrenSteps)
       currentChildCount = activeChildNode + 1
       return null
     }

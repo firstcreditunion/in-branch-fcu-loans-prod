@@ -64,20 +64,20 @@ const CreditSenseBorder = styled('div')(({ theme }) => ({
 let creditSenseAppId = null
 var creditSenseResponseCode = null
 
-const useCreditsense = () => {
-  const [count, setCount] = useState(0)
+// const useCreditsense = () => {
+//   const [count, setCount] = useState(0)
 
-  useEffect(() => {
-    console.log('useStopwatch useEffect')
-    const interval = setInterval(() => {
-      console.log(`Count = ${count}`)
-      setCount((prev) => prev + 1)
-    }, 1000)
-    return () => clearInterval(interval)
-  }, [])
+//   useEffect(() => {
+//     console.log('useStopwatch useEffect')
+//     const interval = setInterval(() => {
 
-  return count
-}
+//       setCount((prev) => prev + 1)
+//     }, 1000)
+//     return () => clearInterval(interval)
+//   }, [])
+
+//   return count
+// }
 
 function updateCreditSenseResponse(response) {
   // const dispatch = useDispatch()

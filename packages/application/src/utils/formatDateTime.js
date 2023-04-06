@@ -51,11 +51,6 @@ export function convertUnixToUTCTimestamp(date, callfrom) {
   // const isoDate = dateFormat.toISOString()
   // console.log('UNIX iso date: ', isoDate)
   const sovereignDate = fDateYYYY_MM_DD(dateFormat)
-  if (callfrom === 'drLicenceExpiryDate') {
-    console.log('Sovereign Date UNIX - ', new Date(sovereignDate))
-    console.log('Sovereign Date UNIX Converted and Formated - ', fDateYYYY_MM_DD(new Date(sovereignDate)))
-    console.log('Sovereign Date UNIX Converted and Formated Full Year- ', fDateYYYY_MM_DD(new Date(sovereignDate).getFullYear()))
-  }
 
   return sovereignDate
 }
@@ -83,11 +78,6 @@ export function convertToUTCTimestamp(date, callfrom) {
   // console.log('BEFORE ISO CONVERSION: ', dateFormat)
   // const isoDate = dateFormat.toISOString()
   // console.log('UTC ISO date: ', isoDate)
-  if (callfrom === 'drLicenceExpiryDate') {
-    console.log('Sovereign Date UTC - ', sovereignDate)
-    console.log('Sovereign Date UTC Converted - ', fDateYYYY_MM_DD(new Date(sovereignDate)))
-    console.log('Sovereign Date UNIX Converted and Formated Full Year- ', fDateYYYY_MM_DD(new Date(sovereignDate).getFullYear()))
-  }
 
   return sovereignDate
 }

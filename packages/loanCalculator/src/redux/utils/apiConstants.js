@@ -4,7 +4,7 @@ const OCC_BASE_URL_APP = 'https://6s6pe9scql.execute-api.ap-southeast-2.amazonaw
 
 const location_origin = window.location.origin
 
-console.log('location_origin: ', location_origin)
+// console.log('location_origin: ', location_origin)
 
 //* Resources - Application
 export const BASE_URL_LOCAL_APP = `${OCC_BASE_URL_APP}/${getCloudFrontEnvironment()}`
