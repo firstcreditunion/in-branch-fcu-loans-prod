@@ -210,8 +210,8 @@ function CommunityServiceCard() {
     <Form>
       <Stack direction='column' spacing={3} justifyContent='flex-start' sx={{ pb: 5 }}>
         <InputField name='commServiceCardNo' label='Card Number' type='text' control={control} errorInput={!!errors.commServiceCardNo} helperTextInput={errors?.commServiceCardNo?.message} onInputChange={handleCommunityServiceCardNo} hasTooltip={false} />
-        <DatePicker id='commServiceCardIssueDate' name='commServiceCardIssueDate' onDateChange={handleCommunityServiceCardIssueDate} label='Issued Date' control={control} variant='outlined' openTo='year' format='dd/MM/yyyy' date={commServiceCardIssueDate} maxDate={defCommServiceCardIssueDate} minDate={issueDateLowerLimit} isRequired={true} />
-        <DatePicker id='commServiceCardExpiryDate' name='commServiceCardExpiryDate' onDateChange={handleCommunityServiceCardExpiryDate} label='Expiry Date' control={control} variant='outlined' openTo='year' format='dd/MM/yyyy' date={commServiceCardExpiryDate} maxDate={expiryDateUpperLimit} minDate={defCommServiceCardExpiryDate} isRequired={true} />
+        <DatePicker id='commServiceCardIssueDate' name='commServiceCardIssueDate' onDateChange={handleCommunityServiceCardIssueDate} label='Issued Date' control={control} variant='outlined' openTo='year' format='DD/MM/YYYY' date={commServiceCardIssueDate} maxDate={defCommServiceCardIssueDate} minDate={issueDateLowerLimit} isRequired={true} />
+        <DatePicker id='commServiceCardExpiryDate' name='commServiceCardExpiryDate' onDateChange={handleCommunityServiceCardExpiryDate} label='Expiry Date' control={control} variant='outlined' openTo='year' format='DD/MM/YYYY' date={commServiceCardExpiryDate} maxDate={expiryDateUpperLimit} minDate={defCommServiceCardExpiryDate} isRequired={true} />
         {/* <Box sx={{ mb: 5 }}>
           <UploadPhoto
             accept='image/*'

@@ -174,8 +174,8 @@ function JointPassport() {
     <Form>
       <Stack direction='column' spacing={3} justifyContent='flex-start' sx={{ pb: 5 }}>
         <InputField name='passportNo' label='Passport Number' type='text' control={control} capitalise={true} errorInput={!!errors.passportNo} helperTextInput={errors?.passportNo?.message} onInputChange={handlePassportNo} hasTooltip={false} />
-        <DatePicker id='passportIssueDate' name='passportIssueDate' onDateChange={handlePassportIssueDate} label='Issued Date' control={control} variant='outlined' openTo='year' format='dd/MM/yyyy' date={passportIssueDate} maxDate={defPassportIssueDate} minDate={issueDateLowerLimit} isRequired={true} />
-        <DatePicker id='passportExpiryDate' name='passportExpiryDate' onDateChange={handlePassportExpiryDate} label='Expiry Date' control={control} variant='outlined' openTo='year' format='dd/MM/yyyy' date={passportExpiryDate} maxDate={expiryDateUpperLimit} minDate={defPassportExpiryDate} isRequired={true} />
+        <DatePicker id='passportIssueDate' name='passportIssueDate' onDateChange={handlePassportIssueDate} label='Issued Date' control={control} variant='outlined' openTo='year' format='DD/MM/YYYY' date={passportIssueDate} maxDate={defPassportIssueDate} minDate={issueDateLowerLimit} isRequired={true} />
+        <DatePicker id='passportExpiryDate' name='passportExpiryDate' onDateChange={handlePassportExpiryDate} label='Expiry Date' control={control} variant='outlined' openTo='year' format='DD/MM/YYYY' date={passportExpiryDate} maxDate={expiryDateUpperLimit} minDate={defPassportExpiryDate} isRequired={true} />
         {/* <Box sx={{ mb: 5 }}>
           <UploadPhoto
             accept='image/*'

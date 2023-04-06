@@ -207,8 +207,8 @@ function KiwiAccessCard() {
     <Form>
       <Stack direction='column' spacing={3} justifyContent='flex-start' sx={{ pb: 5 }}>
         <InputField name='kiwiAccessCardNo' label='Card Number' type='text' control={control} errorInput={!!errors.kiwiAccessCardNo} helperTextInput={errors?.kiwiAccessCardNo?.message} onInputChange={handleKiwiAccessCardNo} hasTooltip={false} placeholder='Card Number' />
-        <DatePicker id='kiwiAccessCardIssueDate' name='kiwiAccessCardIssueDate' onDateChange={handleKiwiAccessCardIssueDate} label='Issued Date' control={control} variant='outlined' openTo='year' format='dd/MM/yyyy' date={kiwiAccessCardIssueDate} maxDate={defKiwiAccessCardIssueDate} minDate={issueDateLowerLimit} isRequired={true} />
-        <DatePicker id='kiwiAccessCardExpiryDate' name='kiwiAccessCardExpiryDate' onDateChange={handleKiwiAccessCardExpiryDate} label='Expiry Date' control={control} variant='outlined' openTo='year' format='dd/MM/yyyy' date={kiwiAccessCardExpiryDate} maxDate={expiryDateUpperLimit} minDate={defKiwiAccessCardExpiryDate} isRequired={true} />
+        <DatePicker id='kiwiAccessCardIssueDate' name='kiwiAccessCardIssueDate' onDateChange={handleKiwiAccessCardIssueDate} label='Issued Date' control={control} variant='outlined' openTo='year' format='DD/MM/YYYY' date={kiwiAccessCardIssueDate} maxDate={defKiwiAccessCardIssueDate} minDate={issueDateLowerLimit} isRequired={true} />
+        <DatePicker id='kiwiAccessCardExpiryDate' name='kiwiAccessCardExpiryDate' onDateChange={handleKiwiAccessCardExpiryDate} label='Expiry Date' control={control} variant='outlined' openTo='year' format='DD/MM/YYYY' date={kiwiAccessCardExpiryDate} maxDate={expiryDateUpperLimit} minDate={defKiwiAccessCardExpiryDate} isRequired={true} />
         {/* <Box sx={{ mb: 5 }}>
           <UploadPhoto
             accept='image/*'

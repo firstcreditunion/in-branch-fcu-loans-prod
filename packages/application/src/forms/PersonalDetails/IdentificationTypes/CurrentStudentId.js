@@ -188,8 +188,8 @@ function CurrentStudentId() {
     <Form>
       <Stack direction='column' spacing={3} justifyContent='flex-start' sx={{ pb: 5 }}>
         <InputField name='currStudentIdNo' label='Identification Number' type='text' control={control} errorInput={!!errors.currStudentIdNo} helperTextInput={errors?.currStudentIdNo?.message} onInputChange={handleCurrentStudentIdNo} hasTooltip={true} toolTipText='ID must be from a NZ institution' placeholder='Student ID Number' />
-        <DatePicker id='currStudentIdIssueDate' name='currStudentIdIssueDate' onDateChange={handleCurrentStudentIdIssueDate} label='Issued Date' control={control} variant='outlined' openTo='year' format='dd/MM/yyyy' date={currStudentIdIssueDate} maxDate={defCurrStudentIdIssueDate} minDate={issueDateLowerLimit} isRequired={true} />
-        <DatePicker id='currStudentIdExpiryDate' name='currStudentIdExpiryDate' onDateChange={handleCurrentStudentIdExpiryDate} label='Expiry Date' control={control} variant='outlined' openTo='year' format='dd/MM/yyyy' date={currStudentIdExpiryDate} maxDate={expiryDateUpperLimit} minDate={defCurrStudentIdExpiryDate} isRequired={true} />
+        <DatePicker id='currStudentIdIssueDate' name='currStudentIdIssueDate' onDateChange={handleCurrentStudentIdIssueDate} label='Issued Date' control={control} variant='outlined' openTo='year' format='DD/MM/YYYY' date={currStudentIdIssueDate} maxDate={defCurrStudentIdIssueDate} minDate={issueDateLowerLimit} isRequired={true} />
+        <DatePicker id='currStudentIdExpiryDate' name='currStudentIdExpiryDate' onDateChange={handleCurrentStudentIdExpiryDate} label='Expiry Date' control={control} variant='outlined' openTo='year' format='DD/MM/YYYY' date={currStudentIdExpiryDate} maxDate={expiryDateUpperLimit} minDate={defCurrStudentIdExpiryDate} isRequired={true} />
         {/* <Box sx={{ mb: 5 }}>
           <UploadPhoto
             accept='image/*'

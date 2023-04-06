@@ -474,11 +474,11 @@ export default function FinancialDetails() {
 
             {/* <Stack direction={downMd ? 'column' : 'column'} justifyContent='center' alignItems='center' sx={{ width: '100%' }} spacing={2}>
               <LabelStyle sx={{ textAlign: 'center' }}>When would you like to have the funds in your account?</LabelStyle>
-              <DatePickerFinancial id='drawdowndate' name='drawdowndate' onDateChange={handleDrawdownDate} label='Loan Advancement Date' control={control} format='dd/MM/yyyy' variant='outlined' openTo='day' date={drawdowndate} minDate={minDrawdowndate} isRequired={true} />
+              <DatePickerFinancial id='drawdowndate' name='drawdowndate' onDateChange={handleDrawdownDate} label='Loan Advancement Date' control={control} format='DD/MM/YYYY' variant='outlined' openTo='day' date={drawdowndate} minDate={minDrawdowndate} isRequired={true} />
             </Stack> */}
             {/* <Grid item container>
               <LabelStyle>When would you like to make your first payment?</LabelStyle>
-              <DatePicker id='firstpaymentdate' name='firstpaymentdate' onDateChange={handleFirstPaymentDate} label='First Payment Date' control={control} format='dd/MM/yyyy' variant='outlined' openTo='year' date={dob} maxDate={dobDefDate} isRequired={true} />
+              <DatePicker id='firstpaymentdate' name='firstpaymentdate' onDateChange={handleFirstPaymentDate} label='First Payment Date' control={control} format='DD/MM/YYYY' variant='outlined' openTo='year' date={dob} maxDate={dobDefDate} isRequired={true} />
             </Grid> */}
           </Stack>
           <Box>

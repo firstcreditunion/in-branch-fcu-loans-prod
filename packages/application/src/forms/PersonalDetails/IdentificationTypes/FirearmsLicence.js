@@ -206,8 +206,8 @@ function FiramsLicence() {
     <Form>
       <Stack direction='column' spacing={3} justifyContent='flex-start' sx={{ pb: 5 }}>
         <InputField name='firearmsLicenceNo' label='Firearms Licence Number' type='text' control={control} errorInput={!!errors.firearmsLicenceNo} helperTextInput={errors?.firearmsLicenceNo?.message} onInputChange={handleFireamrsLicenceNo} hasTooltip={false} placeholder='Licence Number' />
-        <DatePicker id='firearmsLicenceIssueDate' name='firearmsLicenceIssueDate' onDateChange={handleFireamrsLicenceIssueDate} label='Issued Date' control={control} variant='outlined' openTo='year' format='dd/MM/yyyy' date={firearmsLicenceIssueDate} maxDate={defFirearmsLicenceIssueDate} minDate={issueDateLowerLimit} isRequired={true} />
-        <DatePicker id='firearmsLicenceExpiryDate' name='firearmsLicenceExpiryDate' onDateChange={handleFireamrsLicenceExpiryDate} label='Expiry Date' control={control} variant='outlined' openTo='year' format='dd/MM/yyyy' date={firearmsLicenceExpiryDate} maxDate={expiryDateUpperLimit} minDate={defFirearmsLicenceExpiryDate} isRequired={true} />
+        <DatePicker id='firearmsLicenceIssueDate' name='firearmsLicenceIssueDate' onDateChange={handleFireamrsLicenceIssueDate} label='Issued Date' control={control} variant='outlined' openTo='year' format='DD/MM/YYYY' date={firearmsLicenceIssueDate} maxDate={defFirearmsLicenceIssueDate} minDate={issueDateLowerLimit} isRequired={true} />
+        <DatePicker id='firearmsLicenceExpiryDate' name='firearmsLicenceExpiryDate' onDateChange={handleFireamrsLicenceExpiryDate} label='Expiry Date' control={control} variant='outlined' openTo='year' format='DD/MM/YYYY' date={firearmsLicenceExpiryDate} maxDate={expiryDateUpperLimit} minDate={defFirearmsLicenceExpiryDate} isRequired={true} />
         {/* <Box sx={{ mb: 5 }}>
           <UploadPhoto
             accept='image/*'

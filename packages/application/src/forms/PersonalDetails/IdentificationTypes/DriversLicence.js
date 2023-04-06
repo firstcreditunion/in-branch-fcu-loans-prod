@@ -43,9 +43,10 @@ function DriverLicence() {
 
   const issueDateUpperLimit = new Date()
 
-  const issueDateLowerLimit = new Date(new Date().setFullYear(new Date().getFullYear() - 10))
-  const issueYearLowerLimit = new Date(new Date().setFullYear(new Date().getFullYear() - 10)).getFullYear()
+  const issueDateLowerLimit = new Date(new Date().setFullYear(new Date().getFullYear() - 50))
+  const issueYearLowerLimit = new Date(new Date().setFullYear(new Date().getFullYear() - 50))
 
+  const expiryDateLowerLimit = new Date()
   const expiryDateUpperLimit = drLicenceIssueDate ? new Date(new Date(drLicenceIssueDate).setFullYear(new Date(drLicenceIssueDate).getFullYear() + 10)).getFullYear() : new Date(new Date().setFullYear(new Date().getFullYear() + 10))
   const expiryYearUpperLimit = drLicenceIssueDate ? new Date(new Date(drLicenceIssueDate).setFullYear(new Date(drLicenceIssueDate).getFullYear() + 10)).getFullYear() : new Date(new Date().setFullYear(new Date().getFullYear() + 10)).getFullYear()
 
@@ -94,12 +95,15 @@ function DriverLicence() {
       .string()
       .required('Issued Date is required')
       .test('Format Check', 'Invalid Date. Date Format: DD/MM/YYYY', function (date) {
+        // console.log('Issued Date Only: ', new Date(date))
+        // console.log('Issued Date: ', new Date(date).getFullYear())
+        // console.log('Year Lower Limit: ', issueYearLowerLimit)
         if (date === 'Invalid Date') {
           return false
         }
         return true
       })
-      .test('Upper Limit', `Licence must have been issued on or before today`, function (date) {
+      .test('Upper Limit', `Licence issued date is not valid`, function (date) {
         if (date === 'Invalid Date') {
           return false
         }
@@ -119,6 +123,17 @@ function DriverLicence() {
         if (date === 'Invalid Date') {
           return false
         }
+        return true
+      })
+      .test('Lower Limit', `Expiry date must be after today`, function (date) {
+        if (date === 'Invalid Date') {
+          return false
+        }
+        const lowerLimitTest = new Date(date) < expiryDateLowerLimit
+        if (lowerLimitTest) {
+          return false
+        }
+
         return true
       })
       .test('Upper limit Integrity', `Expiry Date cannot be less than issued date`, function (date) {
@@ -225,6 +240,7 @@ function DriverLicence() {
     dispatch(identificationActions.setdrLicenceIssueDate(date))
   }
   const handleDrLicenceExpiryDate = (date) => {
+    console.log('Issued Date Raw: ', date)
     dispatch(identificationActions.setdrLicenceExpiryDate(date))
   }
   const handleDrLicencePhotoUrl = (file, preview) => {
@@ -257,8 +273,8 @@ function DriverLicence() {
             <InputField name='driversLicenceVersion' label='Version' type='text' control={control} errorInput={!!errors.driversLicenceVersion} helperTextInput={errors?.driversLicenceVersion?.message} onInputChange={handleDriversLicenceVersion} hasTooltip={false} placeholder='Version' />
           </Grid>
         </Grid>
-        <DatePicker id='drLicenceIssueDate' name='drLicenceIssueDate' onDateChange={handleDrLicenceIssueDate} label='Issued Date' control={control} variant='outlined' openTo='year' format='dd/MM/yyyy' date={drLicenceIssueDate} maxDate={defDrLicenceIssueDate} isRequired={true} />
-        <DatePicker id='drLicenceExpiryDate' name='drLicenceExpiryDate' onDateChange={handleDrLicenceExpiryDate} label='Expiry Date' control={control} variant='outlined' openTo='year' format='dd/MM/yyyy' date={drLicenceExpiryDate} minDate={defDrLicenceExpiryDate} isRequired={true} />
+        <DatePicker id='drLicenceIssueDate' name='drLicenceIssueDate' onDateChange={handleDrLicenceIssueDate} label='Issued Date' control={control} variant='outlined' openTo='year' format='DD/MM/YYYY' date={drLicenceIssueDate} maxDate={defDrLicenceIssueDate} isRequired={true} />
+        <DatePicker id='drLicenceExpiryDate' name='drLicenceExpiryDate' onDateChange={handleDrLicenceExpiryDate} label='Expiry Date' control={control} variant='outlined' openTo='year' format='DD/MM/YYYY' date={drLicenceExpiryDate} minDate={defDrLicenceExpiryDate} isRequired={true} />
         {/* <Box sx={{ mb: 5 }}>
           <UploadPhoto
             accept='image/*'

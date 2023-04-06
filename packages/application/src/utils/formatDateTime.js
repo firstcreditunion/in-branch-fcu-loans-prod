@@ -6,6 +6,10 @@ export function fDate(date) {
   return format(new Date(date), 'dd MMMM yyyy')
 }
 
+export function fDateYear(date) {
+  return format(new Date(date), 'yyyy')
+}
+
 export function fDateCustom(date) {
   return format(new Date(date), 'ddMMyyyyHHmmss')
 }
@@ -22,6 +26,10 @@ export function fDateTimeSuffix(date) {
   return format(new Date(date), 'dd/MM/yyyy hh:mm p')
 }
 
+export function fDateForwardSlashSeperated(date) {
+  return format(new Date(date), 'dd/MM/yyyy hh:mm p')
+}
+
 export function fDateYYYY_MM_DD(date) {
   return format(new Date(date), 'yyyy-MM-dd')
 }
@@ -32,7 +40,7 @@ export function fToNow(date) {
   })
 }
 
-export function convertUnixToUTCTimestamp(date) {
+export function convertUnixToUTCTimestamp(date, callfrom) {
   const unixTimestamp = date
 
   const dateFormat = new Date(unixTimestamp)
@@ -43,6 +51,12 @@ export function convertUnixToUTCTimestamp(date) {
   // const isoDate = dateFormat.toISOString()
   // console.log('UNIX iso date: ', isoDate)
   const sovereignDate = fDateYYYY_MM_DD(dateFormat)
+  if (callfrom === 'drLicenceExpiryDate') {
+    console.log('Sovereign Date UNIX - ', new Date(sovereignDate))
+    console.log('Sovereign Date UNIX Converted and Formated - ', fDateYYYY_MM_DD(new Date(sovereignDate)))
+    console.log('Sovereign Date UNIX Converted and Formated Full Year- ', fDateYYYY_MM_DD(new Date(sovereignDate).getFullYear()))
+  }
+
   return sovereignDate
 }
 
@@ -52,7 +66,7 @@ export function convertToUTCTimestamp(date, callfrom) {
   }
 
   if (typeof date === 'number') {
-    return convertUnixToUTCTimestamp(date)
+    return convertUnixToUTCTimestamp(date, callfrom)
   }
 
   const dateFormat = new Date(date)
@@ -61,7 +75,7 @@ export function convertToUTCTimestamp(date, callfrom) {
   dateFormat.setUTCHours(timeZoneOffsetInHours, 0, 0, 0)
 
   if (typeof dateFormat === 'number') {
-    return convertUnixToUTCTimestamp(dateFormat)
+    return convertUnixToUTCTimestamp(dateFormat, callfrom)
   }
 
   const sovereignDate = fDateYYYY_MM_DD(dateFormat)
@@ -69,6 +83,11 @@ export function convertToUTCTimestamp(date, callfrom) {
   // console.log('BEFORE ISO CONVERSION: ', dateFormat)
   // const isoDate = dateFormat.toISOString()
   // console.log('UTC ISO date: ', isoDate)
+  if (callfrom === 'drLicenceExpiryDate') {
+    console.log('Sovereign Date UTC - ', sovereignDate)
+    console.log('Sovereign Date UTC Converted - ', fDateYYYY_MM_DD(new Date(sovereignDate)))
+    console.log('Sovereign Date UNIX Converted and Formated Full Year- ', fDateYYYY_MM_DD(new Date(sovereignDate).getFullYear()))
+  }
 
   return sovereignDate
 }

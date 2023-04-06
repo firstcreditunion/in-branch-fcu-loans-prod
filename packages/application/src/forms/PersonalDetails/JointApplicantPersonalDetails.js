@@ -263,7 +263,7 @@ const JointApplicantPersonalDetails = () => {
             <FormControlLabel value='Female' control={<Radio size='small' />} label='Female' key='Female' />
             <FormControlLabel value='Other' control={<Radio size='small' />} label='Other' key='Other' />
           </RadioGroups>
-          <DatePicker id='jointdob' name='jointdob' onDateChange={handleDateofBirth} label='Date of Birth' control={control} format='dd/MM/yyyy' variant='outlined' openTo='year' date={jointdob} maxDate={jointdobDefDate} />
+          <DatePicker id='jointdob' name='jointdob' onDateChange={handleDateofBirth} label='Date of Birth' control={control} format='DD/MM/YYYY' variant='outlined' openTo='year' date={jointdob} maxDate={jointdobDefDate} />
           <SelectMenu id='jointmaritalStatus' name='jointmaritalStatus' onSelectChange={handleMaritalStatus} label='Marital Status' value={jointmaritalStatus?.value} control={control} menuItems={maritalStatusMenu} defualtValue={jointmaritalStatus?.value} />
           <Stack direction='column' spacing={3} justifyContent='flex-start' alignItems='center' pt={2}>
             <LabelStyle>How many dependant children do you have?</LabelStyle>

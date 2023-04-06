@@ -9,11 +9,8 @@ import FormHelperText from '@mui/material/FormHelperText'
 // import DatePicker from '@mui/lab/DatePicker'
 
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
-import { LocalizationProvider } from '@mui/x-date-pickers'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import dayjs from 'dayjs'
-
-import enGB from 'date-fns/locale/en-GB'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 
 import { Controller } from 'react-hook-form'
 
@@ -41,36 +38,24 @@ const CustomDatePicker = ({ name, label, className, control, date, variant, open
 
   return (
     <CustFormControl fullWidth>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Controller
-          render={({ fieldState: { error }, field: { onChange, onBlur, value } }) => (
-            <Stack>
-              <DatePicker
-                openTo={openTo}
-                views={views}
-                label={label}
-                value={date ? dayjs(date) : null}
-                format={format}
-                defaultValue={null}
-                minDate={minDate ? dayjs(minDate) : null}
-                maxDate={maxDate ? dayjs(maxDate) : null}
-                disabled={disabled}
-                onChange={(date) => {
-                  onDateChange(dayjs(date)?.$d)
-                  onChange(dayjs(date)?.$d)
-                  onBlur(dayjs(date)?.$d)
-                }}
-              />
-              {!!error && (
-                <FormHelperText error sx={{ px: 2 }}>
-                  {error.message}
-                </FormHelperText>
-              )}
-            </Stack>
-          )}
-          name={name}
-          control={control}
-          defaultValue={defualtValue}
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <DatePicker
+          inputVariant={variant}
+          margin='normal'
+          openTo={openTo}
+          views={views}
+          id={labelId}
+          label={label}
+          value={date}
+          allowSameDateSelection={true}
+          inputFormat={format}
+          minDate={minDate}
+          maxDate={maxDate}
+          disabled={disabled}
+          renderInput={(params) => <TextField fullWidth {...params} helperText={helperText} />}
+          onChange={(date) => {
+            onDateChange(date)
+          }}
         />
       </LocalizationProvider>
     </CustFormControl>

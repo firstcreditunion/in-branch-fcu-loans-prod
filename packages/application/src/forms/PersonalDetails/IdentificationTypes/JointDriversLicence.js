@@ -20,6 +20,7 @@ import DatePicker from '../../../components/rhf-components/DatePicker'
 
 import { UploadPhoto } from '../../../components/upload'
 import { fData } from '../../../utils/formatNumber'
+import { fDateYYYY_MM_DD, fDate } from '../../../utils/formatDateTime'
 
 const driversLicenceNoLength = 8
 
@@ -37,6 +38,7 @@ function JointDriverLicence() {
 
   const issueDateUpperLimit = new Date()
 
+  const expiryDateLowerLimit = new Date()
   const issueYearLowerLimit = new Date(new Date().setFullYear(new Date().getFullYear() - 10)).getFullYear()
   const expiryYearUpperLimit = drLicenceIssueDate ? new Date(new Date(drLicenceIssueDate).setFullYear(new Date(drLicenceIssueDate).getFullYear() + 10)).getFullYear() : new Date(new Date().setFullYear(new Date().getFullYear() + 10)).getFullYear()
 
@@ -109,6 +111,17 @@ function JointDriverLicence() {
       .required('Expiry Date is required')
       .test('Format Check', 'Invalid Date. Date Format: DD/MM/YYYY', function (date) {
         if (date === 'Invalid Date') {
+          return false
+        }
+
+        return true
+      })
+      .test('Lower Limit', `Expiry date must be after today`, function (date) {
+        if (date === 'Invalid Date') {
+          return false
+        }
+        const lowerLimitTest = new Date(date) < expiryDateLowerLimit
+        if (lowerLimitTest) {
           return false
         }
 
@@ -216,18 +229,23 @@ function JointDriverLicence() {
     dispatch(identificationActions.setJointdrLicenceExpiryDate(date))
   }
   const handleDrLicencePhotoUrl = (file, preview) => {
-    dispatch(identificationActions.setJointdrLicencePhotoUrl({ file, preview }))
+    dispatch(
+      identificationActions.setJointdrLicencePhotoUrl({
+        file,
+        preview,
+      })
+    )
   }
 
-  const handleDrop = useCallback(
-    (acceptedFiles) => {
-      const file = acceptedFiles[0]
-      if (file) {
-        handleDrLicencePhotoUrl(file, URL.createObjectURL(file))
-      }
-    },
-    [handleDrLicencePhotoUrl]
-  )
+  // const handleDrop = useCallback(
+  //   (acceptedFiles) => {
+  //     const file = acceptedFiles[0]
+  //     if (file) {
+  //       handleDrLicencePhotoUrl(file, URL.createObjectURL(file))
+  //     }
+  //   },
+  //   [handleDrLicencePhotoUrl]
+  // )
 
   return (
     <Form>
@@ -245,8 +263,8 @@ function JointDriverLicence() {
             <InputField name='driversLicenceVersion' label='Version' type='text' control={control} errorInput={!!errors.driversLicenceVersion} helperTextInput={errors?.driversLicenceVersion?.message} onInputChange={handleDriversLicenceVersion} hasTooltip={false} />
           </Grid>
         </Grid>
-        <DatePicker id='drLicenceIssueDate' name='drLicenceIssueDate' onDateChange={handleDrLicenceIssueDate} label='Issued Date' control={control} variant='outlined' openTo='year' format='dd/MM/yyyy' date={drLicenceIssueDate} maxDate={defDrLicenceIssueDate} isRequired={true} />
-        <DatePicker id='drLicenceExpiryDate' name='drLicenceExpiryDate' onDateChange={handleDrLicenceExpiryDate} label='Expiry Date' control={control} variant='outlined' openTo='year' format='dd/MM/yyyy' date={drLicenceExpiryDate} minDate={defDrLicenceExpiryDate} isRequired={true} />
+        <DatePicker id='drLicenceIssueDate' name='drLicenceIssueDate' onDateChange={handleDrLicenceIssueDate} label='Issued Date' control={control} variant='outlined' openTo='year' format='DD/MM/YYYY' date={drLicenceIssueDate} maxDate={defDrLicenceIssueDate} isRequired={true} />
+        <DatePicker id='drLicenceExpiryDate' name='drLicenceExpiryDate' onDateChange={handleDrLicenceExpiryDate} label='Expiry Date' control={control} variant='outlined' openTo='year' format='DD/MM/YYYY' date={drLicenceExpiryDate} minDate={defDrLicenceExpiryDate} isRequired={true} />
         {/* <Box sx={{ mb: 5 }}>
           <UploadPhoto
             accept='image/*'

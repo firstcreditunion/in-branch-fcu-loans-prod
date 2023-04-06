@@ -130,7 +130,7 @@ function JointBirthCertificate() {
     <Form>
       <Stack direction='column' spacing={3} justifyContent='flex-start' sx={{ pb: 5 }}>
         <InputField name='birthCertificateRegNo' label='Registration Number' type='text' control={control} errorInput={!!errors.birthCertificateRegNo} helperTextInput={errors?.birthCertificateRegNo?.message} onInputChange={handleBrithCertificateRegNo} hasTooltip={false} defaultValue={birthCertificateRegNo ? birthCertificateRegNo : ''} />
-        <DatePicker id='datOfBirth' name='datOfBirth' onDateChange={handleBrithCertificateDateofBirth} label='Registration Date' control={control} variant='outlined' openTo='year' format='dd/MM/yyyy' date={dob} isRequired={true} />
+        <DatePicker id='datOfBirth' name='datOfBirth' onDateChange={handleBrithCertificateDateofBirth} label='Registration Date' control={control} variant='outlined' openTo='year' format='DD/MM/YYYY' date={dob} isRequired={true} />
         {/* <Box sx={{ mb: 5 }}>
           <UploadPhoto
             accept='image/*'

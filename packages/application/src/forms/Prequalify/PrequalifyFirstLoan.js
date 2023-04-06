@@ -129,14 +129,15 @@ function PreliminaryQuestions() {
   // const watchAge = watch('age')
 
   useEffect(() => {
-    if (jointApplicationState === 'initial' && existingMemberState === 'initial' && loanPurposeState === 'initial' && loanPurposeState === 'initial') return
+    if (jointApplicationState === 'initial' && existingMemberState === 'initial' && loanPurposeState === 'initial' && loanPurposeState === 'initial' && tradingBranchState === 'initial') return
 
-    if (watchJointLoan !== null && jointApplicationState !== 'initial' && watchExistingMember !== null && existingMemberState !== 'initial' && watchLoanPurpose !== null && loanPurposeState !== 'initial' && watchTradingBranch !== null && tradingBranchState !== 'initial') {
+    if (watchJointLoan !== null && jointApplicationState !== 'initial' && watchExistingMember !== null && existingMemberState !== 'initial' && watchLoanPurpose !== null && loanPurposeState !== 'initial' && (watchExistingMember === 'No' || (watchExistingMember === 'Yes' && !(watchTradingBranch == null) && tradingBranchState !== 'initial'))) {
       dispatch(lendingCriteriaQnsActions.setProceed(true))
       dispatch(lendingCriteriaQnsActions.setIsValidJointApplication(true))
       dispatch(lendingCriteriaQnsActions.setIsValidExistingMember(true))
       dispatch(lendingCriteriaQnsActions.setIsValidLoanPurpose(true))
       dispatch(lendingCriteriaQnsActions.setIsValidTradingBranch(true))
+
       // dispatch(lendingCriteriaQnsActions.setIsValidAge(true))
 
       return
@@ -760,7 +761,7 @@ export default function PrequalifyQuestions() {
                       Back
                     </Button>
                     <Button
-                      variant='outlined'
+                      variant='contained'
                       disabled={!proceed}
                       onClick={handleNext}
                       sx={{
@@ -770,7 +771,7 @@ export default function PrequalifyQuestions() {
                       }}
                       endIcon={<ArrowForwardIosIcon />}
                     >
-                      Next
+                      Continue
                     </Button>
                   </Stack>
                 )}
@@ -799,7 +800,7 @@ export default function PrequalifyQuestions() {
                       }}
                       endIcon={<NoteAltIcon />}
                     >
-                      Proceed
+                      Continue
                     </Button>
                   </Stack>
                 )}

@@ -134,7 +134,7 @@ function JointGoldCard() {
     <Form>
       <Stack direction='column' spacing={3} justifyContent='flex-start' sx={{ pb: 5 }}>
         <InputField name='goldCardNo' label='Card Number' type='number' control={control} errorInput={!!errors.goldCardNo} helperTextInput={errors?.goldCardNo?.message} onInputChange={handleGoldCardNo} hasTooltip={false} />
-        <DatePicker id='goldCardValidFromDate' name='goldCardValidFromDate' onDateChange={handleGoldCardVaildFromDate} label='Valid From Date' control={control} variant='outlined' openTo='year' format='dd/MM/yyyy' date={goldCardValidFromDate} maxDate={defGoldCardValidFromDate} isRequired={true} />
+        <DatePicker id='goldCardValidFromDate' name='goldCardValidFromDate' onDateChange={handleGoldCardVaildFromDate} label='Valid From Date' control={control} variant='outlined' openTo='year' format='DD/MM/YYYY' date={goldCardValidFromDate} maxDate={defGoldCardValidFromDate} isRequired={true} />
         {/* <Box sx={{ mb: 5 }}>
           <UploadPhoto
             accept='image/*'

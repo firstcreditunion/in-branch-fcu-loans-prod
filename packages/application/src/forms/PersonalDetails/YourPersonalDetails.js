@@ -29,6 +29,7 @@ import Form from '../../components/Form'
 import Counter from '../../components/Counter'
 import InputField from '../../components/rhf-components/Input'
 import DatePicker from '../../components/rhf-components/DatePicker'
+import DatePickerCust from '../../components/rhf-components/DatePickerCust'
 import SelectMenu from '../../components/rhf-components/SelectMenu'
 import RadioGroups from '../../components/rhf-components/RadioGroups'
 
@@ -38,8 +39,10 @@ import PersonRoundedIcon from '@mui/icons-material/PersonRounded'
 //* Codes
 import { maritalStatusMenu } from './Codes/PersonalDetailsCodes'
 
+import { format, parse, isDate } from 'date-fns'
+
 //* Utils
-import { fDate, convertToUTCTimestamp } from '../../utils/formatDateTime'
+import { fDate, convertToUTCTimestamp, fDateYear, fDateCustom, fDateTime, fDateYYYY_MM_DD, fDateForwardSlashSeperated } from '../../utils/formatDateTime'
 
 const dobUpperLimit = new Date().setFullYear(new Date().getFullYear() - 18)
 
@@ -116,29 +119,32 @@ const YourPersonalDetails = () => {
     dob: yup
       .string()
       .required('Date of Birth is required')
-      .test('cannot be lower than 1900', 'Invalid Date of Birth. Date Format: DD/MM/YYYY', function (dob) {
-        if (dob === 'Invalid Date') {
+      .test('cannot be lower than 1900', 'Invalid Date of Birth. Date Format: DD/MM/YYYY', function (dateOfBirth) {
+        console.log('Yup Raw dateOfBirth: ', dateOfBirth)
+        // console.log('Yup Raw dateOfBirth Formatted: ', dateOfBirth)
+        console.log('Redux Date: ', dob)
+        if (dateOfBirth === 'Invalid Date') {
           return false
         }
 
         return true
       })
-      .test('cannot be lower than 1900', `Must be born after ${fDate(minDateOfBirthFromToday)}`, function (dob) {
-        if (dob === 'Invalid Date') {
+      .test('cannot be lower than 1900', `Must be born after ${fDate(minDateOfBirthFromToday)}`, function (dateOfBirth) {
+        if (dateOfBirth === 'Invalid Date') {
           return false
         }
 
-        if (new Date(dob) < minDateOfBirthFromToday) {
+        if (new Date(dateOfBirth) < minDateOfBirthFromToday) {
           return false
         }
 
         return true
       })
-      .test('Eighteen plus check', 'You must be at least 18 years old to apply', function (dob) {
-        if (dob === 'Invalid Date') {
+      .test('Eighteen plus check', 'You must be at least 18 years old to apply', function (dateOfBirth) {
+        if (dateOfBirth === 'Invalid Date') {
           return false
         }
-        if (new Date(dob) > dobUpperLimit) {
+        if (new Date(dateOfBirth) > dobUpperLimit) {
           return false
         }
 
@@ -193,7 +199,6 @@ const YourPersonalDetails = () => {
   }, [isValid])
 
   function onSubmit() {
-    const utc_timestamp = convertToUTCTimestamp(dob)
     console.log('Submitted')
   }
 
@@ -295,7 +300,7 @@ const YourPersonalDetails = () => {
             <FormControlLabel value='Female' disabled={secureSessionID !== null && gender !== '' && gender !== undefined && validSovereignPersonalDetailsGender === true} control={<Radio size='small' />} label='Female' key='Female' />
             <FormControlLabel value='Other' disabled={secureSessionID !== null && gender !== '' && gender !== undefined && validSovereignPersonalDetailsGender === true} control={<Radio size='small' />} label='Other' key='Other' />
           </RadioGroups>
-          <DatePicker id='dob' name='dob' onDateChange={handleDateofBirth} label='Date of Birth' control={control} format='dd/MM/yyyy' variant='outlined' openTo='year' date={dob} maxDate={dobDefDate} isRequired={true} disabled={secureSessionID !== null && dob !== '' && dob !== undefined && validSovereignPersonalDetailsDob === true} />
+          <DatePicker id='dob' name='dob' onDateChange={handleDateofBirth} label='Date of Birth' control={control} format='DD/MM/YYYY' openTo='year' date={dob} minDate={minDateOfBirthFromToday} maxDate={dobDefDate} isRequired={true} disabled={secureSessionID !== null && dob !== '' && dob !== undefined && validSovereignPersonalDetailsDob === true} />
           <SelectMenu id='maritalStatus' name='maritalStatus' onSelectChange={handleMaritalStatus} label='Marital Status' control={control} menuItems={maritalStatusMenu} defualtValue={maritalStatus?.value} value={maritalStatus?.value} placeholder='Select Marital Status...' />
           <Stack direction='column' spacing={3} justifyContent='flex-start' alignItems='center' pt={2}>
             <LabelStyle>How many dependant children do you have?</LabelStyle>
