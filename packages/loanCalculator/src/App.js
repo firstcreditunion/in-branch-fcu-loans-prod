@@ -13,7 +13,7 @@ const LoanCalculator = lazy(() => {
   })
 })
 
-// Git commit control 2
+// Git commit control 3
 
 export default ({ history, onLoanAmountChange, onInterestChange, onTermChange, onPaymentFrequencyChange, setCreditSense, setCreditCheck, setMotorwebCheck, setPPSR, setDocusign, setCloudCheckId, setCloudCheckPEP, sethasLpiPrimeDeath, sethasLpiPrimeDisability, sethasLpiPrimeCriticalIllness, sethasLpiPrimeBankruptcy, setLPIUpfrontFee }) => {
   return (
