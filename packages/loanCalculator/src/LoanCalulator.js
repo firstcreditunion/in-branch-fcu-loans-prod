@@ -707,7 +707,7 @@ export default function LoanCalulator({ onLoanAmountChange, onInterestChange, on
                       <DataValueTypography variant='subtitle1'>{term} Months</DataValueTypography>
                     </Stack>
                     <Stack direction='row' justifyContent='space-between' alignItems='center'>
-                      <DataLabelTypography variant='subtitle1'>Interest Rate</DataLabelTypography>
+                      <DataLabelTypography variant='subtitle1'>Interest Rate**</DataLabelTypography>
                       <DataValueTypography variant='subtitle1'>{interestRate}% p.a.</DataValueTypography>
                     </Stack>
                     <Stack direction='row' justifyContent='space-between' alignItems='center'>
@@ -718,11 +718,27 @@ export default function LoanCalulator({ onLoanAmountChange, onInterestChange, on
                       <DataLabelTypography variant='subtitle1'>Total Amount Payable</DataLabelTypography>
                       <DataValueTypography variant='subtitle1'>{fCurrency(sovAmountPayable)}</DataValueTypography>
                     </Stack>
-                    <Stack direction='column' spacing={2}>
+                    <Stack direction='column' justifyContent='center' alignItems='center' spacing={2} sx={{ width: '100%' }}>
                       <Typography variant='caption'>
                         <Link onClick={handleOpenCostRecoveryModal}>*Click here to learn more about loan cost recovery fees.</Link>
                       </Typography>
-                      {/* <Typography variant='caption'>**Interest rates are subject to the borrower's individual credit assessment and may range between 9.95% p.a to 18% p.a.</Typography> */}
+                      {!downMd && (
+                        <Stack direction='column' justifyContent='center' alignItems='center' spacing={0} sx={{ width: '100%' }}>
+                          <Typography variant='caption' align='justify' sx={{ color: 'text.secondary' }}>
+                            **Interest rates are subject to the borrower's individual
+                          </Typography>
+                          <Typography variant='caption' align='justify' sx={{ color: 'text.secondary' }}>
+                            credit assessment and may range between 9.95% p.a to 18% p.a.
+                          </Typography>
+                        </Stack>
+                      )}
+                      {downMd && (
+                        <Stack direction='column' justifyContent='center' alignItems='center' spacing={0} sx={{ width: '100%' }}>
+                          <Typography variant='caption' align='justify' sx={{ color: 'text.secondary' }}>
+                            **Interest rates are subject to the borrower's individual credit assessment and may range between 9.95% p.a to 18% p.a.
+                          </Typography>
+                        </Stack>
+                      )}
                     </Stack>
                     <Stack direction='column' sx={{ width: '100%' }}>
                       {downMd && (
