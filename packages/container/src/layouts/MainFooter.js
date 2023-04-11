@@ -24,6 +24,10 @@ const RootStyle = styled('div')(({ theme }) => ({
 export default function MainFooter() {
   const downSm = useMediaQuery((theme) => theme.breakpoints.down('sm'))
 
+  const currentYear = new Date().getFullYear()
+
+  console.log('Year - ', currentYear)
+
   return (
     <RootStyle>
       <Box
@@ -58,7 +62,7 @@ export default function MainFooter() {
                   textAlign: { xs: 'center', md: 'left' },
                 }}
               >
-                © 2021 First Credit Union
+                © {currentYear} First Credit Union
               </Typography>
               <Divider orientation='vertical' flexItem sx={{ mx: 1 }} />
               <Link
