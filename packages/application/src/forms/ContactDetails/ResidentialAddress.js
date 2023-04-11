@@ -50,7 +50,12 @@ import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded'
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined'
 import ModeEditOutlineRoundedIcon from '@mui/icons-material/ModeEditOutlineRounded'
 
+// Custom Components
+import DatePicker from '../../components/rhf-components/DatePicker'
+
+// Utils
 import { fDate } from '../../utils/formatDateTime'
+import { debounce_fn } from '../../utils/debounceAndThrottle'
 
 const LabelStyle = styled(Typography)(({ theme }) => ({
   ...theme.typography.subtitle2,
@@ -88,6 +93,8 @@ function ResidentialAddress() {
 
   const secureSessionID = useSelector((state) => state.globalReducer.secureSessionID)
 
+  const currentRequestId = useSelector((state) => state.conatctDetailsReducer.currentRequestId)
+
   const currHomeAddStreet = useSelector((state) => state.conatctDetailsReducer.currHomeAddStreet)
   const residenceType = useSelector((state) => state.conatctDetailsReducer.residenceType)
   const currResYears = useSelector((state) => state.conatctDetailsReducer.currResYears)
@@ -119,10 +126,14 @@ function ResidentialAddress() {
   const currResAddressToDisplayLine3 = useSelector((state) => state.conatctDetailsReducer.currResAddressToDisplayLine3)
   const currResAddressToDisplayLine4 = useSelector((state) => state.conatctDetailsReducer.currResAddressToDisplayLine4)
 
+  const currResidenceEffDate = useSelector((state) => state.conatctDetailsReducer.currResidenceEffDate)
+
   const sovCurrentAddresseffective = useSelector((state) => state.conatctDetailsReducer.sovCurrentAddresseffective)
   const sovHasCurrentResidentialDetails = useSelector((state) => state.conatctDetailsReducer.sovHasCurrentResidentialDetails)
 
   const isCurrentAddressEmpty = (currResAddressToDisplayLine1 == null && currResAddressToDisplayLine2 == null && currResAddressToDisplayLine3 == null && currResAddressToDisplayLine4 == null) || currHomeAddStreet === null || currHomeAddStreet === undefined || currHomeAddStreet === ''
+
+  const upperLimitForResidencyStartDate = new Date()
 
   const schema = yup.object().shape({
     currHomeAddStreet: yup
@@ -140,7 +151,7 @@ function ResidentialAddress() {
       .required('Residential address is required')
       .nullable(),
     residenceType: yup.string().required('Residence type is required'),
-    currResYears: yup.string(),
+    currResYears: yup.string().required(''),
     currResMonths: yup.string(),
   })
 
@@ -218,6 +229,10 @@ function ResidentialAddress() {
       behavior: 'smooth',
     })
   }, [])
+
+  useEffect(() => {
+    console.log('Get Address Request ID: ', currentRequestId)
+  }, [currentRequestId])
 
   useEffect(() => {
     if (currHomeAddStreet !== null) {
@@ -375,6 +390,7 @@ function ResidentialAddress() {
   }, [isValid])
 
   useEffect(() => {
+    console.log('')
     // console.log('isValidSovCurrentResidentialDetails: ', isValidSovCurrentResidentialDetails)
     // console.log('isValidResidenceDetails: ', isValidResidenceDetails)
     // console.log('isValidSovPreviousResidentialDetails: ', isValidSovPreviousResidentialDetails)
@@ -415,6 +431,11 @@ function ResidentialAddress() {
 
   const handleResidenceType = (event) => {
     dispatch(contactDetailsActions.setResidenceType(event.target.value))
+  }
+
+  // Bankruptcy Date
+  const handleCurrentResidenceEffDate = (date) => {
+    dispatch(contactDetailsActions.setCurrResEffDate(date))
   }
 
   // Stay at current residence

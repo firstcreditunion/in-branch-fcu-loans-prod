@@ -718,10 +718,11 @@ export default function LoanCalulator({ onLoanAmountChange, onInterestChange, on
                       <DataLabelTypography variant='subtitle1'>Total Amount Payable</DataLabelTypography>
                       <DataValueTypography variant='subtitle1'>{fCurrency(sovAmountPayable)}</DataValueTypography>
                     </Stack>
-                    <Stack direction='row' spacing={1}>
+                    <Stack direction='column' spacing={2}>
                       <Typography variant='caption'>
                         <Link onClick={handleOpenCostRecoveryModal}>*Click here to learn more about loan cost recovery fees.</Link>
                       </Typography>
+                      {/* <Typography variant='caption'>**Interest rates are subject to the borrower's individual credit assessment and may range between 9.95% p.a to 18% p.a.</Typography> */}
                     </Stack>
                     <Stack direction='column' sx={{ width: '100%' }}>
                       {downMd && (

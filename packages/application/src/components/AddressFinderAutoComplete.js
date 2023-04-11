@@ -1,5 +1,8 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import TextField_Cust from '../components/ui/mui-custom-styled-components/TextField_Custom'
+
+// Redux
+import { getAddresses } from '../redux/slices/contactDetailsSlice'
 
 import Stack from '@mui/material/Stack'
 import IconButton from '@mui/material/IconButton'
@@ -12,10 +15,12 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 
 import { useDispatch, useSelector } from 'react-redux'
 
-import debounce from 'lodash.debounce'
-import throttle from 'lodash.throttle'
+// import debounce from 'lodash.debounce'
+// import throttle from 'lodash.throttle'
 import { Controller } from 'react-hook-form'
 import { List, ListItem } from '@mui/material'
+
+import { throttle_fn_wait } from '../utils/debounceAndThrottle'
 
 export default function AddressFinderAutoComplete({ name, hasStartAdornment, StartAdornmentIcon, asynchronousFunc, addressFinderRequestConfig, addressFinderSuccess, addressFinderLabel, addressCompletions, control, onAddressChange, onAddressSelectedChange, helperText, value, loading, defualtValue, size = 'medium', placeholder = '' }) {
   const dispatch = useDispatch()
@@ -34,83 +39,16 @@ export default function AddressFinderAutoComplete({ name, hasStartAdornment, Sta
 
   const loadingAddress = open
 
-  // const requestAddressFinder = () => {
-  //   console.log('ASYNC Address Finder')
-  //   console.log('Address Finder Config: ', addressFinderRequestConfig)
+  function addressChangeHandler() {
+    dispatch(asynchronousFunc(addressFinderRequestConfig))
+  }
 
-  //   dispatch(asynchronousFunc(addressFinderRequestConfig))
-  // }
-
-  // const requestAddress = React.useMemo(
-  //   () => () => {
-  //     dispatch(asynchronousFunc(addressFinderRequestConfig))
-  //   },
-  //   [addressFinderRequestConfig]
-  // )
-
-  // const requestAddress = React.useMemo(
-  //   () =>
-  //     throttle(() => {
-  //       console.log('empAddressFinderConfig: ', empAddressFinderConfig)
-  //       dispatch(asynchronousFunc(empAddressFinderConfig))
-  //     }, 1000),
-  //   []
-  // )
-
-  // React.useEffect(() => {
-  //   let active = true
-
-  //   if (!loadingAddress) {
-  //     return undefined
-  //   }
-
-  //   if (inputValue === '') {
-  //     setOptions(value ? [value] : [])
-  //     return undefined
-  //   }
-
-  //   requestAddress()
-
-  //   if (active && addressFinderSuccess && addressCompletions !== null && addressCompletions !== undefined) {
-  //     setOptions([...addressCompletions])
-  //   }
-
-  //   // requestAddressThrottle({ input: inputValue }, (results) => {
-  //   //   if (active) {
-  //   //     let newOptions = []
-
-  //   //     if (value) {
-  //   //       newOptions = [value]
-  //   //     }
-
-  //   //     if (results) {
-  //   //       newOptions = [...newOptions, ...results]
-  //   //     }
-
-  //   //     setOptions(newOptions)
-  //   //   }
-  //   // })
-  //   // ;(() => {
-  //   //   requestAddress()
-
-  //   //   if (active && addressFinderSuccess && addressCompletions !== null && addressCompletions !== undefined) {
-  //   //     setOptions([...addressCompletions])
-  //   //   }
-  //   // })()
-
-  //   return () => {
-  //     active = false
-  //   }
-  // }, [empAddressFinderConfig])
-
-  const requestAddress = React.useMemo(() =>
-    throttle(
-      () => {
-        dispatch(asynchronousFunc(addressFinderRequestConfig))
-      },
-      300000,
-      [{ trailing: true }]
-    )
+  const requestAddress = useMemo(
+    () =>
+      throttle_fn_wait(() => {
+        addressChangeHandler()
+      }, 500),
+    [inputValue]
   )
 
   React.useEffect(() => {
@@ -125,26 +63,26 @@ export default function AddressFinderAutoComplete({ name, hasStartAdornment, Sta
       return undefined
     }
 
-    // const fetch = React.useMemo(
-    //   () =>
-    //     throttle((request, callback) => {
-    //       autocompleteService.current.getPlacePredictions(request, callback)
-    //     }, 200),
-    //   []
-    // )
+    if (active && addressFinderSuccess && addressCompletions !== null && addressCompletions !== undefined) {
+      let newOptions = []
 
-    ;(() => {
-      requestAddress()
-
-      if (active && addressFinderSuccess && addressCompletions !== null && addressCompletions !== undefined) {
-        setOptions([...addressCompletions])
+      if (value) {
+        newOptions = [value]
       }
-    })()
+
+      if (addressCompletions) {
+        newOptions = [...newOptions, ...addressCompletions]
+      }
+
+      setOptions([...addressCompletions])
+    }
+
+    requestAddress()
 
     return () => {
       active = false
     }
-  }, [loadingAddress, addressFinderRequestConfig])
+  }, [value, inputValue, requestAddress])
 
   React.useEffect(() => {
     if (!open) {
@@ -224,3 +162,105 @@ export default function AddressFinderAutoComplete({ name, hasStartAdornment, Sta
     />
   )
 }
+
+// const requestAddressFinder = () => {
+//   console.log('ASYNC Address Finder')
+//   console.log('Address Finder Config: ', addressFinderRequestConfig)
+
+//   dispatch(asynchronousFunc(addressFinderRequestConfig))
+// }
+
+// const requestAddress = React.useMemo(
+//   () => () => {
+//     dispatch(asynchronousFunc(addressFinderRequestConfig))
+//   },
+//   [addressFinderRequestConfig]
+// )
+
+// const requestAddress = React.useMemo(
+//   () =>
+//     throttle(() => {
+//       console.log('empAddressFinderConfig: ', empAddressFinderConfig)
+//       dispatch(asynchronousFunc(empAddressFinderConfig))
+//     }, 1000),
+//   []
+// )
+
+// React.useEffect(() => {
+//   let active = true
+
+//   if (!loadingAddress) {
+//     return undefined
+//   }
+
+//   if (inputValue === '') {
+//     setOptions(value ? [value] : [])
+//     return undefined
+//   }
+
+//   requestAddress()
+
+//   if (active && addressFinderSuccess && addressCompletions !== null && addressCompletions !== undefined) {
+//     setOptions([...addressCompletions])
+//   }
+
+//   // requestAddressThrottle({ input: inputValue }, (results) => {
+//   //   if (active) {
+//   //     let newOptions = []
+
+//   //     if (value) {
+//   //       newOptions = [value]
+//   //     }
+
+//   //     if (results) {
+//   //       newOptions = [...newOptions, ...results]
+//   //     }
+
+//   //     setOptions(newOptions)
+//   //   }
+//   // })
+//   // ;(() => {
+//   //   requestAddress()
+
+//   //   if (active && addressFinderSuccess && addressCompletions !== null && addressCompletions !== undefined) {
+//   //     setOptions([...addressCompletions])
+//   //   }
+//   // })()
+
+//   return () => {
+//     active = false
+//   }
+// }, [empAddressFinderConfig])
+
+// const requestAddress = throttle(
+//   () => {
+//     console.log('Request Address Memo')
+//     dispatch(asynchronousFunc(addressFinderRequestConfig))
+//   },
+//   1000,
+//   [{ trailing: true }]
+// )
+
+// const requestAddress = React.useMemo(() =>
+//   throttle(
+//     () => {
+//       console.log('Request Address Memo')
+//       dispatch(asynchronousFunc(addressFinderRequestConfig))
+//     },
+//     300000,
+//     [{ trailing: true }]
+//   )
+// )
+
+// const requestAddress = throttle_fn_wait(() => {
+//   console.log('Calling Address Finder')
+//   dispatch(asynchronousFunc(addressFinderRequestConfig))
+// }, 1000)
+
+// ;(() => {
+//   // requestAddress()
+
+//   if (active && addressFinderSuccess && addressCompletions !== null && addressCompletions !== undefined) {
+//     setOptions([...addressCompletions])
+//   }
+// })()
