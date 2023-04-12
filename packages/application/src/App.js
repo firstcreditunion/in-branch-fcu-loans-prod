@@ -1012,4 +1012,4 @@ export default ({ loanAmount, interestRate, term, paymentFrequency, creditCheck,
   )
 }
 
-// git commit control 1
+// git commit control 2
