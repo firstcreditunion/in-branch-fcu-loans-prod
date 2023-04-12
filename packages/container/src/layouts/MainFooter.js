@@ -26,8 +26,6 @@ export default function MainFooter() {
 
   const currentYear = new Date().getFullYear()
 
-  console.log('Year - ', currentYear)
-
   return (
     <RootStyle>
       <Box

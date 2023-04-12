@@ -70,7 +70,7 @@ export default function FirstLoanPrerequisites({ setGuestSession }) {
   function OtherInformation() {
     const otherInfoItems = [
       { id: 1, title: 'Income and Expenses', content: 'Your income and expenses.' },
-      { id: 2, title: 'Assets and Liabilities', content: 'Your assests and liabilities.' },
+      { id: 2, title: 'Assets and Liabilities', content: 'Your assets and liabilities.' },
       { id: 3, title: 'Income', content: 'Your bank account statements for the last 3 months (we will contact you when we need this).' },
     ]
 

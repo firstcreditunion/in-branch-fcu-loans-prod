@@ -629,6 +629,24 @@ function ResidentialAddress() {
             </Stack>
           </Stack>
         </Stack>
+        {/* <Stack direction='column' spacing={5} sx={{ width: '100%' }}>
+          <Stack direction='column'>
+            <LabelStyle sx={{ textAlign: 'center' }}>How would you describe your current residence?</LabelStyle>
+            <RadioGroups id='residenceType' name='residenceType' onRadioChange={handleResidenceType} control={control} value={residenceType} defaultValue={''} alignItems='center' row={downSm ? false : true}>
+              <FormControlLabel sx={{ alignItems: 'center' }} value='HOME' control={<Radio size='small' />} label='Own Home' key='HOME' />
+              <FormControlLabel sx={{ alignItems: 'center' }} value='RENT' control={<Radio size='small' />} label='Renting' key='RENT' />
+              <FormControlLabel sx={{ alignItems: 'center' }} value='BOARD' control={<Radio size='small' />} label='Boarding' key='BOARD' />
+            </RadioGroups>
+          </Stack>
+          <Stack direction='column' spacing={3} justifyContent='flex-start' sx={{ width: '100%' }}>
+            <Stack direction='column' spacing={2} justifyContent='flex-start' alignItems='center' sx={{ width: '100%' }}>
+              <Stack direction='column' spacing={2} justifyContent='flex-start' alignItems='center' sx={{ width: '100%' }}>
+                <LabelStyle sx={{ textAlign: 'center' }}>When did you move into this address?</LabelStyle>
+                <DatePicker id='currResEffDate' name='currResEffDate' onDateChange={handleCurrentResidenceEffDate} label='Address Effective Date' control={control} variant='outlined' helperText='Month and Year. Eg: June 2020' openTo='year' format='MMMM YYYY' date={currResidenceEffDate} maxDate={upperLimitForResidencyStartDate} isRequired={true} views={['year', 'month']} />
+              </Stack>
+            </Stack>
+          </Stack>
+        </Stack> */}
       </Stack>
     </Form>
   )

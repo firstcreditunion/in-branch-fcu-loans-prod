@@ -728,7 +728,7 @@ export default function LoanCalulator({ onLoanAmountChange, onInterestChange, on
                             **Interest rates are subject to the borrower's individual
                           </Typography>
                           <Typography variant='caption' align='justify' sx={{ color: 'text.secondary' }}>
-                            credit assessment and may range between 9.95% p.a to 18% p.a.
+                            credit assessment and may range between 10.95% p.a to 18% p.a.
                           </Typography>
                         </Stack>
                       )}
