@@ -203,6 +203,7 @@ export const initialState = {
   currResMonths: 0,
   currResEffectiveDate: new Date(),
   currResidenceEffDate: null,
+  currResidenceMonths: 0,
   currResTypeCode: null,
   currResTypeDescription: null,
 
@@ -664,6 +665,10 @@ const contactDetailsSlice = createSlice({
 
     setCurrResEffDate: (state, action) => {
       state.currResidenceEffDate = action.payload
+      console.log('New Residence Effective Date: ', action.payload)
+    },
+    setCurrResidenceMonths: (state, action) => {
+      state.currResidenceMonths = action.payload
     },
 
     // ************* Address Finder *************** //

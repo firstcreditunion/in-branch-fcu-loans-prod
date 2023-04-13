@@ -75,9 +75,15 @@ export function convertToUTCTimestamp(date, callfrom) {
 
   const sovereignDate = fDateYYYY_MM_DD(dateFormat)
 
-  // console.log('BEFORE ISO CONVERSION: ', dateFormat)
-  // const isoDate = dateFormat.toISOString()
-  // console.log('UTC ISO date: ', isoDate)
-
   return sovereignDate
+}
+
+export function dateDiffereneInMonths(date1, date2) {
+  let months
+
+  months = (date2.getFullYear() - date1.getFullYear()) * 12
+  months -= date1.getMonth()
+  months += date2.getMonth()
+
+  return months <= 0 ? 0 : months
 }
