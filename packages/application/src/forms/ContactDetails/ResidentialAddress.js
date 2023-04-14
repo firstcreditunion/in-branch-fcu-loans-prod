@@ -238,10 +238,6 @@ function ResidentialAddress() {
   }, [])
 
   useEffect(() => {
-    console.log('Get Address Request ID: ', currentRequestId)
-  }, [currentRequestId])
-
-  useEffect(() => {
     if (currHomeAddStreet !== null) {
       var addressFinderData = JSON.stringify({
         show_metadata: 'N',

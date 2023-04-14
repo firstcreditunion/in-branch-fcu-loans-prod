@@ -321,15 +321,10 @@ function JointEmploymentStatus() {
 
   // UseEffect to toggle previous employment
   useEffect(() => {
-    console.log('useEffect for previous employment')
-
     if (employMonths >= 24) {
-      console.log('Inside 24+ months condition, EMP Months = ', employMonths)
       dispatch(employmentActions.setjointshowPrevEmp(false))
       return
     }
-
-    console.log('Past 24+ months condition, EMP Months = ', employMonths)
 
     dispatch(employmentActions.setjointshowPrevEmp(true))
   }, [employMonths, employEffectiveDate])

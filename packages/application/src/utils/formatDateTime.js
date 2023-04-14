@@ -52,7 +52,7 @@ export function convertUnixToUTCTimestamp(date, callfrom) {
   // }
 
   const sovereignDate = fDateYYYY_MM_DD(dateFormat)
-  console.log(callfrom, sovereignDate)
+
   return sovereignDate
 }
 
@@ -78,7 +78,6 @@ export function convertToUTCTimestamp(date, callfrom) {
   }
 
   const sovereignDate = fDateYYYY_MM_DD(dateFormat)
-  console.log(callfrom, sovereignDate)
   return sovereignDate
 }
 

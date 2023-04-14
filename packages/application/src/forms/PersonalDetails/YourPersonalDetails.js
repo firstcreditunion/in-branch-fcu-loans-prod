@@ -19,7 +19,7 @@ import * as yup from 'yup'
 import { styled } from '@mui/material/styles'
 
 //* MUI
-import Button from '@mui/material/Button'
+// import Button from '@mui/material/Button'
 import Stack from '@mui/material/Stack'
 import Radio from '@mui/material/Radio'
 import Typography from '@mui/material/Typography'
@@ -302,13 +302,7 @@ const YourPersonalDetails = () => {
             <FormControlLabel value='Other' disabled={secureSessionID !== null && gender !== '' && gender !== undefined && validSovereignPersonalDetailsGender === true} control={<Radio size='small' />} label='Other' key='Other' />
           </RadioGroups>
           <DatePicker id='dob' name='dob' onDateChange={handleDateofBirth} label='Date of Birth' control={control} format='DD/MM/YYYY' openTo='year' date={dob} minDate={minDateOfBirthFromToday} maxDate={dobDefDate} isRequired={true} disabled={secureSessionID !== null && dob !== '' && dob !== undefined && validSovereignPersonalDetailsDob === true} />
-          <Button
-            onClick={() => {
-              console.log('UTC - ', convertToUTCTimestamp(dob))
-            }}
-          >
-            Click UTC
-          </Button>
+
           <SelectMenu id='maritalStatus' name='maritalStatus' onSelectChange={handleMaritalStatus} label='Marital Status' control={control} menuItems={maritalStatusMenu} defualtValue={maritalStatus?.value} value={maritalStatus?.value} placeholder='Select Marital Status...' />
           <Stack direction='column' spacing={3} justifyContent='flex-start' alignItems='center' pt={2}>
             <LabelStyle>How many dependant children do you have?</LabelStyle>
@@ -321,3 +315,11 @@ const YourPersonalDetails = () => {
 }
 
 export default YourPersonalDetails
+
+// <Button
+// onClick={() => {
+//   console.log('UTC - ', convertToUTCTimestamp(dob))
+// }}
+// >
+// Click UTC
+// </Button>
