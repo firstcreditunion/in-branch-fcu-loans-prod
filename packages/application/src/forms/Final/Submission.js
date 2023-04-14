@@ -241,8 +241,6 @@ export default function Submission() {
   const title = useSelector((state) => state.yourPersonalDetailReducer.title)
   const dob = useSelector((state) => state.yourPersonalDetailReducer.dob)
 
-  console.log('DOB at Submission - ', convertToUTCTimestamp(new Date('1991-02-21'), 'Test'))
-
   const gender = useSelector((state) => state.yourPersonalDetailReducer.gender)
   const maritalStatus = useSelector((state) => state.yourPersonalDetailReducer.maritalStatus)
   const dependents = useSelector((state) => state.yourPersonalDetailReducer.dependents)

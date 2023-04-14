@@ -411,7 +411,7 @@ function JointResidentialAddress() {
           </Stack>
           <Stack direction='column' spacing={3} justifyContent='flex-start'>
             <Stack direction='column' spacing={2}>
-              <LabelStyle sx={{ textAlign: 'center' }}>How long have you been staying at {currResAddressToDisplayLine1 ? currResAddressToDisplayLine1 : 'this residence'}?</LabelStyle>
+              <LabelStyle sx={{ textAlign: 'center' }}>When did you move into this address?</LabelStyle>
               <DatePicker id='currResidenceEffDate' name='currResidenceEffDate' onDateChange={handleCurrentResidenceEffDate} label='Address Effective Date' control={control} variant='outlined' helperText='Month and Year. Eg: June 2020' openTo='year' format='MMMM YYYY' date={currResidenceEffDate} maxDate={upperLimitEffectiveDate} isRequired={true} views={['year', 'month']} />
             </Stack>
           </Stack>

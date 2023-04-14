@@ -603,7 +603,7 @@ function PreviousResidentialAddress() {
         )}
         <Stack direction='column' spacing={3} justifyContent='flex-start'>
           <Stack direction='column' spacing={2}>
-            <LabelStyle sx={{ textAlign: 'center' }}>How long have you been staying at {prevResAddressToDisplayLine1 == null ? 'previous residence' : prevResAddressToDisplayLine1}?</LabelStyle>
+            <LabelStyle sx={{ textAlign: 'center' }}>When did you move into this address?</LabelStyle>
             <DatePicker id='currResidenceEffDate' name='currResidenceEffDate' onDateChange={handleCurrentResidenceEffDate} label='Address Effective Date' control={control} variant='outlined' helperText='Month and Year. Eg: June 2020' openTo='year' format='MMMM YYYY' date={currResidenceEffDate} maxDate={upperLimitEffectiveDate} isRequired={true} views={['year', 'month']} />
           </Stack>
         </Stack>
