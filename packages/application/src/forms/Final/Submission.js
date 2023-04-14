@@ -241,6 +241,8 @@ export default function Submission() {
   const title = useSelector((state) => state.yourPersonalDetailReducer.title)
   const dob = useSelector((state) => state.yourPersonalDetailReducer.dob)
 
+  console.log('DOB at Submission - ', convertToUTCTimestamp(new Date('1991-02-21'), 'Test'))
+
   const gender = useSelector((state) => state.yourPersonalDetailReducer.gender)
   const maritalStatus = useSelector((state) => state.yourPersonalDetailReducer.maritalStatus)
   const dependents = useSelector((state) => state.yourPersonalDetailReducer.dependents)
@@ -431,7 +433,6 @@ export default function Submission() {
   const driversLicenceVersion = useSelector((state) => state.identificationReducer.identificationTypes.drivers_licence.data.driversLicenceVersion)
   const drLicenceIssueDate = useSelector((state) => state.identificationReducer.identificationTypes.drivers_licence.data.drLicenceIssueDate)
   const drLicenceExpiryDate = useSelector((state) => state.identificationReducer.identificationTypes.drivers_licence.data.drLicenceExpiryDate)
-
   // const sovTypeUpdateddrLicence = useSelector((state) => state.identificationReducer.identificationTypes.drivers_licence.data.sovTypeUpdated)
   // const sovTypeExpiredrLicence = useSelector((state) => state.identificationReducer.identificationTypes.drivers_licence.data.sovTypeExpire)
   // const sovTypedrLicence = useSelector((state) => state.identificationReducer.identificationTypes.drivers_licence.data.sovType)

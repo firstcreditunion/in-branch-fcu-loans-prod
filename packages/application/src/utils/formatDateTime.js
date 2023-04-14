@@ -46,10 +46,13 @@ export function convertUnixToUTCTimestamp(date, callfrom) {
   const dateFormat = new Date(unixTimestamp)
 
   const timeZoneOffsetInHours = (-1 * dateFormat.getTimezoneOffset()) / 60
-  dateFormat.setUTCHours(timeZoneOffsetInHours, 0, 0, 0)
+
+  // if (timeZoneOffsetInHours === 12) {
+  //   dateFormat.setUTCHours(timeZoneOffsetInHours, 0, 0, 0)
+  // }
 
   const sovereignDate = fDateYYYY_MM_DD(dateFormat)
-
+  console.log(callfrom, sovereignDate)
   return sovereignDate
 }
 
@@ -66,16 +69,16 @@ export function convertToUTCTimestamp(date, callfrom) {
 
   const timeZoneOffsetInHours = (-1 * dateFormat.getTimezoneOffset()) / 60
 
-  if (timeZoneOffsetInHours === 13) {
-    dateFormat.setUTCHours(timeZoneOffsetInHours, 0, 0, 0)
-  }
+  // if (timeZoneOffsetInHours === 12) {
+  //   dateFormat.setUTCHours(timeZoneOffsetInHours, 0, 0, 0)
+  // }
 
   if (typeof dateFormat === 'number') {
     return convertUnixToUTCTimestamp(dateFormat, callfrom)
   }
 
   const sovereignDate = fDateYYYY_MM_DD(dateFormat)
-
+  console.log(callfrom, sovereignDate)
   return sovereignDate
 }
 

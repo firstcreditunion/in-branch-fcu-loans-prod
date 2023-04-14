@@ -71,17 +71,11 @@ const YourPersonalDetails = () => {
   const gender = useSelector((state) => state.yourPersonalDetailReducer.gender)
   const dobDefDate = useSelector((state) => state.yourPersonalDetailReducer.dobDefDate)
   const dob = useSelector((state) => state.yourPersonalDetailReducer.dob)
+
   const maritalStatus = useSelector((state) => state.yourPersonalDetailReducer.maritalStatus)
   const showOtherTitleField = useSelector((state) => state.yourPersonalDetailReducer.showOtherTitleField)
   const dependents = useSelector((state) => state.yourPersonalDetailReducer.dependents)
 
-  console.log('Date of Birth - ', dob)
-
-  // if (!(dob === 'Invalid Date')) {
-  //   console.log('Date of Birth UTC - ', convertToUTCTimestamp(dob))
-  // }
-
-  // Redux Selectors - Sovereign Data checks
   const validSovereignPersonalDetailsTitle = useSelector((state) => state.yourPersonalDetailReducer.validSovereignPersonalDetailsTitle)
   const validSovereignPersonalDetailsForenames = useSelector((state) => state.yourPersonalDetailReducer.validSovereignPersonalDetailsForenames)
   const validSovereignPersonalDetailsSurname = useSelector((state) => state.yourPersonalDetailReducer.validSovereignPersonalDetailsSurname)
@@ -308,6 +302,13 @@ const YourPersonalDetails = () => {
             <FormControlLabel value='Other' disabled={secureSessionID !== null && gender !== '' && gender !== undefined && validSovereignPersonalDetailsGender === true} control={<Radio size='small' />} label='Other' key='Other' />
           </RadioGroups>
           <DatePicker id='dob' name='dob' onDateChange={handleDateofBirth} label='Date of Birth' control={control} format='DD/MM/YYYY' openTo='year' date={dob} minDate={minDateOfBirthFromToday} maxDate={dobDefDate} isRequired={true} disabled={secureSessionID !== null && dob !== '' && dob !== undefined && validSovereignPersonalDetailsDob === true} />
+          <Button
+            onClick={() => {
+              console.log('UTC - ', convertToUTCTimestamp(dob))
+            }}
+          >
+            Click UTC
+          </Button>
           <SelectMenu id='maritalStatus' name='maritalStatus' onSelectChange={handleMaritalStatus} label='Marital Status' control={control} menuItems={maritalStatusMenu} defualtValue={maritalStatus?.value} value={maritalStatus?.value} placeholder='Select Marital Status...' />
           <Stack direction='column' spacing={3} justifyContent='flex-start' alignItems='center' pt={2}>
             <LabelStyle>How many dependant children do you have?</LabelStyle>
