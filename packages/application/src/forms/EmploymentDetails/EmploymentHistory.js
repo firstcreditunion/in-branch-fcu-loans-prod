@@ -31,47 +31,16 @@ import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded'
 
 // Custom components
 import Form from '../../components/Form'
-import Counter from '../../components/Counter'
 import InputField from '../../components/rhf-components/Input'
+import DatePicker from '../../components/rhf-components/DatePicker'
 import SelectMenu from '../../components/rhf-components/SelectMenu'
-import EditableCounter from '../../components/rhf-components/EditableCounter'
 import AddressFinderAutoComplete from '../../components/AddressFinderAutoComplete'
 
 // Codes
 import { employmentTypeMenu, occupationMenu } from './Codes/EmploymentCodes'
 
-const schema = yup.object().shape({
-  employmentType: yup.string().required('Employment type is required').nullable(),
-  occupation: yup.string().when('employmentType', {
-    is: (emp) => {
-      return emp === 'Unemployed' || emp === 'Retired' || emp === 'Beneficiary' || emp === 'Homemaker'
-    },
-    then: yup.string().nullable(),
-    otherwise: yup.string().required('Occupation is required').nullable(),
-  }),
-  employerName: yup
-    .string()
-    .when('employmentType', {
-      is: (emp) => {
-        return emp === 'Unemployed' || emp === 'Retired' || emp === 'Beneficiary' || emp === 'Homemaker'
-      },
-      then: yup.string().nullable(),
-      otherwise: yup.string().required('Employer Name is required').nullable(),
-    })
-    .nullable(),
-  empAddStreet: yup
-    .string()
-    .when('employmentType', {
-      is: (emp) => {
-        return emp === 'Unemployed' || emp === 'Retired' || emp === 'Beneficiary' || emp === 'Homemaker'
-      },
-      then: yup.string().nullable(),
-      otherwise: yup.string().required('Employer address is required').nullable(),
-    })
-    .nullable(),
-  empHistYears: yup.string(),
-  empHistMonths: yup.string(),
-})
+// Utils
+import { dateDiffereneInMonths } from '../../utils/formatDateTime'
 
 const LabelStyle = styled(Typography)(({ theme }) => ({
   ...theme.typography.subtitle2,
@@ -86,8 +55,8 @@ const EmployementHistory = () => {
   const occupation = useSelector((state) => state.employmentReducer.prevEmpoccupation)
   const employerName = useSelector((state) => state.employmentReducer.prevEmpemployerName)
   const empAddStreet = useSelector((state) => state.employmentReducer.prevEmpempAddStreet)
-  const empHistYears = useSelector((state) => state.employmentReducer.prevEmpempHistYears)
-  const empHistMonths = useSelector((state) => state.employmentReducer.prevEmpempHistMonths)
+  const employEffectiveDate = useSelector((state) => state.employmentReducer.prevEmployEffectiveDate)
+  const employMonths = useSelector((state) => state.employmentReducer.prevEmployMonths)
   const onSubmitEmploymentHistory = useSelector((state) => state.employmentReducer.onSubmitEmploymentHistory)
 
   //Address Finder
@@ -105,6 +74,50 @@ const EmployementHistory = () => {
   const empAddressToDisplayLine2 = useSelector((state) => state.employmentReducer.prevEmpempAddressToDisplayLine2)
   const empAddressToDisplayLine3 = useSelector((state) => state.employmentReducer.prevEmpempAddressToDisplayLine3)
   const empAddressToDisplayLine4 = useSelector((state) => state.employmentReducer.prevEmpempAddressToDisplayLine4)
+
+  const upperLimitForEffectiveDate = new Date()
+
+  const schema = yup.object().shape({
+    employmentType: yup.string().required('Employment type is required').nullable(),
+    occupation: yup.string().when('employmentType', {
+      is: (emp) => {
+        return emp === 'Unemployed' || emp === 'Retired' || emp === 'Beneficiary' || emp === 'Homemaker'
+      },
+      then: yup.string().nullable(),
+      otherwise: yup.string().required('Occupation is required').nullable(),
+    }),
+    employerName: yup
+      .string()
+      .when('employmentType', {
+        is: (emp) => {
+          return emp === 'Unemployed' || emp === 'Retired' || emp === 'Beneficiary' || emp === 'Homemaker'
+        },
+        then: yup.string().nullable(),
+        otherwise: yup.string().required('Employer Name is required').nullable(),
+      })
+      .nullable(),
+    empAddStreet: yup
+      .string()
+      .when('employmentType', {
+        is: (emp) => {
+          return emp === 'Unemployed' || emp === 'Retired' || emp === 'Beneficiary' || emp === 'Homemaker'
+        },
+        then: yup.string().nullable(),
+        otherwise: yup.string().required('Employer address is required').nullable(),
+      })
+      .nullable(),
+    employEffectiveDate: yup
+      .string()
+      .required('Employment Effective Date is required.')
+      .test('cannot be lower than 1900', 'Invalid Date of Birth. Date Format: MMMM YYYY', function (effectiveDate) {
+        if (effectiveDate === 'Invalid Date') {
+          return false
+        }
+
+        return true
+      })
+      .nullable(),
+  })
 
   const varEmployemntDetails = showEmploymentDetails
     ? varFade({
@@ -177,8 +190,7 @@ const EmployementHistory = () => {
       occupation: occupation,
       employerName: employerName,
       empAddStreet: empAddStreet,
-      empHistYears: empHistYears,
-      empHistMonths: empHistMonths,
+      employEffectiveDate: employEffectiveDate,
     },
     mode: 'onChange',
     resolver: yupResolver(schema),
@@ -367,28 +379,34 @@ const EmployementHistory = () => {
     dispatch(employmentActions.setPrevEmpAddressSelectedPxid(newValue?.pxid))
   }
 
-  const incrementEmpHistYears = () => {
-    dispatch(employmentActions.setPrevEmpHistYears(parseInt(empHistYears) + 1))
+  const handleEmploymentEffDate = (date) => {
+    dispatch(employmentActions.setPrevEmployEffective(date))
+    const monthsFromToday = dateDiffereneInMonths(new Date(date), new Date())
+    dispatch(employmentActions.setPrevEmployMonths(monthsFromToday))
   }
 
-  const decrementEmpHistYears = () => {
-    dispatch(employmentActions.setPrevEmpHistYears(parseInt(empHistYears) - 1))
-  }
+  // const incrementEmpHistYears = () => {
+  //   dispatch(employmentActions.setPrevEmpHistYears(parseInt(empHistYears) + 1))
+  // }
 
-  const incrementEmpHistMonths = () => {
-    dispatch(employmentActions.setPrevEmpHistMonths(parseInt(empHistMonths) + 1))
-  }
+  // const decrementEmpHistYears = () => {
+  //   dispatch(employmentActions.setPrevEmpHistYears(parseInt(empHistYears) - 1))
+  // }
 
-  const decrementEmpHistMonths = () => {
-    dispatch(employmentActions.setPrevEmpHistMonths(parseInt(empHistMonths) - 1))
-  }
+  // const incrementEmpHistMonths = () => {
+  //   dispatch(employmentActions.setPrevEmpHistMonths(parseInt(empHistMonths) + 1))
+  // }
 
-  const handleEmpHistYears = (event) => {
-    dispatch(employmentActions.setPrevEmpHistYears(event.target.value === '' ? 0 : parseInt(event.target.value)))
-  }
-  const handleEmpHistMonths = (event) => {
-    dispatch(employmentActions.setPrevEmpHistMonths(event.target.value === '' ? 0 : parseInt(event.target.value)))
-  }
+  // const decrementEmpHistMonths = () => {
+  //   dispatch(employmentActions.setPrevEmpHistMonths(parseInt(empHistMonths) - 1))
+  // }
+
+  // const handleEmpHistYears = (event) => {
+  //   dispatch(employmentActions.setPrevEmpHistYears(event.target.value === '' ? 0 : parseInt(event.target.value)))
+  // }
+  // const handleEmpHistMonths = (event) => {
+  //   dispatch(employmentActions.setPrevEmpHistMonths(event.target.value === '' ? 0 : parseInt(event.target.value)))
+  // }
 
   return (
     <Form>
@@ -451,15 +469,9 @@ const EmployementHistory = () => {
               <motion.div key='empHistPrevEmployerYears' {...varEmployerAddress}>
                 <Stack direction='column' spacing={3} justifyContent='flex-start'>
                   <Stack direction='column' spacing={2}>
-                    <LabelStyle sx={{ textAlign: 'center' }}>How long have you been employed by {employerName}?</LabelStyle>
+                    <LabelStyle sx={{ textAlign: 'center' }}>When did you start your employment{employerName ? ` at ${employerName}?` : '?'}</LabelStyle>
                     <Stack direction={downSm ? 'column' : 'row'} spacing={downMd ? (downSm ? 1 : 2) : 0} justifyContent={downMd ? 'center' : 'space-evenly'} alignItems={downSm ? 'center' : 'baseline'}>
-                      <EditableCounter name='empHistYears' control={control} defualtValue={0} label='Years' count={empHistYears} maxValue={40} onIncrementCount={incrementEmpHistYears} onDecrementCount={decrementEmpHistYears} onTextFieldChange={handleEmpHistYears} />
-                      {!downSm && (
-                        <Typography variant='body1' sx={{ color: 'text.secondray' }}>
-                          and
-                        </Typography>
-                      )}
-                      <EditableCounter name='empHistMonths' control={control} defualtValue={0} label='Months' count={empHistMonths} maxValue={11} onIncrementCount={incrementEmpHistMonths} onDecrementCount={decrementEmpHistMonths} onTextFieldChange={handleEmpHistMonths} />
+                      <DatePicker id='employEffectiveDate' name='employEffectiveDate' onDateChange={handleEmploymentEffDate} label='Employment Effective Date' control={control} variant='outlined' helperText='Month and Year. Eg: June 2020' openTo='year' format='MMMM YYYY' date={employEffectiveDate} maxDate={upperLimitForEffectiveDate} isRequired={true} views={['year', 'month']} />
                     </Stack>
                   </Stack>
                 </Stack>

@@ -243,6 +243,8 @@ export const initialState = {
   jointcurrResYears: 0,
   jointcurrResMonths: 0,
   jointcurrResEffectiveDate: new Date(),
+  jointcurrResidenceEffDate: null,
+  jointcurrResidenceMonths: 0,
 
   // ******* Previous Residence ******* //
   // Prime
@@ -283,6 +285,8 @@ export const initialState = {
   prevResYears: 0,
   prevResMonths: 0,
   prevResEffectiveDate: new Date(),
+  prevResidenceEffDate: null,
+  prevResidenceMonths: 0,
 
   // Joint
   // Address Finder
@@ -324,6 +328,8 @@ export const initialState = {
   jointprevResYears: 0,
   jointprevResMonths: 0,
   jointprevResEffectiveDate: new Date(),
+  jointprevResidenceEffDate: null,
+  jointprevResidenceMonths: 0,
 
   // ******* Submission and Validation ******* //
   // Prime
@@ -665,7 +671,6 @@ const contactDetailsSlice = createSlice({
 
     setCurrResEffDate: (state, action) => {
       state.currResidenceEffDate = action.payload
-      console.log('New Residence Effective Date: ', action.payload)
     },
     setCurrResidenceMonths: (state, action) => {
       state.currResidenceMonths = action.payload
@@ -795,7 +800,14 @@ const contactDetailsSlice = createSlice({
       state.currResEffectiveDate.setMonth(new Date().getMonth() - action.payload)
     },
 
-    // Joint
+    //* Joint
+
+    setJointCurrResEffDate: (state, action) => {
+      state.jointcurrResidenceEffDate = action.payload
+    },
+    setJointCurrResidenceMonths: (state, action) => {
+      state.jointcurrResidenceMonths = action.payload
+    },
 
     // ************* Address Finder *************** //
 
@@ -898,7 +910,13 @@ const contactDetailsSlice = createSlice({
 
     // ******* Previous Residence ******* //
 
-    // Prime
+    //* Prime
+    setPrevResidenceEffDate: (state, action) => {
+      state.prevResidenceEffDate = action.payload
+    },
+    setPrevResidenceMonths: (state, action) => {
+      state.prevResidenceMonths = action.payload
+    },
 
     // ************* Address Finder *************** //
 
@@ -1003,6 +1021,13 @@ const contactDetailsSlice = createSlice({
     },
 
     // Joint
+
+    setJointPrevResidenceEffDate: (state, action) => {
+      state.jointprevResidenceEffDate = action.payload
+    },
+    setJointPrevResidenceMonths: (state, action) => {
+      state.jointprevResidenceMonths = action.payload
+    },
 
     // ************* Address Finder *************** //
 

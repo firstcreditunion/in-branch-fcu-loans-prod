@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { styled } from '@mui/material/styles'
 
-// Framer
+//* Framer
 import { motion, AnimatePresence } from 'framer-motion'
 import { varFade, varBounce } from '../../components/ui/animate'
 
@@ -12,7 +12,7 @@ import { contactDetailsActions } from '../../redux/slices/contactDetailsSlice'
 import { getAddresses } from '../../redux/slices/contactDetailsSlice'
 import { getAddressMetaData } from '../../redux/slices/contactDetailsSlice'
 
-// API constants
+//* API constants
 import { BASE_URL_LOCAL_APP, BASE_URL_AWS_APP, processNodeEnv } from '../../redux/utils/apiConstants'
 
 import * as yup from 'yup'
@@ -24,7 +24,7 @@ import Counter from '../../components/Counter'
 import EditableCounter from '../../components/rhf-components/EditableCounter'
 import AddressFinderAutoComplete from '../../components/AddressFinderAutoComplete'
 
-// MUI
+//* MUI
 import Box from '@mui/material/Box'
 import Radio from '@mui/material/Radio'
 import Stack from '@mui/material/Stack'
@@ -36,26 +36,26 @@ import Typography from '@mui/material/Typography'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import FormControlLabel from '@mui/material/FormControlLabel'
 
-// MUI - Cards
+//* MUI - Cards
 import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
 import CardMedia from '@mui/material/CardMedia'
 import CardContent from '@mui/material/CardContent'
 import CardActions from '@mui/material/CardActions'
 
-// MUI - Icons
+//* MUI - Icons
 import IconButton from '@mui/material/IconButton'
 import CabinRoundedIcon from '@mui/icons-material/CabinRounded'
 import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded'
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined'
 import ModeEditOutlineRoundedIcon from '@mui/icons-material/ModeEditOutlineRounded'
 
-// Custom Components
+//* Custom Components
 import DatePicker from '../../components/rhf-components/DatePicker'
 
-// Utils
-import { fDate } from '../../utils/formatDateTime'
-import { debounce_fn } from '../../utils/debounceAndThrottle'
+//* Utils
+import { fDate, dateDiffereneInMonths } from '../../utils/formatDateTime'
+// import { debounce_fn } from '../../utils/debounceAndThrottle'
 
 const LabelStyle = styled(Typography)(({ theme }) => ({
   ...theme.typography.subtitle2,
@@ -97,16 +97,17 @@ function ResidentialAddress() {
 
   const currHomeAddStreet = useSelector((state) => state.conatctDetailsReducer.currHomeAddStreet)
   const residenceType = useSelector((state) => state.conatctDetailsReducer.residenceType)
-  const currResYears = useSelector((state) => state.conatctDetailsReducer.currResYears)
-  const currResMonths = useSelector((state) => state.conatctDetailsReducer.currResMonths)
+  const currResidenceEffDate = useSelector((state) => state.conatctDetailsReducer.currResidenceEffDate)
+  const currResidenceMonths = useSelector((state) => state.conatctDetailsReducer.currResidenceMonths)
   const currResEffectiveDate = useSelector((state) => state.conatctDetailsReducer.currResEffectiveDate)
-  const sovcurrResLengthOfStayIsZero = useSelector((state) => state.conatctDetailsReducer.sovcurrResLengthOfStayIsZero)
+
+  // const sovcurrResLengthOfStayIsZero = useSelector((state) => state.conatctDetailsReducer.sovcurrResLengthOfStayIsZero)
   const onSubmitResidenceDetails = useSelector((state) => state.conatctDetailsReducer.onSubmitResidenceDetails)
   const isValidSovCurrentResidentialDetails = useSelector((state) => state.conatctDetailsReducer.isValidSovCurrentResidentialDetails)
 
-  const isValidResidenceDetails = useSelector((state) => state.conatctDetailsReducer.isValidResidenceDetails)
-  const isValidSovPreviousResidentialDetails = useSelector((state) => state.conatctDetailsReducer.isValidSovPreviousResidentialDetails)
-  const isValidPrevResidenceDetails = useSelector((state) => state.conatctDetailsReducer.isValidPrevResidenceDetails)
+  // const isValidResidenceDetails = useSelector((state) => state.conatctDetailsReducer.isValidResidenceDetails)
+  // const isValidSovPreviousResidentialDetails = useSelector((state) => state.conatctDetailsReducer.isValidSovPreviousResidentialDetails)
+  // const isValidPrevResidenceDetails = useSelector((state) => state.conatctDetailsReducer.isValidPrevResidenceDetails)
 
   const [editValidCurrentResAddress, setEditValidCurrentResAddress] = React.useState(false)
 
@@ -126,14 +127,12 @@ function ResidentialAddress() {
   const currResAddressToDisplayLine3 = useSelector((state) => state.conatctDetailsReducer.currResAddressToDisplayLine3)
   const currResAddressToDisplayLine4 = useSelector((state) => state.conatctDetailsReducer.currResAddressToDisplayLine4)
 
-  const currResidenceEffDate = useSelector((state) => state.conatctDetailsReducer.currResidenceEffDate)
-
-  const sovCurrentAddresseffective = useSelector((state) => state.conatctDetailsReducer.sovCurrentAddresseffective)
+  // const sovCurrentAddresseffective = useSelector((state) => state.conatctDetailsReducer.sovCurrentAddresseffective)
   const sovHasCurrentResidentialDetails = useSelector((state) => state.conatctDetailsReducer.sovHasCurrentResidentialDetails)
 
   const isCurrentAddressEmpty = (currResAddressToDisplayLine1 == null && currResAddressToDisplayLine2 == null && currResAddressToDisplayLine3 == null && currResAddressToDisplayLine4 == null) || currHomeAddStreet === null || currHomeAddStreet === undefined || currHomeAddStreet === ''
 
-  const upperLimitForResidencyStartDate = new Date()
+  const upperLimitEffectiveDate = new Date()
 
   const schema = yup.object().shape({
     currHomeAddStreet: yup
@@ -151,8 +150,17 @@ function ResidentialAddress() {
       .required('Residential address is required')
       .nullable(),
     residenceType: yup.string().required('Residence type is required'),
-    currResYears: yup.string().required(''),
-    currResMonths: yup.string(),
+    currResidenceEffDate: yup
+      .string()
+      .required('Address Effective Date is required.')
+      .test('cannot be lower than 1900', 'Invalid Date of Birth. Date Format: MMMM YYYY', function (effectiveDate) {
+        if (effectiveDate === 'Invalid Date') {
+          return false
+        }
+
+        return true
+      })
+      .nullable(),
   })
 
   const varCurrResDetails =
@@ -212,8 +220,7 @@ function ResidentialAddress() {
     defaultValues: {
       currHomeAddStreet: currHomeAddStreet,
       residenceType: residenceType,
-      currResYears: currResYears,
-      currResMonths: currResMonths,
+      currResidenceEffDate: currResidenceEffDate,
     },
     mode: 'onChange',
     resolver: yupResolver(schema),
@@ -407,14 +414,14 @@ function ResidentialAddress() {
   }, [onSubmitResidenceDetails])
 
   useEffect(() => {
-    if (currResYears < 3) {
+    if (currResidenceMonths < 36) {
       dispatch(contactDetailsActions.setSkipPrevResidence(false))
       return
     }
     dispatch(contactDetailsActions.setSkipPrevResidence(true))
     dispatch(contactDetailsActions.setIsValidPrevResidenceDetails(true))
     dispatch(contactDetailsActions.setIsValidSovPreviousResidentialDetails(true))
-  }, [currResYears, currResEffectiveDate])
+  }, [currResidenceMonths, currResidenceEffDate])
 
   function onSubmit() {
     console.log('Current Residence Details Submitted')
@@ -433,34 +440,38 @@ function ResidentialAddress() {
     dispatch(contactDetailsActions.setResidenceType(event.target.value))
   }
 
-  // Bankruptcy Date
+  // Current Residence Eff. Date
   const handleCurrentResidenceEffDate = (date) => {
     dispatch(contactDetailsActions.setCurrResEffDate(date))
+
+    const monthsFromToday = dateDiffereneInMonths(new Date(date), new Date())
+
+    dispatch(contactDetailsActions.setCurrResidenceMonths(monthsFromToday))
   }
 
   // Stay at current residence
-  const incrementCurrResYears = () => {
-    dispatch(contactDetailsActions.setCurrResYears(parseInt(currResYears) + 1))
-  }
+  // const incrementCurrResYears = () => {
+  //   dispatch(contactDetailsActions.setCurrResYears(parseInt(currResYears) + 1))
+  // }
 
-  const decrementCurrResYears = () => {
-    dispatch(contactDetailsActions.setCurrResYears(parseInt(currResYears) - 1))
-  }
+  // const decrementCurrResYears = () => {
+  //   dispatch(contactDetailsActions.setCurrResYears(parseInt(currResYears) - 1))
+  // }
 
-  const incrementCurrResMonths = () => {
-    dispatch(contactDetailsActions.setCurrResMonths(parseInt(currResMonths) + 1))
-  }
+  // const incrementCurrResMonths = () => {
+  //   dispatch(contactDetailsActions.setCurrResMonths(parseInt(currResMonths) + 1))
+  // }
 
-  const decrementCurrResMonths = () => {
-    dispatch(contactDetailsActions.setCurrResMonths(parseInt(currResMonths) - 1))
-  }
+  // const decrementCurrResMonths = () => {
+  //   dispatch(contactDetailsActions.setCurrResMonths(parseInt(currResMonths) - 1))
+  // }
 
-  const handleResYears = (event) => {
-    dispatch(contactDetailsActions.setCurrResYears(event.target.value === '' ? 0 : parseInt(event.target.value)))
-  }
-  const handleResMonths = (event) => {
-    dispatch(contactDetailsActions.setCurrResMonths(event.target.value === '' ? 0 : parseInt(event.target.value)))
-  }
+  // const handleResYears = (event) => {
+  //   dispatch(contactDetailsActions.setCurrResYears(event.target.value === '' ? 0 : parseInt(event.target.value)))
+  // }
+  // const handleResMonths = (event) => {
+  //   dispatch(contactDetailsActions.setCurrResMonths(event.target.value === '' ? 0 : parseInt(event.target.value)))
+  // }
 
   return (
     <Form>
@@ -615,7 +626,27 @@ function ResidentialAddress() {
             </RadioGroups>
           </Stack>
           <Stack direction='column' spacing={3} justifyContent='flex-start'>
-            <Stack direction='column' spacing={2}>
+            <Stack direction='column' spacing={5} sx={{ width: '100%' }}>
+              <Stack direction='column' spacing={3} justifyContent='flex-start' sx={{ width: '100%' }}>
+                <Stack direction='column' spacing={2} justifyContent='flex-start' alignItems='center' sx={{ width: '100%' }}>
+                  <Stack direction='column' spacing={2} justifyContent='flex-start' alignItems='center' sx={{ width: '100%' }}>
+                    <LabelStyle sx={{ textAlign: 'center' }}>When did you move into this address?</LabelStyle>
+                    <DatePicker id='currResidenceEffDate' name='currResidenceEffDate' onDateChange={handleCurrentResidenceEffDate} label='Address Effective Date' control={control} variant='outlined' helperText='Month and Year. Eg: June 2020' openTo='year' format='MMMM YYYY' date={currResidenceEffDate} maxDate={upperLimitEffectiveDate} isRequired={true} views={['year', 'month']} />
+                  </Stack>
+                </Stack>
+              </Stack>
+            </Stack>
+          </Stack>
+        </Stack>
+      </Stack>
+    </Form>
+  )
+}
+
+export default ResidentialAddress
+
+{
+  /* <Stack direction='column' spacing={2}>
               <LabelStyle sx={{ textAlign: 'center' }}>How long have you been staying at this address?</LabelStyle>
               <Stack direction={downSm ? 'column' : 'row'} spacing={downMd ? (downSm ? 1 : 2) : 0} justifyContent={downMd ? 'center' : 'space-evenly'} alignItems={downSm ? 'center' : 'baseline'}>
                 <EditableCounter name='currResYears' control={control} defualtValue={0} label='Years' count={currResYears} maxValue={50} onIncrementCount={incrementCurrResYears} onDecrementCount={decrementCurrResYears} disabled={!(currResAddressSelectedMetaData == null) || sovcurrResLengthOfStayIsZero || secureSessionID == null ? false : true} onTextFieldChange={handleResYears} />
@@ -626,30 +657,5 @@ function ResidentialAddress() {
                 )}
                 <EditableCounter name='currResMonths' control={control} defualtValue={0} label='Months' count={currResMonths} maxValue={11} onIncrementCount={incrementCurrResMonths} onDecrementCount={decrementCurrResMonths} disabled={!(currResAddressSelectedMetaData == null) || sovcurrResLengthOfStayIsZero || secureSessionID == null ? false : true} onTextFieldChange={handleResMonths} />
               </Stack>
-            </Stack>
-          </Stack>
-        </Stack>
-        {/* <Stack direction='column' spacing={5} sx={{ width: '100%' }}>
-          <Stack direction='column'>
-            <LabelStyle sx={{ textAlign: 'center' }}>How would you describe your current residence?</LabelStyle>
-            <RadioGroups id='residenceType' name='residenceType' onRadioChange={handleResidenceType} control={control} value={residenceType} defaultValue={''} alignItems='center' row={downSm ? false : true}>
-              <FormControlLabel sx={{ alignItems: 'center' }} value='HOME' control={<Radio size='small' />} label='Own Home' key='HOME' />
-              <FormControlLabel sx={{ alignItems: 'center' }} value='RENT' control={<Radio size='small' />} label='Renting' key='RENT' />
-              <FormControlLabel sx={{ alignItems: 'center' }} value='BOARD' control={<Radio size='small' />} label='Boarding' key='BOARD' />
-            </RadioGroups>
-          </Stack>
-          <Stack direction='column' spacing={3} justifyContent='flex-start' sx={{ width: '100%' }}>
-            <Stack direction='column' spacing={2} justifyContent='flex-start' alignItems='center' sx={{ width: '100%' }}>
-              <Stack direction='column' spacing={2} justifyContent='flex-start' alignItems='center' sx={{ width: '100%' }}>
-                <LabelStyle sx={{ textAlign: 'center' }}>When did you move into this address?</LabelStyle>
-                <DatePicker id='currResEffDate' name='currResEffDate' onDateChange={handleCurrentResidenceEffDate} label='Address Effective Date' control={control} variant='outlined' helperText='Month and Year. Eg: June 2020' openTo='year' format='MMMM YYYY' date={currResidenceEffDate} maxDate={upperLimitForResidencyStartDate} isRequired={true} views={['year', 'month']} />
-              </Stack>
-            </Stack>
-          </Stack>
-        </Stack> */}
-      </Stack>
-    </Form>
-  )
+            </Stack> */
 }
-
-export default ResidentialAddress

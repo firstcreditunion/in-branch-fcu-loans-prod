@@ -19,6 +19,7 @@ import * as yup from 'yup'
 import { styled } from '@mui/material/styles'
 
 //* MUI
+import Button from '@mui/material/Button'
 import Stack from '@mui/material/Stack'
 import Radio from '@mui/material/Radio'
 import Typography from '@mui/material/Typography'
@@ -73,6 +74,12 @@ const YourPersonalDetails = () => {
   const maritalStatus = useSelector((state) => state.yourPersonalDetailReducer.maritalStatus)
   const showOtherTitleField = useSelector((state) => state.yourPersonalDetailReducer.showOtherTitleField)
   const dependents = useSelector((state) => state.yourPersonalDetailReducer.dependents)
+
+  console.log('Date of Birth - ', dob)
+
+  // if (!(dob === 'Invalid Date')) {
+  //   console.log('Date of Birth UTC - ', convertToUTCTimestamp(dob))
+  // }
 
   // Redux Selectors - Sovereign Data checks
   const validSovereignPersonalDetailsTitle = useSelector((state) => state.yourPersonalDetailReducer.validSovereignPersonalDetailsTitle)

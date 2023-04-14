@@ -77,6 +77,8 @@ export const initialState = {
   empHistYears: 0,
   empHistMonths: 0,
   empEffectiveDate: defEffectiveDate,
+  employEffectiveDate: null,
+  employMonths: 0,
   empAddStreet: null,
 
   sovemploymentType: '',
@@ -131,6 +133,8 @@ export const initialState = {
   prevEmpempHistYears: 0,
   prevEmpempHistMonths: 0,
   prevEmpempEffectiveDate: defEffectiveDate,
+  prevEmployEffectiveDate: null,
+  prevEmployMonths: 0,
   prevEmpempAddStreet: null,
 
   sovprevEmpemploymentType: '',
@@ -212,7 +216,8 @@ export const initialState = {
   jointempHistYears: 0,
   jointempHistMonths: 0,
   jointempEffectiveDate: defEffectiveDate,
-
+  jointemployEffectiveDate: null,
+  jointemployMonths: 0,
   jointshowPrevEmp: true,
 
   // ******************************************************* //
@@ -255,6 +260,8 @@ export const initialState = {
   jointprevEmpempHistYears: 0,
   jointprevEmpempHistMonths: 0,
   jointprevEmpempEffectiveDate: defEffectiveDate,
+  jointprevemployEffectiveDate: null,
+  jointprevemployMonths: 0,
 
   // ******************************************************* //
 
@@ -327,6 +334,34 @@ const employmentSlice = createSlice({
     },
     setEmpAddStreet: (state, action) => {
       state.empAddStreet = action.payload
+    },
+
+    setEmployEffective: (state, action) => {
+      state.employEffectiveDate = action.payload
+    },
+    setEmployMonths: (state, action) => {
+      state.employMonths = action.payload
+    },
+
+    setJointEmployEffective: (state, action) => {
+      state.jointemployEffectiveDate = action.payload
+    },
+    setJointEmployMonths: (state, action) => {
+      state.jointemployMonths = action.payload
+    },
+
+    setJointPrevEmployEffective: (state, action) => {
+      state.jointprevemployEffectiveDate = action.payload
+    },
+    setJointPrevEmployMonths: (state, action) => {
+      state.jointprevemployMonths = action.payload
+    },
+
+    setPrevEmployEffective: (state, action) => {
+      state.prevEmployEffectiveDate = action.payload
+    },
+    setPrevEmployMonths: (state, action) => {
+      state.prevEmployMonths = action.payload
     },
 
     setsovEmploymnetType: (state, action) => {

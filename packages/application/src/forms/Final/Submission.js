@@ -11,10 +11,8 @@ import { getCloudFrontEnvironment } from '../../redux/utils/apiConstants'
 
 import { PRIMARY } from '../../theme/palette'
 
-import * as jose from 'jose'
-
 //Redux
-import { submissionActions } from '../../redux/slices/submissionSlice'
+// import { submissionActions } from '../../redux/slices/submissionSlice'
 import { submitLoanApplication, generateLoanApplicationReport } from '../../redux/slices/submissionSlice'
 import { onlineAppAuth } from '../../redux/slices/submissionSlice'
 
@@ -134,8 +132,8 @@ function getAccommodation(years, residenceType) {
 
 // ************************************************************************** //
 
-let CIPHER_TEXT_BLOB = null
-let CIPHER_TEXT = null
+// let CIPHER_TEXT_BLOB = null
+// let CIPHER_TEXT = null
 
 export default function Submission() {
   const [submit, triggerSubmit] = React.useState(null)
@@ -154,7 +152,7 @@ export default function Submission() {
   const loadingSubmission = useSelector((state) => state.submissionReducer.loadingSubmission)
   const applicationReference = useSelector((state) => state.submissionReducer.applicationReference)
   const serverErrorSubmission = useSelector((state) => state.submissionReducer.serverErrorSubmission)
-  const currentRequestIdSubmission = useSelector((state) => state.submissionReducer.currentRequestIdSubmission)
+  // const currentRequestIdSubmission = useSelector((state) => state.submissionReducer.currentRequestIdSubmission)
 
   //* Axios Network Errors
   const axiosCode = useSelector((state) => state.submissionReducer.axiosCode)
@@ -168,7 +166,7 @@ export default function Submission() {
   const submissionFulfilled = useSelector((state) => state.submissionReducer.submissionFulfilled)
 
   //* ID logon session
-  const secureSessionID = useSelector((state) => state.globalReducer.secureSessionID)
+  // const secureSessionID = useSelector((state) => state.globalReducer.secureSessionID)
 
   //* Loan Details
   const loanAmount = useSelector((state) => state.financialDetailsReducer.loanAmount)
@@ -182,9 +180,9 @@ export default function Submission() {
   const sovAmountPayable = useSelector((state) => state.financialDetailsReducer.sovAmountPayable)
 
   //* ID logon session
-  const secureClientID = useSelector((state) => state.globalReducer.secureClientID)
-  const secureClientGeneralDetails = useSelector((state) => state.globalReducer.secureClientGeneralDetails)
-  const secureClientBankAccounts = useSelector((state) => state.globalReducer.secureClientBankAccounts)
+  // const secureClientID = useSelector((state) => state.globalReducer.secureClientID)
+  // const secureClientGeneralDetails = useSelector((state) => state.globalReducer.secureClientGeneralDetails)
+  // const secureClientBankAccounts = useSelector((state) => state.globalReducer.secureClientBankAccounts)
 
   //* ------------ Credit Sense Details ------------ //
 
@@ -312,7 +310,10 @@ export default function Submission() {
   const currResAddressSelectedPostCode = useSelector((state) => state.conatctDetailsReducer.currResAddressSelectedPostCode)
   const currResAddressSelectedCountryCode = useSelector((state) => state.conatctDetailsReducer.currResAddressSelectedCountry?.code)
   const currResAddressSelectedCountryDescription = useSelector((state) => state.conatctDetailsReducer.currResAddressSelectedCountry?.description)
-  const currResEffectiveDate = useSelector((state) => state.conatctDetailsReducer.currResEffectiveDate)
+
+  //! New
+  const currResidenceEffDate = useSelector((state) => state.conatctDetailsReducer.currResidenceEffDate)
+  // console.log('currResidenceEffDate - ', currResidenceEffDate)
   const currResYears = useSelector((state) => state.conatctDetailsReducer.currResYears)
   const residenceType = useSelector((state) => state.conatctDetailsReducer.residenceType)
 
@@ -344,13 +345,15 @@ export default function Submission() {
   const prevResAddressSelectedPostCode = useSelector((state) => state.conatctDetailsReducer.prevResAddressSelectedPostCode)
   const prevResAddressSelectedCountryCode = useSelector((state) => state.conatctDetailsReducer.prevResAddressSelectedCountry?.code)
   const prevResAddressSelectedCountryDescription = useSelector((state) => state.conatctDetailsReducer.prevResAddressSelectedCountry?.description)
-  const prevResEffectiveDate = useSelector((state) => state.conatctDetailsReducer.prevResEffectiveDate)
 
-  const sovPreviousAddressUpdate = useSelector((state) => state.conatctDetailsReducer.sovPreviousAddressUpdate)
-  const sovPreviousAddressExpire = useSelector((state) => state.conatctDetailsReducer.sovPreviousAddressExpire)
-  const sovPreviousAddressType = useSelector((state) => state.conatctDetailsReducer.sovPreviousAddressType)
-  const sovPreviousAddressId = useSelector((state) => state.conatctDetailsReducer.sovPreviousAddressId)
-  const sovPreviousAddressAttributes = useSelector((state) => state.conatctDetailsReducer.sovPreviousAddressAttributes)
+  //! New
+  const prevResidenceEffDate = useSelector((state) => state.conatctDetailsReducer.prevResidenceEffDate)
+  // console.log('prevResidenceEffDate - ', prevResidenceEffDate)
+  // const sovPreviousAddressUpdate = useSelector((state) => state.conatctDetailsReducer.sovPreviousAddressUpdate)
+  // const sovPreviousAddressExpire = useSelector((state) => state.conatctDetailsReducer.sovPreviousAddressExpire)
+  // const sovPreviousAddressType = useSelector((state) => state.conatctDetailsReducer.sovPreviousAddressType)
+  // const sovPreviousAddressId = useSelector((state) => state.conatctDetailsReducer.sovPreviousAddressId)
+  // const sovPreviousAddressAttributes = useSelector((state) => state.conatctDetailsReducer.sovPreviousAddressAttributes)
 
   // The Display lines 1-4 to be sent to the PDF endpoint
   const prevResAddressToDisplayLine1 = useSelector((state) => state.conatctDetailsReducer.prevResAddressToDisplayLine1)
@@ -374,7 +377,10 @@ export default function Submission() {
   const jointcurrResAddressSelectedPostCode = useSelector((state) => state.conatctDetailsReducer.jointcurrResAddressSelectedPostCode)
   const jointcurrResAddressSelectedCountryCode = useSelector((state) => state.conatctDetailsReducer.jointcurrResAddressSelectedCountry?.code)
   const jointcurrResAddressSelectedCountryDescription = useSelector((state) => state.conatctDetailsReducer.jointcurrResAddressSelectedCountry?.description)
-  const jointcurrResEffectiveDate = useSelector((state) => state.conatctDetailsReducer.jointcurrResEffectiveDate)
+
+  //! New
+  const jointcurrResidenceEffDate = useSelector((state) => state.conatctDetailsReducer.jointcurrResidenceEffDate)
+  // console.log('jointcurrResidenceEffDate - ', jointcurrResidenceEffDate)
   const jointcurrResYears = useSelector((state) => state.conatctDetailsReducer.jointcurrResYears)
   const jointresidenceType = useSelector((state) => state.conatctDetailsReducer.jointresidenceType)
 
@@ -400,8 +406,10 @@ export default function Submission() {
   const jointprevResAddressSelectedPostCode = useSelector((state) => state.conatctDetailsReducer.jointprevResAddressSelectedPostCode)
   const jointprevResAddressSelectedCountryCode = useSelector((state) => state.conatctDetailsReducer.jointprevResAddressSelectedCountry?.code)
   const jointprevResAddressSelectedCountryDescription = useSelector((state) => state.conatctDetailsReducer.jointprevResAddressSelectedCountry?.description)
-  const jointprevResEffectiveDate = useSelector((state) => state.conatctDetailsReducer.jointprevResEffectiveDate)
 
+  //! New
+  const jointprevResidenceEffDate = useSelector((state) => state.conatctDetailsReducer.jointprevResidenceEffDate)
+  // console.log('jointprevResidenceEffDate - ', jointprevResidenceEffDate)
   // The Display lines 1-4 to be sent to the PDF endpoint
   const jointprevResAddressToDisplayLine1 = useSelector((state) => state.conatctDetailsReducer.jointprevResAddressToDisplayLine1)
   const jointprevResAddressToDisplayLine2 = useSelector((state) => state.conatctDetailsReducer.jointprevResAddressToDisplayLine3)
@@ -424,38 +432,38 @@ export default function Submission() {
   const drLicenceIssueDate = useSelector((state) => state.identificationReducer.identificationTypes.drivers_licence.data.drLicenceIssueDate)
   const drLicenceExpiryDate = useSelector((state) => state.identificationReducer.identificationTypes.drivers_licence.data.drLicenceExpiryDate)
 
-  const sovTypeUpdateddrLicence = useSelector((state) => state.identificationReducer.identificationTypes.drivers_licence.data.sovTypeUpdated)
-  const sovTypeExpiredrLicence = useSelector((state) => state.identificationReducer.identificationTypes.drivers_licence.data.sovTypeExpire)
-  const sovTypedrLicence = useSelector((state) => state.identificationReducer.identificationTypes.drivers_licence.data.sovType)
-  const soviddrLicence = useSelector((state) => state.identificationReducer.identificationTypes.drivers_licence.data.sovid)
-  const sovAttributesdrLicence = useSelector((state) => state.identificationReducer.identificationTypes.drivers_licence.data.sovAttributes)
-  const sovTypedrLicenceVersion = useSelector((state) => state.identificationReducer.identificationTypes.drivers_licence.data.sovTypeversion)
-  const soviddrLicenceVersion = useSelector((state) => state.identificationReducer.identificationTypes.drivers_licence.data.sovidversion)
-  const sovAttributesdrLicenceVersion = useSelector((state) => state.identificationReducer.identificationTypes.drivers_licence.data.sovAttributesversion)
+  // const sovTypeUpdateddrLicence = useSelector((state) => state.identificationReducer.identificationTypes.drivers_licence.data.sovTypeUpdated)
+  // const sovTypeExpiredrLicence = useSelector((state) => state.identificationReducer.identificationTypes.drivers_licence.data.sovTypeExpire)
+  // const sovTypedrLicence = useSelector((state) => state.identificationReducer.identificationTypes.drivers_licence.data.sovType)
+  // const soviddrLicence = useSelector((state) => state.identificationReducer.identificationTypes.drivers_licence.data.sovid)
+  // const sovAttributesdrLicence = useSelector((state) => state.identificationReducer.identificationTypes.drivers_licence.data.sovAttributes)
+  // const sovTypedrLicenceVersion = useSelector((state) => state.identificationReducer.identificationTypes.drivers_licence.data.sovTypeversion)
+  // const soviddrLicenceVersion = useSelector((state) => state.identificationReducer.identificationTypes.drivers_licence.data.sovidversion)
+  // const sovAttributesdrLicenceVersion = useSelector((state) => state.identificationReducer.identificationTypes.drivers_licence.data.sovAttributesversion)
 
   // Passport
   const passportNo = useSelector((state) => state.identificationReducer.identificationTypes.passport.data.passportNo)
   const passportIssueDate = useSelector((state) => state.identificationReducer.identificationTypes.passport.data.passportIssueDate)
   const passportExpiryDate = useSelector((state) => state.identificationReducer.identificationTypes.passport.data.passportExpiryDate)
-  const passportPhotoUrl = useSelector((state) => state.identificationReducer.identificationTypes.passport.data.passportPhotoUrl)
+  // const passportPhotoUrl = useSelector((state) => state.identificationReducer.identificationTypes.passport.data.passportPhotoUrl)
 
-  const sovTypeUpdatedpassport = useSelector((state) => state.identificationReducer.identificationTypes.passport.data.sovTypeUpdated)
-  const sovTypeExpirepassport = useSelector((state) => state.identificationReducer.identificationTypes.passport.data.sovTypeExpire)
-  const sovTypepassport = useSelector((state) => state.identificationReducer.identificationTypes.passport.data.sovType)
-  const sovidpassport = useSelector((state) => state.identificationReducer.identificationTypes.passport.data.sovid)
-  const sovAttributespassport = useSelector((state) => state.identificationReducer.identificationTypes.passport.data.sovAttributes)
+  // const sovTypeUpdatedpassport = useSelector((state) => state.identificationReducer.identificationTypes.passport.data.sovTypeUpdated)
+  // const sovTypeExpirepassport = useSelector((state) => state.identificationReducer.identificationTypes.passport.data.sovTypeExpire)
+  // const sovTypepassport = useSelector((state) => state.identificationReducer.identificationTypes.passport.data.sovType)
+  // const sovidpassport = useSelector((state) => state.identificationReducer.identificationTypes.passport.data.sovid)
+  // const sovAttributespassport = useSelector((state) => state.identificationReducer.identificationTypes.passport.data.sovAttributes)
 
   // Firearms Licence
   const firearmsLicenceNo = useSelector((state) => state.identificationReducer.identificationTypes.firearms_licence.data.firearmsLicenceNo)
   const firearmsLicenceIssueDate = useSelector((state) => state.identificationReducer.identificationTypes.firearms_licence.data.firearmsLicenceIssueDate)
   const firearmsLicenceExpiryDate = useSelector((state) => state.identificationReducer.identificationTypes.firearms_licence.data.firearmsLicenceExpiryDate)
-  const firearmsLicencePhotoUrl = useSelector((state) => state.identificationReducer.identificationTypes.firearms_licence.data.firearmsLicencePhotoUrl)
+  // const firearmsLicencePhotoUrl = useSelector((state) => state.identificationReducer.identificationTypes.firearms_licence.data.firearmsLicencePhotoUrl)
 
-  const sovTypeUpdatedfirearms_licence = useSelector((state) => state.identificationReducer.identificationTypes.firearms_licence.data.sovTypeUpdated)
-  const sovTypeExpirefirearms_licence = useSelector((state) => state.identificationReducer.identificationTypes.firearms_licence.data.sovTypeExpire)
-  const sovTypefirearms_licence = useSelector((state) => state.identificationReducer.identificationTypes.firearms_licence.data.sovType)
-  const sovidfirearms_licence = useSelector((state) => state.identificationReducer.identificationTypes.firearms_licence.data.sovid)
-  const sovAttributesfirearms_licence = useSelector((state) => state.identificationReducer.identificationTypes.firearms_licence.data.sovAttributes)
+  // const sovTypeUpdatedfirearms_licence = useSelector((state) => state.identificationReducer.identificationTypes.firearms_licence.data.sovTypeUpdated)
+  // const sovTypeExpirefirearms_licence = useSelector((state) => state.identificationReducer.identificationTypes.firearms_licence.data.sovTypeExpire)
+  // const sovTypefirearms_licence = useSelector((state) => state.identificationReducer.identificationTypes.firearms_licence.data.sovType)
+  // const sovidfirearms_licence = useSelector((state) => state.identificationReducer.identificationTypes.firearms_licence.data.sovid)
+  // const sovAttributesfirearms_licence = useSelector((state) => state.identificationReducer.identificationTypes.firearms_licence.data.sovAttributes)
 
   // Kiwi Access Card
   const kiwiAccessCardNo = useSelector((state) => state.identificationReducer.identificationTypes.kiwi_access_card.data.kiwiAccessCardNo)
@@ -463,11 +471,11 @@ export default function Submission() {
   const kiwiAccessCardExpiryDate = useSelector((state) => state.identificationReducer.identificationTypes.kiwi_access_card.data.kiwiAccessCardExpiryDate)
   const kiwiAccessCardPhotoUrl = useSelector((state) => state.identificationReducer.identificationTypes.kiwi_access_card.data.kiwiAccessCardPhotoUrl)
 
-  const sovTypeUpdatedkiwi_access_card = useSelector((state) => state.identificationReducer.identificationTypes.kiwi_access_card.data.sovTypeUpdated)
-  const sovTypeExpirekiwi_access_card = useSelector((state) => state.identificationReducer.identificationTypes.kiwi_access_card.data.sovTypeExpire)
-  const sovTypekiwi_access_card = useSelector((state) => state.identificationReducer.identificationTypes.kiwi_access_card.data.sovType)
-  const sovidkiwi_access_card = useSelector((state) => state.identificationReducer.identificationTypes.kiwi_access_card.data.sovid)
-  const sovAttributeskiwi_access_card = useSelector((state) => state.identificationReducer.identificationTypes.kiwi_access_card.data.sovAttributes)
+  // const sovTypeUpdatedkiwi_access_card = useSelector((state) => state.identificationReducer.identificationTypes.kiwi_access_card.data.sovTypeUpdated)
+  // const sovTypeExpirekiwi_access_card = useSelector((state) => state.identificationReducer.identificationTypes.kiwi_access_card.data.sovTypeExpire)
+  // const sovTypekiwi_access_card = useSelector((state) => state.identificationReducer.identificationTypes.kiwi_access_card.data.sovType)
+  // const sovidkiwi_access_card = useSelector((state) => state.identificationReducer.identificationTypes.kiwi_access_card.data.sovid)
+  // const sovAttributeskiwi_access_card = useSelector((state) => state.identificationReducer.identificationTypes.kiwi_access_card.data.sovAttributes)
 
   // Community Service Card
   const commServiceCardNo = useSelector((state) => state.identificationReducer.identificationTypes.community_service_card.data.commServiceCardNo)
@@ -475,46 +483,46 @@ export default function Submission() {
   const commServiceCardExpiryDate = useSelector((state) => state.identificationReducer.identificationTypes.community_service_card.data.commServiceCardExpiryDate)
   const commServiceCardPhotoUrl = useSelector((state) => state.identificationReducer.identificationTypes.community_service_card.data.commServiceCardPhotoUrl)
 
-  const sovTypeUpdatedcommunity_service_card = useSelector((state) => state.identificationReducer.identificationTypes.community_service_card.data.sovTypeUpdated)
-  const sovTypeExpirecommunity_service_card = useSelector((state) => state.identificationReducer.identificationTypes.community_service_card.data.sovTypeExpire)
-  const sovTypecommunity_service_card = useSelector((state) => state.identificationReducer.identificationTypes.community_service_card.data.sovType)
-  const sovidcommunity_service_card = useSelector((state) => state.identificationReducer.identificationTypes.community_service_card.data.sovid)
-  const sovAttributescommunity_service_card = useSelector((state) => state.identificationReducer.identificationTypes.community_service_card.data.sovAttributes)
+  // const sovTypeUpdatedcommunity_service_card = useSelector((state) => state.identificationReducer.identificationTypes.community_service_card.data.sovTypeUpdated)
+  // const sovTypeExpirecommunity_service_card = useSelector((state) => state.identificationReducer.identificationTypes.community_service_card.data.sovTypeExpire)
+  // const sovTypecommunity_service_card = useSelector((state) => state.identificationReducer.identificationTypes.community_service_card.data.sovType)
+  // const sovidcommunity_service_card = useSelector((state) => state.identificationReducer.identificationTypes.community_service_card.data.sovid)
+  // const sovAttributescommunity_service_card = useSelector((state) => state.identificationReducer.identificationTypes.community_service_card.data.sovAttributes)
 
   // Birth Certifiate
   const birthCertificateRegNo = useSelector((state) => state.identificationReducer.identificationTypes.birth_certificate.data.birthCertificateRegNo)
-  const sovbirthCertificateRegNo = useSelector((state) => state.identificationReducer.identificationTypes.birth_certificate.data.sovbirthCertificateRegNo)
-  const datOfBirth = useSelector((state) => state.identificationReducer.identificationTypes.birth_certificate.data.datOfBirth)
-  const placeOfBirth = useSelector((state) => state.identificationReducer.identificationTypes.birth_certificate.data.placeOfBirth)
-  const birthCertificatePhotoUrl = useSelector((state) => state.identificationReducer.identificationTypes.birth_certificate.data.birthCertificatePhotoUrl)
+  // const sovbirthCertificateRegNo = useSelector((state) => state.identificationReducer.identificationTypes.birth_certificate.data.sovbirthCertificateRegNo)
+  // const datOfBirth = useSelector((state) => state.identificationReducer.identificationTypes.birth_certificate.data.datOfBirth)
+  // const placeOfBirth = useSelector((state) => state.identificationReducer.identificationTypes.birth_certificate.data.placeOfBirth)
+  // const birthCertificatePhotoUrl = useSelector((state) => state.identificationReducer.identificationTypes.birth_certificate.data.birthCertificatePhotoUrl)
 
-  const sovTypeUpdatedbirth_certificate = useSelector((state) => state.identificationReducer.identificationTypes.birth_certificate.data.sovTypeUpdated)
-  const sovTypeExpirebirth_certificate = useSelector((state) => state.identificationReducer.identificationTypes.birth_certificate.data.sovTypeExpire)
-  const sovTypebirth_certificate = useSelector((state) => state.identificationReducer.identificationTypes.birth_certificate.data.sovType)
-  const sovidbirth_certificate = useSelector((state) => state.identificationReducer.identificationTypes.birth_certificate.data.sovid)
-  const sovAttributesbirth_certificate = useSelector((state) => state.identificationReducer.identificationTypes.birth_certificate.data.sovAttributes)
+  // const sovTypeUpdatedbirth_certificate = useSelector((state) => state.identificationReducer.identificationTypes.birth_certificate.data.sovTypeUpdated)
+  // const sovTypeExpirebirth_certificate = useSelector((state) => state.identificationReducer.identificationTypes.birth_certificate.data.sovTypeExpire)
+  // const sovTypebirth_certificate = useSelector((state) => state.identificationReducer.identificationTypes.birth_certificate.data.sovType)
+  // const sovidbirth_certificate = useSelector((state) => state.identificationReducer.identificationTypes.birth_certificate.data.sovid)
+  // const sovAttributesbirth_certificate = useSelector((state) => state.identificationReducer.identificationTypes.birth_certificate.data.sovAttributes)
 
   // Current Student ID
   const currStudentIdNo = useSelector((state) => state.identificationReducer.identificationTypes.current_Student_id.data.currStudentIdNo)
   const currStudentIdIssueDate = useSelector((state) => state.identificationReducer.identificationTypes.current_Student_id.data.currStudentIdIssueDate)
   const currStudentIdExpiryDate = useSelector((state) => state.identificationReducer.identificationTypes.current_Student_id.data.currStudentIdExpiryDate)
-  const currStudentIdPhotoUrl = useSelector((state) => state.identificationReducer.identificationTypes.current_Student_id.data.currStudentIdPhotoUrl)
+  // const currStudentIdPhotoUrl = useSelector((state) => state.identificationReducer.identificationTypes.current_Student_id.data.currStudentIdPhotoUrl)
 
-  const sovTypeUpdatedcurrent_Student_id = useSelector((state) => state.identificationReducer.identificationTypes.current_Student_id.data.sovTypeUpdated)
-  const sovTypeExpirecurrent_Student_id = useSelector((state) => state.identificationReducer.identificationTypes.current_Student_id.data.sovTypeExpire)
-  const sovTypecurrent_Student_id = useSelector((state) => state.identificationReducer.identificationTypes.current_Student_id.data.sovType)
-  const sovidcurrent_Student_id = useSelector((state) => state.identificationReducer.identificationTypes.current_Student_id.data.sovid)
-  const sovAttributescurrent_Student_id = useSelector((state) => state.identificationReducer.identificationTypes.current_Student_id.data.sovAttributes)
+  // const sovTypeUpdatedcurrent_Student_id = useSelector((state) => state.identificationReducer.identificationTypes.current_Student_id.data.sovTypeUpdated)
+  // const sovTypeExpirecurrent_Student_id = useSelector((state) => state.identificationReducer.identificationTypes.current_Student_id.data.sovTypeExpire)
+  // const sovTypecurrent_Student_id = useSelector((state) => state.identificationReducer.identificationTypes.current_Student_id.data.sovType)
+  // const sovidcurrent_Student_id = useSelector((state) => state.identificationReducer.identificationTypes.current_Student_id.data.sovid)
+  // const sovAttributescurrent_Student_id = useSelector((state) => state.identificationReducer.identificationTypes.current_Student_id.data.sovAttributes)
 
   // Gold Card
   const goldCardNo = useSelector((state) => state.identificationReducer.identificationTypes.gold_card.data.goldCardNo)
   const goldCardValidFromDate = useSelector((state) => state.identificationReducer.identificationTypes.gold_card.data.goldCardValidFromDate)
 
-  const sovTypeUpdatedgold_card = useSelector((state) => state.identificationReducer.identificationTypes.gold_card.data.sovTypeUpdated)
-  const sovTypeExpiregold_card = useSelector((state) => state.identificationReducer.identificationTypes.gold_card.data.sovTypeExpire)
-  const sovTypegold_card = useSelector((state) => state.identificationReducer.identificationTypes.gold_card.data.sovType)
-  const sovidgold_card = useSelector((state) => state.identificationReducer.identificationTypes.gold_card.data.sovid)
-  const sovAttributesgold_card = useSelector((state) => state.identificationReducer.identificationTypes.gold_card.data.sovAttributes)
+  // const sovTypeUpdatedgold_card = useSelector((state) => state.identificationReducer.identificationTypes.gold_card.data.sovTypeUpdated)
+  // const sovTypeExpiregold_card = useSelector((state) => state.identificationReducer.identificationTypes.gold_card.data.sovTypeExpire)
+  // const sovTypegold_card = useSelector((state) => state.identificationReducer.identificationTypes.gold_card.data.sovType)
+  // const sovidgold_card = useSelector((state) => state.identificationReducer.identificationTypes.gold_card.data.sovid)
+  // const sovAttributesgold_card = useSelector((state) => state.identificationReducer.identificationTypes.gold_card.data.sovAttributes)
 
   // ***************** JOINT ******************** //
 
@@ -524,49 +532,49 @@ export default function Submission() {
   const jointlicenceType = useSelector((state) => state.identificationReducer.identificationTypes.drivers_licence.jointdata.licenceType)
   const jointdrLicenceIssueDate = useSelector((state) => state.identificationReducer.identificationTypes.drivers_licence.jointdata.drLicenceIssueDate)
   const jointdrLicenceExpiryDate = useSelector((state) => state.identificationReducer.identificationTypes.drivers_licence.jointdata.drLicenceExpiryDate)
-  const jointdrLicencePhotoUrl = useSelector((state) => state.identificationReducer.identificationTypes.drivers_licence.jointdata.drLicencePhotoUrl)
+  // const jointdrLicencePhotoUrl = useSelector((state) => state.identificationReducer.identificationTypes.drivers_licence.jointdata.drLicencePhotoUrl)
 
   // Passport
   const jointpassportNo = useSelector((state) => state.identificationReducer.identificationTypes.passport.jointdata.passportNo)
   const jointpassportIssueDate = useSelector((state) => state.identificationReducer.identificationTypes.passport.jointdata.passportIssueDate)
   const jointpassportExpiryDate = useSelector((state) => state.identificationReducer.identificationTypes.passport.jointdata.passportExpiryDate)
-  const jointpassportPhotoUrl = useSelector((state) => state.identificationReducer.identificationTypes.passport.jointdata.passportPhotoUrl)
+  // const jointpassportPhotoUrl = useSelector((state) => state.identificationReducer.identificationTypes.passport.jointdata.passportPhotoUrl)
 
   // Firearms Licence
   const jointfirearmsLicenceNo = useSelector((state) => state.identificationReducer.identificationTypes.firearms_licence.jointdata.firearmsLicenceNo)
-  const jointfirearmsLicenceVersion = useSelector((state) => state.identificationReducer.identificationTypes.firearms_licence.jointdata.firearmsLicenceVersion)
+  // const jointfirearmsLicenceVersion = useSelector((state) => state.identificationReducer.identificationTypes.firearms_licence.jointdata.firearmsLicenceVersion)
   const jointfirearmsLicenceIssueDate = useSelector((state) => state.identificationReducer.identificationTypes.firearms_licence.jointdata.firearmsLicenceIssueDate)
   const jointfirearmsLicenceExpiryDate = useSelector((state) => state.identificationReducer.identificationTypes.firearms_licence.jointdata.firearmsLicenceExpiryDate)
-  const jointfirearmsLicencePhotoUrl = useSelector((state) => state.identificationReducer.identificationTypes.firearms_licence.jointdata.firearmsLicencePhotoUrl)
+  // const jointfirearmsLicencePhotoUrl = useSelector((state) => state.identificationReducer.identificationTypes.firearms_licence.jointdata.firearmsLicencePhotoUrl)
 
   // Kiwi Access Card
   const jointkiwiAccessCardNo = useSelector((state) => state.identificationReducer.identificationTypes.kiwi_access_card.jointdata.kiwiAccessCardNo)
   const jointkiwiAccessCardIssueDate = useSelector((state) => state.identificationReducer.identificationTypes.kiwi_access_card.jointdata.kiwiAccessCardIssueDate)
   const jointkiwiAccessCardExpiryDate = useSelector((state) => state.identificationReducer.identificationTypes.kiwi_access_card.jointdata.kiwiAccessCardExpiryDate)
-  const jointkiwiAccessCardPhotoUrl = useSelector((state) => state.identificationReducer.identificationTypes.kiwi_access_card.jointdata.kiwiAccessCardPhotoUrl)
+  // const jointkiwiAccessCardPhotoUrl = useSelector((state) => state.identificationReducer.identificationTypes.kiwi_access_card.jointdata.kiwiAccessCardPhotoUrl)
 
   // Community Service Card
   const jointcommServiceCardNo = useSelector((state) => state.identificationReducer.identificationTypes.community_service_card.jointdata.commServiceCardNo)
   const jointcommServiceCardIssueDate = useSelector((state) => state.identificationReducer.identificationTypes.community_service_card.jointdata.commServiceCardIssueDate)
   const jointcommServiceCardExpiryDate = useSelector((state) => state.identificationReducer.identificationTypes.community_service_card.jointdata.commServiceCardExpiryDate)
-  const jointcommServiceCardPhotoUrl = useSelector((state) => state.identificationReducer.identificationTypes.community_service_card.jointdata.commServiceCardPhotoUrl)
+  // const jointcommServiceCardPhotoUrl = useSelector((state) => state.identificationReducer.identificationTypes.community_service_card.jointdata.commServiceCardPhotoUrl)
 
   // Birth Certifiate
   const jointbirthCertificateRegNo = useSelector((state) => state.identificationReducer.identificationTypes.birth_certificate.jointdata.birthCertificateRegNo)
-  const jointdatOfBirth = useSelector((state) => state.identificationReducer.identificationTypes.birth_certificate.jointdata.datOfBirth)
-  const jointplaceOfBirth = useSelector((state) => state.identificationReducer.identificationTypes.birth_certificate.jointdata.placeOfBirth)
-  const jointbirthCertificatePhotoUrl = useSelector((state) => state.identificationReducer.identificationTypes.birth_certificate.jointdata.birthCertificatePhotoUrl)
+  // const jointdatOfBirth = useSelector((state) => state.identificationReducer.identificationTypes.birth_certificate.jointdata.datOfBirth)
+  // const jointplaceOfBirth = useSelector((state) => state.identificationReducer.identificationTypes.birth_certificate.jointdata.placeOfBirth)
+  // const jointbirthCertificatePhotoUrl = useSelector((state) => state.identificationReducer.identificationTypes.birth_certificate.jointdata.birthCertificatePhotoUrl)
 
   // Current Student ID
   const jointcurrStudentIdNo = useSelector((state) => state.identificationReducer.identificationTypes.current_Student_id.jointdata.currStudentIdNo)
   const jointcurrStudentIdIssueDate = useSelector((state) => state.identificationReducer.identificationTypes.current_Student_id.jointdata.currStudentIdIssueDate)
   const jointcurrStudentIdExpiryDate = useSelector((state) => state.identificationReducer.identificationTypes.current_Student_id.jointdata.currStudentIdExpiryDate)
-  const jointcurrStudentIdPhotoUrl = useSelector((state) => state.identificationReducer.identificationTypes.current_Student_id.jointdata.currStudentIdPhotoUrl)
+  // const jointcurrStudentIdPhotoUrl = useSelector((state) => state.identificationReducer.identificationTypes.current_Student_id.jointdata.currStudentIdPhotoUrl)
 
   // Gold Card
   const jointgoldCardNo = useSelector((state) => state.identificationReducer.identificationTypes.gold_card.jointdata.goldCardNo)
   const jointgoldCardValidFromDate = useSelector((state) => state.identificationReducer.identificationTypes.gold_card.jointdata.goldCardValidFromDate)
-  const jointgoldCardPhotoUrl = useSelector((state) => state.identificationReducer.identificationTypes.gold_card.jointdata.goldCardPhotoUrl)
+  // const jointgoldCardPhotoUrl = useSelector((state) => state.identificationReducer.identificationTypes.gold_card.jointdata.goldCardPhotoUrl)
 
   // ************* Employment Details ************* //
 
@@ -576,14 +584,16 @@ export default function Submission() {
   const employmentType = useSelector((state) => state.employmentReducer.employmentType)
   const occupation = useSelector((state) => state.employmentReducer.occupation)
   const employerName = useSelector((state) => state.employmentReducer.employerName)
-  const empEffectiveDate = useSelector((state) => state.employmentReducer.empEffectiveDate)
 
+  //! New
+  const employEffectiveDate = useSelector((state) => state.employmentReducer.employEffectiveDate)
+  // console.log('employEffectiveDate - ', employEffectiveDate)
   // Sovereign Attributes to expire - Current Employemnt
-  const sovcurrEmpUpdate = useSelector((state) => state.employmentReducer.sovcurrEmpUpdate)
-  const sovcurrEmpExpire = useSelector((state) => state.employmentReducer.sovcurrEmpExpire)
-  const sovcurrEmpType = useSelector((state) => state.employmentReducer.sovcurrEmpType)
-  const sovcurrEmpID = useSelector((state) => state.employmentReducer.sovcurrEmpID)
-  const sovcurrEmpAttributes = useSelector((state) => state.employmentReducer.sovcurrEmpAttributes)
+  // const sovcurrEmpUpdate = useSelector((state) => state.employmentReducer.sovcurrEmpUpdate)
+  // const sovcurrEmpExpire = useSelector((state) => state.employmentReducer.sovcurrEmpExpire)
+  // const sovcurrEmpType = useSelector((state) => state.employmentReducer.sovcurrEmpType)
+  // const sovcurrEmpID = useSelector((state) => state.employmentReducer.sovcurrEmpID)
+  // const sovcurrEmpAttributes = useSelector((state) => state.employmentReducer.sovcurrEmpAttributes)
 
   // To be add to the PDF
   const empAddressToDisplayLine1 = useSelector((state) => state.employmentReducer.empAddressToDisplayLine1)
@@ -595,15 +605,17 @@ export default function Submission() {
   const prevEmpemploymentType = useSelector((state) => state.employmentReducer.prevEmpemploymentType)
   const prevEmpoccupation = useSelector((state) => state.employmentReducer.prevEmpoccupation)
   const prevEmpemployerName = useSelector((state) => state.employmentReducer.prevEmpemployerName)
-  const prevEmpempEffectiveDate = useSelector((state) => state.employmentReducer.prevEmpempEffectiveDate)
 
+  //! New
+  const prevEmployEffectiveDate = useSelector((state) => state.employmentReducer.prevEmployEffectiveDate)
+  // console.log('prevEmployEffectiveDate - ', prevEmployEffectiveDate)
   // Sovereign Attributes to expire - Current Employemnt
 
-  const sovprevEmpUpdate = useSelector((state) => state.employmentReducer.sovprevEmpUpdate)
-  const sovprevEmpExpire = useSelector((state) => state.employmentReducer.sovprevEmpExpire)
-  const sovprevEmpType = useSelector((state) => state.employmentReducer.sovprevEmpType)
-  const sovprevEmpID = useSelector((state) => state.employmentReducer.sovprevEmpID)
-  const sovprevEmpAttributes = useSelector((state) => state.employmentReducer.sovprevEmpAttributes)
+  // const sovprevEmpUpdate = useSelector((state) => state.employmentReducer.sovprevEmpUpdate)
+  // const sovprevEmpExpire = useSelector((state) => state.employmentReducer.sovprevEmpExpire)
+  // const sovprevEmpType = useSelector((state) => state.employmentReducer.sovprevEmpType)
+  // const sovprevEmpID = useSelector((state) => state.employmentReducer.sovprevEmpID)
+  // const sovprevEmpAttributes = useSelector((state) => state.employmentReducer.sovprevEmpAttributes)
 
   // To be add to the PDF
   const prevEmpempAddressToDisplayLine1 = useSelector((state) => state.employmentReducer.prevEmpempAddressToDisplayLine1)
@@ -617,8 +629,10 @@ export default function Submission() {
   const jointemploymentType = useSelector((state) => state.employmentReducer.jointemploymentType)
   const jointoccupation = useSelector((state) => state.employmentReducer.jointoccupation)
   const jointemployerName = useSelector((state) => state.employmentReducer.jointemployerName)
-  const jointempEffectiveDate = useSelector((state) => state.employmentReducer.jointempEffectiveDate)
 
+  //! New
+  const jointemployEffectiveDate = useSelector((state) => state.employmentReducer.jointemployEffectiveDate)
+  // console.log('jointemployEffectiveDate - ', jointemployEffectiveDate)
   // To be add to the PDF
   const jointempAddressToDisplayLine1 = useSelector((state) => state.employmentReducer.jointempAddressToDisplayLine1)
   const jointempAddressToDisplayLine2 = useSelector((state) => state.employmentReducer.jointempAddressToDisplayLine2)
@@ -629,8 +643,10 @@ export default function Submission() {
   const jointprevEmpemploymentType = useSelector((state) => state.employmentReducer.jointprevEmpemploymentType)
   const jointprevEmpoccupation = useSelector((state) => state.employmentReducer.jointprevEmpoccupation)
   const jointprevEmpemployerName = useSelector((state) => state.employmentReducer.jointprevEmpemployerName)
-  const jointprevEmpempEffectiveDate = useSelector((state) => state.employmentReducer.jointprevEmpempEffectiveDate)
 
+  //! New
+  const jointprevemployEffectiveDate = useSelector((state) => state.employmentReducer.jointprevemployEffectiveDate)
+  // console.log('jointprevemployEffectiveDate - ', jointprevemployEffectiveDate)
   // To be add to the PDF
   const jointprevEmpempAddressToDisplayLine1 = useSelector((state) => state.employmentReducer.jointprevEmpempAddressToDisplayLine1)
   const jointprevEmpempAddressToDisplayLine2 = useSelector((state) => state.employmentReducer.jointprevEmpempAddressToDisplayLine2)
@@ -757,7 +773,7 @@ export default function Submission() {
       },
       contactId: '258790',
       purpose: 'R',
-      effectiveDate: convertToUTCTimestamp(currResEffectiveDate, 'currResEffectiveDate'),
+      effectiveDate: convertToUTCTimestamp(currResidenceEffDate, 'currResidenceEffDate'),
       type: 'S',
       seq: '1',
       externalSystemReference: '',
@@ -784,92 +800,92 @@ export default function Submission() {
       },
       contactId: '258790',
       purpose: 'R',
-      effectiveDate: convertToUTCTimestamp(new Date(convertToUTCTimestamp(prevResEffectiveDate, 'currResEffectiveDate')).setFullYear(new Date(convertToUTCTimestamp(prevResEffectiveDate, 'currResEffectiveDate')).getFullYear() - currResYears), ''),
+      effectiveDate: convertToUTCTimestamp(prevResidenceEffDate, 'prevResidenceEffDate'),
       type: 'S',
       seq: '1',
       externalSystemReference: '',
     },
   ]
 
-  const primeResidentialDetailsSecure = [
-    {
-      stateData: {
-        careOfName: '',
-        unitType: currResAddressSelectedUnitType,
-        apartment: currResAddressSelectedApartment,
-        building: currResAddressSelectedBuilding,
-        streetNumber: {
-          from: currResAddressSelectedStreetNumberFrom,
-          to: currResAddressSelectedStreetNumberTo,
-        },
-        alpha: currResAddressSelectedAlpha,
-        streetOrPostalName: currResAddressSelectedStreetOrPostalName,
-        streetDirection: currResAddressSelectedStreetDirection,
-        streetType: null,
-        suburb: currResAddressSelectedSuburb,
-        city: currResAddressSelectedCity,
-        state: '',
-        postCode: currResAddressSelectedPostCode,
-        country: {
-          code: currResAddressSelectedCountryCode,
-          description: currResAddressSelectedCountryDescription,
-        },
-        contactId: '258790',
-        purpose: 'R',
-        effectiveDate: convertToUTCTimestamp(currResEffectiveDate, 'currResEffectiveDate'),
-        type: 'S',
-        seq: '1',
-        externalSystemReference: '',
-      },
-      update: sovCurrentAddressUpdate,
-      expire: sovCurrentAddressExpire,
-      sovType: sovCurrentAddressType,
-      sovId: sovCurrentAddressId,
-      sovAttributes: { expiryDate: convertUnixToUTCTimestamp(defExpiryDate), ...sovCurrentAddressAttributes },
-    },
-    {
-      stateData: {
-        careOfName: '',
-        unitType: prevResAddressSelectedUnitType,
-        apartment: prevResAddressSelectedApartment,
-        streetNumber: {
-          from: prevResAddressSelectedStreetNumberFrom,
-          to: prevResAddressSelectedStreetNumberTo,
-        },
-        alpha: prevResAddressSelectedAlpha,
-        streetOrPostalName: prevResAddressSelectedStreetOrPostalName,
-        streetDirection: prevResAddressSelectedStreetDirection,
-        streetType: null,
-        suburb: prevResAddressSelectedSuburb,
-        city: prevResAddressSelectedCity,
-        state: '',
-        postCode: prevResAddressSelectedPostCode,
-        country: {
-          code: prevResAddressSelectedCountryCode,
-          description: prevResAddressSelectedCountryDescription,
-        },
-        contactId: '258790',
-        purpose: 'R',
-        effectiveDate: convertToUTCTimestamp(new Date(convertToUTCTimestamp(prevResEffectiveDate, 'currResEffectiveDate')).setFullYear(new Date(convertToUTCTimestamp(prevResEffectiveDate, 'currResEffectiveDate')).getFullYear() - currResYears), ''),
-        type: 'S',
-        seq: '1',
-        externalSystemReference: '',
-      },
-      update: sovPreviousAddressUpdate,
-      expire: sovPreviousAddressExpire,
-      sovType: sovPreviousAddressType,
-      sovId: sovPreviousAddressId,
-      sovAttributes: { expiryDate: convertUnixToUTCTimestamp(defExpiryDate), ...sovPreviousAddressAttributes },
-    },
-  ]
+  // const primeResidentialDetailsSecure = [
+  //   {
+  //     stateData: {
+  //       careOfName: '',
+  //       unitType: currResAddressSelectedUnitType,
+  //       apartment: currResAddressSelectedApartment,
+  //       building: currResAddressSelectedBuilding,
+  //       streetNumber: {
+  //         from: currResAddressSelectedStreetNumberFrom,
+  //         to: currResAddressSelectedStreetNumberTo,
+  //       },
+  //       alpha: currResAddressSelectedAlpha,
+  //       streetOrPostalName: currResAddressSelectedStreetOrPostalName,
+  //       streetDirection: currResAddressSelectedStreetDirection,
+  //       streetType: null,
+  //       suburb: currResAddressSelectedSuburb,
+  //       city: currResAddressSelectedCity,
+  //       state: '',
+  //       postCode: currResAddressSelectedPostCode,
+  //       country: {
+  //         code: currResAddressSelectedCountryCode,
+  //         description: currResAddressSelectedCountryDescription,
+  //       },
+  //       contactId: '258790',
+  //       purpose: 'R',
+  //       effectiveDate: convertToUTCTimestamp(currResidenceEffDate, 'currResidenceEffDate'),
+  //       type: 'S',
+  //       seq: '1',
+  //       externalSystemReference: '',
+  //     },
+  //     update: sovCurrentAddressUpdate,
+  //     expire: sovCurrentAddressExpire,
+  //     sovType: sovCurrentAddressType,
+  //     sovId: sovCurrentAddressId,
+  //     sovAttributes: { expiryDate: convertUnixToUTCTimestamp(defExpiryDate), ...sovCurrentAddressAttributes },
+  //   },
+  //   {
+  //     stateData: {
+  //       careOfName: '',
+  //       unitType: prevResAddressSelectedUnitType,
+  //       apartment: prevResAddressSelectedApartment,
+  //       streetNumber: {
+  //         from: prevResAddressSelectedStreetNumberFrom,
+  //         to: prevResAddressSelectedStreetNumberTo,
+  //       },
+  //       alpha: prevResAddressSelectedAlpha,
+  //       streetOrPostalName: prevResAddressSelectedStreetOrPostalName,
+  //       streetDirection: prevResAddressSelectedStreetDirection,
+  //       streetType: null,
+  //       suburb: prevResAddressSelectedSuburb,
+  //       city: prevResAddressSelectedCity,
+  //       state: '',
+  //       postCode: prevResAddressSelectedPostCode,
+  //       country: {
+  //         code: prevResAddressSelectedCountryCode,
+  //         description: prevResAddressSelectedCountryDescription,
+  //       },
+  //       contactId: '258790',
+  //       purpose: 'R',
+  //       effectiveDate: convertToUTCTimestamp(new Date(convertToUTCTimestamp(prevResidenceEffDate, 'prevResidenceEffDate')).setFullYear(new Date(convertToUTCTimestamp(prevResidenceEffDate, 'prevResidenceEffDate')).getFullYear() - currResYears), ''),
+  //       type: 'S',
+  //       seq: '1',
+  //       externalSystemReference: '',
+  //     },
+  //     update: sovPreviousAddressUpdate,
+  //     expire: sovPreviousAddressExpire,
+  //     sovType: sovPreviousAddressType,
+  //     sovId: sovPreviousAddressId,
+  //     sovAttributes: { expiryDate: convertUnixToUTCTimestamp(defExpiryDate), ...sovPreviousAddressAttributes },
+  //   },
+  // ]
 
-  const primeResidentialDetailsSecureToAdd = primeResidentialDetailsSecure
-    .filter((residence) => {
-      return residence?.update === false && residence?.expire === true
-    })
-    .map((item) => {
-      return { ...item?.stateData }
-    })
+  // const primeResidentialDetailsSecureToAdd = primeResidentialDetailsSecure
+  //   .filter((residence) => {
+  //     return residence?.update === false && residence?.expire === true
+  //   })
+  //   .map((item) => {
+  //     return { ...item?.stateData }
+  //   })
 
   const jointResidentialDetails = [
     {
@@ -895,7 +911,7 @@ export default function Submission() {
       },
       contactId: '258790',
       purpose: 'R',
-      effectiveDate: convertToUTCTimestamp(jointcurrResEffectiveDate, 'currResEffectiveDate'),
+      effectiveDate: convertToUTCTimestamp(jointcurrResidenceEffDate, 'jointcurrResidenceEffDate'),
       type: 'S',
       seq: '1',
       externalSystemReference: '',
@@ -923,7 +939,7 @@ export default function Submission() {
       },
       contactId: '258790',
       purpose: 'R',
-      effectiveDate: convertToUTCTimestamp(new Date(convertToUTCTimestamp(jointprevResEffectiveDate, 'currResEffectiveDate')).setFullYear(new Date(convertToUTCTimestamp(jointprevResEffectiveDate, 'currResEffectiveDate')).getFullYear() - jointcurrResYears), ''),
+      effectiveDate: convertToUTCTimestamp(jointprevResidenceEffDate, 'jointprevResidenceEffDate'),
       type: 'S',
       seq: '1',
       externalSystemReference: '',
@@ -995,127 +1011,127 @@ export default function Submission() {
     },
   ]
 
-  const primeClientIdentificationSecure = [
-    {
-      idCode1: checkedIdentificationTypes.includes('DRVLSC') ? 'DRVLSC' : null,
-      effectiveDate: checkedIdentificationTypes.includes('DRVLSC') ? convertToUTCTimestamp(drLicenceIssueDate, 'drLicenceIssueDate') : convertToUTCTimestamp(defEffectiveDate),
-      expiryDate: checkedIdentificationTypes.includes('DRVLSC') ? convertToUTCTimestamp(drLicenceExpiryDate, 'drLicenceExpiryDate') : convertToUTCTimestamp(defEffectiveDate),
-      reference: driversLicense,
-      seq: '1',
-      updated: sovTypeUpdateddrLicence,
-      expire: sovTypeExpiredrLicence,
-      sovType: sovTypedrLicence,
-      sovId: soviddrLicence,
-      sovAttributes: sovAttributesdrLicence,
-    },
-    {
-      idCode1: checkedIdentificationTypes.includes('DRVLSC') ? 'DRVLSC' : null,
-      idCode2: checkedIdentificationTypes.includes('DRVLSC') ? 'DLVERSION' : null,
-      effectiveDate: checkedIdentificationTypes.includes('DRVLSC') ? convertToUTCTimestamp(drLicenceIssueDate, 'drLicenceIssueDate') : convertToUTCTimestamp(defEffectiveDate),
-      expiryDate: checkedIdentificationTypes.includes('DRVLSC') ? convertToUTCTimestamp(drLicenceExpiryDate, 'drLicenceExpiryDate') : convertToUTCTimestamp(defEffectiveDate),
-      reference: driversLicenceVersion,
-      seq: '1',
-      updated: sovTypeUpdateddrLicence,
-      expire: sovTypeExpiredrLicence,
-      sovType: sovTypedrLicenceVersion,
-      sovId: soviddrLicenceVersion,
-      sovAttributes: sovAttributesdrLicenceVersion,
-    },
-    {
-      idCode1: checkedIdentificationTypes.includes('PASPRT') ? 'PASPRT' : null,
-      effectiveDate: checkedIdentificationTypes.includes('PASPRT') ? convertToUTCTimestamp(passportIssueDate, 'passportIssueDate') : convertToUTCTimestamp(defEffectiveDate),
-      expiryDate: checkedIdentificationTypes.includes('PASPRT') ? convertToUTCTimestamp(passportExpiryDate, 'passportExpiryDate') : convertToUTCTimestamp(defEffectiveDate),
-      reference: passportNo,
-      seq: '1',
-      updated: sovTypeUpdatedpassport,
-      expire: sovTypeExpirepassport,
-      sovType: sovTypepassport,
-      sovId: sovidpassport,
-      sovAttributes: sovAttributespassport,
-    },
-    {
-      idCode1: checkedIdentificationTypes.includes('FIRELICENS') ? 'FIRELICENS' : null,
-      effectiveDate: checkedIdentificationTypes.includes('FIRELICENS') ? convertToUTCTimestamp(firearmsLicenceIssueDate, 'firearmsLicenceIssueDate') : convertToUTCTimestamp(defEffectiveDate),
-      expiryDate: checkedIdentificationTypes.includes('FIRELICENS') ? convertToUTCTimestamp(firearmsLicenceExpiryDate, 'firearmsLicenceExpiryDate') : convertToUTCTimestamp(defEffectiveDate),
-      reference: firearmsLicenceNo,
-      seq: '1',
-      updated: sovTypeUpdatedfirearms_licence,
-      expire: sovTypeExpirefirearms_licence,
-      sovType: sovTypefirearms_licence,
-      sovId: sovidfirearms_licence,
-      sovAttributes: sovAttributesfirearms_licence,
-    },
-    {
-      idCode1: checkedIdentificationTypes.includes('KIWACCCRD') ? 'KIWACCCRD' : null,
-      effectiveDate: checkedIdentificationTypes.includes('KIWACCCRD') ? convertToUTCTimestamp(kiwiAccessCardIssueDate, 'kiwiAccessCardIssueDate') : convertToUTCTimestamp(defEffectiveDate),
-      expiryDate: checkedIdentificationTypes.includes('KIWACCCRD') ? convertToUTCTimestamp(kiwiAccessCardExpiryDate, 'kiwiAccessCardExpiryDate') : convertToUTCTimestamp(defEffectiveDate),
-      reference: kiwiAccessCardNo,
-      seq: '1',
-      updated: sovTypeUpdatedkiwi_access_card,
-      expire: sovTypeExpirekiwi_access_card,
-      sovType: sovTypekiwi_access_card,
-      sovId: sovidkiwi_access_card,
-      sovAttributes: sovAttributeskiwi_access_card,
-    },
-    {
-      idCode1: checkedIdentificationTypes.includes('COMSERVCRD') ? 'COMSERVCRD' : null,
-      effectiveDate: checkedIdentificationTypes.includes('COMSERVCRD') ? convertToUTCTimestamp(commServiceCardIssueDate, 'commServiceCardIssueDate') : convertToUTCTimestamp(defEffectiveDate),
-      expiryDate: checkedIdentificationTypes.includes('COMSERVCRD') ? convertToUTCTimestamp(commServiceCardExpiryDate, 'commServiceCardExpiryDate') : convertToUTCTimestamp(defEffectiveDate),
-      reference: commServiceCardNo,
-      seq: '1',
-      updated: sovTypeUpdatedcommunity_service_card,
-      expire: sovTypeExpirecommunity_service_card,
-      sovType: sovTypecommunity_service_card,
-      sovId: sovidcommunity_service_card,
-      sovAttributes: sovAttributescommunity_service_card,
-    },
-    {
-      idCode1: checkedIdentificationTypes.includes('BIRTHCERT') ? 'BIRTHCERT' : null,
-      effectiveDate: checkedIdentificationTypes.includes('BIRTHCERT') ? convertToUTCTimestamp(defEffectiveDate, 'defEffectiveDate') : convertToUTCTimestamp(defEffectiveDate),
-      reference: birthCertificateRegNo,
-      seq: '1',
-      updated: sovTypeUpdatedbirth_certificate,
-      expire: sovTypeExpirebirth_certificate,
-      sovType: sovTypebirth_certificate,
-      sovId: sovidbirth_certificate,
-      sovAttributes: sovAttributesbirth_certificate,
-    },
-    {
-      idCode1: checkedIdentificationTypes.includes('CURSTUDID') ? 'CURSTUDID' : null,
-      effectiveDate: checkedIdentificationTypes.includes('CURSTUDID') ? convertToUTCTimestamp(currStudentIdIssueDate, 'currStudentIdIssueDate') : convertToUTCTimestamp(defEffectiveDate),
-      expiryDate: checkedIdentificationTypes.includes('CURSTUDID') ? convertToUTCTimestamp(currStudentIdExpiryDate, 'currStudentIdIssueDate') : convertToUTCTimestamp(defEffectiveDate),
-      reference: currStudentIdNo,
-      seq: '1',
-      updated: sovTypeUpdatedcurrent_Student_id,
-      expire: sovTypeExpirecurrent_Student_id,
-      sovType: sovTypecurrent_Student_id,
-      sovId: sovidcurrent_Student_id,
-      sovAttributes: sovAttributescurrent_Student_id,
-    },
-    {
-      idCode1: checkedIdentificationTypes.includes('GOLDCARD') ? 'GOLDCARD' : null,
-      effectiveDate: checkedIdentificationTypes.includes('GOLDCARD') ? convertToUTCTimestamp(goldCardValidFromDate, 'goldCardValidFromDate') : convertToUTCTimestamp(defEffectiveDate),
-      reference: goldCardNo,
-      seq: '1',
-      updated: sovTypeUpdatedgold_card,
-      expire: sovTypeExpiregold_card,
-      sovType: sovTypegold_card,
-      sovId: sovidgold_card,
-      sovAttributes: sovAttributesgold_card,
-    },
-  ]
+  // const primeClientIdentificationSecure = [
+  //   {
+  //     idCode1: checkedIdentificationTypes.includes('DRVLSC') ? 'DRVLSC' : null,
+  //     effectiveDate: checkedIdentificationTypes.includes('DRVLSC') ? convertToUTCTimestamp(drLicenceIssueDate, 'drLicenceIssueDate') : convertToUTCTimestamp(defEffectiveDate),
+  //     expiryDate: checkedIdentificationTypes.includes('DRVLSC') ? convertToUTCTimestamp(drLicenceExpiryDate, 'drLicenceExpiryDate') : convertToUTCTimestamp(defEffectiveDate),
+  //     reference: driversLicense,
+  //     seq: '1',
+  //     updated: sovTypeUpdateddrLicence,
+  //     expire: sovTypeExpiredrLicence,
+  //     sovType: sovTypedrLicence,
+  //     sovId: soviddrLicence,
+  //     sovAttributes: sovAttributesdrLicence,
+  //   },
+  //   {
+  //     idCode1: checkedIdentificationTypes.includes('DRVLSC') ? 'DRVLSC' : null,
+  //     idCode2: checkedIdentificationTypes.includes('DRVLSC') ? 'DLVERSION' : null,
+  //     effectiveDate: checkedIdentificationTypes.includes('DRVLSC') ? convertToUTCTimestamp(drLicenceIssueDate, 'drLicenceIssueDate') : convertToUTCTimestamp(defEffectiveDate),
+  //     expiryDate: checkedIdentificationTypes.includes('DRVLSC') ? convertToUTCTimestamp(drLicenceExpiryDate, 'drLicenceExpiryDate') : convertToUTCTimestamp(defEffectiveDate),
+  //     reference: driversLicenceVersion,
+  //     seq: '1',
+  //     updated: sovTypeUpdateddrLicence,
+  //     expire: sovTypeExpiredrLicence,
+  //     sovType: sovTypedrLicenceVersion,
+  //     sovId: soviddrLicenceVersion,
+  //     sovAttributes: sovAttributesdrLicenceVersion,
+  //   },
+  //   {
+  //     idCode1: checkedIdentificationTypes.includes('PASPRT') ? 'PASPRT' : null,
+  //     effectiveDate: checkedIdentificationTypes.includes('PASPRT') ? convertToUTCTimestamp(passportIssueDate, 'passportIssueDate') : convertToUTCTimestamp(defEffectiveDate),
+  //     expiryDate: checkedIdentificationTypes.includes('PASPRT') ? convertToUTCTimestamp(passportExpiryDate, 'passportExpiryDate') : convertToUTCTimestamp(defEffectiveDate),
+  //     reference: passportNo,
+  //     seq: '1',
+  //     updated: sovTypeUpdatedpassport,
+  //     expire: sovTypeExpirepassport,
+  //     sovType: sovTypepassport,
+  //     sovId: sovidpassport,
+  //     sovAttributes: sovAttributespassport,
+  //   },
+  //   {
+  //     idCode1: checkedIdentificationTypes.includes('FIRELICENS') ? 'FIRELICENS' : null,
+  //     effectiveDate: checkedIdentificationTypes.includes('FIRELICENS') ? convertToUTCTimestamp(firearmsLicenceIssueDate, 'firearmsLicenceIssueDate') : convertToUTCTimestamp(defEffectiveDate),
+  //     expiryDate: checkedIdentificationTypes.includes('FIRELICENS') ? convertToUTCTimestamp(firearmsLicenceExpiryDate, 'firearmsLicenceExpiryDate') : convertToUTCTimestamp(defEffectiveDate),
+  //     reference: firearmsLicenceNo,
+  //     seq: '1',
+  //     updated: sovTypeUpdatedfirearms_licence,
+  //     expire: sovTypeExpirefirearms_licence,
+  //     sovType: sovTypefirearms_licence,
+  //     sovId: sovidfirearms_licence,
+  //     sovAttributes: sovAttributesfirearms_licence,
+  //   },
+  //   {
+  //     idCode1: checkedIdentificationTypes.includes('KIWACCCRD') ? 'KIWACCCRD' : null,
+  //     effectiveDate: checkedIdentificationTypes.includes('KIWACCCRD') ? convertToUTCTimestamp(kiwiAccessCardIssueDate, 'kiwiAccessCardIssueDate') : convertToUTCTimestamp(defEffectiveDate),
+  //     expiryDate: checkedIdentificationTypes.includes('KIWACCCRD') ? convertToUTCTimestamp(kiwiAccessCardExpiryDate, 'kiwiAccessCardExpiryDate') : convertToUTCTimestamp(defEffectiveDate),
+  //     reference: kiwiAccessCardNo,
+  //     seq: '1',
+  //     updated: sovTypeUpdatedkiwi_access_card,
+  //     expire: sovTypeExpirekiwi_access_card,
+  //     sovType: sovTypekiwi_access_card,
+  //     sovId: sovidkiwi_access_card,
+  //     sovAttributes: sovAttributeskiwi_access_card,
+  //   },
+  //   {
+  //     idCode1: checkedIdentificationTypes.includes('COMSERVCRD') ? 'COMSERVCRD' : null,
+  //     effectiveDate: checkedIdentificationTypes.includes('COMSERVCRD') ? convertToUTCTimestamp(commServiceCardIssueDate, 'commServiceCardIssueDate') : convertToUTCTimestamp(defEffectiveDate),
+  //     expiryDate: checkedIdentificationTypes.includes('COMSERVCRD') ? convertToUTCTimestamp(commServiceCardExpiryDate, 'commServiceCardExpiryDate') : convertToUTCTimestamp(defEffectiveDate),
+  //     reference: commServiceCardNo,
+  //     seq: '1',
+  //     updated: sovTypeUpdatedcommunity_service_card,
+  //     expire: sovTypeExpirecommunity_service_card,
+  //     sovType: sovTypecommunity_service_card,
+  //     sovId: sovidcommunity_service_card,
+  //     sovAttributes: sovAttributescommunity_service_card,
+  //   },
+  //   {
+  //     idCode1: checkedIdentificationTypes.includes('BIRTHCERT') ? 'BIRTHCERT' : null,
+  //     effectiveDate: checkedIdentificationTypes.includes('BIRTHCERT') ? convertToUTCTimestamp(defEffectiveDate, 'defEffectiveDate') : convertToUTCTimestamp(defEffectiveDate),
+  //     reference: birthCertificateRegNo,
+  //     seq: '1',
+  //     updated: sovTypeUpdatedbirth_certificate,
+  //     expire: sovTypeExpirebirth_certificate,
+  //     sovType: sovTypebirth_certificate,
+  //     sovId: sovidbirth_certificate,
+  //     sovAttributes: sovAttributesbirth_certificate,
+  //   },
+  //   {
+  //     idCode1: checkedIdentificationTypes.includes('CURSTUDID') ? 'CURSTUDID' : null,
+  //     effectiveDate: checkedIdentificationTypes.includes('CURSTUDID') ? convertToUTCTimestamp(currStudentIdIssueDate, 'currStudentIdIssueDate') : convertToUTCTimestamp(defEffectiveDate),
+  //     expiryDate: checkedIdentificationTypes.includes('CURSTUDID') ? convertToUTCTimestamp(currStudentIdExpiryDate, 'currStudentIdIssueDate') : convertToUTCTimestamp(defEffectiveDate),
+  //     reference: currStudentIdNo,
+  //     seq: '1',
+  //     updated: sovTypeUpdatedcurrent_Student_id,
+  //     expire: sovTypeExpirecurrent_Student_id,
+  //     sovType: sovTypecurrent_Student_id,
+  //     sovId: sovidcurrent_Student_id,
+  //     sovAttributes: sovAttributescurrent_Student_id,
+  //   },
+  //   {
+  //     idCode1: checkedIdentificationTypes.includes('GOLDCARD') ? 'GOLDCARD' : null,
+  //     effectiveDate: checkedIdentificationTypes.includes('GOLDCARD') ? convertToUTCTimestamp(goldCardValidFromDate, 'goldCardValidFromDate') : convertToUTCTimestamp(defEffectiveDate),
+  //     reference: goldCardNo,
+  //     seq: '1',
+  //     updated: sovTypeUpdatedgold_card,
+  //     expire: sovTypeExpiregold_card,
+  //     sovType: sovTypegold_card,
+  //     sovId: sovidgold_card,
+  //     sovAttributes: sovAttributesgold_card,
+  //   },
+  // ]
 
-  const primeClientIdentificationSecureToAdd = primeClientIdentificationSecure.filter((identification) => {
-    return identification.idCode1 !== null && ((identification.updated === null && identification.expire === false) || (identification.updated === false && identification.expire === true))
-  })
+  // const primeClientIdentificationSecureToAdd = primeClientIdentificationSecure.filter((identification) => {
+  //   return identification.idCode1 !== null && ((identification.updated === null && identification.expire === false) || (identification.updated === false && identification.expire === true))
+  // })
 
-  const primeClientIdentificationSecureToExpire = primeClientIdentificationSecure
-    .filter((identification) => {
-      return identification.idCode1 !== null && ((identification.updated === true && identification.expire === true) || (identification.updated === false && identification.expire === true))
-    })
-    .map((item) => {
-      return { type: item.sovType, id: item.sovId, attributes: item.sovAttributes }
-    })
+  // const primeClientIdentificationSecureToExpire = primeClientIdentificationSecure
+  //   .filter((identification) => {
+  //     return identification.idCode1 !== null && ((identification.updated === true && identification.expire === true) || (identification.updated === false && identification.expire === true))
+  //   })
+  //   .map((item) => {
+  //     return { type: item.sovType, id: item.sovId, attributes: item.sovAttributes }
+  //   })
 
   const jointClientIdentification = [
     {
@@ -1191,7 +1207,7 @@ export default function Submission() {
       occupation: isNotAnEmployment(employmentType) ? null : occupationTypes(occupation)?.key,
       jobDescription: isNotAnEmployment(employmentType) ? employmentTypes(employmentType)?.value : occupationTypes(occupation)?.value,
       employerName: isNotAnEmployment(employmentType) ? employmentTypes(employmentType)?.value : employerName,
-      effectiveDate: convertToUTCTimestamp(empEffectiveDate, 'empEffectiveDate'),
+      effectiveDate: convertToUTCTimestamp(employEffectiveDate, 'employEffectiveDate'),
       seq: '1',
     },
     {
@@ -1202,31 +1218,31 @@ export default function Submission() {
       occupation: isNotAnEmployment(prevEmpemploymentType) ? null : occupationTypes(prevEmpoccupation)?.key,
       jobDescription: isNotAnEmployment(prevEmpemploymentType) ? employmentTypes(prevEmpemploymentType)?.value : occupationTypes(prevEmpoccupation)?.value,
       employerName: isNotAnEmployment(prevEmpemploymentType) ? employmentTypes(prevEmpemploymentType)?.value : prevEmpemployerName,
-      effectiveDate: convertToUTCTimestamp(defPrevEmpEffective, 'empEffectiveDate'),
+      effectiveDate: convertToUTCTimestamp(prevEmployEffectiveDate, 'prevEmployEffectiveDate'),
       seq: '1',
     },
   ]
 
-  const primeClientEmploymentSecure = [
-    {
-      type: sovcurrEmpType,
-      id: sovcurrEmpID,
-      attributes: { expiryDate: fDateYYYY_MM_DD(defExpiryDate), ...sovcurrEmpAttributes },
-      update: sovcurrEmpUpdate,
-      expire: sovcurrEmpExpire,
-    },
-    {
-      type: sovprevEmpType,
-      id: sovprevEmpID,
-      attributes: sovprevEmpAttributes,
-      update: sovprevEmpUpdate,
-      expire: sovprevEmpExpire,
-    },
-  ]
+  // const primeClientEmploymentSecure = [
+  //   {
+  //     type: sovcurrEmpType,
+  //     id: sovcurrEmpID,
+  //     attributes: { expiryDate: fDateYYYY_MM_DD(defExpiryDate), ...sovcurrEmpAttributes },
+  //     update: sovcurrEmpUpdate,
+  //     expire: sovcurrEmpExpire,
+  //   },
+  //   {
+  //     type: sovprevEmpType,
+  //     id: sovprevEmpID,
+  //     attributes: sovprevEmpAttributes,
+  //     update: sovprevEmpUpdate,
+  //     expire: sovprevEmpExpire,
+  //   },
+  // ]
 
-  const primeClientEmploymentSecureToExpire = primeClientEmploymentSecure.filter((item) => {
-    return item?.update === false && item?.expire === true
-  })
+  // const primeClientEmploymentSecureToExpire = primeClientEmploymentSecure.filter((item) => {
+  //   return item?.update === false && item?.expire === true
+  // })
 
   const jointEmployment = [
     {
@@ -1237,7 +1253,7 @@ export default function Submission() {
       occupation: isNotAnEmployment(jointemploymentType) ? null : occupationTypes(jointoccupation)?.key,
       jobDescription: isNotAnEmployment(jointemploymentType) ? employmentTypes(jointemploymentType)?.value : occupationTypes(jointoccupation)?.value,
       employerName: isNotAnEmployment(jointemploymentType) ? employmentTypes(jointemploymentType)?.value : jointemployerName,
-      effectiveDate: convertToUTCTimestamp(jointempEffectiveDate, 'jointempEffectiveDate'),
+      effectiveDate: convertToUTCTimestamp(jointemployEffectiveDate, 'jointemployEffectiveDate'),
       seq: '1',
     },
     {
@@ -1248,7 +1264,7 @@ export default function Submission() {
       occupation: isNotAnEmployment(jointprevEmpemploymentType) ? null : occupationTypes(jointprevEmpoccupation)?.key,
       jobDescription: isNotAnEmployment(jointprevEmpemploymentType) ? employmentTypes(jointemploymentType)?.value : occupationTypes(jointprevEmpoccupation)?.value,
       employerName: isNotAnEmployment(jointprevEmpemploymentType) ? employmentTypes(jointprevEmpemploymentType)?.value : jointprevEmpemployerName,
-      effectiveDate: convertToUTCTimestamp(defPrevEmpEffective, 'empEffectiveDate'),
+      effectiveDate: convertToUTCTimestamp(jointprevemployEffectiveDate, 'jointprevemployEffectiveDate'),
       seq: '1',
     },
   ]
@@ -1259,7 +1275,7 @@ export default function Submission() {
       occupation: isNotAnEmployment(employmentType) ? null : occupationTypes(occupation)?.value,
       jobDescription: isNotAnEmployment(employmentType) ? employmentTypes(employmentType)?.value : occupationTypes(occupation)?.value,
       employerName: isNotAnEmployment(employmentType) ? employmentTypes(employmentType)?.value : employerName,
-      effectiveDate: fDate(empEffectiveDate),
+      effectiveDate: fDate(employEffectiveDate),
       addressLine1: empAddressToDisplayLine1,
       addressLine2: empAddressToDisplayLine2,
       addressLine3: empAddressToDisplayLine3,
@@ -1270,7 +1286,7 @@ export default function Submission() {
       occupation: isNotAnEmployment(prevEmpemploymentType) ? null : occupationTypes(prevEmpoccupation)?.value,
       jobDescription: isNotAnEmployment(prevEmpemploymentType) ? employmentTypes(prevEmpemploymentType)?.value : occupationTypes(prevEmpoccupation)?.value,
       employerName: isNotAnEmployment(prevEmpemploymentType) ? employmentTypes(prevEmpemploymentType)?.value : prevEmpemployerName,
-      effectiveDate: fDate(defPrevEmpEffective),
+      effectiveDate: fDate(prevEmployEffectiveDate),
       addressLine1: prevEmpempAddressToDisplayLine1,
       addressLine2: prevEmpempAddressToDisplayLine2,
       addressLine3: prevEmpempAddressToDisplayLine3,
@@ -1281,7 +1297,7 @@ export default function Submission() {
       occupation: isNotAnEmployment(jointemploymentType) ? null : occupationTypes(jointoccupation)?.value,
       jobDescription: isNotAnEmployment(jointemploymentType) ? employmentTypes(jointemploymentType)?.value : occupationTypes(jointoccupation)?.value,
       employerName: isNotAnEmployment(jointemploymentType) ? employmentTypes(jointemploymentType)?.value : jointemployerName,
-      effectiveDate: fDate(jointempEffectiveDate),
+      effectiveDate: fDate(jointemployEffectiveDate),
       addressLine1: jointempAddressToDisplayLine1,
       addressLine2: jointempAddressToDisplayLine2,
       addressLine3: jointempAddressToDisplayLine3,
@@ -1289,10 +1305,10 @@ export default function Submission() {
     },
     jointPreviousEmployment: {
       employmentType: employmentTypes(jointprevEmpemploymentType)?.value,
-      occupation: isNotAnEmployment(employmentType) ? null : occupationTypes(occupation)?.value,
-      jobDescription: isNotAnEmployment(employmentType) ? employmentTypes(employmentType)?.value : occupationTypes(occupation)?.value,
-      employerName: isNotAnEmployment(employmentType) ? employmentTypes(employmentType)?.value : employerName,
-      effectiveDate: fDate(empEffectiveDate),
+      occupation: isNotAnEmployment(jointprevEmpemploymentType) ? null : occupationTypes(jointprevEmpoccupation)?.value,
+      jobDescription: isNotAnEmployment(jointprevEmpemploymentType) ? employmentTypes(jointprevEmpemploymentType)?.value : occupationTypes(jointprevEmpoccupation)?.value,
+      employerName: isNotAnEmployment(jointprevEmpemploymentType) ? employmentTypes(jointprevEmpemploymentType)?.value : jointprevEmpemployerName,
+      effectiveDate: fDate(jointprevemployEffectiveDate),
       addressLine1: jointprevEmpempAddressToDisplayLine1,
       addressLine2: jointprevEmpempAddressToDisplayLine2,
       addressLine3: jointprevEmpempAddressToDisplayLine3,
@@ -1872,13 +1888,13 @@ export default function Submission() {
   //   }),
   // ]
 
-  const expireIdentificationIncluded = primeClientIdentificationSecureToExpire.map((item) => {
-    return {
-      type: item?.type,
-      id: item?.id,
-      attributes: item?.attributes,
-    }
-  })
+  // const expireIdentificationIncluded = primeClientIdentificationSecureToExpire.map((item) => {
+  //   return {
+  //     type: item?.type,
+  //     id: item?.id,
+  //     attributes: item?.attributes,
+  //   }
+  // })
 
   // const expireEmploymentRelationships = [
   //   primeClientEmploymentSecureToExpire.map((item) => {
@@ -1886,15 +1902,15 @@ export default function Submission() {
   //   }),
   // ]
 
-  const expireEmploymentIncluded = primeClientEmploymentSecureToExpire.map((item) => {
-    return {
-      type: item?.type,
-      id: item?.id,
-      attributes: item?.attributes,
-    }
-  })
+  // const expireEmploymentIncluded = primeClientEmploymentSecureToExpire.map((item) => {
+  //   return {
+  //     type: item?.type,
+  //     id: item?.id,
+  //     attributes: item?.attributes,
+  //   }
+  // })
 
-  const expireIncluded = [...expireIdentificationIncluded, ...expireEmploymentIncluded]
+  // const expireIncluded = [...expireIdentificationIncluded, ...expireEmploymentIncluded]
 
   const preliminaryQuestions_MemoLines = ['', '------ Credit Sense ------', '', `Reference: ${creditSenseAppRef == null ? 'Credit Sense Skipped' : !(creditSenseAppRef == null) && creditSenseResponseCode}`, '', '------ Loan Protection Insurance ------', '', `Total Premium: $${lpiGrossPremium === null ? 0 : lpiGrossPremium}`, '', `Prime Borrower Covers: ${hasLpiPrimeDeath ? 'Death' : ''} ${hasLpiPrimeDisability ? ', Disability' : ''} ${hasLpiPrimeBankruptcy ? ', Bankruptcy' : ''} ${hasLpiPrimeCriticalIllness ? ', Critical Illness' : ''}`, '', `Co-Borrower Covers: ${hasLpiJointDeath ? 'Death' : ''} ${hasLpiJointDisability ? ', Disability' : ''} ${hasLpiJointBankruptcy ? ', Bankruptcy' : ''} ${hasLpiJointCriticalIllness ? ', Critical Illness' : ''}`, '', '------ Vehicle Details for Security ------', '', `Vehicle-related Loan Purpose? : ${vehicleRelatedLoanPurpose ? 'Yes' : 'No'}`, '', `Would you like to provide vehicle as loan security? : ${!vehicleRelatedLoanPurpose || vehicleRelatedLoanPurpose == null ? wouldYoulikeToProvideVehicleSecurity : 'N/A'}`, '', `Have you purchased the vehicle yet? : ${hasPurchsedVehicle}`, '', `Vehicle Rego : ${vehicleRegistrationNumber}`, '', '------ Preliminary Questions ------', '', `Are you applying for a joint loan? : ${jointApplication_key}`, '', `Existing Member? - ${existingMember === true ? 'Yes' : 'No'}`, '', `What is the purpose of this loan? : ${getLoanPurposeFromKey(loanPurpose)?.value}`, '', `Trading Branch : ${getTradingBranchFromKey(tradingBranch)?.value}`, '', `Citizenship? : ${getCountryFromKey(citizen)?.label}`, '', `Residency : ${isNzCitizen ? 'N/A' : getCountryFromKey(resident)?.label}`, '', `Do you have a work permit? : ${isNzResident ? 'N/A' : hasWorkPermit?.key}`, '', `Do you have a regular income? : ${hasRegularIncome?.key}`, '', `Is your income credited to your FCU Account?: ${incomeCreditedToFCU?.key}`, '', `Have you been declared bankrupt before? : ${wasDeclaredBankrupt?.key}`, '', `Bankruptcy Date: ${wasDeclaredBankrupt?.key === 'No' ? 'N/A' : fDate(bankruptcyDate)}`, '', '------ Privacy Declaration -------', '', `1. Accepted Credit Assesment Checks- ${declarationItems?.CreditAssesment?.accept === true ? 'Yes' : 'No'}`, '', `2. Authorise FCU to disclose data to third parties - ${declarationItems?.AuthoriseFCU?.accept === true ? 'Yes' : 'No'}`, '', `3. Information is true and correct - ${declarationItems?.TrueInformation?.accept === true ? 'Yes' : 'No'}`, '', `4. Comply with AML/CFT obligations - ${declarationItems?.AmlCftObligations?.accept === true ? 'Yes' : 'No'}`, '', `5. Authorise FCU to collect, use and store data - ${declarationItems?.StorePersonalInfo?.accept === true ? 'Yes' : 'No'}`]
 

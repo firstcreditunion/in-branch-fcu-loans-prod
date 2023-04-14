@@ -44,6 +44,7 @@ import { sopAssetLiabilityActions } from '../../redux/slices/sopAssetsLiabilitie
 import { sopIncomeExpenditureActions } from '../../redux/slices/sopIncomeExpenditureSlice'
 import { bankStatementActions } from '../../redux/slices/bankStatementSlice'
 import { privacyActDeclarationActions } from '../../redux/slices/privacyActDeclarationSlice'
+import { processNodeEnv } from '../../redux/utils/apiConstants'
 
 //* Custom Components
 import Page from '../../components/Page'
@@ -708,6 +709,8 @@ export default function FirstLoanApplication({ loanAmount, interestRate, term, p
       currentChildCount = activeChildNode + 1
       return null
     }
+
+    if (processNodeEnv() === 'development') return
 
     history.push('/application/prequalify')
   }, [])

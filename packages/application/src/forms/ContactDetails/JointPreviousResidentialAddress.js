@@ -15,14 +15,18 @@ import { getAddressMetaData } from '../../redux/slices/contactDetailsSlice'
 // API constants
 import { BASE_URL_LOCAL_APP, BASE_URL_AWS_APP, processNodeEnv } from '../../redux/utils/apiConstants'
 
+//* Yup
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
+//* Custom Components
 import Form from '../../components/Form'
 import Counter from '../../components/Counter'
+import DatePicker from '../../components/rhf-components/DatePicker'
 import EditableCounter from '../../components/rhf-components/EditableCounter'
 import AddressFinderAutoComplete from '../../components/AddressFinderAutoComplete'
 
+//* MUI
 import Box from '@mui/material/Box'
 import Alert from '@mui/material/Alert'
 import Stack from '@mui/material/Stack'
@@ -31,10 +35,14 @@ import Typography from '@mui/material/Typography'
 import AlertTitle from '@mui/material/AlertTitle'
 import useMediaQuery from '@mui/material/useMediaQuery'
 
+//* MUI - Icons
 import IconButton from '@mui/material/IconButton'
 import CabinRoundedIcon from '@mui/icons-material/CabinRounded'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded'
+
+//* Utils
+import { fDate, dateDiffereneInMonths } from '../../utils/formatDateTime'
 
 const LabelStyle = styled(Typography)(({ theme }) => ({
   ...theme.typography.subtitle2,
@@ -43,8 +51,8 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
 
 function JointPreviousResidentialAddress() {
   const prevHomeAddStreet = useSelector((state) => state.conatctDetailsReducer.jointprevHomeAddStreet)
-  const prevResYears = useSelector((state) => state.conatctDetailsReducer.jointprevResYears)
-  const prevResMonths = useSelector((state) => state.conatctDetailsReducer.jointprevResMonths)
+  const currResidenceEffDate = useSelector((state) => state.conatctDetailsReducer.jointprevResidenceEffDate)
+  const currResidenceMonths = useSelector((state) => state.conatctDetailsReducer.jointprevResidenceMonths)
   const onSubmitPrevResidenceDetails = useSelector((state) => state.conatctDetailsReducer.jointonSubmitPrevResidenceDetails)
 
   // Address Finder
@@ -73,8 +81,17 @@ function JointPreviousResidentialAddress() {
       })
       .required('Residential address is required')
       .nullable(),
-    prevResYears: yup.string(),
-    prevResMonths: yup.string(),
+    currResidenceEffDate: yup
+      .string()
+      .required('Address Effective Date is required.')
+      .test('cannot be lower than 1900', 'Invalid Date of Birth. Date Format: MMMM YYYY', function (effectiveDate) {
+        if (effectiveDate === 'Invalid Date') {
+          return false
+        }
+
+        return true
+      })
+      .nullable(),
   })
 
   const varPrevResDetails =
@@ -116,8 +133,7 @@ function JointPreviousResidentialAddress() {
   } = useForm({
     defaultValues: {
       prevHomeAddStreet: prevHomeAddStreet,
-      prevResYears: prevResYears,
-      prevResMonths: prevResMonths,
+      currResidenceEffDate: currResidenceEffDate,
     },
     mode: 'onChange',
     resolver: yupResolver(schema),
@@ -293,6 +309,12 @@ function JointPreviousResidentialAddress() {
     }
   }, [onSubmitPrevResidenceDetails])
 
+  const handleCurrentResidenceEffDate = (date) => {
+    dispatch(contactDetailsActions.setJointPrevResidenceEffDate(date))
+    const monthsFromToday = dateDiffereneInMonths(new Date(date), new Date())
+    dispatch(contactDetailsActions.setJointPrevResidenceMonths(monthsFromToday))
+  }
+
   function onSubmit() {
     console.log('Current Residence Details Submitted')
   }
@@ -307,27 +329,27 @@ function JointPreviousResidentialAddress() {
   }
 
   // Stay at previous residence
-  const incrementPrevResYears = () => {
-    dispatch(contactDetailsActions.setJointPrevResYears(parseInt(prevResYears) + 1))
-  }
-  const decrementPrevResYears = () => {
-    dispatch(contactDetailsActions.setJointPrevResYears(parseInt(prevResYears) - 1))
-  }
+  // const incrementPrevResYears = () => {
+  //   dispatch(contactDetailsActions.setJointPrevResYears(parseInt(prevResYears) + 1))
+  // }
+  // const decrementPrevResYears = () => {
+  //   dispatch(contactDetailsActions.setJointPrevResYears(parseInt(prevResYears) - 1))
+  // }
 
-  const incrementPrevResMonths = () => {
-    dispatch(contactDetailsActions.setJointPrevResMonths(parseInt(prevResMonths) + 1))
-  }
+  // const incrementPrevResMonths = () => {
+  //   dispatch(contactDetailsActions.setJointPrevResMonths(parseInt(prevResMonths) + 1))
+  // }
 
-  const decrementPrevResMonths = () => {
-    dispatch(contactDetailsActions.setJointPrevResMonths(parseInt(prevResMonths) - 1))
-  }
+  // const decrementPrevResMonths = () => {
+  //   dispatch(contactDetailsActions.setJointPrevResMonths(parseInt(prevResMonths) - 1))
+  // }
 
-  const handleJointPrevResYears = (event) => {
-    dispatch(contactDetailsActions.setJointPrevResYears(event.target.value === '' ? 0 : parseInt(event.target.value)))
-  }
-  const handleJointPrevResMonths = (event) => {
-    dispatch(contactDetailsActions.setJointPrevResMonths(event.target.value === '' ? 0 : parseInt(event.target.value)))
-  }
+  // const handleJointPrevResYears = (event) => {
+  //   dispatch(contactDetailsActions.setJointPrevResYears(event.target.value === '' ? 0 : parseInt(event.target.value)))
+  // }
+  // const handleJointPrevResMonths = (event) => {
+  //   dispatch(contactDetailsActions.setJointPrevResMonths(event.target.value === '' ? 0 : parseInt(event.target.value)))
+  // }
 
   const previousAddressLabel = prevHomeAddStreet === null || prevHomeAddStreet === '' ? 'your previous residence' : prevHomeAddStreet
 
@@ -377,13 +399,7 @@ function JointPreviousResidentialAddress() {
         <Stack direction='column' spacing={3} justifyContent='flex-start'>
           <Stack direction='column' spacing={2}>
             <LabelStyle sx={{ textAlign: 'center' }}>How long have you been staying at {previousAddressLabel}?</LabelStyle>
-            <Stack direction={downSm ? 'column' : 'row'} spacing={downMd ? (downSm ? 1 : 2) : 0} justifyContent={downMd ? 'center' : 'space-evenly'} alignItems={downSm ? 'center' : 'baseline'}>
-              <EditableCounter name='prevResYears' control={control} defualtValue={0} label='Years' count={prevResYears} maxValue={50} onIncrementCount={incrementPrevResYears} onDecrementCount={decrementPrevResYears} onTextFieldChange={handleJointPrevResYears} />
-              <Typography variant='body1' sx={{ color: 'text.secondray' }}>
-                and
-              </Typography>
-              <EditableCounter name='prevResMonths' control={control} defualtValue={0} label='Months' count={prevResMonths} maxValue={11} onIncrementCount={incrementPrevResMonths} onDecrementCount={decrementPrevResMonths} onTextFieldChange={handleJointPrevResMonths} />
-            </Stack>
+            <DatePicker id='currResidenceEffDate' name='currResidenceEffDate' onDateChange={handleCurrentResidenceEffDate} label='Address Effective Date' control={control} variant='outlined' helperText='Month and Year. Eg: June 2020' openTo='year' format='MMMM YYYY' date={currResidenceEffDate} maxDate={upperLimitEffectiveDate} isRequired={true} views={['year', 'month']} />
           </Stack>
         </Stack>
       </Stack>

@@ -25,7 +25,6 @@ import AddressFinderAutoComplete from '../../components/AddressFinderAutoComplet
 
 //* MUI
 import Box from '@mui/material/Box'
-import Alert from '@mui/material/Alert'
 import Radio from '@mui/material/Radio'
 import Stack from '@mui/material/Stack'
 import Paper from '@mui/material/Paper'
@@ -36,6 +35,10 @@ import Collapse from '@mui/material/Collapse'
 import Typography from '@mui/material/Typography'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import FormControlLabel from '@mui/material/FormControlLabel'
+
+//* MUI - Alert
+import Alert from '@mui/material/Alert'
+import AlertTitle from '@mui/material/AlertTitle'
 
 //* MUI - Cards
 import Card from '@mui/material/Card'
@@ -52,8 +55,11 @@ import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded'
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined'
 import ModeEditOutlineRoundedIcon from '@mui/icons-material/ModeEditOutlineRounded'
 
-import { fDate } from '../../utils/formatDateTime'
-import { AlertTitle } from '@mui/material'
+//* Custom Components
+import DatePicker from '../../components/rhf-components/DatePicker'
+
+//* Utils
+import { fDate, dateDiffereneInMonths } from '../../utils/formatDateTime'
 
 const LabelStyle = styled(Typography)(({ theme }) => ({
   ...theme.typography.subtitle2,
@@ -86,8 +92,8 @@ function PreviousResidentialAddress() {
   const secureSessionID = useSelector((state) => state.globalReducer.secureSessionID)
 
   const prevHomeAddStreet = useSelector((state) => state.conatctDetailsReducer.prevHomeAddStreet)
-  const prevResYears = useSelector((state) => state.conatctDetailsReducer.prevResYears)
-  const prevResMonths = useSelector((state) => state.conatctDetailsReducer.prevResMonths)
+  const currResidenceEffDate = useSelector((state) => state.conatctDetailsReducer.prevResidenceEffDate)
+  const currResidenceMonths = useSelector((state) => state.conatctDetailsReducer.prevResidenceMonths)
   const sovprevResLengthOfStayIsZero = useSelector((state) => state.conatctDetailsReducer.sovprevResLengthOfStayIsZero)
   const onSubmitPrevResidenceDetails = useSelector((state) => state.conatctDetailsReducer.onSubmitPrevResidenceDetails)
   const isValidSovPreviousResidentialDetails = useSelector((state) => state.conatctDetailsReducer.isValidSovPreviousResidentialDetails)
@@ -113,6 +119,8 @@ function PreviousResidentialAddress() {
 
   const isPreviousAddressEmpty = prevResAddressToDisplayLine1 == null && prevResAddressToDisplayLine2 == null && prevResAddressToDisplayLine3 == null && prevResAddressToDisplayLine4 == null
 
+  const upperLimitEffectiveDate = new Date()
+
   const schema = yup.object().shape({
     prevHomeAddStreet: yup
       .string()
@@ -128,8 +136,17 @@ function PreviousResidentialAddress() {
       })
       .required('Residential address is required')
       .nullable(),
-    prevResYears: yup.string(),
-    prevResMonths: yup.string(),
+    currResidenceEffDate: yup
+      .string()
+      .required('Address Effective Date is required.')
+      .test('cannot be lower than 1900', 'Invalid Date of Birth. Date Format: MMMM YYYY', function (effectiveDate) {
+        if (effectiveDate === 'Invalid Date') {
+          return false
+        }
+
+        return true
+      })
+      .nullable(),
   })
 
   const varPrevResDetails =
@@ -188,8 +205,7 @@ function PreviousResidentialAddress() {
   } = useForm({
     defaultValues: {
       prevHomeAddStreet: prevHomeAddStreet,
-      prevResYears: prevResYears,
-      prevResMonths: prevResMonths,
+      currResidenceEffDate: currResidenceEffDate,
     },
     mode: 'onChange',
     resolver: yupResolver(schema),
@@ -384,28 +400,36 @@ function PreviousResidentialAddress() {
     dispatch(contactDetailsActions.setIsValidSovPreviousResidentialDetails(true))
   }
 
+  const handleCurrentResidenceEffDate = (date) => {
+    dispatch(contactDetailsActions.setPrevResidenceEffDate(date))
+
+    const monthsFromToday = dateDiffereneInMonths(new Date(date), new Date())
+
+    dispatch(contactDetailsActions.setPrevResidenceMonths(monthsFromToday))
+  }
+
   //* Stay at previous residence
-  const incrementPrevResYears = () => {
-    dispatch(contactDetailsActions.setPrevResYears(parseInt(prevResYears) + 1))
-  }
-  const decrementPrevResYears = () => {
-    dispatch(contactDetailsActions.setPrevResYears(parseInt(prevResYears) - 1))
-  }
+  // const incrementPrevResYears = () => {
+  //   dispatch(contactDetailsActions.setPrevResYears(parseInt(prevResYears) + 1))
+  // }
+  // const decrementPrevResYears = () => {
+  //   dispatch(contactDetailsActions.setPrevResYears(parseInt(prevResYears) - 1))
+  // }
 
-  const incrementPrevResMonths = () => {
-    dispatch(contactDetailsActions.setPrevResMonths(parseInt(prevResMonths) + 1))
-  }
+  // const incrementPrevResMonths = () => {
+  //   dispatch(contactDetailsActions.setPrevResMonths(parseInt(prevResMonths) + 1))
+  // }
 
-  const decrementPrevResMonths = () => {
-    dispatch(contactDetailsActions.setPrevResMonths(parseInt(prevResMonths) - 1))
-  }
+  // const decrementPrevResMonths = () => {
+  //   dispatch(contactDetailsActions.setPrevResMonths(parseInt(prevResMonths) - 1))
+  // }
 
-  const handlePrevResYears = (event) => {
-    dispatch(contactDetailsActions.setPrevResYears(event.target.value === '' ? 0 : parseInt(event.target.value)))
-  }
-  const handlePrevResMonths = (event) => {
-    dispatch(contactDetailsActions.setPrevResMonths(event.target.value === '' ? 0 : parseInt(event.target.value)))
-  }
+  // const handlePrevResYears = (event) => {
+  //   dispatch(contactDetailsActions.setPrevResYears(event.target.value === '' ? 0 : parseInt(event.target.value)))
+  // }
+  // const handlePrevResMonths = (event) => {
+  //   dispatch(contactDetailsActions.setPrevResMonths(event.target.value === '' ? 0 : parseInt(event.target.value)))
+  // }
 
   const previousAddressLabel = prevHomeAddStreet === null || prevHomeAddStreet === '' ? 'your previous residence' : prevHomeAddStreet
 
@@ -580,15 +604,7 @@ function PreviousResidentialAddress() {
         <Stack direction='column' spacing={3} justifyContent='flex-start'>
           <Stack direction='column' spacing={2}>
             <LabelStyle sx={{ textAlign: 'center' }}>How long have you been staying at {prevResAddressToDisplayLine1 == null ? 'previous residence' : prevResAddressToDisplayLine1}?</LabelStyle>
-            <Stack direction={downSm ? 'column' : 'row'} spacing={downMd ? (downSm ? 1 : 2) : 0} justifyContent={downMd ? 'center' : 'space-evenly'} alignItems={downSm ? 'center' : 'baseline'}>
-              <EditableCounter name='prevResYears' control={control} defualtValue={0} label='Years' count={prevResYears} maxValue={50} onIncrementCount={incrementPrevResYears} onDecrementCount={decrementPrevResYears} disabled={!(prevResAddressSelectedMetaData == null) || sovprevResLengthOfStayIsZero || secureSessionID == null ? false : true} onTextFieldChange={handlePrevResYears} />
-              {!downSm && (
-                <Typography variant='body1' sx={{ color: 'text.secondray' }}>
-                  and
-                </Typography>
-              )}
-              <EditableCounter name='prevResMonths' control={control} defualtValue={0} label='Months' count={prevResMonths} maxValue={11} onIncrementCount={incrementPrevResMonths} onDecrementCount={decrementPrevResMonths} disabled={!(prevResAddressSelectedMetaData == null) || sovprevResLengthOfStayIsZero || secureSessionID == null ? false : true} onTextFieldChange={handlePrevResMonths} />
-            </Stack>
+            <DatePicker id='currResidenceEffDate' name='currResidenceEffDate' onDateChange={handleCurrentResidenceEffDate} label='Address Effective Date' control={control} variant='outlined' helperText='Month and Year. Eg: June 2020' openTo='year' format='MMMM YYYY' date={currResidenceEffDate} maxDate={upperLimitEffectiveDate} isRequired={true} views={['year', 'month']} />
           </Stack>
         </Stack>
       </Stack>
