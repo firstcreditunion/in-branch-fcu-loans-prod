@@ -108,7 +108,13 @@ function JointEmploymentStatus() {
       .nullable(),
     employEffectiveDate: yup
       .string()
-      .required('Employment Effective Date is required.')
+      .when('employmentType', {
+        is: (emp) => {
+          return emp === 'Unemployed' || emp === 'Retired' || emp === 'Beneficiary' || emp === 'Homemaker'
+        },
+        then: yup.string().nullable(),
+        otherwise: yup.string().required('Employment Effective Date is required.').nullable(),
+      })
       .test('cannot be lower than 1900', 'Invalid Date of Birth. Date Format: MMMM YYYY', function (effectiveDate) {
         if (effectiveDate === 'Invalid Date') {
           return false
@@ -422,7 +428,7 @@ function JointEmploymentStatus() {
             {!showEmploymentDetails && employmentType !== '' && (
               <Stack key='emphisthelper2' component={motion.div} {...varEmpHistory} direction='row' justifyContent='center' sx={{ py: downSm ? 5 : 10, fontWeight: 'regular', color: 'text.secondary' }}>
                 <Typography variant={downSm ? 'body2' : 'body1'} sx={{ textAlign: 'center' }}>
-                  Please proceed to the <strong>next</strong> step.
+                  Please continue to the <strong>next</strong> step.
                 </Typography>
               </Stack>
             )}

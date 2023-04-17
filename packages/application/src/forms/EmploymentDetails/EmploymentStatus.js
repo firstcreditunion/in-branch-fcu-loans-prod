@@ -52,6 +52,54 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }))
 
+const schemaemp = yup.object().shape({
+  employmentType: yup.string().required('Employment type is required').nullable(),
+  occupation: yup.string().when('employmentType', {
+    is: (emp) => {
+      return emp === 'Unemployed' || emp === 'Retired' || emp === 'Beneficiary' || emp === 'Homemaker'
+    },
+    then: yup.string().nullable(),
+    otherwise: yup.string().required('Occupation is required').nullable(),
+  }),
+  employerName: yup
+    .string()
+    .when('employmentType', {
+      is: (emp) => {
+        return emp === 'Unemployed' || emp === 'Retired' || emp === 'Beneficiary' || emp === 'Homemaker'
+      },
+      then: yup.string().nullable(),
+      otherwise: yup.string().required('Employer Name is required').nullable(),
+    })
+    .nullable(),
+  empAddStreet: yup
+    .string()
+    .when('employmentType', {
+      is: (emp) => {
+        return emp === 'Unemployed' || emp === 'Retired' || emp === 'Beneficiary' || emp === 'Homemaker'
+      },
+      then: yup.string().nullable(),
+      otherwise: yup.string().required('Employer address is required').nullable(),
+    })
+    .nullable(),
+  employEffectiveDate: yup
+    .string()
+    .when('employmentType', {
+      is: (emp) => {
+        return emp === 'Unemployed' || emp === 'Retired' || emp === 'Beneficiary' || emp === 'Homemaker'
+      },
+      then: yup.string().nullable(),
+      otherwise: yup.string().required('Employment Effective Date is required.').nullable(),
+    })
+    .test('cannot be lower than 1900', 'Invalid Date of Birth. Date Format: MMMM YYYY', function (effectiveDate) {
+      if (effectiveDate === 'Invalid Date') {
+        return false
+      }
+
+      return true
+    })
+    .nullable(),
+})
+
 function EmploymentStatus() {
   const [text, setText] = useState('')
   const secureSessionID = useSelector((state) => state.globalReducer.secureSessionID)
@@ -84,48 +132,6 @@ function EmploymentStatus() {
   const empAddressToDisplayLine4 = useSelector((state) => state.employmentReducer.empAddressToDisplayLine4)
 
   const upperLimitForEffectiveDate = new Date()
-
-  const schemaemp = yup.object().shape({
-    employmentType: yup.string().required('Employment type is required').nullable(),
-    occupation: yup.string().when('employmentType', {
-      is: (emp) => {
-        return emp === 'Unemployed' || emp === 'Retired' || emp === 'Beneficiary' || emp === 'Homemaker'
-      },
-      then: yup.string().nullable(),
-      otherwise: yup.string().required('Occupation is required').nullable(),
-    }),
-    employerName: yup
-      .string()
-      .when('employmentType', {
-        is: (emp) => {
-          return emp === 'Unemployed' || emp === 'Retired' || emp === 'Beneficiary' || emp === 'Homemaker'
-        },
-        then: yup.string().nullable(),
-        otherwise: yup.string().required('Employer Name is required').nullable(),
-      })
-      .nullable(),
-    empAddStreet: yup
-      .string()
-      .when('employmentType', {
-        is: (emp) => {
-          return emp === 'Unemployed' || emp === 'Retired' || emp === 'Beneficiary' || emp === 'Homemaker'
-        },
-        then: yup.string().nullable(),
-        otherwise: yup.string().required('Employer address is required').nullable(),
-      })
-      .nullable(),
-    employEffectiveDate: yup
-      .string()
-      .required('Employment Effective Date is required.')
-      .test('cannot be lower than 1900', 'Invalid Date of Birth. Date Format: MMMM YYYY', function (effectiveDate) {
-        if (effectiveDate === 'Invalid Date') {
-          return false
-        }
-
-        return true
-      })
-      .nullable(),
-  })
 
   const varEmployemntDetails = showEmploymentDetails
     ? varFade({
@@ -364,6 +370,8 @@ function EmploymentStatus() {
 
   const handleEmploymentType = (event) => {
     if (event.target.value === 'Unemployed' || event.target.value === 'Retired' || event.target.value === 'Beneficiary' || event.target.value === 'Homemaker') {
+      console.log('')
+
       dispatch(employmentActions.setShowEmploymnetDetails(false))
       dispatch(employmentActions.setEmploymnetType(event.target.value))
       return
@@ -454,7 +462,7 @@ function EmploymentStatus() {
             {!showEmploymentDetails && employmentType !== '' && (
               <Stack key='emphisthelper2' component={motion.div} {...varEmpHistory} direction='row' justifyContent='center' sx={{ py: downSm ? 5 : 10, fontWeight: 'regular', color: 'text.secondary' }}>
                 <Typography variant={downSm ? 'body2' : 'body1'} sx={{ textAlign: 'center' }}>
-                  Please proceed to the <strong>next</strong> step.
+                  Please continue to the <strong>next</strong> step.
                 </Typography>
               </Stack>
             )}
