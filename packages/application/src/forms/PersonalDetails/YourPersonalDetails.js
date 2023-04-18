@@ -53,6 +53,10 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
 }))
 
 const YourPersonalDetails = () => {
+  window.dataLayer = window.dataLayer || []
+
+  console.log('Window. Data Layer - ', (window.dataLayer = window.dataLayer || []))
+
   const defMinDobDate = new Date().setFullYear(new Date().getFullYear() - 120)
 
   const dispatch = useDispatch()
@@ -200,6 +204,7 @@ const YourPersonalDetails = () => {
   }, [isValid])
 
   function onSubmit() {
+    window.dataLayer.push({ event: 'prime_personal_details_submit' })
     console.log('Submitted')
   }
 
