@@ -1206,7 +1206,7 @@ export default function Submission() {
       occupation: isNotAnEmployment(employmentType) ? null : occupationTypes(occupation)?.key,
       jobDescription: isNotAnEmployment(employmentType) ? employmentTypes(employmentType)?.value : occupationTypes(occupation)?.value,
       employerName: isNotAnEmployment(employmentType) ? employmentTypes(employmentType)?.value : employerName,
-      effectiveDate: convertToUTCTimestamp(employEffectiveDate, 'employEffectiveDate'),
+      effectiveDate: employEffectiveDate == null ? convertToUTCTimestamp(defEffectiveDate, 'defEffectiveDate') : convertToUTCTimestamp(employEffectiveDate, 'employEffectiveDate'),
       seq: '1',
     },
     {
@@ -1217,7 +1217,7 @@ export default function Submission() {
       occupation: isNotAnEmployment(prevEmpemploymentType) ? null : occupationTypes(prevEmpoccupation)?.key,
       jobDescription: isNotAnEmployment(prevEmpemploymentType) ? employmentTypes(prevEmpemploymentType)?.value : occupationTypes(prevEmpoccupation)?.value,
       employerName: isNotAnEmployment(prevEmpemploymentType) ? employmentTypes(prevEmpemploymentType)?.value : prevEmpemployerName,
-      effectiveDate: convertToUTCTimestamp(prevEmployEffectiveDate, 'prevEmployEffectiveDate'),
+      effectiveDate: prevEmployEffectiveDate == null ? convertToUTCTimestamp(defEffectiveDate, 'defEffectiveDate') : convertToUTCTimestamp(prevEmployEffectiveDate, 'prevEmployEffectiveDate'),
       seq: '1',
     },
   ]
@@ -1252,7 +1252,7 @@ export default function Submission() {
       occupation: isNotAnEmployment(jointemploymentType) ? null : occupationTypes(jointoccupation)?.key,
       jobDescription: isNotAnEmployment(jointemploymentType) ? employmentTypes(jointemploymentType)?.value : occupationTypes(jointoccupation)?.value,
       employerName: isNotAnEmployment(jointemploymentType) ? employmentTypes(jointemploymentType)?.value : jointemployerName,
-      effectiveDate: convertToUTCTimestamp(jointemployEffectiveDate, 'jointemployEffectiveDate'),
+      effectiveDate: jointemployEffectiveDate == null ? convertToUTCTimestamp(defEffectiveDate, 'defEffectiveDate') : convertToUTCTimestamp(jointemployEffectiveDate, 'jointemployEffectiveDate'),
       seq: '1',
     },
     {
@@ -1263,7 +1263,7 @@ export default function Submission() {
       occupation: isNotAnEmployment(jointprevEmpemploymentType) ? null : occupationTypes(jointprevEmpoccupation)?.key,
       jobDescription: isNotAnEmployment(jointprevEmpemploymentType) ? employmentTypes(jointemploymentType)?.value : occupationTypes(jointprevEmpoccupation)?.value,
       employerName: isNotAnEmployment(jointprevEmpemploymentType) ? employmentTypes(jointprevEmpemploymentType)?.value : jointprevEmpemployerName,
-      effectiveDate: convertToUTCTimestamp(jointprevemployEffectiveDate, 'jointprevemployEffectiveDate'),
+      effectiveDate: jointprevemployEffectiveDate == null ? convertToUTCTimestamp(defEffectiveDate, 'defEffectiveDate') : convertToUTCTimestamp(jointprevemployEffectiveDate, 'jointprevemployEffectiveDate'),
       seq: '1',
     },
   ]
