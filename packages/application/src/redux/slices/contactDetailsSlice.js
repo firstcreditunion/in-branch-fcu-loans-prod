@@ -54,6 +54,8 @@ export const initialState = {
 
   // ******* Contact Details ********* //
   // Prime
+
+  primeAnalyticsEventPushed: false,
   emailAddress: '',
 
   mobileCountryCode: '64',
@@ -76,6 +78,9 @@ export const initialState = {
   numberOfContactMethods: 0,
 
   // Joint
+
+  jointAnalyticsEventPushed: false,
+
   jointemailAddress: '',
 
   jointmobileCountryCode: '64',
@@ -393,6 +398,9 @@ const contactDetailsSlice = createSlice({
 
     // ******* Contact Details ******* //
     // Prime
+    setPrimeAnalyticsEventPushed: (state, action) => {
+      state.primeAnalyticsEventPushed = action.payload
+    },
     setEmailAddress: (state, action) => {
       state.emailAddress = action.payload
     },
@@ -439,6 +447,9 @@ const contactDetailsSlice = createSlice({
     },
 
     // Joint
+    setJointAnalyticsEventPushed: (state, action) => {
+      state.jointAnalyticsEventPushed = action.payload
+    },
     setJointEmailAddress: (state, action) => {
       state.jointemailAddress = action.payload
     },

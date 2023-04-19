@@ -48,6 +48,8 @@ function YourContactDetails() {
   const onSubmitYourContactDetails = useSelector((state) => state.conatctDetailsReducer.jointonSubmitYourContactDetails)
   const isValidYourContactDetails = useSelector((state) => state.conatctDetailsReducer.jointisValidYourContactDetails)
 
+  const jointAnalyticsEventPushed = useSelector((state) => state.conatctDetailsReducer.jointAnalyticsEventPushed)
+
   const dispatch = useDispatch()
 
   const varFlipAlert = varFlip({
@@ -226,11 +228,14 @@ function YourContactDetails() {
       let endTime = new Date()
       let timeSpentMillis = endTime - startTime
 
-      window.dataLayer.push({
-        event: 'joint_contact_submit',
-        time_elapsed: timeSpentMillis,
-        form_name: 'Joint Contact Details',
-      })
+      if (!jointAnalyticsEventPushed) {
+        window.dataLayer.push({
+          event: 'joint_contact_submit',
+          time_elapsed: timeSpentMillis,
+          form_name: 'Joint Contact Details',
+        })
+        dispatch(contactDetailsActions.setJointAnalyticsEventPushed(true))
+      }
 
       return
     }

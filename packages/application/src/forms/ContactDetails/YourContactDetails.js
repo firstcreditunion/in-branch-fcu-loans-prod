@@ -58,6 +58,8 @@ function YourContactDetails() {
   const onSubmitYourContactDetails = useSelector((state) => state.conatctDetailsReducer.onSubmitYourContactDetails)
   const isValidYourContactDetails = useSelector((state) => state.conatctDetailsReducer.isValidYourContactDetails)
 
+  const primeAnalyticsEventPushed = useSelector((state) => state.conatctDetailsReducer.primeAnalyticsEventPushed)
+
   //* Client Matching Slectors
   const forenames = useSelector((state) => state.yourPersonalDetailReducer.forenames)
   const lastName = useSelector((state) => state.yourPersonalDetailReducer.lastName)
@@ -252,11 +254,15 @@ function YourContactDetails() {
       let endTime = new Date()
       let timeSpentMillis = endTime - startTime
 
-      window.dataLayer.push({
-        event: 'prime_contact_submit',
-        time_elapsed: timeSpentMillis,
-        form_name: 'Prime Contact Details',
-      })
+      if (!primeAnalyticsEventPushed) {
+        window.dataLayer.push({
+          event: 'prime_contact_submit',
+          time_elapsed: timeSpentMillis,
+          form_name: 'Prime Contact Details',
+        })
+
+        dispatch(contactDetailsActions.setPrimeAnalyticsEventPushed(true))
+      }
 
       //* Send request for Client-Matching
 
