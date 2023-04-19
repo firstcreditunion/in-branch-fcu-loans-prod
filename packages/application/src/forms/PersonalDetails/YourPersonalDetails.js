@@ -52,11 +52,12 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }))
 
+let startTime = null
+let endTime = null
+
+window.dataLayer = window.dataLayer || []
+
 const YourPersonalDetails = () => {
-  window.dataLayer = window.dataLayer || []
-
-  console.log('Window. Data Layer - ', (window.dataLayer = window.dataLayer || []))
-
   const defMinDobDate = new Date().setFullYear(new Date().getFullYear() - 120)
 
   const dispatch = useDispatch()
@@ -192,6 +193,7 @@ const YourPersonalDetails = () => {
   })
 
   useEffect(() => {
+    startTime = new Date()
     window.scrollTo({
       top: 0,
       left: 0,
@@ -204,7 +206,17 @@ const YourPersonalDetails = () => {
   }, [isValid])
 
   function onSubmit() {
-    window.dataLayer.push({ event: 'prime_personal_details_submit' })
+    let endTime = new Date()
+    let timeSpentMillis = endTime - startTime
+
+    if (isValid) {
+      window.dataLayer.push({
+        event: 'prime_personal_details_submit',
+        time_elapsed: timeSpentMillis,
+        form_name: 'Prime Your Personal Details',
+      })
+    }
+
     console.log('Submitted')
   }
 

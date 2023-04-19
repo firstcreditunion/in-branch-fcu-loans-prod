@@ -33,6 +33,9 @@ import GoldCard from './IdentificationTypes/JointGoldCard'
 import { identificationActions } from '../../redux/slices/identificationSlice'
 import { useDispatch, useSelector } from 'react-redux'
 
+let startTime = null
+window.dataLayer = window.dataLayer || []
+
 export default function Identifications() {
   const downSm = useMediaQuery((theme) => theme.breakpoints.down('sm'))
 
@@ -201,6 +204,7 @@ export default function Identifications() {
   }
 
   useEffect(() => {
+    startTime = new Date()
     window.scrollTo({
       top: 0,
       left: 0,
@@ -297,6 +301,14 @@ export default function Identifications() {
   useEffect(() => {
     if (validIdsRedux === idSelected && validIdsRedux >= idsRequiredRedux) {
       dispatch(identificationActions.setIsValidJointIdentificationDetails(true))
+      let endTime = new Date()
+      let timeSpentMillis = endTime - startTime
+
+      window.dataLayer.push({
+        event: 'joint_identification_submit',
+        time_elapsed: timeSpentMillis,
+        form_name: 'Joint Identifications Details',
+      })
     } else {
       dispatch(identificationActions.setIsValidJointIdentificationDetails(false))
     }

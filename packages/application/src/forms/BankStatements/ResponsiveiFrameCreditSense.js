@@ -207,29 +207,29 @@ export default function BankStatement() {
     return appRef
   }
 
-  function onAppIDGenerated(message, responseCode, data) {
-    console.log(message, responseCode, data)
+  // function onAppIDGenerated(message, responseCode, data) {
+  //   console.log(message, responseCode, data)
 
-    dispatch(bankStatementActions.setCreditSenseResponseCode(responseCode))
-  }
+  //   dispatch(bankStatementActions.setCreditSenseResponseCode(responseCode))
+  // }
 
-  function onAccountCredentialsSubmitted(message, responseCode, data) {
-    console.log(message, responseCode, data)
+  // function onAccountCredentialsSubmitted(message, responseCode, data) {
+  //   console.log(message, responseCode, data)
 
-    dispatch(bankStatementActions.setCreditSenseResponseCode(responseCode))
-  }
+  //   dispatch(bankStatementActions.setCreditSenseResponseCode(responseCode))
+  // }
 
-  function onStatementUploadSuccess(message, responseCode, data) {
-    console.log(message, responseCode, data)
+  // function onStatementUploadSuccess(message, responseCode, data) {
+  //   console.log(message, responseCode, data)
 
-    dispatch(bankStatementActions.setCreditSenseResponseCode(responseCode))
-  }
+  //   dispatch(bankStatementActions.setCreditSenseResponseCode(responseCode))
+  // }
 
-  function onApplicationSuccess(message, responseCode, data) {
-    console.log(message, responseCode, data)
+  // function onApplicationSuccess(message, responseCode, data) {
+  //   console.log(message, responseCode, data)
 
-    dispatch(bankStatementActions.setCreditSenseResponseCode(responseCode))
-  }
+  //   dispatch(bankStatementActions.setCreditSenseResponseCode(responseCode))
+  // }
 
   const style = {
     position: 'absolute',

@@ -33,6 +33,9 @@ import { fDateYYYY_MM_DD } from '../../utils/formatDateTime'
 const phoneRegExp = /^(((\+?64\s*[-\.\ ]?[3-9]|\(?0[3-9]\)?)\s*[-\.\ ]?\d{3}\s*[-\.\ ]?\d{4})|((\+?64\s*[-\.\(\ ]?2\d{1,2}[-\.\)\ ]?|\(?02\d{1}\)?)\s*[-\.\ ]?\d{3,4}\s*[-\.\ ]?\d{3,5})|((\+?64\s*[-\.\ ]?[-\.\(\ ]?800[-\.\)\ ]?|[-\.\(\ ]?0800[-\.\)\ ]?)\s*[-\.\ ]?\d{3}\s*[-\.\ ]?(\d{2}|\d{5})))|^$$/
 const emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,4}))$/
 
+let startTime = null
+window.dataLayer = window.dataLayer || []
+
 function YourContactDetails() {
   const downSm = useMediaQuery((theme) => theme.breakpoints.down('sm'))
   const downMd = useMediaQuery((theme) => theme.breakpoints.down('md'))
@@ -246,50 +249,17 @@ function YourContactDetails() {
     if (numberOfContactMethods >= 2 && !errors.emailAddress && !errors.homePhone && !errors.mobileNumber && !errors.workPhone) {
       dispatch(contactDetailsActions.setIsValidYourContactDetails(true))
 
+      let endTime = new Date()
+      let timeSpentMillis = endTime - startTime
+
+      window.dataLayer.push({
+        event: 'prime_contact_submit',
+        time_elapsed: timeSpentMillis,
+        form_name: 'Prime Contact Details',
+      })
+
       //* Send request for Client-Matching
 
-      function clientMatchingData() {
-        return {
-          type: 'interval',
-          match_request: [
-            {
-              role: 'PRIMEB',
-              cases: {
-                case1: {
-                  forename: forenames,
-                  surname: lastName,
-                  dateOfBirth: fDateYYYY_MM_DD(dob),
-                },
-                case2: {
-                  forename: forenames,
-                  surname: lastName,
-                  mobileNumber: mobileNumberLastDigits,
-                },
-                case3: {
-                  email: emailAddress,
-                },
-                case4: {
-                  clientIdType: 'PASPRT',
-                  clientReference: passportNo,
-                },
-              },
-            },
-          ],
-        }
-      }
-
-      const clientMatchingPrimeConfig = {
-        url: '/matching',
-        method: 'POST',
-        baseURL: `https://5pzbqi4m11.execute-api.ap-southeast-2.amazonaws.com/FRST_API_TEST2`,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        timeout: 10000,
-        data: clientMatchingData(),
-      }
-
-      dispatch(matchClient(clientMatchingPrimeConfig))
       return
     }
     if (numberOfContactMethods >= 2 && (errors.emailAddress || errors.homePhone || errors.mobileNumber || errors.workPhone)) {
@@ -317,6 +287,8 @@ function YourContactDetails() {
   }
 
   useEffect(() => {
+    startTime = new Date()
+
     window.scrollTo({
       top: 0,
       left: 0,

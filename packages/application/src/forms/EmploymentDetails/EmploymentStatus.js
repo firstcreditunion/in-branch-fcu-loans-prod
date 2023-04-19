@@ -100,6 +100,9 @@ const schemaemp = yup.object().shape({
     .nullable(),
 })
 
+let startTime = null
+window.dataLayer = window.dataLayer || []
+
 function EmploymentStatus() {
   const [text, setText] = useState('')
   const secureSessionID = useSelector((state) => state.globalReducer.secureSessionID)
@@ -205,6 +208,7 @@ function EmploymentStatus() {
   })
 
   useEffect(() => {
+    startTime = new Date()
     window.scrollTo({
       top: 0,
       left: 0,
@@ -365,6 +369,16 @@ function EmploymentStatus() {
   }
 
   function onSubmit() {
+    let endTime = new Date()
+    let timeSpentMillis = endTime - startTime
+
+    if (isValid) {
+      window.dataLayer.push({
+        event: 'prime_current_employment_submit',
+        time_elapsed: timeSpentMillis,
+        form_name: 'Prime Current Employment Submit',
+      })
+    }
     console.log('Employment Details Submitted')
   }
 

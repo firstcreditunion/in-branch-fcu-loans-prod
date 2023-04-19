@@ -48,6 +48,9 @@ const schema = yup.object().shape({
   liability_otherloan1: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Amount should be greater than $0.00').nullable(),
 })
 
+let startTime = null
+window.dataLayer = window.dataLayer || []
+
 export default function SopIncomeExpenditure() {
   //***************** Asset Selectors *********************/
 
@@ -247,6 +250,8 @@ export default function SopIncomeExpenditure() {
   }, [onSubmitSopAssetLiability])
 
   useEffect(() => {
+    startTime = new Date()
+
     window.scrollTo({
       top: 0,
       left: 0,
@@ -256,6 +261,16 @@ export default function SopIncomeExpenditure() {
 
   function onSubmit() {
     console.log('Asset and Liability Submitted')
+    let endTime = new Date()
+    let timeSpentMillis = endTime - startTime
+
+    if (isValid) {
+      window.dataLayer.push({
+        event: 'asset_liability_submit',
+        time_elapsed: timeSpentMillis,
+        form_name: 'Assest and Liabilities',
+      })
+    }
   }
 
   // Framer Motion for Asset SOP text fields

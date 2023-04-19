@@ -39,6 +39,9 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }))
 
+let startTime = null
+window.dataLayer = window.dataLayer || []
+
 export default function VehicleSecurity() {
   const dispatch = useDispatch()
 
@@ -102,6 +105,7 @@ export default function VehicleSecurity() {
   }, [onSubmitVehicleSecurityDetails])
 
   useEffect(() => {
+    startTime = new Date()
     window.scrollTo({
       top: 0,
       left: 0,
@@ -111,6 +115,15 @@ export default function VehicleSecurity() {
 
   function onSubmit() {
     console.log('Financial Details Submitted')
+
+    let endTime = new Date()
+    let timeSpentMillis = endTime - startTime
+
+    window.dataLayer.push({
+      event: 'vehicle_security_submit',
+      time_elapsed: timeSpentMillis,
+      form_name: 'Vehicle Security Details',
+    })
   }
 
   const varWouldyouLiketoProvideVehicleSecurity =

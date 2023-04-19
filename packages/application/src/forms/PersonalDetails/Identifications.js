@@ -35,6 +35,9 @@ import CommunityServiceCard from './IdentificationTypes/CommunityServiceCard'
 import { useDispatch, useSelector } from 'react-redux'
 import { identificationActions } from '../../redux/slices/identificationSlice'
 
+let startTime = null
+window.dataLayer = window.dataLayer || []
+
 export default function Identifications() {
   // const downMd = useMediaQuery((theme) => theme.breakpoints.down('md'))
   const downSm = useMediaQuery((theme) => theme.breakpoints.down('sm'))
@@ -119,59 +122,7 @@ export default function Identifications() {
     dispatch(identificationActions.setIdsSelected(checkedIDCodesAutocomplete.length))
 
     dispatch(identificationActions.setIDsRequired(1))
-
-    // if (checkedIDCodesAutocomplete.includes('PASPRT') || checkedIDCodesAutocomplete.includes('FIRELICENS')) {
-    //   dispatch(identificationActions.setIDsRequired(1))
-    // } else {
-    //   dispatch(identificationActions.setIDsRequired(2))
-    // }
   }
-
-  // const handleIdentificationComboTypeChange = (event, newValue) => {
-  //   // console.log('EVENT:', event)
-  //   // console.log('EVENT TARGET VALUE:', event.target.value)
-
-  //   // console.log('Select Box Items:', selectBoxItems)
-
-  //   const selectedEventTargetValues = event.target.value
-
-  //   // const selectedIds = selectedEventTargetValues?.map((value) => {
-  //   //   return selectBoxItems?.map((id) => {
-  //   //     console.log('ID from selectedBoxItems VALUE: ', value)
-  //   //     console.log('ID from selectedBoxItems TITLE: ', id?.title)
-  //   //     id?.title === value
-  //   //   })
-  //   // })
-
-  //   const SelectedIdsFilter = selectBoxItems?.filter((id) => {
-  //     console.log('id?.title: ', id?.title)
-  //     console.log('selectedEventTargetValues: ', selectedEventTargetValues)
-  //     return selectedEventTargetValues?.includes(id?.title)
-  //   })
-  //   // console.log('Selected IDS:', selectedIds)
-  //   console.log('Selected IDS Filtered:', SelectedIdsFilter)
-
-  //   // const checkedIDCodesAutocomplete = newValue.map((Id) => {
-  //   //   return Id.code
-  //   // })
-
-  //   // const selectedIdsComboBox = event?.target?.value
-
-  //   dispatch(identificationActions.setSelectedIdentificationTypes(SelectedIdsFilter))
-  //   dispatch(identificationActions.setIdsSelected(SelectedIdsFilter.length))
-
-  //   dispatch(identificationActions.setIDsRequired(1))
-
-  //   // if (checkedIDCodesAutocomplete.includes('PASPRT') || checkedIDCodesAutocomplete.includes('FIRELICENS')) {
-  //   //   dispatch(identificationActions.setIDsRequired(1))
-  //   // } else {
-  //   //   dispatch(identificationActions.setIDsRequired(2))
-  //   // }
-  // }
-
-  // const removeIdentificationFromSelect = (data) => {
-  //   console.log('Data from onDELETE Chip:', data)
-  // }
 
   //* React-Hook-Form
   const {
@@ -343,6 +294,8 @@ export default function Identifications() {
     //   dispatch(identificationActions.setIDsRequired(2))
     // }
 
+    startTime = new Date()
+
     dispatch(identificationActions.setIDsRequired(1))
 
     window.scrollTo({
@@ -359,6 +312,14 @@ export default function Identifications() {
   useEffect(() => {
     if (validIdsRedux === idSelected && validIdsRedux >= idsRequiredRedux) {
       dispatch(identificationActions.setIsValidIdentificationDetails(true))
+      let endTime = new Date()
+      let timeSpentMillis = endTime - startTime
+
+      window.dataLayer.push({
+        event: 'prime_identification_submit',
+        time_elapsed: timeSpentMillis,
+        form_name: 'Prime Identifications Details',
+      })
     } else {
       dispatch(identificationActions.setIsValidIdentificationDetails(false))
     }
@@ -412,57 +373,7 @@ export default function Identifications() {
             </Alert>
           </Stack>
         )}
-        {/* {idSelected > 0 && idSelected < idsRequiredRedux && onSubmitIdentificationDetails === null && (
-          <Stack component={motion.div} {...varFlipAlert} direction='row' justifyContent='center' sx={{ pt: 2 }}>
-            <Alert severity='warning' sx={{ borderRadius: 49 }}>
-              <Typography variant='body2'>
-                {downSm ? (
-                  <>
-                    <strong>One</strong>more ID required.
-                  </>
-                ) : (
-                  <>
-                    <strong>One</strong> more Identification required.
-                  </>
-                )}
-              </Typography>
-            </Alert>
-          </Stack>
-        )} */}
-        {/* {idSelected > 0 && idSelected < idsRequiredRedux && onSubmitIdentificationDetails !== null && (
-          <Stack component={motion.div} {...varFlipAlert} direction='row' justifyContent='center' sx={{ pt: 2 }}>
-            <Alert severity='error' sx={{ borderRadius: 49 }}>
-              <Typography variant='body2'>
-                {downSm ? (
-                  <>
-                    <strong>One</strong> more ID required.
-                  </>
-                ) : (
-                  <>
-                    <strong>One</strong> more Identification required.
-                  </>
-                )}
-              </Typography>
-            </Alert>
-          </Stack>
-        )} */}
-        {/* {idsRequiredRedux === 1 && idSelected === 1 && (onSubmitIdentificationDetails === null || onSubmitIdentificationDetails !== null) && (
-          <Stack component={motion.div} {...varFlipAlert} direction='row' justifyContent='center' sx={{ pt: 2 }}>
-            <Alert severity='success' sx={{ borderRadius: 49 }}>
-              <Typography variant='body2'>
-                {downSm ? (
-                  <>
-                    Only<strong>one</strong> ID required.
-                  </>
-                ) : (
-                  <>
-                    Only <strong>One</strong> form of identification required.
-                  </>
-                )}
-              </Typography>
-            </Alert>
-          </Stack>
-        )} */}
+
         {idSelected >= idsRequiredRedux && idSelected >= 1 && (onSubmitIdentificationDetails === null || onSubmitIdentificationDetails !== null) && (
           <Stack component={motion.div} {...varFlipAlert} direction='row' justifyContent='center' sx={{ pt: 2 }}>
             <Alert severity='success' sx={{ borderRadius: 49 }}>
@@ -525,17 +436,6 @@ export default function Identifications() {
             </motion.div>
           )}
         </AnimatePresence>
-        {/* <AnimatePresence>
-          {checkedIdentificationTypes.includes('PASPRT') && (
-            <motion.div {...varSubtitle}>
-              <Stack direction='row'>
-                <Typography variant='caption' sx={{ fontWeight: 'default' }}>
-                  Only one form of Identification required if you provide Passport as your ID.
-                </Typography>
-              </Stack>
-            </motion.div>
-          )}
-        </AnimatePresence> */}
       </Stack>
       <AnimatePresence>
         {checkedIdentificationTypes.includes('PASPRT') && (
@@ -558,17 +458,6 @@ export default function Identifications() {
             </motion.div>
           )}
         </AnimatePresence>
-        {/* <AnimatePresence>
-          {checkedIdentificationTypes.includes('FIRELICENS') && (
-            <motion.div {...varSubtitle}>
-              <Stack direction='row'>
-                <Typography variant='caption' sx={{ fontWeight: 'default' }}>
-                  Only one form of Identification required if you provide Firearms Licence.
-                </Typography>
-              </Stack>
-            </motion.div>
-          )}
-        </AnimatePresence> */}
       </Stack>
 
       <AnimatePresence>
@@ -692,11 +581,6 @@ export default function Identifications() {
           </motion.div>
         )}
       </AnimatePresence>
-      {/* <Snackbar open={openWarning.open} autoHideDuration={5000} onClose={handleCloseWarning} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} TransitionComponent={openWarning.Transition}>
-        <Alert elevation={6} variant='filled' onClose={handleCloseWarning} severity='warning' sx={{ width: '100%' }}>
-          One more identification required!
-        </Alert>
-      </Snackbar> */}
       <Snackbar open={openError.open} autoHideDuration={5000} onClose={handleCloseError} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} TransitionComponent={openError.Transition}>
         <Alert elevation={6} variant='filled' onClose={handleCloseError} severity='error' sx={{ width: '100%' }}>
           One more identification required!
@@ -715,3 +599,55 @@ export default function Identifications() {
     </Box>
   )
 }
+
+// if (checkedIDCodesAutocomplete.includes('PASPRT') || checkedIDCodesAutocomplete.includes('FIRELICENS')) {
+//   dispatch(identificationActions.setIDsRequired(1))
+// } else {
+//   dispatch(identificationActions.setIDsRequired(2))
+// }
+
+// const handleIdentificationComboTypeChange = (event, newValue) => {
+//   // console.log('EVENT:', event)
+//   // console.log('EVENT TARGET VALUE:', event.target.value)
+
+//   // console.log('Select Box Items:', selectBoxItems)
+
+//   const selectedEventTargetValues = event.target.value
+
+//   // const selectedIds = selectedEventTargetValues?.map((value) => {
+//   //   return selectBoxItems?.map((id) => {
+//   //     console.log('ID from selectedBoxItems VALUE: ', value)
+//   //     console.log('ID from selectedBoxItems TITLE: ', id?.title)
+//   //     id?.title === value
+//   //   })
+//   // })
+
+//   const SelectedIdsFilter = selectBoxItems?.filter((id) => {
+//     console.log('id?.title: ', id?.title)
+//     console.log('selectedEventTargetValues: ', selectedEventTargetValues)
+//     return selectedEventTargetValues?.includes(id?.title)
+//   })
+//   // console.log('Selected IDS:', selectedIds)
+//   console.log('Selected IDS Filtered:', SelectedIdsFilter)
+
+//   // const checkedIDCodesAutocomplete = newValue.map((Id) => {
+//   //   return Id.code
+//   // })
+
+//   // const selectedIdsComboBox = event?.target?.value
+
+//   dispatch(identificationActions.setSelectedIdentificationTypes(SelectedIdsFilter))
+//   dispatch(identificationActions.setIdsSelected(SelectedIdsFilter.length))
+
+//   dispatch(identificationActions.setIDsRequired(1))
+
+//   // if (checkedIDCodesAutocomplete.includes('PASPRT') || checkedIDCodesAutocomplete.includes('FIRELICENS')) {
+//   //   dispatch(identificationActions.setIDsRequired(1))
+//   // } else {
+//   //   dispatch(identificationActions.setIDsRequired(2))
+//   // }
+// }
+
+// const removeIdentificationFromSelect = (data) => {
+//   console.log('Data from onDELETE Chip:', data)
+// }

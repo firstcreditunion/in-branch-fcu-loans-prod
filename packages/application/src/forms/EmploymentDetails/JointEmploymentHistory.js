@@ -49,6 +49,9 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }))
 
+let startTime = null
+window.dataLayer = window.dataLayer || []
+
 const JointEmployementHistory = () => {
   const showEmploymentDetails = useSelector((state) => state.employmentReducer.jointprevEmpshowEmploymentDetails)
   const employmentType = useSelector((state) => state.employmentReducer.jointprevEmpemploymentType)
@@ -203,6 +206,8 @@ const JointEmployementHistory = () => {
   })
 
   useEffect(() => {
+    startTime = new Date()
+
     window.scrollTo({
       top: 0,
       left: 0,
@@ -328,6 +333,16 @@ const JointEmployementHistory = () => {
   }
 
   function onSubmit() {
+    let endTime = new Date()
+    let timeSpentMillis = endTime - startTime
+
+    if (isValid) {
+      window.dataLayer.push({
+        event: 'joint_previous_employment_submit',
+        time_elapsed: timeSpentMillis,
+        form_name: 'Joint Previous Employment',
+      })
+    }
     console.log('Employment Details Submitted')
   }
 

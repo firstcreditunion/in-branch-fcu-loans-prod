@@ -84,6 +84,9 @@ const ExpandMore = styled((props) => {
   }),
 }))
 
+let startTime = null
+window.dataLayer = window.dataLayer || []
+
 function ResidentialAddress() {
   const [expanded, setExpanded] = React.useState(false)
 
@@ -229,6 +232,8 @@ function ResidentialAddress() {
   useEffect(() => {
     dispatch(contactDetailsActions.setRenderingPrime(true))
     dispatch(contactDetailsActions.setRenderingCurrentResidence(true))
+
+    startTime = new Date()
 
     window.scrollTo({
       top: 0,
@@ -420,6 +425,16 @@ function ResidentialAddress() {
   }, [currResidenceMonths, currResidenceEffDate])
 
   function onSubmit() {
+    let endTime = new Date()
+    let timeSpentMillis = endTime - startTime
+
+    if (isValid) {
+      window.dataLayer.push({
+        event: 'prime_current_residential_submit',
+        time_elapsed: timeSpentMillis,
+        form_name: 'Prime Current Residential Details',
+      })
+    }
     console.log('Current Residence Details Submitted')
   }
 

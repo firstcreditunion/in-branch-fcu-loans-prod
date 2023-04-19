@@ -135,6 +135,9 @@ function getAccommodation(years, residenceType) {
 // let CIPHER_TEXT_BLOB = null
 // let CIPHER_TEXT = null
 
+let startTime = null
+window.dataLayer = window.dataLayer || []
+
 export default function Submission() {
   const [submit, triggerSubmit] = React.useState(null)
   const [loanSubmissionData, setLoanSubmissionData] = React.useState(null)
@@ -2860,6 +2863,15 @@ export default function Submission() {
       const config = getRequestConfig()
       dispatch(submitLoanApplication(config))
 
+      let endTime = new Date()
+      let timeSpentMillis = endTime - startTime
+
+      window.dataLayer.push({
+        event: 'submission_panel_submit',
+        time_elapsed: timeSpentMillis,
+        form_name: 'Submission Panel',
+      })
+
       return
     }
   }, [submit])
@@ -2867,6 +2879,8 @@ export default function Submission() {
   // ************** useEffect for generating PDF - To be completed in the next release *************** //
 
   useEffect(() => {
+    startTime = new Date()
+
     window.scrollTo({
       top: 0,
       left: 0,

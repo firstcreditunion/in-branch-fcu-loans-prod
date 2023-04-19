@@ -47,6 +47,9 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }))
 
+let startTime = null
+window.dataLayer = window.dataLayer || []
+
 const EmployementHistory = () => {
   const secureSessionID = useSelector((state) => state.globalReducer.secureSessionID)
 
@@ -203,6 +206,8 @@ const EmployementHistory = () => {
   })
 
   useEffect(() => {
+    startTime = new Date()
+
     window.scrollTo({
       top: 0,
       left: 0,
@@ -351,6 +356,16 @@ const EmployementHistory = () => {
   }
 
   function onSubmit() {
+    let endTime = new Date()
+    let timeSpentMillis = endTime - startTime
+
+    if (isValid) {
+      window.dataLayer.push({
+        event: 'prime_previous_employment_submit',
+        time_elapsed: timeSpentMillis,
+        form_name: 'Prime Previous Employment',
+      })
+    }
     console.log('Employment Details Submitted')
   }
 

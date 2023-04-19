@@ -118,6 +118,9 @@ const AmountFormat = React.forwardRef(function AmountFormat(props, ref) {
   )
 })
 
+let startTime = null
+window.dataLayer = window.dataLayer || []
+
 export default function FinancialDetails() {
   const [open, setOpen] = React.useState(false)
   const [openCostRecoveryModal, setOpenCostRecoveryModal] = React.useState(false)
@@ -338,6 +341,8 @@ export default function FinancialDetails() {
   }, [onSubmitYourFinancialDetails])
 
   useEffect(() => {
+    startTime = new Date()
+
     window.scrollTo({
       top: 0,
       left: 0,
@@ -347,6 +352,16 @@ export default function FinancialDetails() {
 
   function onSubmit() {
     console.log('Financial Details Submitted')
+    let endTime = new Date()
+    let timeSpentMillis = endTime - startTime
+
+    if (isValid) {
+      window.dataLayer.push({
+        event: 'financial_details_submit',
+        time_elapsed: timeSpentMillis,
+        form_name: 'Financial Details',
+      })
+    }
   }
 
   const handleOpenPreview = () => {

@@ -40,6 +40,9 @@ import { convertToUTCTimestamp } from '../../utils/convertDatetoUTC'
 const today = new Date()
 const defExpiryDate = today.setDate(today.getDate() - 1)
 
+let startTime = null
+window.dataLayer = window.dataLayer || []
+
 export default function PrivacyActDeclaration() {
   const downMd = useMediaQuery((theme) => theme.breakpoints.down('md'))
   const downSm = useMediaQuery((theme) => theme.breakpoints.down('sm'))
@@ -127,6 +130,15 @@ export default function PrivacyActDeclaration() {
   useEffect(() => {
     if (declarationObject.CreditAssesment.accept && declarationObject.AuthoriseFCU.accept && declarationObject.TrueInformation.accept && declarationObject.AmlCftObligations.accept && declarationObject.StorePersonalInfo.accept) {
       dispatch(privacyActDeclarationActions.setIsValidPrivacyActDeclaration(true))
+      let endTime = new Date()
+      let timeSpentMillis = endTime - startTime
+
+      window.dataLayer.push({
+        event: 'privacy_declaration_submit',
+        time_elapsed: timeSpentMillis,
+        form_name: 'Privacy Declaration',
+      })
+
       return
     }
     dispatch(privacyActDeclarationActions.setIsValidPrivacyActDeclaration(false))
@@ -149,6 +161,8 @@ export default function PrivacyActDeclaration() {
   }, [onSubmitPrivacyActDeclaration])
 
   useEffect(() => {
+    startTime = new Date()
+
     window.scrollTo({
       top: 0,
       left: 0,
