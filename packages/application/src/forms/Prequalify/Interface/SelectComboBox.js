@@ -27,8 +27,9 @@ const CustFormControl = styled(FormControl)(({ theme }) => ({
   },
 }))
 
-export default function SelectComboBox({ name, label, control, defualtValue, placeholder, onSelectChange, children, menu, ...props }) {
+export default function SelectComboBox({ name, label, control, defualtValue, placeholder, onSelectChange, children, menu, selectedValue, useSelectedValue = false, ...props }) {
   const labelId = `${name}-label`
+
   return (
     <CustFormControl
       component='fieldset'
@@ -49,7 +50,13 @@ export default function SelectComboBox({ name, label, control, defualtValue, pla
             <Select
               labelId={labelId}
               label={label}
-              value={value}
+              value={
+                useSelectedValue
+                  ? menu.filter((filterMenu) => {
+                      return filterMenu?.key === value
+                    })[0]?.value
+                  : value
+              }
               fullWidth
               sx={{
                 maxWidth: 400,

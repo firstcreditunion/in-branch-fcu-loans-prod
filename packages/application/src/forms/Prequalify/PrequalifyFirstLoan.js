@@ -131,7 +131,7 @@ function PreliminaryQuestions() {
   useEffect(() => {
     if (jointApplicationState === 'initial' && existingMemberState === 'initial' && loanPurposeState === 'initial' && loanPurposeState === 'initial' && tradingBranchState === 'initial') return
 
-    if (watchJointLoan !== null && jointApplicationState !== 'initial' && watchExistingMember !== null && existingMemberState !== 'initial' && watchLoanPurpose !== null && loanPurposeState !== 'initial' && (watchExistingMember === 'No' || (watchExistingMember === 'Yes' && !(watchTradingBranch == null) && tradingBranchState !== 'initial'))) {
+    if (watchJointLoan !== null && jointApplicationState !== 'initial' && watchExistingMember !== null && existingMemberState !== 'initial' && watchLoanPurpose !== null && loanPurposeState !== 'initial' && (watchExistingMember === 'No' || (watchExistingMember === 'Yes' && !(watchTradingBranch == null) && !(tradingBranch == null) && tradingBranchState !== 'initial'))) {
       dispatch(lendingCriteriaQnsActions.setProceed(true))
       dispatch(lendingCriteriaQnsActions.setIsValidJointApplication(true))
       dispatch(lendingCriteriaQnsActions.setIsValidExistingMember(true))
@@ -147,7 +147,7 @@ function PreliminaryQuestions() {
     dispatch(lendingCriteriaQnsActions.setIsValidExistingMember(false))
     dispatch(lendingCriteriaQnsActions.setIsValidLoanPurpose(false))
     dispatch(lendingCriteriaQnsActions.setIsValidTradingBranch(false))
-  }, [watchLoanPurpose, watchJointLoan, watchTradingBranch, watchExistingMember])
+  }, [watchLoanPurpose, watchJointLoan, watchTradingBranch, watchExistingMember, tradingBranch])
 
   const handleJointApplicantToggle = (event) => {
     if (event.target.value === 'No') {
@@ -246,7 +246,7 @@ function PreliminaryQuestions() {
         {tradingBranch != 'VIR' && existingMemberState != 'initial' && (
           <Stack component={motion.div} {...varTradingBranch} direction={downMd ? 'column' : 'column'} justifyContent='center' alignItems='center' sx={{ width: '100%' }} spacing={2}>
             <LabelStyle sx={{ textAlign: 'center' }}>Select your preferred trading branch</LabelStyle>
-            <SelectComboBox id='tradingbranch' name='tradingbranch' label='Trading Branch' placeholder='Select Trading Branch' menu={tradingBranchNewCodes} onSelectChange={handleTradingBranch} control={control} />
+            <SelectComboBox id='tradingbranch' name='tradingbranch' label='Trading Branch' placeholder='Select Trading Branch' menu={tradingBranchNewCodes} onSelectChange={handleTradingBranch} control={control} useSelectedValue={true} selectedValue={tradingBranch} />
           </Stack>
         )}
       </AnimatePresence>
@@ -699,17 +699,23 @@ export default function PrequalifyQuestions() {
 
   const wasDeclaredBankrupt = useSelector((state) => state.lendingCritetiaQnsReducer.wasDeclaredBankrupt)
 
+  const loanPurpose = useSelector((state) => state.lendingCritetiaQnsReducer.loanPurpose)
+  const tradingBranch = useSelector((state) => state.lendingCritetiaQnsReducer.tradingBranch)
+
   const [activeStep, setActiveStep] = React.useState(0)
   const downMd = useMediaQuery((theme) => theme.breakpoints.down('md'))
   const downSm = useMediaQuery((theme) => theme.breakpoints.down('sm'))
 
   useEffect(() => {
     if (activeStep === 0 && isValidJointApplication && isValidExistingMember && isValidLoanPurpose && isValidTradingBranch) dispatch(lendingCriteriaQnsActions.setProceed(true))
-    if (activeStep === 0 && (!isValidJointApplication || !isValidExistingMember || isValidLoanPurpose || !isValidTradingBranch)) dispatch(lendingCriteriaQnsActions.setProceed(false))
+    if (activeStep === 0 && (!isValidJointApplication || !isValidExistingMember || !isValidLoanPurpose || !isValidTradingBranch)) {
+      dispatch(lendingCriteriaQnsActions.setProceed(false))
+    }
 
     if (activeStep === 1 && isValidResidency) dispatch(lendingCriteriaQnsActions.setProceed(true))
-    if (activeStep === 1 && !isValidResidency) dispatch(lendingCriteriaQnsActions.setProceed(false))
-
+    if (activeStep === 1 && !isValidResidency) {
+      dispatch(lendingCriteriaQnsActions.setProceed(false))
+    }
     if (activeStep === 2 && isValidIncome && isValidWasDeclaredBankrupt && isValidIncomeCreditedToFCU) dispatch(lendingCriteriaQnsActions.setProceed(true))
     if (activeStep === 2 && (!isValidIncome || !isValidWasDeclaredBankrupt || !isValidIncomeCreditedToFCU)) {
       dispatch(lendingCriteriaQnsActions.setProceed(false))
