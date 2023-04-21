@@ -29,7 +29,7 @@ import { concat } from 'lodash'
 import { employmentTypeMenu, occupationMenu } from './forms/EmploymentDetails/Codes/EmploymentCodes'
 import { genderTypes, maritalStatusMenu, acceptableIdentifications } from './forms/PersonalDetails/Codes/PersonalDetailsCodes'
 
-// Git commit control 8
+// Git commit control 10
 
 function getEmploymentTypes(key) {
   return employmentTypeMenu.find((item) => {
