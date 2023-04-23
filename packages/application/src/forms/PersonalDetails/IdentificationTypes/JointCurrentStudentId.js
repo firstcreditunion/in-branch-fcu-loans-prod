@@ -36,9 +36,19 @@ function JointCurrentStudentId() {
   const issueYearLowerLimit = new Date(new Date().setFullYear(new Date().getFullYear() - 10)).getFullYear()
   const expiryDateUpperLimit = currStudentIdIssueDate ? new Date(new Date(currStudentIdIssueDate).setFullYear(new Date(currStudentIdIssueDate).getFullYear() + 10)) : new Date(new Date().setFullYear(new Date().getFullYear() + 10))
   const expiryYearUpperLimit = currStudentIdIssueDate ? new Date(new Date(currStudentIdIssueDate).setFullYear(new Date(currStudentIdIssueDate).getFullYear() + 10)).getFullYear() : new Date(new Date().setFullYear(new Date().getFullYear() + 10)).getFullYear()
-
+  const expiryDateLowerLimit = new Date()
   const schema = yup.object().shape({
-    currStudentIdNo: yup.string().required('Identification number is required'),
+    currStudentIdNo: yup
+      .string()
+      .required('Identification number is required')
+      .test('Format Check', 'Invalid format. Please remove spaces', function (number) {
+        if (number.indexOf(' ') >= 0) {
+          return false
+        }
+
+        return true
+      })
+      .matches(/^([a-zA-Z0-9]{1,32})$/, 'Remove any spaces or special characters'),
     currStudentIdIssueDate: yup
       .string()
       .required('Issued Date is required')
@@ -83,11 +93,22 @@ function JointCurrentStudentId() {
 
         return true
       })
-      .test('Upper Limit', `Expiry Date cannot be less than issued date`, function (date) {
+      .test('Upper Limit', `Expiry Date cannot be before the issued date`, function (date) {
         if (date === 'Invalid Date') {
           return false
         }
         if (new Date(date) < new Date(currStudentIdIssueDate)) {
+          return false
+        }
+
+        return true
+      })
+      .test('Lower Limit', `Expiry date must be after today's date`, function (date) {
+        if (date === 'Invalid Date') {
+          return false
+        }
+        const lowerLimitTest = new Date(date) < expiryDateLowerLimit
+        if (lowerLimitTest) {
           return false
         }
 

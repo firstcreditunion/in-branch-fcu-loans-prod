@@ -22,7 +22,17 @@ import { UploadPhoto } from '../../../components/upload'
 import { fData } from '../../../utils/formatNumber'
 
 const schema = yup.object().shape({
-  goldCardNo: yup.string().required('Card Number is required'),
+  goldCardNo: yup
+    .string()
+    .required('Card Number is required')
+    .test('Format Check', 'Invalid format. Please remove spaces', function (number) {
+      if (number.indexOf(' ') >= 0) {
+        return false
+      }
+
+      return true
+    })
+    .matches(/^([a-zA-Z0-9]{1,32})$/, 'Remove any spaces or special characters'),
   goldCardValidFromDate: yup
     .string()
     .test('cannot be lower than 1900', 'Invalid Date of Birth. Date Format: DD/MM/YYYY', function (dob) {

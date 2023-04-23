@@ -42,12 +42,19 @@ function KiwiAccessCard() {
 
   const expiryDateUpperLimit = kiwiAccessCardIssueDate ? new Date(new Date(kiwiAccessCardIssueDate).setFullYear(new Date(kiwiAccessCardIssueDate).getFullYear() + 10)) : new Date(new Date().setFullYear(new Date().getFullYear() + 10))
   const expiryYearUpperLimit = kiwiAccessCardIssueDate ? new Date(new Date(kiwiAccessCardIssueDate).setFullYear(new Date(kiwiAccessCardIssueDate).getFullYear() + 10)).getFullYear() : new Date(new Date().setFullYear(new Date().getFullYear() + 10)).getFullYear()
-
+  const expiryDateLowerLimit = new Date()
   const schema = yup.object().shape({
     kiwiAccessCardNo: yup
       .string()
       .required('Kiwi Access Card Number is required')
-      .matches(/^([a-zA-Z0-9]{1,32})$/, 'Invalid Card number'),
+      .test('Format Check', 'Invalid format. Please remove spaces', function (number) {
+        if (number.indexOf(' ') >= 0) {
+          return false
+        }
+
+        return true
+      })
+      .matches(/^([a-zA-Z0-9]{1,32})$/, 'Remove any spaces or special characters'),
     kiwiAccessCardIssueDate: yup
       .string()
       .required('Issued Date is required')
@@ -108,6 +115,17 @@ function KiwiAccessCard() {
           return false
         }
         if (new Date(date) < new Date(kiwiAccessCardIssueDate)) {
+          return false
+        }
+
+        return true
+      })
+      .test('Lower Limit', `Expiry date must be after today's date`, function (date) {
+        if (date === 'Invalid Date') {
+          return false
+        }
+        const lowerLimitTest = new Date(date) < expiryDateLowerLimit
+        if (lowerLimitTest) {
           return false
         }
 

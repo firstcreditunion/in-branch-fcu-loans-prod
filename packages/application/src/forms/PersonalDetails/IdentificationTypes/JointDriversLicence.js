@@ -116,7 +116,7 @@ function JointDriverLicence() {
 
         return true
       })
-      .test('Lower Limit', `Expiry date must be after today`, function (date) {
+      .test('Lower Limit', `Expiry date must be after today's date`, function (date) {
         if (date === 'Invalid Date') {
           return false
         }

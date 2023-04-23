@@ -39,9 +39,19 @@ function JointFiramsLicence() {
 
   const expiryDateUpperLimit = firearmsLicenceIssueDate ? new Date(new Date(firearmsLicenceIssueDate).setFullYear(new Date(firearmsLicenceIssueDate).getFullYear() + 10)) : new Date(new Date().setFullYear(new Date().getFullYear() + 10))
   const expiryYearUpperLimit = firearmsLicenceIssueDate ? new Date(new Date(firearmsLicenceIssueDate).setFullYear(new Date(firearmsLicenceIssueDate).getFullYear() + 10)).getFullYear() : new Date(new Date().setFullYear(new Date().getFullYear() + 10)).getFullYear()
-
+  const expiryDateLowerLimit = new Date()
   const schema = yup.object().shape({
-    firearmsLicenceNo: yup.string().required('Firearms Licence Number is required'),
+    firearmsLicenceNo: yup
+      .string()
+      .required('Firearms Licence Number is required')
+      .test('Format Check', 'Invalid format. Please remove spaces', function (number) {
+        if (number.indexOf(' ') >= 0) {
+          return false
+        }
+
+        return true
+      })
+      .matches(/^([a-zA-Z0-9]{1,32})$/, 'Remove any spaces or special characters'),
     firearmsLicenceIssueDate: yup
       .string()
       .required('Issued Date is required')
@@ -102,6 +112,17 @@ function JointFiramsLicence() {
           return false
         }
         if (new Date(date) < new Date(firearmsLicenceIssueDate)) {
+          return false
+        }
+
+        return true
+      })
+      .test('Lower Limit', `Expiry date must be after today's date`, function (date) {
+        if (date === 'Invalid Date') {
+          return false
+        }
+        const lowerLimitTest = new Date(date) < expiryDateLowerLimit
+        if (lowerLimitTest) {
           return false
         }
 

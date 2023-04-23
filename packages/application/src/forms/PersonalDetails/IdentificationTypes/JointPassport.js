@@ -35,7 +35,7 @@ function JointPassport() {
 
   const expiryDateUpperLimit = passportIssueDate ? new Date(new Date(passportIssueDate).setFullYear(new Date(passportIssueDate).getFullYear() + 10)) : new Date(new Date().setFullYear(new Date().getFullYear() + 10))
   const expiryYearUpperLimit = passportIssueDate ? new Date(new Date(passportIssueDate).setFullYear(new Date(passportIssueDate).getFullYear() + 10)).getFullYear() : new Date(new Date().setFullYear(new Date().getFullYear() + 10)).getFullYear()
-
+  const expiryDateLowerLimit = new Date()
   const schema = yup.object().shape({
     passportNo: yup
       .string()
@@ -101,6 +101,17 @@ function JointPassport() {
           return false
         }
         if (new Date(date) < new Date(passportIssueDate)) {
+          return false
+        }
+
+        return true
+      })
+      .test('Lower Limit', `Expiry date must be after today's date`, function (date) {
+        if (date === 'Invalid Date') {
+          return false
+        }
+        const lowerLimitTest = new Date(date) < expiryDateLowerLimit
+        if (lowerLimitTest) {
           return false
         }
 
