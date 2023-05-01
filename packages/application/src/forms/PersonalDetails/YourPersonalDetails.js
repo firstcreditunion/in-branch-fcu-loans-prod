@@ -102,14 +102,14 @@ const YourPersonalDetails = () => {
       .nullable(),
     firstNames: yup
       .string()
-      .required('First names are required')
-      .matches(/^([^0-9]*)$/, 'First name(s) should not contain numbers'),
-    middleNames: yup.string().matches(/^([^0-9]*)$/, 'Middle Name(s) should not contain numbers'),
+      .required('First name is required')
+      .matches(/^([A-Za-z '-]*)$/, 'Please remove special characters or numbers'),
+    middleNames: yup.string().matches(/^([A-Za-z '-]*)$/, 'Please remove special characters or numbers'),
     lastName: yup
       .string()
       .required('Last name is a required field')
-      .matches(/^([^0-9]*)$/, 'Last name should not contain numbers'),
-    otherNames: yup.string().matches(/^([^0-9]*)$/, 'Name should not contain numbers'),
+      .matches(/^([A-Za-z '-]*)$/, 'Please remove special characters or numbers'),
+    otherNames: yup.string().matches(/^([A-Za-z '-]*)$/, 'Please remove special characters or numbers'),
     gender: yup
       .string()
       .required('Gender is required')
@@ -127,9 +127,6 @@ const YourPersonalDetails = () => {
       .string()
       .required('Date of Birth is required')
       .test('cannot be lower than 1900', 'Invalid Date of Birth. Date Format: DD/MM/YYYY', function (dateOfBirth) {
-        // console.log('Yup Raw dateOfBirth: ', dateOfBirth)
-        // console.log('Yup Raw dateOfBirth Formatted: ', dateOfBirth)
-        // console.log('Redux Date: ', dob)
         if (dateOfBirth === 'Invalid Date') {
           return false
         }

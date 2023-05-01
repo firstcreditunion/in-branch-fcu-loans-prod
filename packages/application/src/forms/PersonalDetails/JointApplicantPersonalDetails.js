@@ -82,14 +82,14 @@ const JointApplicantPersonalDetails = () => {
       .nullable(),
     jointfirstNames: yup
       .string()
-      .required('First name(s) are required')
-      .matches(/^([^0-9]*)$/, 'First name(s) should not contain numbers'),
-    jointMiddleNames: yup.string().matches(/^([^0-9]*)$/, 'Middle name(s) should not contain numbers'),
+      .required('First name is required')
+      .matches(/^([A-Za-z '-]*)$/, 'Please remove special characters or numbers'),
+    jointMiddleNames: yup.string().matches(/^([A-Za-z '-]*)$/, 'Please remove special characters or numbers'),
     jointlastName: yup
       .string()
       .required('Last name is a required field')
-      .matches(/^([^0-9]*)$/, 'Last name should not contain numbers'),
-    jointotherNames: yup.string().matches(/^([^0-9]*)$/, 'Name should not contain numbers'),
+      .matches(/^([A-Za-z '-]*)$/, 'Please remove special characters or numbers'),
+    jointotherNames: yup.string().matches(/^([A-Za-z '-]*)$/, 'Please remove special characters or numbers'),
     jointgender: yup
       .string()
       .required('Gender is required')
