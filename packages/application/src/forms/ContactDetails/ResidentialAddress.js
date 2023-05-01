@@ -55,6 +55,7 @@ import DatePicker from '../../components/rhf-components/DatePicker'
 
 //* Utils
 import { fDate, dateDiffereneInMonths } from '../../utils/formatDateTime'
+import { nfd_NormaliseString } from '../../utils/stringFormat'
 // import { debounce_fn } from '../../utils/debounceAndThrottle'
 
 const LabelStyle = styled(Typography)(({ theme }) => ({
@@ -337,7 +338,7 @@ function ResidentialAddress() {
       }
       // 7. Street or postal Name
       if (currResAddressSelectedMetaData?.street) {
-        dispatch(contactDetailsActions.setCurrResAddressSelectedStreetOrPostalName(currResAddressSelectedMetaData?.street))
+        dispatch(contactDetailsActions.setCurrResAddressSelectedStreetOrPostalName(nfd_NormaliseString(currResAddressSelectedMetaData?.street)))
       } else {
         dispatch(contactDetailsActions.setCurrResAddressSelectedStreetOrPostalName(null))
       }
@@ -355,13 +356,13 @@ function ResidentialAddress() {
       }
       // 10. Suburb
       if (currResAddressSelectedMetaData?.suburb) {
-        dispatch(contactDetailsActions.setCurrResAddressSelectedSuburb(currResAddressSelectedMetaData?.suburb))
+        dispatch(contactDetailsActions.setCurrResAddressSelectedSuburb(nfd_NormaliseString(currResAddressSelectedMetaData?.suburb)))
       } else {
         dispatch(contactDetailsActions.setCurrResAddressSelectedSuburb(null))
       }
       // 11. City
       if (currResAddressSelectedMetaData?.city) {
-        dispatch(contactDetailsActions.setCurrResAddressSelectedCity(currResAddressSelectedMetaData?.city))
+        dispatch(contactDetailsActions.setCurrResAddressSelectedCity(nfd_NormaliseString(currResAddressSelectedMetaData?.city)))
       } else {
         dispatch(contactDetailsActions.setCurrResAddressSelectedCity(null))
       }

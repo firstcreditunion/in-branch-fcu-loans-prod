@@ -41,6 +41,7 @@ import { employmentTypeMenu, occupationMenu } from './Codes/EmploymentCodes'
 
 // Utils
 import { dateDiffereneInMonths } from '../../utils/formatDateTime'
+import { nfd_NormaliseString } from '../../utils/stringFormat'
 
 const LabelStyle = styled(Typography)(({ theme }) => ({
   ...theme.typography.subtitle2,
@@ -388,7 +389,7 @@ const EmployementHistory = () => {
   }
 
   const handleEmployerName = (event) => {
-    dispatch(employmentActions.setPrevemployerName(event.target.value))
+    dispatch(employmentActions.setPrevemployerName(nfd_NormaliseString(event.target.value)))
   }
 
   const handleEmployerAddress = (event) => {

@@ -44,6 +44,7 @@ import { format, parse, isDate } from 'date-fns'
 
 //* Utils
 import { fDate, convertToUTCTimestamp, fDateYear, fDateCustom, fDateTime, fDateYYYY_MM_DD, fDateForwardSlashSeperated } from '../../utils/formatDateTime'
+import { nfd_NormaliseString } from '../../utils/stringFormat'
 
 const dobUpperLimit = new Date().setFullYear(new Date().getFullYear() - 18)
 
@@ -243,15 +244,15 @@ const YourPersonalDetails = () => {
   }
 
   const handleFornames = (event) => {
-    dispatch(yourPersonalDetailsActions.setForenames(event.target.value))
+    dispatch(yourPersonalDetailsActions.setForenames(nfd_NormaliseString(event.target.value)))
   }
 
   const handleMiddleNames = (event) => {
-    dispatch(yourPersonalDetailsActions.setMiddleNames(event.target.value))
+    dispatch(yourPersonalDetailsActions.setMiddleNames(nfd_NormaliseString(event.target.value)))
   }
 
   const handleLastName = (event) => {
-    dispatch(yourPersonalDetailsActions.setLastName(event.target.value))
+    dispatch(yourPersonalDetailsActions.setLastName(nfd_NormaliseString(event.target.value)))
   }
 
   const handleOtherName = (event) => {

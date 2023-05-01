@@ -38,6 +38,9 @@ import PeopleRoundedIcon from '@mui/icons-material/PeopleRounded'
 
 import { maritalStatusMenu } from './Codes/PersonalDetailsCodes'
 
+//* Utils
+import { nfd_NormaliseString } from '../../utils/stringFormat'
+
 const dobUpperLimit = new Date().setFullYear(new Date().getFullYear() - 18)
 
 const LabelStyle = styled(Typography)(({ theme }) => ({
@@ -209,15 +212,15 @@ const JointApplicantPersonalDetails = () => {
   }
 
   const handleFornames = (event) => {
-    dispatch(yourPersonalDetailsActions.setJointForenames(event.target.value))
+    dispatch(yourPersonalDetailsActions.setJointForenames(nfd_NormaliseString(event.target.value)))
   }
 
   const handleMiddleNames = (event) => {
-    dispatch(yourPersonalDetailsActions.setJointMiddleNames(event.target.value))
+    dispatch(yourPersonalDetailsActions.setJointMiddleNames(nfd_NormaliseString(event.target.value)))
   }
 
   const handleLastName = (event) => {
-    dispatch(yourPersonalDetailsActions.setJointLastName(event.target.value))
+    dispatch(yourPersonalDetailsActions.setJointLastName(nfd_NormaliseString(event.target.value)))
   }
 
   const handleOtherName = (event) => {

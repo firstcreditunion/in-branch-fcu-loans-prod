@@ -27,8 +27,8 @@ import LocalPhoneRoundedIcon from '@mui/icons-material/LocalPhoneRounded'
 import BusinessCenterRoundedIcon from '@mui/icons-material/BusinessCenterRounded'
 
 //* Utils
-
 import { fDateYYYY_MM_DD } from '../../utils/formatDateTime'
+import { nfd_NormaliseString } from '../../utils/stringFormat'
 
 const phoneRegExp = /^(((\+?64\s*[-\.\ ]?[3-9]|\(?0[3-9]\)?)\s*[-\.\ ]?\d{3}\s*[-\.\ ]?\d{4})|((\+?64\s*[-\.\(\ ]?2\d{1,2}[-\.\)\ ]?|\(?02\d{1}\)?)\s*[-\.\ ]?\d{3,4}\s*[-\.\ ]?\d{3,5})|((\+?64\s*[-\.\ ]?[-\.\(\ ]?800[-\.\)\ ]?|[-\.\(\ ]?0800[-\.\)\ ]?)\s*[-\.\ ]?\d{3}\s*[-\.\ ]?(\d{2}|\d{5})))|^$$/
 const emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,4}))$/
@@ -280,7 +280,7 @@ function YourContactDetails() {
   }, [numberOfContactMethods, isValid, onSubmitYourContactDetails])
 
   const handleEmailAddress = (event) => {
-    dispatch(contactDetailsActions.setEmailAddress(event.target.value))
+    dispatch(contactDetailsActions.setEmailAddress(nfd_NormaliseString(event.target.value)))
   }
   const handleMobileNumber = (event) => {
     dispatch(contactDetailsActions.setMobileNumber(event.target.value))

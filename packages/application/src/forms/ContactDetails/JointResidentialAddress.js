@@ -39,6 +39,7 @@ import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded'
 
 //* Utils
 import { dateDiffereneInMonths } from '../../utils/formatDateTime'
+import { nfd_NormaliseString } from '../../utils/stringFormat'
 
 //* Custom Components
 import DatePicker from '../../components/rhf-components/DatePicker'
@@ -255,7 +256,7 @@ function JointResidentialAddress() {
       }
       // 7. Street or postal Name
       if (currResAddressSelectedMetaData?.street) {
-        dispatch(contactDetailsActions.setJointCurrResAddressSelectedStreetOrPostalName(currResAddressSelectedMetaData?.street))
+        dispatch(contactDetailsActions.setJointCurrResAddressSelectedStreetOrPostalName(nfd_NormaliseString(currResAddressSelectedMetaData?.street)))
       } else {
         dispatch(contactDetailsActions.setJointCurrResAddressSelectedStreetOrPostalName(null))
       }
@@ -273,13 +274,13 @@ function JointResidentialAddress() {
       }
       // 10. Suburb
       if (currResAddressSelectedMetaData?.suburb) {
-        dispatch(contactDetailsActions.setJointCurrResAddressSelectedSuburb(currResAddressSelectedMetaData?.suburb))
+        dispatch(contactDetailsActions.setJointCurrResAddressSelectedSuburb(nfd_NormaliseString(currResAddressSelectedMetaData?.suburb)))
       } else {
         dispatch(contactDetailsActions.setJointCurrResAddressSelectedSuburb(null))
       }
       // 11. City
       if (currResAddressSelectedMetaData?.city) {
-        dispatch(contactDetailsActions.setJointCurrResAddressSelectedCity(currResAddressSelectedMetaData?.city))
+        dispatch(contactDetailsActions.setJointCurrResAddressSelectedCity(nfd_NormaliseString(currResAddressSelectedMetaData?.city)))
       } else {
         dispatch(contactDetailsActions.setJointCurrResAddressSelectedCity(null))
       }

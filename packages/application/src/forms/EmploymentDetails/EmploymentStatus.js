@@ -40,6 +40,7 @@ import AddressFinderAutoComplete from '../../components/AddressFinderAutoComplet
 
 // Utils
 import { dateDiffereneInMonths } from '../../utils/formatDateTime'
+import { nfd_NormaliseString } from '../../utils/stringFormat'
 
 // Throtte
 import throttle from 'lodash.throttle'
@@ -403,7 +404,7 @@ function EmploymentStatus() {
   }
 
   const handleEmployerName = (event) => {
-    dispatch(employmentActions.setemployerName(event.target.value))
+    dispatch(employmentActions.setemployerName(nfd_NormaliseString(event.target.value)))
   }
 
   //* Handler for updating address request config
