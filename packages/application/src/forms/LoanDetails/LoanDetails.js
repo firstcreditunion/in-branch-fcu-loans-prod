@@ -118,8 +118,8 @@ const AmountFormat = React.forwardRef(function AmountFormat(props, ref) {
   )
 })
 
-let startTime = null
-window.dataLayer = window.dataLayer || []
+// let startTime = null
+// window.dataLayer = window.dataLayer || []
 
 export default function FinancialDetails() {
   const [open, setOpen] = React.useState(false)
@@ -352,16 +352,16 @@ export default function FinancialDetails() {
 
   function onSubmit() {
     console.log('Financial Details Submitted')
-    let endTime = new Date()
-    let timeSpentMillis = endTime - startTime
+    // let endTime = new Date()
+    // let timeSpentMillis = endTime - startTime
 
-    if (isValid) {
-      window.dataLayer.push({
-        event: 'financial_details_submit',
-        time_elapsed: timeSpentMillis,
-        form_name: 'Financial Details',
-      })
-    }
+    // if (isValid) {
+    //   window.dataLayer.push({
+    //     event: 'financial_details_submit',
+    //     time_elapsed: timeSpentMillis,
+    //     form_name: 'Financial Details',
+    //   })
+    // }
   }
 
   const handleOpenPreview = () => {

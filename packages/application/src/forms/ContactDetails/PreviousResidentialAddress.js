@@ -83,8 +83,8 @@ const ExpandMore = styled((props) => {
   }),
 }))
 
-let startTime = null
-window.dataLayer = window.dataLayer || []
+// let startTime = null
+// window.dataLayer = window.dataLayer || []
 
 function PreviousResidentialAddress() {
   const [expanded, setExpanded] = React.useState(false)
@@ -396,13 +396,13 @@ function PreviousResidentialAddress() {
     let endTime = new Date()
     let timeSpentMillis = endTime - startTime
 
-    if (isValid) {
-      window.dataLayer.push({
-        event: 'prime_previous_residential_submit',
-        time_elapsed: timeSpentMillis,
-        form_name: 'Prime Previous Residential Details',
-      })
-    }
+    // if (isValid) {
+    //   window.dataLayer.push({
+    //     event: 'prime_previous_residential_submit',
+    //     time_elapsed: timeSpentMillis,
+    //     form_name: 'Prime Previous Residential Details',
+    //   })
+    // }
     console.log('Current Residence Details Submitted')
   }
 

@@ -49,8 +49,8 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }))
 
-let startTime = null
-window.dataLayer = window.dataLayer || []
+// let startTime = null
+// window.dataLayer = window.dataLayer || []
 
 function JointPreviousResidentialAddress() {
   const prevHomeAddStreet = useSelector((state) => state.conatctDetailsReducer.jointprevHomeAddStreet)
@@ -322,16 +322,16 @@ function JointPreviousResidentialAddress() {
 
   function onSubmit() {
     console.log('Current Residence Details Submitted')
-    let endTime = new Date()
-    let timeSpentMillis = endTime - startTime
+    // let endTime = new Date()
+    // let timeSpentMillis = endTime - startTime
 
-    if (isValid) {
-      window.dataLayer.push({
-        event: 'joint_previous_residential_submit',
-        time_elapsed: timeSpentMillis,
-        form_name: 'Joint Previous Residential Details',
-      })
-    }
+    // if (isValid) {
+    //   window.dataLayer.push({
+    //     event: 'joint_previous_residential_submit',
+    //     time_elapsed: timeSpentMillis,
+    //     form_name: 'Joint Previous Residential Details',
+    //   })
+    // }
   }
 
   const handlePrevHomeAddStreet = (event) => {

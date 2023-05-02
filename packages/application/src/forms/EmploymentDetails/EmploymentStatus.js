@@ -101,8 +101,8 @@ const schemaemp = yup.object().shape({
     .nullable(),
 })
 
-let startTime = null
-window.dataLayer = window.dataLayer || []
+// let startTime = null
+// window.dataLayer = window.dataLayer || []
 
 function EmploymentStatus() {
   const [text, setText] = useState('')
@@ -370,16 +370,16 @@ function EmploymentStatus() {
   }
 
   function onSubmit() {
-    let endTime = new Date()
-    let timeSpentMillis = endTime - startTime
+    // let endTime = new Date()
+    // let timeSpentMillis = endTime - startTime
 
-    if (isValid) {
-      window.dataLayer.push({
-        event: 'prime_current_employment_submit',
-        time_elapsed: timeSpentMillis,
-        form_name: 'Prime Current Employment Submit',
-      })
-    }
+    // if (isValid) {
+    //   window.dataLayer.push({
+    //     event: 'prime_current_employment_submit',
+    //     time_elapsed: timeSpentMillis,
+    //     form_name: 'Prime Current Employment Submit',
+    //   })
+    // }
     console.log('Employment Details Submitted')
   }
 

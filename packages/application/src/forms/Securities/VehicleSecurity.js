@@ -39,8 +39,8 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }))
 
-let startTime = null
-window.dataLayer = window.dataLayer || []
+// let startTime = null
+// window.dataLayer = window.dataLayer || []
 
 export default function VehicleSecurity() {
   const dispatch = useDispatch()
@@ -116,14 +116,14 @@ export default function VehicleSecurity() {
   function onSubmit() {
     console.log('Financial Details Submitted')
 
-    let endTime = new Date()
-    let timeSpentMillis = endTime - startTime
+    // let endTime = new Date()
+    // let timeSpentMillis = endTime - startTime
 
-    window.dataLayer.push({
-      event: 'vehicle_security_submit',
-      time_elapsed: timeSpentMillis,
-      form_name: 'Vehicle Security Details',
-    })
+    // window.dataLayer.push({
+    //   event: 'vehicle_security_submit',
+    //   time_elapsed: timeSpentMillis,
+    //   form_name: 'Vehicle Security Details',
+    // })
   }
 
   const varWouldyouLiketoProvideVehicleSecurity =

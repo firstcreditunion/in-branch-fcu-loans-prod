@@ -49,8 +49,8 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }))
 
-let startTime = null
-window.dataLayer = window.dataLayer || []
+// let startTime = null
+// window.dataLayer = window.dataLayer || []
 
 function JointResidentialAddress() {
   const currHomeAddStreet = useSelector((state) => state.conatctDetailsReducer.jointcurrHomeAddStreet)
@@ -328,16 +328,16 @@ function JointResidentialAddress() {
   }, [currResidenceMonths, currResidenceEffDate])
 
   function onSubmit() {
-    let endTime = new Date()
-    let timeSpentMillis = endTime - startTime
+    // let endTime = new Date()
+    // let timeSpentMillis = endTime - startTime
 
-    if (isValid) {
-      window.dataLayer.push({
-        event: 'joint_current_residential_submit',
-        time_elapsed: timeSpentMillis,
-        form_name: 'Joint Current Residential Details',
-      })
-    }
+    // if (isValid) {
+    //   window.dataLayer.push({
+    //     event: 'joint_current_residential_submit',
+    //     time_elapsed: timeSpentMillis,
+    //     form_name: 'Joint Current Residential Details',
+    //   })
+    // }
     console.log('Current Residence Details Submitted')
   }
 

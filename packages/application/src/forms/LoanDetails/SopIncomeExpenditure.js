@@ -57,8 +57,8 @@ const schema = yup.object().shape({
   expense_Savings: yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Amount should be greater than $0.00').nullable(),
 })
 
-let startTime = null
-window.dataLayer = window.dataLayer || []
+// let startTime = null
+// window.dataLayer = window.dataLayer || []
 
 export default function SopIncomeExpenditure() {
   // State for Frequency Modal on SOP textfield
@@ -435,16 +435,16 @@ export default function SopIncomeExpenditure() {
 
   function onSubmit() {
     console.log('Income and Expenditure Submitted')
-    let endTime = new Date()
-    let timeSpentMillis = endTime - startTime
+    // let endTime = new Date()
+    // let timeSpentMillis = endTime - startTime
 
-    if (isValid) {
-      window.dataLayer.push({
-        event: 'income_expense_submit',
-        time_elapsed: timeSpentMillis,
-        form_name: 'Income and Expenditure',
-      })
-    }
+    // if (isValid) {
+    //   window.dataLayer.push({
+    //     event: 'income_expense_submit',
+    //     time_elapsed: timeSpentMillis,
+    //     form_name: 'Income and Expenditure',
+    //   })
+    // }
   }
 
   // Framer Motion for Income SOP text fields

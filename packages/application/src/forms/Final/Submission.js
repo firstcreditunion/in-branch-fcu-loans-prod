@@ -135,8 +135,8 @@ function getAccommodation(years, residenceType) {
 // let CIPHER_TEXT_BLOB = null
 // let CIPHER_TEXT = null
 
-let startTime = null
-window.dataLayer = window.dataLayer || []
+// let startTime = null
+// window.dataLayer = window.dataLayer || []
 
 export default function Submission() {
   const [submit, triggerSubmit] = React.useState(null)
@@ -2863,14 +2863,14 @@ export default function Submission() {
       const config = getRequestConfig()
       dispatch(submitLoanApplication(config))
 
-      let endTime = new Date()
-      let timeSpentMillis = endTime - startTime
+      // let endTime = new Date()
+      // let timeSpentMillis = endTime - startTime
 
-      window.dataLayer.push({
-        event: 'submission_panel_submit',
-        time_elapsed: timeSpentMillis,
-        form_name: 'Submission Panel',
-      })
+      // window.dataLayer.push({
+      //   event: 'submission_panel_submit',
+      //   time_elapsed: timeSpentMillis,
+      //   form_name: 'Submission Panel',
+      // })
 
       return
     }

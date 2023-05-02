@@ -35,8 +35,8 @@ import CommunityServiceCard from './IdentificationTypes/CommunityServiceCard'
 import { useDispatch, useSelector } from 'react-redux'
 import { identificationActions } from '../../redux/slices/identificationSlice'
 
-let startTime = null
-window.dataLayer = window.dataLayer || []
+// let startTime = null
+// window.dataLayer = window.dataLayer || []
 
 export default function Identifications() {
   // const downMd = useMediaQuery((theme) => theme.breakpoints.down('md'))
@@ -312,14 +312,14 @@ export default function Identifications() {
   useEffect(() => {
     if (validIdsRedux === idSelected && validIdsRedux >= idsRequiredRedux) {
       dispatch(identificationActions.setIsValidIdentificationDetails(true))
-      let endTime = new Date()
-      let timeSpentMillis = endTime - startTime
+      // let endTime = new Date()
+      // let timeSpentMillis = endTime - startTime
 
-      window.dataLayer.push({
-        event: 'prime_identification_submit',
-        time_elapsed: timeSpentMillis,
-        form_name: 'Prime Identifications Details',
-      })
+      // window.dataLayer.push({
+      //   event: 'prime_identification_submit',
+      //   time_elapsed: timeSpentMillis,
+      //   form_name: 'Prime Identifications Details',
+      // })
     } else {
       dispatch(identificationActions.setIsValidIdentificationDetails(false))
     }

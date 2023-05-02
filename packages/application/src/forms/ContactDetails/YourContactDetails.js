@@ -33,8 +33,8 @@ import { nfd_NormaliseString } from '../../utils/stringFormat'
 const phoneRegExp = /^(((\+?64\s*[-\.\ ]?[3-9]|\(?0[3-9]\)?)\s*[-\.\ ]?\d{3}\s*[-\.\ ]?\d{4})|((\+?64\s*[-\.\(\ ]?2\d{1,2}[-\.\)\ ]?|\(?02\d{1}\)?)\s*[-\.\ ]?\d{3,4}\s*[-\.\ ]?\d{3,5})|((\+?64\s*[-\.\ ]?[-\.\(\ ]?800[-\.\)\ ]?|[-\.\(\ ]?0800[-\.\)\ ]?)\s*[-\.\ ]?\d{3}\s*[-\.\ ]?(\d{2}|\d{5})))|^$$/
 const emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,4}))$/
 
-let startTime = null
-window.dataLayer = window.dataLayer || []
+// let startTime = null
+// window.dataLayer = window.dataLayer || []
 
 function YourContactDetails() {
   const downSm = useMediaQuery((theme) => theme.breakpoints.down('sm'))
@@ -251,18 +251,18 @@ function YourContactDetails() {
     if (numberOfContactMethods >= 2 && !errors.emailAddress && !errors.homePhone && !errors.mobileNumber && !errors.workPhone) {
       dispatch(contactDetailsActions.setIsValidYourContactDetails(true))
 
-      let endTime = new Date()
-      let timeSpentMillis = endTime - startTime
+      // let endTime = new Date()
+      // let timeSpentMillis = endTime - startTime
 
-      if (!primeAnalyticsEventPushed) {
-        window.dataLayer.push({
-          event: 'prime_contact_submit',
-          time_elapsed: timeSpentMillis,
-          form_name: 'Prime Contact Details',
-        })
+      // if (!primeAnalyticsEventPushed) {
+      //   window.dataLayer.push({
+      //     event: 'prime_contact_submit',
+      //     time_elapsed: timeSpentMillis,
+      //     form_name: 'Prime Contact Details',
+      //   })
 
-        dispatch(contactDetailsActions.setPrimeAnalyticsEventPushed(true))
-      }
+      //   dispatch(contactDetailsActions.setPrimeAnalyticsEventPushed(true))
+      // }
 
       //* Send request for Client-Matching
 

@@ -31,8 +31,8 @@ import { nfd_NormaliseString } from '../../utils/stringFormat'
 const phoneRegExp = /^(((\+?64\s*[-\.\ ]?[3-9]|\(?0[3-9]\)?)\s*[-\.\ ]?\d{3}\s*[-\.\ ]?\d{4})|((\+?64\s*[-\.\(\ ]?2\d{1,2}[-\.\)\ ]?|\(?02\d{1}\)?)\s*[-\.\ ]?\d{3,4}\s*[-\.\ ]?\d{3,5})|((\+?64\s*[-\.\ ]?[-\.\(\ ]?800[-\.\)\ ]?|[-\.\(\ ]?0800[-\.\)\ ]?)\s*[-\.\ ]?\d{3}\s*[-\.\ ]?(\d{2}|\d{5})))|^$$/
 const emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,4}))$/
 
-let startTime = null
-window.dataLayer = window.dataLayer || []
+// let startTime = null
+// window.dataLayer = window.dataLayer || []
 
 function YourContactDetails() {
   const [mobileNumberCount, setMobileNumberCount] = React.useState(0)
@@ -228,17 +228,17 @@ function YourContactDetails() {
     if (numberOfContactMethods >= 2 && !errors.emailAddress && !errors.homePhone && !errors.mobileNumber && !errors.workPhone) {
       dispatch(contactDetailsActions.setJointIsValidYourContactDetails(true))
 
-      let endTime = new Date()
-      let timeSpentMillis = endTime - startTime
+      // let endTime = new Date()
+      // let timeSpentMillis = endTime - startTime
 
-      if (!jointAnalyticsEventPushed) {
-        window.dataLayer.push({
-          event: 'joint_contact_submit',
-          time_elapsed: timeSpentMillis,
-          form_name: 'Joint Contact Details',
-        })
-        dispatch(contactDetailsActions.setJointAnalyticsEventPushed(true))
-      }
+      // if (!jointAnalyticsEventPushed) {
+      //   window.dataLayer.push({
+      //     event: 'joint_contact_submit',
+      //     time_elapsed: timeSpentMillis,
+      //     form_name: 'Joint Contact Details',
+      //   })
+      //   dispatch(contactDetailsActions.setJointAnalyticsEventPushed(true))
+      // }
 
       return
     }

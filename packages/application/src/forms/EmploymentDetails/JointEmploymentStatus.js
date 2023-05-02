@@ -50,8 +50,8 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }))
 
-let startTime = null
-window.dataLayer = window.dataLayer || []
+// let startTime = null
+// window.dataLayer = window.dataLayer || []
 
 function JointEmploymentStatus() {
   const showEmploymentDetails = useSelector((state) => state.employmentReducer.jointshowEmploymentDetails)
@@ -356,16 +356,16 @@ function JointEmploymentStatus() {
   }
 
   function onSubmit() {
-    let endTime = new Date()
-    let timeSpentMillis = endTime - startTime
+    // let endTime = new Date()
+    // let timeSpentMillis = endTime - startTime
 
-    if (isValid) {
-      window.dataLayer.push({
-        event: 'joint_current_employment_submit',
-        time_elapsed: timeSpentMillis,
-        form_name: 'Joint Current Employment Submit',
-      })
-    }
+    // if (isValid) {
+    //   window.dataLayer.push({
+    //     event: 'joint_current_employment_submit',
+    //     time_elapsed: timeSpentMillis,
+    //     form_name: 'Joint Current Employment Submit',
+    //   })
+    // }
 
     console.log('Joint Employment Details Submitted')
   }

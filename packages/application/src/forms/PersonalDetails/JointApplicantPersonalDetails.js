@@ -48,8 +48,8 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }))
 
-let startTime = null
-window.dataLayer = window.dataLayer || []
+// let startTime = null
+// window.dataLayer = window.dataLayer || []
 
 const JointApplicantPersonalDetails = () => {
   const dispatch = useDispatch()
@@ -175,16 +175,16 @@ const JointApplicantPersonalDetails = () => {
   }, [isValid])
 
   function onSubmit() {
-    let endTime = new Date()
-    let timeSpentMillis = endTime - startTime
+    // let endTime = new Date()
+    // let timeSpentMillis = endTime - startTime
 
-    if (isValid) {
-      window.dataLayer.push({
-        event: 'joint_personal_detail_submit',
-        time_elapsed: timeSpentMillis,
-        form_name: 'Joint Your Personal Details',
-      })
-    }
+    // if (isValid) {
+    //   window.dataLayer.push({
+    //     event: 'joint_personal_detail_submit',
+    //     time_elapsed: timeSpentMillis,
+    //     form_name: 'Joint Your Personal Details',
+    //   })
+    // }
     console.log('Submitted')
   }
 

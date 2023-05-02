@@ -53,10 +53,10 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }))
 
-let startTime = null
-let endTime = null
+// let startTime = null
+// let endTime = null
 
-window.dataLayer = window.dataLayer || []
+// window.dataLayer = window.dataLayer || []
 
 const YourPersonalDetails = () => {
   const defMinDobDate = new Date().setFullYear(new Date().getFullYear() - 120)
@@ -204,16 +204,16 @@ const YourPersonalDetails = () => {
   }, [isValid])
 
   function onSubmit() {
-    let endTime = new Date()
-    let timeSpentMillis = endTime - startTime
+    // let endTime = new Date()
+    // let timeSpentMillis = endTime - startTime
 
-    if (isValid) {
-      window.dataLayer.push({
-        event: 'prime_personal_details_submit',
-        time_elapsed: timeSpentMillis,
-        form_name: 'Prime Your Personal Details',
-      })
-    }
+    // if (isValid) {
+    //   window.dataLayer.push({
+    //     event: 'prime_personal_details_submit',
+    //     time_elapsed: timeSpentMillis,
+    //     form_name: 'Prime Your Personal Details',
+    //   })
+    // }
 
     console.log('Submitted')
   }
