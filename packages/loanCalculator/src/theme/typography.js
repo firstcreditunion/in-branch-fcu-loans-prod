@@ -2,7 +2,7 @@ import React from 'react'
 
 import { pxToRem, responsiveFontSizes } from '../utils/getFontValue'
 
-const FONT_PRIMARY = 'Poppins, Public Sans, sans-serif' // Google Font
+const FONT_PRIMARY = 'Playfair Display, serif' // Google Font
 // const FONT_SECONDARY = 'CircularStd, sans-serif'; // Local Font
 
 const typography = {

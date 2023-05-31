@@ -13,10 +13,10 @@ const prodConfig = {
   },
   plugins: [
     new ModuleFederationPlugin({
-      name: 'firstloan',
+      name: 'fculoans',
       remotes: {
         loanCalculator: `loanCalculator@${domain}/loanCalculator/latest/remoteEntry.js`,
-        auth: `auth@${domain}/login/latest/remoteEntry.js`,
+        auth: `auth@${domain}/auth/latest/remoteEntry.js`,
         application: `application@${domain}/application/latest/remoteEntry.js`,
       },
       shared: packageJson.dependencies,

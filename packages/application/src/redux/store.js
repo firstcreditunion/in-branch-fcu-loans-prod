@@ -15,6 +15,10 @@ import privacyActDeclarationSlice from './slices/privacyActDeclarationSlice'
 import submissionSlice from './slices/submissionSlice'
 import bankStatementSlice from './slices/bankStatementSlice'
 
+// Memebr Only Loan Slices
+
+import mbroPreliminaryQuestions from './slices/memberOnlyLoans/preliminaryQuestions'
+
 const store = configureStore({
   reducer: {
     globalReducer: globalSlice.reducer,
@@ -31,6 +35,7 @@ const store = configureStore({
     privacyDeclarationReducer: privacyActDeclarationSlice.reducer,
     submissionReducer: submissionSlice.reducer,
     bankStatementReducer: bankStatementSlice.reducer,
+    mbroPreliminaryReducer: mbroPreliminaryQuestions,
   },
 })
 

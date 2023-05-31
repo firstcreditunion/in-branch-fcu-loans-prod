@@ -17,12 +17,12 @@ const devConfig = {
   },
   plugins: [
     new ModuleFederationPlugin({
-      name: 'firstloan',
+      name: 'fculoans',
       filename: 'remoteEntry.js',
       remotes: {
         auth: 'auth@http://localhost:3004/remoteEntry.js',
         loanCalculator: 'loanCalculator@http://localhost:3003/remoteEntry.js',
-        application: 'application@http://localhost:3000/remoteEntry.js',
+        application: 'application@http://localhost:3002/remoteEntry.js',
       },
       shared: packageJson.dependencies,
     }),

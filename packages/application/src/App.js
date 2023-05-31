@@ -19,12 +19,17 @@ import ThemePrimaryColor from './components/ui/FirstLoanTheme'
 
 import FirstLoanApplication from './pages/FirstLoan/FirstLoanApplication'
 import FirstLoanApplicationSecure from './pages/FirstLoan/FirstLoanApplicationSecure'
+import MemberOnlyPrelimQuestions from './forms/Prequalify/MemberOnlyPrelimQuestions'
 import Prequalify from './forms/Prequalify'
 import PrequalifySecureRoot from './forms/Prequalify/PrequalifySecureRoot'
 import PrequalifyRedirect from './pages/FirstLoan/PrequalifyRedirect'
 import ApplicationCompletionPlan from './pages/ApplicationCompletionPlan'
 
+import { AuthProvider } from './auth/AwsCongnitoContext'
+
 import { concat } from 'lodash'
+
+import AuthGuard from './auth/AuthGuard'
 
 import { employmentTypeMenu, occupationMenu } from './forms/EmploymentDetails/Codes/EmploymentCodes'
 import { genderTypes, maritalStatusMenu, acceptableIdentifications } from './forms/PersonalDetails/Codes/PersonalDetailsCodes'
@@ -991,7 +996,7 @@ export default ({ loanAmount, interestRate, term, paymentFrequency, creditCheck,
           <Router history={history}>
             <Switch>
               <Route path='/application/prequalify'>
-                <Prequalify memberInstance={memberInstance} />
+                <MemberOnlyPrelimQuestions />
               </Route>
               <Route path='/application/lendingcriteria'>
                 <PrequalifySecureRoot memberInstance={memberInstance} />

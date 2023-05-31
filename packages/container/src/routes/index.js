@@ -26,6 +26,7 @@ const ROOT_LOANCALCULATOR = '/'
 // const Auth = lazy(() => import('../components/AuthenticationApp'))
 const LoanCalculator = lazy(() => import('../components/LoanCalculator'))
 const Application = lazy(() => import('../components/ApplicationApp'))
+const Authentication = lazy(() => import('../components/AuthenticationApp'))
 
 import LoanPrerequisites from '../sections/LoanPrerequisites'
 
@@ -124,9 +125,11 @@ export default function RouterMain(props) {
             <Auth setMemberInstance={setMemberInstance} />
           </Route> */}
           <Route path={ROOT_APPLICATION}>
-            {/* {!memberInstance && <Redirect to={ROOT_LOANCALCULATOR} />} */}
-            <Application loanAmount={loanAmount} interestRate={interestRate} paymentFrequency={paymentFrequency} term={term} themeMode={themeMode} memberInstance={memberInstance} creditCheck={creditCheck} creditSense={creditSense} motorWebCheck={motorWebCheck} ppsrRegistration={ppsrRegistration} docuSignSigning={docuSignSigning} cloudCheckIdVerification={cloudCheckIdVerification} cloudCheckPEP={cloudCheckPEP} hasLpiPrimeDeath={hasLpiPrimeDeath} hasLpiPrimeDisability={hasLpiPrimeDisability} hasLpiPrimeCriticalIllness={hasLpiPrimeCriticalIllness} hasLpiPrimeBankruptcy={hasLpiPrimeBankruptcy} awsCalculatedLpiAmount={awsCalculatedLpiAmount} />
+            <Authentication />
           </Route>
+          {/* <Route path={ROOT_APPLICATION}>
+            <Application loanAmount={loanAmount} interestRate={interestRate} paymentFrequency={paymentFrequency} term={term} themeMode={themeMode} memberInstance={memberInstance} creditCheck={creditCheck} creditSense={creditSense} motorWebCheck={motorWebCheck} ppsrRegistration={ppsrRegistration} docuSignSigning={docuSignSigning} cloudCheckIdVerification={cloudCheckIdVerification} cloudCheckPEP={cloudCheckPEP} hasLpiPrimeDeath={hasLpiPrimeDeath} hasLpiPrimeDisability={hasLpiPrimeDisability} hasLpiPrimeCriticalIllness={hasLpiPrimeCriticalIllness} hasLpiPrimeBankruptcy={hasLpiPrimeBankruptcy} awsCalculatedLpiAmount={awsCalculatedLpiAmount} />
+          </Route> */}
           <Route path={ROOT_LOANCALCULATOR}>
             <LoanCalculator onLoanAmountChange={setLoanAmount} onInterestChange={setInterestRate} onTermChange={setTerm} onPaymentFrequencyChange={setPaymentFrequency} setCreditSense={setcreditSense} setCreditCheck={setcreditCheck} setMotorwebCheck={setmotorWebCheck} setPPSR={setppsrRegistration} setDocusign={setdocuSignSigning} setCloudCheckId={setcloudCheckIdVerification} setCloudCheckPEP={setcloudCheckPEP} sethasLpiPrimeDeath={sethasLpiPrimeDeath} sethasLpiPrimeDisability={sethasLpiPrimeDisability} sethasLpiPrimeCriticalIllness={sethasLpiPrimeCriticalIllness} sethasLpiPrimeBankruptcy={sethasLpiPrimeBankruptcy} setLPIUpfrontFee={setawsCalculatedLpiAmount} />
           </Route>
