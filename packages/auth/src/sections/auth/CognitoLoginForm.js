@@ -25,7 +25,6 @@ import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 
 import useMediaQuery from '@mui/material/useMediaQuery'
-import contactDetailsSlice from '../../../../application/src/redux/slices/contactDetailsSlice'
 
 import { processNodeEnv, BASE_URL_AWS_APP, BASE_URL_LOCAL_APP } from '../../redux/utils/apiConstants'
 

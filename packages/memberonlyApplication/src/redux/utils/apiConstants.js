@@ -35,7 +35,7 @@ export function getCloudFrontEnvironment() {
   if (location_origin === 'https://d26kpxwzomgzm2.cloudfront.net' || location_origin === 'https://loans.firstcreditunion.co.nz') {
     return 'SS-PROD'
   }
-  if (location_origin === 'http://localhost:3001' || location_origin === 'https://d2m9u9efe3xh9m.cloudfront.net' || location_origin === 'https://testloans.firstcreditunion.co.nz') {
+  if (location_origin === 'http://localhost:3001' || location_origin === 'https://d32y8rruwsttdk.cloudfront.net' || location_origin === 'https://testloans.firstcreditunion.co.nz') {
     return 'Member-Only-Test'
   }
 }
@@ -44,7 +44,7 @@ export function getCloudFrontEnvironmentLoanCalc() {
   if (location_origin === 'https://d26kpxwzomgzm2.cloudfront.net' || location_origin === 'https://loans.firstcreditunion.co.nz') {
     return 'SS-PROD'
   }
-  if (location_origin === 'http://localhost:3001' || location_origin === 'https://d2m9u9efe3xh9m.cloudfront.net' || location_origin === 'https://testloans.firstcreditunion.co.nz') {
+  if (location_origin === 'http://localhost:3001' || location_origin === 'https://d32y8rruwsttdk.cloudfront.net' || location_origin === 'https://testloans.firstcreditunion.co.nz') {
     return 'SS-DEV'
   }
 }
