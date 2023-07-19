@@ -10,7 +10,7 @@ export default function VerifyCodePage() {
   return (
     <>
       <Helmet>
-        <title> Verify Code | FCU Loans</title>
+        <title> Verify Code | FCU Staff Portal</title>
       </Helmet>
       <VerifyCodeContainer />
     </>

@@ -10,7 +10,7 @@ export default function LogoutPage() {
   return (
     <>
       <Helmet>
-        <title> Log Out | FCU Loans</title>
+        <title> Log Out | FCU Staff Portal</title>
       </Helmet>
       <LogoutContainer />
     </>

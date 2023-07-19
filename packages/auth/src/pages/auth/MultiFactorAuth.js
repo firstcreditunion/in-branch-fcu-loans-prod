@@ -10,7 +10,7 @@ export default function MultiFactorAuth() {
   return (
     <>
       <Helmet>
-        <title> Two-factor Authentication | FCU Loans</title>
+        <title> Two-factor Authentication | FCU Staff Portal</title>
       </Helmet>
       <CognitoMFA />
     </>

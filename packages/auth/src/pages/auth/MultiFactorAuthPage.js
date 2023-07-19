@@ -10,7 +10,7 @@ export default function MultiFactorAuthPage() {
   return (
     <>
       <Helmet>
-        <title> Multi-Factor Authentication | FCU Loans</title>
+        <title> Multi-Factor Authentication | FCU Staff Portal</title>
       </Helmet>
       <MultiFactorAuthContainer />
     </>

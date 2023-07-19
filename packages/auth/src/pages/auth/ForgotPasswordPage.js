@@ -10,7 +10,7 @@ export default function ForgotPasswordPage() {
   return (
     <>
       <Helmet>
-        <title> Forgot Password | FCU Loans</title>
+        <title> Forgot Password | FCU Staff Portal</title>
       </Helmet>
       <ForgotPasswordContainer />
     </>

@@ -10,7 +10,7 @@ export default function LoginPage() {
   return (
     <>
       <Helmet>
-        <title> Login | FCU Loans</title>
+        <title> Login | FCU Staff Portal</title>
       </Helmet>
       <Login />
     </>

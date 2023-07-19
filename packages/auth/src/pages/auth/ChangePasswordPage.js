@@ -10,7 +10,7 @@ export default function LogoutPage() {
   return (
     <>
       <Helmet>
-        <title> Reset Password | FCU Loans</title>
+        <title> Reset Password | FCU Staff Portal</title>
       </Helmet>
       <ChangePasswordContainer />
     </>
