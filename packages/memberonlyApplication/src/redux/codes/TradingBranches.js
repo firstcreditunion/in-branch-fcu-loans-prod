@@ -1,0 +1,17 @@
+export const tradingBranch = [
+  { key: 'AVON', value: 'Avondale' },
+  { key: 'GLEN', value: 'Glenbrook' },
+  { key: 'HAM', value: 'Hamilton' },
+  { key: 'ALLI', value: 'Invercargill' },
+  { key: 'KAW', value: 'Kawerau' },
+  { key: 'MANU', value: 'Manukau' },
+  { key: 'NGA', value: 'Ngaruawahia' },
+  { key: 'PUKE', value: 'Pukekohe' },
+  { key: 'ROT', value: 'Rotorua' },
+  { key: 'TPO', value: 'Taupo' },
+  { key: 'TAU', value: 'Tauranga' },
+  { key: 'TEA', value: 'Te Aroha' },
+  { key: 'VIR', value: 'Virtual' },
+  { key: 'WHK', value: 'Whakatane' },
+  { key: 'WHNG', value: 'Whangarei' },
+]

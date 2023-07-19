@@ -10,7 +10,7 @@ import store from './redux/store'
 
 // Mount funcion to start up the app
 const mount = (el, { onNavigate, defaultHistory, initialPath }) => {
-  // uses Dfualt history in isolation mode. Uses createMemoryHistory in production mode
+  // uses Default history in isolation mode. Uses createMemoryHistory in production mode
   const history =
     defaultHistory ||
     createMemoryHistory({

@@ -6,7 +6,6 @@ export default () => {
   const ref = useRef(null)
   const history = useHistory()
   useEffect(() => {
-    // the micro app returns parentNavigate object.
     const { onParentNavigate } = mount(ref.current, {
       initialPath: history.location.pathname,
       onNavigate: ({ pathname: nextPathname }) => {

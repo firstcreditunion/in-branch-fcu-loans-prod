@@ -17,7 +17,7 @@ const prodConfig = {
       remotes: {
         loanCalculator: `loanCalculator@${domain}/loanCalculator/latest/remoteEntry.js`,
         auth: `auth@${domain}/auth/latest/remoteEntry.js`,
-        application: `application@${domain}/application/latest/remoteEntry.js`,
+        memberonlyapplication: `memberonlyapplication@${domain}/memberonlyApplication/latest/remoteEntry.js`,
       },
       shared: packageJson.dependencies,
     }),

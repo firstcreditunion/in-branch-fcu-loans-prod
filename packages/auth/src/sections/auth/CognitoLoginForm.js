@@ -1,60 +1,70 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 
-import { Link as RouterLink } from 'react-router-dom'
-
-//* AWS Cognito
-import { CognitoUser, CognitoUserPool, CognitoUserAttribute, AuthenticationDetails } from 'amazon-cognito-identity-js'
-
-//* Redux
-import { useDispatch, useSelector } from 'react-redux'
-import { authenticationActions } from '../../redux/slices/authenticationSlice'
-
-//* RHF And YUP
-import * as Yup from 'yup'
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
+import { Link as RouterLink, useHistory } from 'react-router-dom'
 
 //* MUI
 import { Link, Stack, Alert, Typography, IconButton, InputAdornment } from '@mui/material'
-import { LoadingButton } from '@mui/lab'
+import LoadingButton from '@mui/lab/LoadingButton'
+
+//* Redux
+import FormProvider, { RFHTextField } from '../../components/RHF-mui-compoments'
+import { useDispatch, useSelector } from 'react-redux'
+import { authenticationActions, checkSovereignProfile } from '../../redux/slices/authenticationSlice'
+
+//* RHF And YUP
+import * as Yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useForm, Controller } from 'react-hook-form'
+
+//* AWS Cognito
+import UserPool from '../../cognito/UserPool'
+import { LoginContext } from '../../cognito/UserAccount'
+import UserSession from '../../cognito/UserSession'
 
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 
-import FormProvider from '../../components/RHF-mui-compoments/FormProvider'
-import RFHTextField from '../../components/RHF-mui-compoments/RFHTextField'
-
 import useMediaQuery from '@mui/material/useMediaQuery'
+import contactDetailsSlice from '../../../../application/src/redux/slices/contactDetailsSlice'
+
+import { processNodeEnv, BASE_URL_AWS_APP, BASE_URL_LOCAL_APP } from '../../redux/utils/apiConstants'
 
 export default function AuthLoginForm() {
-  // const { login, register } = useAuthContext()
   const dispatch = useDispatch()
-  const upMd = useMediaQuery((theme) => theme.breakpoints.up('md'))
+  const history = useHistory()
 
   const [showPassword, setShowPassword] = useState(false)
 
-  const emailAddress = useSelector((state) => state.authenticationReducer.emailAddress)
-  const password = useSelector((state) => state.authenticationReducer.password)
+  const loginFailResult = useSelector((state) => state.authenticationReducer.loginFailResult)
+  const login_emailAddress = useSelector((state) => state.authenticationReducer.emailAddress)
+  const login_password = useSelector((state) => state.authenticationReducer.password)
+  const login_clientNumber = useSelector((state) => state.authenticationReducer.clientNumber)
+  const hasSoverignProfile = useSelector((state) => state.authenticationReducer.hasSoverignProfile)
+  const sovProfilecurrentRequestId = useSelector((state) => state.authenticationReducer.sovProfilecurrentRequestId)
+  const verificationSuccess = useSelector((state) => state.verifyCodeReducer.verificationSuccess)
 
-  // async function signUp() {
-  //   return null
-  // }
+  const domain = useSelector((state) => state.signupReducer.domain)
 
-  const poolData = {
-    UserPoolId: '',
-    ClientId: '',
-  }
-
-  const UserPool = new CognitoUserPool(poolData)
+  const { authenticate, userLogout, getUserSession } = useContext(LoginContext)
 
   const LoginSchema = Yup.object().shape({
-    emailAddress: Yup.string().required('Email is required').email('Email must be a valid email address'),
-    password: Yup.string().required('Password is required'),
+    login_emailAddress: Yup.string()
+      .required('Email address is required.')
+      .test('Remove domain', 'Please remove @firstcu.co.nz', function (emailAddress) {
+        if (emailAddress.includes(domain)) {
+          return false
+        }
+
+        return true
+      }),
+    login_password: Yup.string().required('Password is required.'),
+    login_clientNumber: Yup.string().required('Client number is required.'),
   })
 
   const defaultValues = {
-    email: emailAddress,
-    password: password,
+    login_emailAddress: login_emailAddress,
+    login_password: login_password,
+    login_clientNumber: login_clientNumber,
   }
 
   const methods = useForm({
@@ -69,49 +79,118 @@ export default function AuthLoginForm() {
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = methods
 
-  const onSubmit = (event) => {
-    event.preventDefault()
-    console.log('Email: ', emailAddress)
-    console.log('Password: ', password)
-    UserPool.signUp(emailAddress, password, [], null, (err, data) => {
-      console.log('Error', err)
-      console.log('Data', data)
-    })
+  function authenticateUser() {
+    const emailToLogin = login_emailAddress + domain
+
+    authenticate(emailToLogin, login_password)
+      .then((data) => {
+        console.log('AUTH Result Data: ', data)
+        history.push('/memberonlyloan')
+
+        return
+      })
+      .catch((err) => {
+        console.log('Log In Failed!', err?.message)
+        dispatch(authenticationActions.setLoginFailResult(err?.message))
+        return
+      })
   }
 
-  function onEmailAddressChange(event) {
+  useEffect(() => {
+    console.log('hasSoverignProfile: ', hasSoverignProfile)
+
+    if (hasSoverignProfile === 'Unauthorized' || hasSoverignProfile === null || hasSoverignProfile === undefined) return
+
+    authenticateUser()
+  }, [hasSoverignProfile])
+
+  useEffect(() => {
+    dispatch(authenticationActions.setEmailAddress(''))
+    dispatch(authenticationActions.setPassword(''))
+  }, [])
+
+  function setEmailAddress(event) {
     dispatch(authenticationActions.setEmailAddress(event.target.value))
   }
 
-  function onPasswordChange(event) {
+  function setPassword(event) {
     dispatch(authenticationActions.setPassword(event.target.value))
+  }
+  function setClientNumber(event) {
+    dispatch(authenticationActions.setClientNumber(event.target.value))
+  }
+
+  const onSubmit = async (event) => {
+    const checkSovereignConfig = {
+      url: '/validate',
+      method: 'GET',
+      baseURL: `${processNodeEnv() === 'development' ? BASE_URL_LOCAL_APP : BASE_URL_AWS_APP}`,
+      headers: { 'request-by-client': login_clientNumber },
+      timeout: 5000,
+    }
+
+    await dispatch(checkSovereignProfile(checkSovereignConfig))
   }
 
   return (
-    <FormProvider methods={methods} onSubmit={onSubmit}>
-      <Stack direction='column' justifyContent='center' alignItems='stretch' spacing={5} sx={{ maxWidth: '500px' }}>
-        {!!errors.afterSubmit && <Alert severity='error'>{errors.afterSubmit.message}</Alert>}
+    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+      <Stack direction='column' justifyContent='center' alignItems='stretch' spacing={3} sx={{ display: 'block', width: '100%' }}>
+        {sovProfilecurrentRequestId != null && hasSoverignProfile === 'Unauthorized' && <Alert severity='error'>You are not authorised to login!</Alert>}
+        {verificationSuccess === true && <Alert severity='success'>Verification Succesful. Please login!</Alert>}
+        {loginFailResult != null && <Alert severity='error'>{loginFailResult}</Alert>}
         <Typography variant='h4' sx={{ textAlign: 'center', fontWeight: 'light', py: 3 }}>
-          Sign in to FCU Loan Application{' '}
+          Sign in to FCU Loan Application
         </Typography>
-        <RFHTextField name='email' label='Email Address' onInputChange={onEmailAddressChange} value={emailAddress} />
 
-        <RFHTextField
-          name='password'
-          label='Password'
-          type={showPassword ? 'text' : 'password'}
-          onInputChange={onPasswordChange}
-          value={password}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position='end'>
-                <IconButton onClick={() => setShowPassword(!showPassword)} edge='end'>
-                  {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                </IconButton>
-              </InputAdornment>
-            ),
+        <Stack
+          direction='column'
+          justifyContent='center'
+          alignItems='stretch'
+          spacing={5}
+          sx={{
+            display: 'block',
+            width: '100%',
           }}
-        />
+        >
+          <RFHTextField
+            name='login_emailAddress'
+            label='Email Address'
+            value={login_emailAddress}
+            onInputChange={setEmailAddress}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position='end'>
+                  <Typography variant='h6' color='primary' sx={{ fontWeight: 'light', px: 2 }}>
+                    @firstcu.co.nz
+                  </Typography>
+                </InputAdornment>
+              ),
+            }}
+          />
+          <RFHTextField
+            name='login_password'
+            label='Password'
+            value={login_password}
+            type={showPassword ? 'text' : 'password'}
+            onInputChange={setPassword}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position='end'>
+                  <IconButton onClick={() => setShowPassword(!showPassword)} edge='end'>
+                    {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+          <RFHTextField name='login_clientNumber' label='Member Number' value={login_clientNumber} onInputChange={setClientNumber} helperText='Member number assosiated to your G3 login.' />
+        </Stack>
+
+        <Stack alignItems='flex-end' sx={{ p: 0, m: 0 }}>
+          <Link component={RouterLink} to={'/forgotpassword'} variant='body2' color='inherit' underline='none' sx={{ color: 'secondary.main' }}>
+            Forgot password?
+          </Link>
+        </Stack>
 
         <LoadingButton
           fullWidth
@@ -131,6 +210,13 @@ export default function AuthLoginForm() {
         >
           Login
         </LoadingButton>
+        <Stack direction='row' justifyContent='center' alignItems='center' spacing={0.5}>
+          <Typography variant='body2'>New user?</Typography>
+
+          <Link component={RouterLink} to={'/signup'} variant='subtitle2' sx={{ color: 'secondary.main' }}>
+            Create a New Profile
+          </Link>
+        </Stack>
       </Stack>
 
       {/* <Stack alignItems='flex-end' sx={{ my: 2 }}>

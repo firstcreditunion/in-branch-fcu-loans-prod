@@ -24,7 +24,7 @@ export default ({ history, onLoanAmountChange, onInterestChange, onTermChange, o
           <Router history={history}>
             <Suspense fallback={<SplashScreen />}>
               <Switch>
-                <Route path='/'>
+                <Route path='/loanCalculator'>
                   <LoanCalculator onLoanAmountChange={onLoanAmountChange} onInterestChange={onInterestChange} onTermChange={onTermChange} onPaymentFrequencyChange={onPaymentFrequencyChange} setCreditSense={setCreditSense} setCreditCheck={setCreditCheck} setMotorwebCheck={setMotorwebCheck} setPPSR={setPPSR} setDocusign={setDocusign} setCloudCheckId={setCloudCheckId} setCloudCheckPEP={setCloudCheckPEP} sethasLpiPrimeDeath={sethasLpiPrimeDeath} sethasLpiPrimeDisability={sethasLpiPrimeDisability} sethasLpiPrimeCriticalIllness={sethasLpiPrimeCriticalIllness} sethasLpiPrimeBankruptcy={sethasLpiPrimeBankruptcy} setLPIUpfrontFee={setLPIUpfrontFee} />
                 </Route>
               </Switch>

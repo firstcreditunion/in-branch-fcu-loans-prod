@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useContext } from 'react'
 import { Helmet } from 'react-helmet-async'
 // sections
 import Login from '../../sections/auth/LoginContainer'

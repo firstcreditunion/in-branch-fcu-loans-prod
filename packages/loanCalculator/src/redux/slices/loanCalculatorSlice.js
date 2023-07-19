@@ -27,12 +27,21 @@ export const initialState = {
 
   defLoanAmount: 3000,
   defIntererstRate: 12.5,
-  defTerm: { value: 36, unit: 'M' },
+  defTerm: {
+    value: 36,
+    unit: 'M',
+  },
   loanAmount: 3000,
   loanAmountCust: 3000,
   interestRate: 12.5,
-  term: { value: 36, unit: 'M' },
-  paymentFrequency: { value: 1, unit: 'W' },
+  term: {
+    value: 36,
+    unit: 'M',
+  },
+  paymentFrequency: {
+    value: 1,
+    unit: 'W',
+  },
   amount: 0,
   numberOfInstalments: 0,
   startDate: '',

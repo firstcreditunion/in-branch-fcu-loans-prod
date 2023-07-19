@@ -18,7 +18,7 @@ function responsiveFontSizes({ sm, md, lg }) {
   }
 }
 
-const FONT_PRIMARY = 'Playfair Display, serif' // Google Font
+const FONT_PRIMARY = 'Outfit, sans-serif' // Google Font
 // const FONT_SECONDARY = 'CircularStd, sans-serif'; // Local Font
 
 const typography = {

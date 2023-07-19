@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, useState, useEffect } from 'react'
-import { BrowserRouter, Route, Switch, Router } from 'react-router-dom'
+import { BrowserRouter, Route, Switch, Router, useLocation } from 'react-router-dom'
 
 import { createBrowserHistory } from 'history'
 import { useDispatch, useSelector } from 'react-redux'
@@ -20,13 +20,16 @@ import Header from '../components/Header'
 import Footer from '../layouts/MainFooter'
 
 // const ROOT_AUTH = '/auth'
+const ROOT_AUTHENTICATION = '/'
 const ROOT_APPLICATION = '/application'
-const ROOT_LOANCALCULATOR = '/'
+const ROOT_MEMBERONLYLOAN = '/memberonlyloan'
+const ROOT_LOANCALCULATOR = '/loanCalculator'
 
 // const Auth = lazy(() => import('../components/AuthenticationApp'))
 const LoanCalculator = lazy(() => import('../components/LoanCalculator'))
-const Application = lazy(() => import('../components/ApplicationApp'))
+// const Application = lazy(() => import('../components/ApplicationApp'))
 const Authentication = lazy(() => import('../components/AuthenticationApp'))
+const MemberOnlyLoanApplication = lazy(() => import('../components/MemberOnlyApplicationApp'))
 
 import LoanPrerequisites from '../sections/LoanPrerequisites'
 
@@ -111,37 +114,27 @@ export default function RouterMain(props) {
     }
   }, [memberInstance])
 
-  useEffect(() => {
-    setAppTheme(themeMode)
-  }, [themeMode])
-
   return (
-    <Router history={history}>
-      <Header />
+    <BrowserRouter history={history}>
       <Suspense fallback={<LoadingScreen />}>
         <Switch>
-          <Route path='/LoanPrerequisites' component={LoanPrerequisites} />
-          {/* <Route path={ROOT_AUTH}>
-            <Auth setMemberInstance={setMemberInstance} />
-          </Route> */}
-          <Route path={ROOT_APPLICATION}>
-            <Authentication />
-          </Route>
-          {/* <Route path={ROOT_APPLICATION}>
-            <Application loanAmount={loanAmount} interestRate={interestRate} paymentFrequency={paymentFrequency} term={term} themeMode={themeMode} memberInstance={memberInstance} creditCheck={creditCheck} creditSense={creditSense} motorWebCheck={motorWebCheck} ppsrRegistration={ppsrRegistration} docuSignSigning={docuSignSigning} cloudCheckIdVerification={cloudCheckIdVerification} cloudCheckPEP={cloudCheckPEP} hasLpiPrimeDeath={hasLpiPrimeDeath} hasLpiPrimeDisability={hasLpiPrimeDisability} hasLpiPrimeCriticalIllness={hasLpiPrimeCriticalIllness} hasLpiPrimeBankruptcy={hasLpiPrimeBankruptcy} awsCalculatedLpiAmount={awsCalculatedLpiAmount} />
-          </Route> */}
           <Route path={ROOT_LOANCALCULATOR}>
             <LoanCalculator onLoanAmountChange={setLoanAmount} onInterestChange={setInterestRate} onTermChange={setTerm} onPaymentFrequencyChange={setPaymentFrequency} setCreditSense={setcreditSense} setCreditCheck={setcreditCheck} setMotorwebCheck={setmotorWebCheck} setPPSR={setppsrRegistration} setDocusign={setdocuSignSigning} setCloudCheckId={setcloudCheckIdVerification} setCloudCheckPEP={setcloudCheckPEP} sethasLpiPrimeDeath={sethasLpiPrimeDeath} sethasLpiPrimeDisability={sethasLpiPrimeDisability} sethasLpiPrimeCriticalIllness={sethasLpiPrimeCriticalIllness} sethasLpiPrimeBankruptcy={sethasLpiPrimeBankruptcy} setLPIUpfrontFee={setawsCalculatedLpiAmount} />
           </Route>
+          <Route path={ROOT_MEMBERONLYLOAN}>
+            <MemberOnlyLoanApplication />
+          </Route>
+          <Route path={ROOT_AUTHENTICATION}>
+            <Authentication />
+          </Route>
         </Switch>
       </Suspense>
-      {history.location.pathname === ROOT_LOANCALCULATOR && <Footer />}
       <ScrollTop {...props}>
         <Fab color='secondary' size='small' aria-label='scroll back to top'>
           <KeyboardArrowUpIcon />
         </Fab>
       </ScrollTop>
-    </Router>
+    </BrowserRouter>
   )
 }
 // git control 1
