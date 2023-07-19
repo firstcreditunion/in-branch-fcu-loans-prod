@@ -63,9 +63,4 @@ export default ({ history }) => {
   )
 }
 
-// Git commit control 1
-
-{
-  /* <UserAccount>
-</UserAccount> */
-}
+// Git commit control 2

@@ -1,4 +1,4 @@
-name: deploy-application
+name: deploy-memberonly-application
 
 on:
   push:
