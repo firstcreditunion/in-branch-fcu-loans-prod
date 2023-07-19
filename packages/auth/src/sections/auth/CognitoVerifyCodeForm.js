@@ -6,6 +6,7 @@ import { Link as RouterLink, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { signupActions } from '../../redux/slices/signupSlice'
 import { verifycodeActions } from '../../redux/slices/verifyCodeSlice'
+import { authenticationActions } from '../../redux/slices/authenticationSlice'
 
 //* RHF And YUP
 import * as Yup from 'yup'
@@ -100,6 +101,9 @@ export default function AuthSignUpForm() {
         dispatch(signupActions.setCongnitoResponseUsername(null))
         dispatch(signupActions.setCongnitoResponseuserSub(null))
         dispatch(verifycodeActions.setVerificationSuccess(true))
+
+        dispatch(authenticationActions.clearSignInForm())
+
         history.push('/signin')
       }
     })

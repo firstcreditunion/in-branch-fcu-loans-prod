@@ -4,12 +4,14 @@ import { HTTP_STATUS } from '../utils/apiConstants'
 const namespace = 'forgotpassword'
 
 export const initialState = {
+  domain: '@firstcu.co.nz',
   emailaddress: '',
   verificationCode: '',
   newPassword: '',
   confirmPassword: '',
   forgotPasswordStage: 1,
   passwordChangeStatus: false,
+  forgotPasswordRequestError: '',
 }
 
 const forgotPasswordSlice = createSlice({
@@ -33,6 +35,19 @@ const forgotPasswordSlice = createSlice({
     },
     setPasswordChangeStatus: (state, action) => {
       state.passwordChangeStatus = action.payload
+    },
+
+    setForgotPasswordRequestError: (state, action) => {
+      state.forgotPasswordRequestError = action.payload
+    },
+    clearForgotPasswordForm: (state, action) => {
+      state.emailaddress = ''
+      state.verificationCode = ''
+      state.newPassword = ''
+      state.confirmPassword = ''
+      state.forgotPasswordStage = 1
+      state.passwordChangeStatus = false
+      state.forgotPasswordRequestError = ''
     },
   },
 })

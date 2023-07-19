@@ -137,7 +137,7 @@ export default function MemberDetailsLayout() {
       code: 'PBD',
       label: 'Prime Borrower Details',
       role: 'PRIMEB',
-      render: <LoanDetails />,
+      render: <PrimeEligibility />,
       showClientSearchBar: true,
       showContinueButton: true,
       paddingToAddToNavigationButtons: 0,

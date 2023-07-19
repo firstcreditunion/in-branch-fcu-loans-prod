@@ -41,6 +41,7 @@ export default function AuthLoginForm() {
   const hasSoverignProfile = useSelector((state) => state.authenticationReducer.hasSoverignProfile)
   const sovProfilecurrentRequestId = useSelector((state) => state.authenticationReducer.sovProfilecurrentRequestId)
   const verificationSuccess = useSelector((state) => state.verifyCodeReducer.verificationSuccess)
+  const passwordChangeStatus = useSelector((state) => state.forgotpasswordReducer.passwordChangeStatus)
 
   const domain = useSelector((state) => state.signupReducer.domain)
 
@@ -104,8 +105,7 @@ export default function AuthLoginForm() {
   }, [hasSoverignProfile])
 
   useEffect(() => {
-    dispatch(authenticationActions.setEmailAddress(''))
-    dispatch(authenticationActions.setPassword(''))
+    dispatch(authenticationActions.clearSignInForm())
   }, [])
 
   function setEmailAddress(event) {
@@ -135,7 +135,8 @@ export default function AuthLoginForm() {
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack direction='column' justifyContent='center' alignItems='stretch' spacing={3} sx={{ display: 'block', width: '100%' }}>
         {sovProfilecurrentRequestId != null && hasSoverignProfile === 'Unauthorized' && <Alert severity='error'>You are not authorised to login!</Alert>}
-        {verificationSuccess === true && <Alert severity='success'>Verification Succesful. Please login!</Alert>}
+        {verificationSuccess === true && <Alert severity='success'>Verification was successful. Please login below!</Alert>}
+        {passwordChangeStatus === true && <Alert severity='success'>Password was changed succesfully. Please login!</Alert>}
         {loginFailResult != null && <Alert severity='error'>{loginFailResult}</Alert>}
         <Typography variant='h4' sx={{ textAlign: 'center', fontWeight: 'light', py: 3 }}>
           Sign in to FCU Loan Application

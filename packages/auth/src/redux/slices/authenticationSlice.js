@@ -40,8 +40,18 @@ const authenticationSlice = createSlice({
     setClientNumber: (state, action) => {
       state.clientNumber = action.payload
     },
+    setHasSoverignProfile: (state, action) => {
+      state.hasSoverignProfile = action.payload
+    },
     setLoginFailResult: (state, action) => {
       state.loginFailResult = action.payload
+    },
+    clearSignInForm: (state, action) => {
+      state.emailAddress = ''
+      state.password = ''
+      state.clientNumber = ''
+      state.hasSoverignProfile = null
+      state.loginFailResult = null
     },
   },
   extraReducers: (builder) => {

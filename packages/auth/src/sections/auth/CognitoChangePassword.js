@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 
-import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink, useHistory } from 'react-router-dom'
 
 //* Redux
 import { useDispatch, useSelector } from 'react-redux'
 import { forgotPasswordActions } from '../../redux/slices/forgotpasswordSlice'
+import { authenticationActions } from '../../redux/slices/authenticationSlice'
 
 //* RHF And YUP
 import * as Yup from 'yup'
@@ -34,9 +35,11 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 export default function ChangePasswordForm() {
   // const { login, register } = useAuthContext()
   const dispatch = useDispatch()
+  const history = useHistory()
   const [showNewPassword, setNewShowPassword] = useState(false)
   const [showConfirmPassword, setConfirmShowPassword] = useState(false)
 
+  const domain = useSelector((state) => state.forgotpasswordReducer.domain)
   const newpass_emailaddress = useSelector((state) => state.forgotpasswordReducer.emailaddress)
   const newpass_verificationCode = useSelector((state) => state.forgotpasswordReducer.verificationCode)
   const newpass_newPassword = useSelector((state) => state.forgotpasswordReducer.newPassword)
@@ -69,8 +72,10 @@ export default function ChangePasswordForm() {
   } = methods
 
   const getUser = (event) => {
+    const emailRequestingReset = newpass_emailaddress + domain
+
     const user = new CognitoUser({
-      Username: emailaddress,
+      Username: emailRequestingReset,
       Pool: UserPool,
     })
 
@@ -78,7 +83,7 @@ export default function ChangePasswordForm() {
   }
 
   useEffect(() => {
-    if (!passwordChangeStatus) return
+    if (!newpass_passwordChangeStatus) return
     dispatch(forgotPasswordActions.setPasswordChangeStatus(false))
   }, [])
 
@@ -98,6 +103,8 @@ export default function ChangePasswordForm() {
     getUser().confirmPassword(newpass_verificationCode, newpass_newPassword, {
       onSuccess: (data) => {
         dispatch(forgotPasswordActions.setPasswordChangeStatus(true))
+        dispatch(authenticationActions.clearSignInForm(''))
+        history.push('/signin')
       },
       onFailure: (err) => {
         console.log('Confirm Password: ', err)
@@ -107,7 +114,7 @@ export default function ChangePasswordForm() {
 
   return (
     <>
-      {!passwordChangeStatus && (
+      {!newpass_passwordChangeStatus && (
         <FormProvider methods={methods} onSubmit={resetPassword}>
           <Stack direction='column' justifyContent='center' alignItems='stretch' spacing={3} sx={{ display: 'block', width: '100%', maxWidth: '350px' }}>
             {!!errors.afterSubmit && <Alert severity='error'>{errors.afterSubmit.message}</Alert>}
@@ -166,7 +173,7 @@ export default function ChangePasswordForm() {
           </Stack>
         </FormProvider>
       )}
-      {passwordChangeStatus && (
+      {newpass_passwordChangeStatus && (
         <Stack direction='column' justifyContent='center' alignItems='center' spacing={3} sx={{ display: 'block', width: '100%' }}>
           <CustomAlert alertTitle='Password Reset Sucess' color='success' severity='success' alertContent={<Typography variant='caption'>Your Password has been reset successfully</Typography>} />
 

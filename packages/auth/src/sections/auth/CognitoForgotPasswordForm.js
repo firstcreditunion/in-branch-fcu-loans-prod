@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink, useHistory } from 'react-router-dom'
 
 //* Redux
 import { useDispatch, useSelector } from 'react-redux'
@@ -35,12 +35,14 @@ import CognitoChangePassword from './CognitoChangePassword'
 export default function AuthLoginForm() {
   // const { login, register } = useAuthContext()
   const dispatch = useDispatch()
+  const history = useHistory()
 
+  const domain = useSelector((state) => state.forgotpasswordReducer.domain)
   const forgot_emailaddress = useSelector((state) => state.forgotpasswordReducer.emailaddress)
   const forgotPasswordStage = useSelector((state) => state.forgotpasswordReducer.forgotPasswordStage)
 
   const LoginSchema = Yup.object().shape({
-    forgot_emailAddress: Yup.string().required('Email is required').email('Email must be a valid email address'),
+    forgot_emailaddress: Yup.string().required('Email is required'),
   })
 
   const defaultValues = {
@@ -60,8 +62,10 @@ export default function AuthLoginForm() {
   } = methods
 
   const getUser = (event) => {
+    const emailRequestingReset = forgot_emailaddress + domain
+
     const user = new CognitoUser({
-      Username: forgot_emailaddress,
+      Username: emailRequestingReset,
       Pool: UserPool,
     })
 
@@ -73,9 +77,10 @@ export default function AuthLoginForm() {
     getUser().forgotPassword({
       onSuccess: (data) => {
         console.log('On Success: ', data)
+        dispatch(forgotPasswordActions.clearForgotPasswordForm(''))
       },
       onFailure: (err) => {
-        console.log('On Failure: ', err)
+        dispatch(forgotPasswordActions.setForgotPasswordRequestError(err?.message))
       },
       inputVerificationCode: (data) => {
         console.log('Input Verification Code: ', data)
@@ -84,7 +89,7 @@ export default function AuthLoginForm() {
     })
   }
 
-  function onEmailAddressChange(event) {
+  function setEmailAddress(event) {
     dispatch(forgotPasswordActions.setEmailAddress(event.target.value))
   }
 
@@ -95,7 +100,21 @@ export default function AuthLoginForm() {
           <Stack direction='column' justifyContent='center' alignItems='stretch' spacing={3} sx={{ display: 'block', width: '100%' }}>
             {!!errors.afterSubmit && <Alert severity='error'>{errors.afterSubmit.message}</Alert>}
 
-            <RFHTextField name='forgot_emailAddress' label='Work Email Address' onInputChange={onEmailAddressChange} value={forgot_emailAddress} />
+            <RFHTextField
+              name='forgot_emailAddress'
+              label='Work Email Address'
+              onInputChange={setEmailAddress}
+              value={forgot_emailaddress}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position='end'>
+                    <Typography variant='h6' color='primary' sx={{ fontWeight: 'light', px: 2 }}>
+                      @firstcu.co.nz
+                    </Typography>
+                  </InputAdornment>
+                ),
+              }}
+            />
 
             <Button
               fullWidth
