@@ -28,9 +28,11 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 
 import { processNodeEnv, BASE_URL_AWS_APP, BASE_URL_LOCAL_APP } from '../../redux/utils/apiConstants'
 
-export default function AuthLoginForm() {
+export default function AuthLoginForm({ setSovereignUser }) {
   const dispatch = useDispatch()
   const history = useHistory()
+
+  console.log('Cognito Session Setters: ', setSovereignUser)
 
   const [showPassword, setShowPassword] = useState(false)
 
@@ -84,9 +86,9 @@ export default function AuthLoginForm() {
 
     authenticate(emailToLogin, login_password)
       .then((data) => {
-        // console.log('AUTH Result Data: ', data)
+        console.log('AUTH Result Data: ', data)
         history.push('/memberonlyloan')
-
+        setSovereignUser(login_clientNumber)
         return
       })
       .catch((err) => {

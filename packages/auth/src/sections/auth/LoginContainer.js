@@ -9,7 +9,7 @@ import Coworking from '../../components/CoWorking'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { LoginContext } from '../../cognito/UserAccount'
 
-export default function Login() {
+export default function Login({ setSovereignUser }) {
   const upMd = useMediaQuery((theme) => theme.breakpoints.up('md'))
 
   return (
@@ -45,7 +45,7 @@ export default function Login() {
           )}
 
           <Stack justifyContent='center' alignItems='center' sx={{ pb: 5, width: '100%' }}>
-            <CognitoLoginForm />
+            <CognitoLoginForm setSovereignUser={setSovereignUser} />
           </Stack>
         </Stack>
       </Stack>

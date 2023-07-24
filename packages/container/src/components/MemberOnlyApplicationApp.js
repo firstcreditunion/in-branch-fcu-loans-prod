@@ -2,7 +2,7 @@ import { mount } from 'memberonlyapplication/MemberOnlyApplicationApp'
 import React, { useRef, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 
-export default () => {
+export default ({ cognitoToken, sovereignUser }) => {
   const ref = useRef(null)
   const history = useHistory()
   useEffect(() => {
@@ -15,6 +15,8 @@ export default () => {
           history.push(nextPathname)
         }
       },
+      cognitoToken,
+      sovereignUser,
     })
 
     // A change in browser history is communicated down to sub app by calling onParentNavigate.

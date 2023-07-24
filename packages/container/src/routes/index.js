@@ -86,6 +86,11 @@ export default function RouterMain(props) {
   const [term, setTerm] = useState(36)
   const [paymentFrequency, setPaymentFrequency] = useState('W')
 
+  const [cognitoToken, setCognitoToken] = useState(null)
+  const [sovereignUser, setSovereignUser] = useState(null)
+
+
+
   // * Loan Cost Recovery Fee useStates
   const [creditCheck, setcreditCheck] = useState(4.6)
   const [creditSense, setcreditSense] = useState(3.8)
@@ -122,10 +127,10 @@ export default function RouterMain(props) {
             <LoanCalculator onLoanAmountChange={setLoanAmount} onInterestChange={setInterestRate} onTermChange={setTerm} onPaymentFrequencyChange={setPaymentFrequency} setCreditSense={setcreditSense} setCreditCheck={setcreditCheck} setMotorwebCheck={setmotorWebCheck} setPPSR={setppsrRegistration} setDocusign={setdocuSignSigning} setCloudCheckId={setcloudCheckIdVerification} setCloudCheckPEP={setcloudCheckPEP} sethasLpiPrimeDeath={sethasLpiPrimeDeath} sethasLpiPrimeDisability={sethasLpiPrimeDisability} sethasLpiPrimeCriticalIllness={sethasLpiPrimeCriticalIllness} sethasLpiPrimeBankruptcy={sethasLpiPrimeBankruptcy} setLPIUpfrontFee={setawsCalculatedLpiAmount} />
           </Route>
           <Route path={ROOT_MEMBERONLYLOAN}>
-            <MemberOnlyLoanApplication />
+            <MemberOnlyLoanApplication cognitoToken={cognitoToken} sovereignUser={sovereignUser} />
           </Route>
           <Route path={ROOT_AUTHENTICATION}>
-            <Authentication />
+            <Authentication setCognitoToken={setCognitoToken} setSovereignUser={setSovereignUser} />
           </Route>
         </Switch>
       </Suspense>

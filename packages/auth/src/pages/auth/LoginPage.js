@@ -6,13 +6,13 @@ import Login from '../../sections/auth/LoginContainer'
 
 // ----------------------------------------------------------------------
 
-export default function LoginPage() {
+export default function LoginPage({ setSovereignUser }) {
   return (
     <>
       <Helmet>
         <title> Login | FCU Staff Portal</title>
       </Helmet>
-      <Login />
+      <Login setSovereignUser={setSovereignUser} />
     </>
   )
 }

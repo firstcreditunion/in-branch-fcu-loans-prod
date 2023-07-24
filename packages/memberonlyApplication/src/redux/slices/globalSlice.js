@@ -13,6 +13,9 @@ export const initialState = {
   themeMode: 'light',
 
   isMemberEligible: true,
+
+  cognitoToken: null,
+  sovereignUser: null,
 }
 
 const globalSlice = createSlice({
@@ -21,6 +24,12 @@ const globalSlice = createSlice({
   reducers: {
     setIsMemberEligible: (state, action) => {
       state.isMemberEligible = action.payload
+    },
+    setCognitoToken: (state, action) => {
+      state.cognitoToken = action.payload
+    },
+    setSovereignUser: (state, action) => {
+      state.sovereignUser = action.payload
     },
   },
 })

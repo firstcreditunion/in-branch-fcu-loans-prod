@@ -116,6 +116,12 @@ const SignupForm = () => {
   }
 
   useEffect(() => {
+    console.log('Cognito Error: ', cognitoError)
+    console.log('Cognito Error: ', cognitoErrorName)
+    console.log('Cognito Error: ', cognitoErrorStack)
+  }, [cognitoError])
+
+  useEffect(() => {
     if (hasSoverignProfile === 'Unauthorized' || hasSoverignProfile === null || hasSoverignProfile === undefined) return
 
     const emailToRegister = signupemailAddress + domain

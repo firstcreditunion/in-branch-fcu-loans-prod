@@ -13,7 +13,7 @@ import Placeholder from './pages/Placeholder'
 
 import SearchClientNumber from './forms/SearchMember/SearchClientNumber'
 
-export default ({ history }) => {
+export default ({ history, cognitoToken, sovereignUser }) => {
   return (
     <>
       <HelmetProvider>
@@ -23,7 +23,7 @@ export default ({ history }) => {
             <Router history={history}>
               <Switch>
                 <Route path='/memberonlyloan'>
-                  <MBROApplicationRouter history={history} />
+                  <MBROApplicationRouter history={history} cognitoToken={cognitoToken} sovereignUser={sovereignUser} />
                 </Route>
               </Switch>
             </Router>

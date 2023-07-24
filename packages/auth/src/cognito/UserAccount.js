@@ -12,6 +12,9 @@ const LoginContext = createContext()
 
 const UserAccount = (props) => {
   // Function to check if the user is logged in (Session for user)
+
+  console.log('Props Set Cognito Token', props?.setCognitoToken)
+
   const getUserSession = async () =>
     await new Promise((resolve, reject) => {
       const user = Pool.getCurrentUser()
@@ -64,16 +67,26 @@ const UserAccount = (props) => {
 
       user.authenticateUser(authDetails, {
         onSuccess: (data) => {
-
           resolve(data)
+
+          console.log('Login Data: ', data)
+          const sessionJwt = data?.accessToken?.jwtToken
+          const sessionTime = data?.idToken?.payload?.auth_time
+          const sessionExpiry = data?.idToken?.payload?.exp
+          const sessionIat = data?.idToken?.payload?.iat
+
+          const sessionDetails = { jwt: sessionJwt, auth_time: sessionTime, expiry: sessionExpiry, iat: sessionIat }
+
+          props?.setCognitoToken(sessionDetails)
+
+          return data
         },
         onFailure: (err) => {
-
           reject(err)
+          console.log('Login Error: ', err)
+          return err
         },
-        newPasswordRequired: (data) => {
-
-        },
+        newPasswordRequired: (data) => {},
         // mfaSetup: (challengeName, challengeParameters) => {
         //   user.associateSoftwareToken(this)
         // },

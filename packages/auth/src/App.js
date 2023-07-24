@@ -19,14 +19,14 @@ import UserSession from './cognito/UserSession'
 
 import { UserAccount } from './cognito/UserAccount'
 
-export default ({ history }) => {
+export default ({ history, setCognitoToken, setSovereignUser }) => {
   return (
     <>
       <HelmetProvider>
         <ThemeConfig>
           <ThemePrimaryColor>
             <GlobalStyles />
-            <UserAccount>
+            <UserAccount setCognitoToken={setCognitoToken}>
               <Router history={history}>
                 <Switch>
                   <Route path='/signup'>
@@ -51,7 +51,7 @@ export default ({ history }) => {
                     <MultiFactorAuth />
                   </Route>
                   <Route path='/'>
-                    <LoginPage />
+                    <LoginPage setSovereignUser={setSovereignUser} />
                   </Route>
                 </Switch>
               </Router>

@@ -9,7 +9,7 @@ import { Box, Container, Grid, Paper } from '@mui/material'
 
 import useMediaQuery from '@mui/material/useMediaQuery'
 
-export default function ApplicationRouter({ history }) {
+export default function ApplicationRouter({ history, cognitoToken, sovereignUser }) {
   const downMd = useMediaQuery((theme) => theme.breakpoints.down('md'))
   const downSm = useMediaQuery((theme) => theme.breakpoints.down('sm'))
 
@@ -19,7 +19,7 @@ export default function ApplicationRouter({ history }) {
         <ApplicationHeader />
         <Switch>
           <Route path='/memberonlyloan'>
-            <MemberDetailsLayout />
+            <MemberDetailsLayout cognitoToken={cognitoToken} sovereignUser={sovereignUser} />
           </Route>
         </Switch>
       </Router>

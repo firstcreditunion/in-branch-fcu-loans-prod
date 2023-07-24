@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 
 //* Redux
 import { useDispatch, useSelector } from 'react-redux'
 import useMediaQuery from '@mui/material/useMediaQuery'
 
+import { globalActions } from '../redux/slices/globalSlice'
 import { loanDetailsActions } from '../redux/slices/loanDetailsSlice'
 import { clientSearchActions } from '../redux/slices/clientSearchSlice'
 import { creditScoreActions } from '../redux/slices/creditScoreSlice'
@@ -45,8 +47,9 @@ import InstalmentDebit from '../sections/InstalmentDebit'
 import Ackwonlegement from '../sections/Ackwonlegement'
 import Submission from '../sections/Submission'
 
-export default function MemberDetailsLayout() {
+export default function MemberDetailsLayout({ cognitoToken, sovereignUser }) {
   const dispatch = useDispatch()
+  const history = useHistory()
 
   const downMd = useMediaQuery((theme) => theme.breakpoints.down('md'))
   const downSm = useMediaQuery((theme) => theme.breakpoints.down('sm'))
@@ -135,6 +138,16 @@ export default function MemberDetailsLayout() {
   const jointmemberNotFound = jointmemberNumberIsEmpty && jointatLeastOneReqestMade && jointrequestisNotPending
 
   const [activeStep, setActiveStep] = useState(0)
+
+  useEffect(() => {
+    if (cognitoToken != null && sovereignUser != null) {
+      dispatch(globalActions.setCognitoToken(cognitoToken))
+      dispatch(globalActions.setSovereignUser(sovereignUser))
+      return
+    }
+
+    history.push('/')
+  }, [])
 
   const navigation = [
     {
