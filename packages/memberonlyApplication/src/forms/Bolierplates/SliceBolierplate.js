@@ -42,7 +42,7 @@ const clientSearchSlice = createSlice({
       .addCase(getClientGeneralDetails.fulfilled, (state, action) => {
         if (state.loading === 'PENDING' && state.currentRequestId === requestId) {
           state.loading = HTTP_STATUS.IDLE
-          console.log('General Client Details', action.payload)
+          // console.log('General Client Details', action.payload)
         }
       })
       .addCase(getClientGeneralDetails.rejected, (state, action) => {

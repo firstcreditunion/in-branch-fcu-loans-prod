@@ -124,7 +124,7 @@ const RFHCreditScore = () => {
   } = methods
 
   const onSubmit = (event) => {
-    console.log('On Submit Loan Details')
+    // console.log('On Submit Loan Details')
   }
 
   // Redux dispatch functions

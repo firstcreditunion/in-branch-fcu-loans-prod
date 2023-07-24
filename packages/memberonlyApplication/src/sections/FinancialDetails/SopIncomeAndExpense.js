@@ -197,6 +197,10 @@ const SopIncomeAndExpense = () => {
   const liabilitiesServicing2 = useSelector((state) => state.sopExpenseReducer.liabilitiesServicing.amount2)
   const liabilitiesServicing3 = useSelector((state) => state.sopExpenseReducer.liabilitiesServicing.amount3)
 
+  const proposedLoan1 = useSelector((state) => state.sopExpenseReducer.proposedLoan.amount1)
+  const proposedLoan2 = useSelector((state) => state.sopExpenseReducer.proposedLoan.amount2)
+  const proposedLoan3 = useSelector((state) => state.sopExpenseReducer.proposedLoan.amount3)
+
   const powerOrGas1 = useSelector((state) => state.sopExpenseReducer.powerOrGas.amount1)
   const powerOrGas2 = useSelector((state) => state.sopExpenseReducer.powerOrGas.amount2)
   const powerOrGas3 = useSelector((state) => state.sopExpenseReducer.powerOrGas.amount3)
@@ -274,6 +278,17 @@ const SopIncomeAndExpense = () => {
     },
     {
       id: 3,
+      title: 'Proposed Loan',
+      groupBy: 'expense',
+      amount1: proposedLoan1,
+      amount2: proposedLoan2,
+      amount3: proposedLoan3,
+      label: 'Proposed Loan',
+      sovereignKey: 'PLLOAN',
+      sovereignValue: 'Proposed Loan',
+    },
+    {
+      id: 4,
       title: 'Power or Gas',
       groupBy: 'expense',
       amount1: powerOrGas1,
@@ -284,7 +299,7 @@ const SopIncomeAndExpense = () => {
       sovereignValue: 'Power or Gas',
     },
     {
-      id: 4,
+      id: 5,
       title: 'Groceries',
       groupBy: 'expense',
       amount1: groceries1,
@@ -295,7 +310,7 @@ const SopIncomeAndExpense = () => {
       sovereignValue: 'Groceries',
     },
     {
-      id: 5,
+      id: 6,
       title: 'Phone or Internet',
       groupBy: 'expense',
       amount1: phoneOrInternet1,
@@ -306,7 +321,7 @@ const SopIncomeAndExpense = () => {
       sovereignValue: 'Phone or Internet',
     },
     {
-      id: 6,
+      id: 7,
       title: 'Fuel',
       groupBy: 'expense',
       amount1: fuel1,
@@ -317,7 +332,7 @@ const SopIncomeAndExpense = () => {
       sovereignValue: 'Fuel',
     },
     {
-      id: 7,
+      id: 8,
       title: 'S6 or Savings',
       groupBy: 'expense',
       amount1: s6_or_savings1,
@@ -328,7 +343,7 @@ const SopIncomeAndExpense = () => {
       sovereignValue: 'S6 or Savings',
     },
     {
-      id: 8,
+      id: 9,
       title: 'Wof and Registration',
       groupBy: 'expense',
       amount1: wof_rego1,
@@ -339,7 +354,7 @@ const SopIncomeAndExpense = () => {
       sovereignValue: 'Wof and Registration',
     },
     {
-      id: 9,
+      id: 10,
       title: 'Clothing',
       groupBy: 'expense',
       amount1: clothing1,
@@ -350,7 +365,7 @@ const SopIncomeAndExpense = () => {
       sovereignValue: 'Clothing',
     },
     {
-      id: 10,
+      id: 11,
       title: 'Medical Expense',
       groupBy: 'expense',
       amount1: medicalExpense1,
@@ -361,7 +376,7 @@ const SopIncomeAndExpense = () => {
       sovereignValue: 'Medical Expense',
     },
     {
-      id: 11,
+      id: 12,
       title: 'Gym',
       groupBy: 'expense',
       amount1: gym1,
@@ -372,7 +387,7 @@ const SopIncomeAndExpense = () => {
       sovereignValue: 'Gym',
     },
     {
-      id: 12,
+      id: 13,
       title: 'Recreation',
       groupBy: 'expense',
       amount1: recreation1,
@@ -383,7 +398,7 @@ const SopIncomeAndExpense = () => {
       sovereignValue: 'Recreation',
     },
     {
-      id: 13,
+      id: 14,
       title: 'Tithing',
       groupBy: 'expense',
       amount1: tithing1,
@@ -394,7 +409,7 @@ const SopIncomeAndExpense = () => {
       sovereignValue: 'Tithing',
     },
     {
-      id: 14,
+      id: 15,
       title: 'Insurance',
       groupBy: 'expense',
       amount1: insurance1,
@@ -405,7 +420,7 @@ const SopIncomeAndExpense = () => {
       sovereignValue: 'Insurance',
     },
     {
-      id: 15,
+      id: 16,
       title: 'Savings',
       amount1: savings1,
       amount2: savings2,

@@ -36,6 +36,7 @@ const SignupForm = () => {
   const signupclientnumber = useSelector((state) => state.signupReducer.clientnumber)
 
   const domain = useSelector((state) => state.signupReducer.domain)
+  const sovProfilecurrentRequestId = useSelector((state) => state.authenticationReducer.sovProfilecurrentRequestId)
   const hasSoverignProfile = useSelector((state) => state.signupReducer.hasSoverignProfile)
   const cognitoError = useSelector((state) => state.signupReducer.cognitoError)
   const congnitoResponseuserSub = useSelector((state) => state.signupReducer.congnitoResponseuserSub)
@@ -129,7 +130,7 @@ const SignupForm = () => {
       null,
       (err, data) => {
         if (err) {
-          console.log('Sign Up Error: ', err?.message)
+          // console.log('Sign Up Error: ', err?.message)
           dispatch(signupActions.setCognitoError(err?.message))
           return
         }
@@ -151,12 +152,13 @@ const SignupForm = () => {
   }, [congnitoResponseuserSub])
 
   const onSubmit = (event) => {
-    console.log('On Submit Loan Details')
+    // console.log('On Submit Loan Details')
     registerUser()
   }
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+      {sovProfilecurrentRequestId != null && hasSoverignProfile === 'Unauthorized' && <Alert severity='error'>You are not authorised to login!</Alert>}
       <Stack
         direction='column'
         justifyContent='center'

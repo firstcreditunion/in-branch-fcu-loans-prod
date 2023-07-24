@@ -67,7 +67,7 @@ const authenticationSlice = createSlice({
         if (state.sovProfileloading === 'PENDING' && state.sovProfilecurrentRequestId === requestId) {
           state.sovProfileloading = HTTP_STATUS.IDLE
 
-          console.log('SOVERIGN PROFILE RESPONSE: ', action.payload)
+
 
           state.hasSoverignProfile = action.payload?.axiosResponse?.Response
         }
@@ -79,10 +79,6 @@ const authenticationSlice = createSlice({
           state.sovProfileerror = action.error
           state.sovProfilecurrentRequestId = null
 
-          console.log('Rejected Error: ', action.error)
-          console.log('Rejected Payload: ', action.payload)
-          console.log('Rejected meta: ', action.meta)
-          console.log('Rejected Type: ', action.type)
         }
       })
   },

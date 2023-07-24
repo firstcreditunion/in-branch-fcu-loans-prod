@@ -55,7 +55,7 @@ const PersonalDetails = () => {
   const isGenderUpdatedOnG3 = !(primegender == null) && primegender != ''
   const isMartialStatusUpdatedOnG3 = !(primemaritalStatus == null) && primemaritalStatus != ''
 
-  console.log('isDateOfBirthInG3: ', isDateOfBirthInG3, !(primedateOfBirth == null), isDate(new Date(primedateOfBirth)))
+  // console.log('isDateOfBirthInG3: ', isDateOfBirthInG3, !(primedateOfBirth == null), isDate(new Date(primedateOfBirth)))
 
   //* Member Details
   const primeClientNumber = useSelector((state) => state.clientSearchReducer.primeclientNumber)
@@ -86,7 +86,7 @@ const PersonalDetails = () => {
   } = methods
 
   const onSubmit = (event) => {
-    console.log('On Submit Loan Details')
+    // console.log('On Submit Loan Details')
   }
 
   function setPrimePersonalDetailsVerified(event) {

@@ -175,7 +175,7 @@ export default function LoanDetails() {
   } = methods
 
   const onSubmit = (event) => {
-    console.log('On Submit Loan Details')
+    // console.log('On Submit Loan Details')
   }
 
   useEffect(() => {

@@ -75,7 +75,7 @@ export default function LoanDetails() {
   } = methods
 
   const onSubmit = (event) => {
-    console.log('On Submit Loan Details')
+    // console.log('On Submit Loan Details')
   }
 
   // Redux dispatch functions
@@ -163,7 +163,7 @@ export default function LoanDetails() {
               </Stack>
               <Stack direction='column' justifyContent='center' alignItems='flex-start' spacing={1} sx={{ width: '100%', p: 0, m: 0 }}>
                 <Typography variant='body2' sx={{ fontWeight: 'light', color: 'text.secondary' }}>
-                  - Or another borrower may incur other expenses that cause them to suffer substantial hardship?
+                  - Or borrower may incur other expenses that cause them to suffer substantial hardship?
                 </Typography>
                 <RHFRadioGroup
                   row

@@ -49,7 +49,7 @@ export default function QuestionJointApplicant() {
   } = methods
 
   const onSubmit = (event) => {
-    console.log('Joint Loan Selected')
+    // console.log('Joint Loan Selected')
   }
 
   // Redux dispatch functions

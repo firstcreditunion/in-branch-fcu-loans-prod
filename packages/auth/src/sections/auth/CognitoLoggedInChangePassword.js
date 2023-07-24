@@ -66,12 +66,12 @@ export default function UserSettings() {
   useEffect(() => {
     getUserSession()
       .then((session) => {
-        console.log('Session User Session:', session)
+        // console.log('Session User Session:', session)
         setLoggednIn(true)
       })
       .catch(() => {
         setLoggednIn(false)
-        console.log('Not Logged In')
+        // console.log('Not Logged In')
       })
   }, [])
 
@@ -79,10 +79,10 @@ export default function UserSettings() {
     event.preventDefault()
     getUserSession()
       .then((session) => {
-        console.log('Session User Session:', session)
+        // console.log('Session User Session:', session)
       })
       .catch((err) => {
-        console.log('Session Error User Session: ', err)
+        // console.log('Session Error User Session: ', err)
       })
   }
 

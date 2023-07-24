@@ -61,7 +61,7 @@ const Identification = () => {
   } = methods
 
   const onSubmit = (event) => {
-    console.log('On Submit Loan Details')
+    // console.log('On Submit Loan Details')
   }
 
   function setPrimeIdentificationDetailsVerified(event) {
@@ -215,7 +215,7 @@ const Identification = () => {
 export default Identification
 
 function IdentificationComponent({ props, mostRecentIdVersion }) {
-  console.log('IDENTIFICATION PROPS: ', props)
+  // console.log('IDENTIFICATION PROPS: ', props)
 
   return (
     <Stack direction='column' justifyContent='center' alignItems='flex-start' spacing={1} sx={{ width: '100%' }}>

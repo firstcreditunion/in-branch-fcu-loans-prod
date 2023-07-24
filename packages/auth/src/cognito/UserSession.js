@@ -10,12 +10,9 @@ export default () => {
   useEffect(() => {
     getUserSession()
       .then((session) => {
-        console.log('Session User Session:', session)
         setStatus(true)
       })
-      .catch((err) => {
-        console.log('Session Error User Session: ', err)
-      })
+      .catch((err) => {})
   }, [])
 
   return <Typography>{status ? <Button onClick={userLogout}>Log Out</Button> : 'Please Login below'}</Typography>

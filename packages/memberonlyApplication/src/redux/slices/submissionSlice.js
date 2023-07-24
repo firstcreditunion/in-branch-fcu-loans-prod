@@ -38,7 +38,7 @@ const submissionSlice = createSlice({
           state.loading = HTTP_STATUS.PENDING
           state.currentRequestId = action.meta.requestId
         }
-        console.log('PENDING PAYLOAD: ', action.payload)
+        // console.log('PENDING PAYLOAD: ', action.payload)
       })
       .addCase(submitLoanApplication.fulfilled, (state, action) => {
         const { requestId } = action.meta
@@ -50,7 +50,7 @@ const submissionSlice = createSlice({
           state.applicationNumber = submissionAttributes?.applicationRef
           state.serverError = axiosResponse
         }
-        console.log('FULFILLED PAYLOAD: ', action.payload)
+        // console.log('FULFILLED PAYLOAD: ', action.payload)
       })
       .addCase(submitLoanApplication.rejected, (state, action) => {
         const { requestId } = action.meta
@@ -59,12 +59,12 @@ const submissionSlice = createSlice({
           state.error = action.error
           state.currentRequestId = null
 
-          console.log('Rejected Error: ', action.error)
-          console.log('Rejected Payload: ', action.payload)
-          console.log('Rejected meta: ', action.meta)
-          console.log('Rejected Type: ', action.type)
+          // console.log('Rejected Error: ', action.error)
+          // console.log('Rejected Payload: ', action.payload)
+          // console.log('Rejected meta: ', action.meta)
+          // console.log('Rejected Type: ', action.type)
         }
-        console.log('ERROR PAYLOAD: ', action.payload)
+        // console.log('ERROR PAYLOAD: ', action.payload)
       })
   },
 })

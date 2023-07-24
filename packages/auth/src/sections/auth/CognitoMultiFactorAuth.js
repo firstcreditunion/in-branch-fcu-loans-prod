@@ -69,13 +69,13 @@ export default function AuthLoginForm() {
 
     user.authenticateUser(authDetails, {
       onSuccess: (data) => {
-        console.log('On Success: ', data)
+        // console.log('On Success: ', data)
       },
       onFailure: (err) => {
-        console.log('On Failure: ', err)
+        // console.log('On Failure: ', err)
       },
       newPasswordRequired: (data) => {
-        console.log('New Password Required: ', data)
+        // console.log('New Password Required: ', data)
       },
       mfaSetup: (challengeName, challengeParameters) => {
         user.associateSoftwareToken(this)

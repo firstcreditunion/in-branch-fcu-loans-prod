@@ -76,14 +76,14 @@ export default function AuthLoginForm() {
     event.preventDefault()
     getUser().forgotPassword({
       onSuccess: (data) => {
-        console.log('On Success: ', data)
+        // console.log('On Success: ', data)
         dispatch(forgotPasswordActions.clearForgotPasswordForm(''))
       },
       onFailure: (err) => {
         dispatch(forgotPasswordActions.setForgotPasswordRequestError(err?.message))
       },
       inputVerificationCode: (data) => {
-        console.log('Input Verification Code: ', data)
+        // console.log('Input Verification Code: ', data)
         dispatch(forgotPasswordActions.setForgotPasswordStage(2))
       },
     })

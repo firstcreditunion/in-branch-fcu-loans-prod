@@ -46,6 +46,9 @@ import Snackbar from '@mui/material/Snackbar'
 import { BASE_URL_LOCAL_APP, BASE_URL_AWS_APP, processNodeEnv } from '../redux/utils/apiConstants'
 import { getLoanPurpose_FromValue, getTradingBranch_FromValue } from '../redux/codes/getKeysOrValues'
 
+//* Utils
+import { convertToUTCCustom } from '../utils/convertDatetoUTC'
+
 const ContentStyle = styled(Paper)(({ theme }) => ({
   borderRadius: 25,
   height: '100%',
@@ -103,6 +106,7 @@ export default function Submission() {
   const lncalc_PaymentFrequencyUnit = useSelector((state) => state.loanCalculatorReducer.lncalc_PaymentFrequency.unit)
   const lncalc_TermValue = useSelector((state) => state.loanCalculatorReducer.lncalc_Term.value)
   const lncalc_InterestRate = useSelector((state) => state.loanCalculatorReducer.lncalc_InterestRate)
+  const firstPaymentDate = useSelector((state) => state.loanCalculatorReducer.firstPaymentDate)
   const documentationTypes = useSelector((state) => state.loanDetailsReducer.documentationTypes)
 
   const repayFreq = useSelector((state) => state.loanCalculatorReducer.lncalc_PaymentFrequency?.unit)
@@ -147,7 +151,7 @@ export default function Submission() {
   const otherExpenses = useSelector((state) => state.sopRelatedQuestionsReducer.otherExpenses)
   const canPayWithoutSufferingHardship = useSelector((state) => state.sopRelatedQuestionsReducer.canPayWithoutSufferingHardship)
 
-  const memoLines = ['', '___________ SUSTAINABILITY TEST - PART 1 ___________', '', `Is the Credit Report Complete?: ${isCreditScoreComplete === 'Y' ? 'Yes' : 'No'}`, '', `Did credit score exceed 300? ${isScoreExceedsThreshold === 'Y' ? 'Yes' : 'No'}`, '', `Does the member have any unpaid defualts? - ${hasUnpaidDefualtCollections === 'Y' ? 'Yes' : 'No'}`, '', `Unpaid Default Notes - ${hasUnpaidDefualtCollections === 'Y' ? detailsUnpaidDefualt : 'N/A'}`, '', `Is the member under any hardship arrangement? - ${isMemberUnderHardship === 'Y' ? 'Yes' : 'No'}`, '', `Has the member been bankrupt? - ${hasMemberBeenBankrupt === 'Y' ? 'Yes' : 'No'}`, '', `Is member in arrears with FCU? - ${isMemberInArrearsWithFCU === 'Y' ? 'Yes' : 'No'}`, '', `Credit Limit - How much credit is being sought? - ${creditBeingSought}`, '', `How long is the credit being sought for? - ${termForCreditBeingSought}`, '', '', '', '___________ SUSTAINABILITY TEST - PART 2 ___________', '', `Inquiry made to obtain quotes? - ${inquiryMadeToObtainQuotes === 'Y' ? 'Yes' : 'No'}`, '', `Does member qualify for both Member-Only loan and personal loan? - ${qualifyForMbroAndPern === 'Y' ? 'Yes' : 'No'}`, '', `Did member accept Member-Only loan? - ${didMemberAcceptMbro === 'Y' ? 'Yes' : 'No'}`, '', `Why did the member accept or decline Member-Only loan? - ${whyMemberAcceptedMbro}`, '', `Is the credit used to refinance another lender and/or an exisitng FCU loan? If so is the member aware of the additional costs? - ${isCreditUsedForRefinance === 'Y' ? 'Yes' : 'No'}`, '', `Refinance Notes - ${isCreditUsedForRefinanceComments}`, '', `90 days bank statement obtained? - ${ninetyDayBankStatementObtained === 'Y' ? 'Yes' : 'No'}`, '', `Is the quote/proposed loan suitable to the member? - ${isMemberHappyWithQuote === 'Y' ? 'Yes' : 'No'}`, '', `Is the member happy with the quote? - ${isMemberHappyWithQuote ? 'Yes' : 'No'}`, '', `Other Comments- ${anyOtherComments}`, '', '', '', '___________ AFFORDABILITY TEST ___________', '', `Full Income and Expense Estimate Test (Reg 4AF) Completed? ${isIncomeExpensetestComplete === 'Y' ? 'Yes - The full income vs expense test completed with sufficient Surplus evident.' : 'No - The full income vs expense test is not complete. The loan will be withdrawn or declined'}`, '', `Likely income may be overestimated - Notes: ${incomeOverEstimatedComment}`, '', `Likely relevant expenses may be underestimated - Notes: ${expenseUnderEstimatedComment}`, '', `Or another borrower may incur other expenses that cause them to suffer substantial hardship? ${otherExpenses === 'Y' ? 'No other expenses identified or likely that may cause the member to suffer financial hardship.' : 'Other expenses identified which may lead to financial hardship. The loan will be withdrawn/declined.'}`, '', `Based on the above answers, are you satisfied on reasonable grounds that the borrower will be able to make payments without suffering substantial hardship ${canPayWithoutSufferingHardship === 'Y' ? 'Yes, the borrower will be able to make repayments without suffering substantial hardship.' : 'No, the borrower may suffer financial hardship. The loan will be withdrawn/ declined.'}`, '', '', '', '___________ PRIVACY DECLARATION ___________', '', `Declaration Item 1 - Accpted? - ${declarationObject?.CreditWorthiness?.accept ? 'Yes' : 'No'}`, '', `Declaration Item 2 - Accpted? - ${declarationObject?.AuthoriseFCU?.accept ? 'Yes' : 'No'}`, '', `Declaration Item 3 - Accpted? - ${declarationObject?.TrueInformation?.accept ? 'Yes' : 'No'}`, '', `Declaration Item 4 - Accpted? - ${declarationObject?.AmlCftObligations?.accept ? 'Yes' : 'No'}`, '', `Declaration Item 5 - Accpted? - ${declarationObject?.StorePersonalInfo?.accept ? 'Yes' : 'No'}`, '', `Declaration Item 6 - Accpted? - ${declarationObject?.InsureLoan?.accept ? 'Yes' : 'No'}`]
+  const memoLines = ['', '___________ SUSTAINABILITY TEST - PART 1 ___________', '', `Is the Credit Report Complete?: ${isCreditScoreComplete === 'Y' ? 'Yes' : 'No'}`, '', `Did credit score exceed 300? ${isScoreExceedsThreshold === 'Y' ? 'Yes' : 'No'}`, '', `Does the member have any unpaid defualts? - ${hasUnpaidDefualtCollections === 'Y' ? 'Yes' : 'No'}`, '', `Unpaid Default Notes - ${hasUnpaidDefualtCollections === 'Y' ? detailsUnpaidDefualt : 'N/A'}`, '', `Is the member under any hardship arrangement? - ${isMemberUnderHardship === 'Y' ? 'Yes' : 'No'}`, '', `Has the member been bankrupt? - ${hasMemberBeenBankrupt === 'Y' ? 'Yes' : 'No'}`, '', `Is member in arrears with FCU? - ${isMemberInArrearsWithFCU === 'Y' ? 'Yes' : 'No'}`, '', `Credit Limit - How much credit is being sought? - ${creditBeingSought}`, '', `How long is the credit being sought for? - ${termForCreditBeingSought}`, '', '', '', '___________ SUSTAINABILITY TEST - PART 2 ___________', '', `Inquiry made to obtain quotes? - ${inquiryMadeToObtainQuotes === 'Y' ? 'Yes' : 'No'}`, '', `Does member qualify for both Member-Only loan and personal loan? - ${qualifyForMbroAndPern === 'Y' ? 'Yes' : 'No'}`, '', `Did member accept Member-Only loan? - ${didMemberAcceptMbro === 'Y' ? 'Yes' : 'No'}`, '', `Why did the member accept or decline Member-Only loan? - ${whyMemberAcceptedMbro}`, '', `Is the credit used to refinance another lender and/or an exisitng FCU loan? If so is the member aware of the additional costs? - ${isCreditUsedForRefinance === 'Y' ? 'Yes' : 'No'}`, '', `Refinance Notes - ${isCreditUsedForRefinanceComments}`, '', `90 days bank statement obtained? - ${ninetyDayBankStatementObtained === 'Y' ? 'Yes' : 'No'}`, '', `Is the quote/proposed loan suitable to the member? - ${isMemberHappyWithQuote === 'Y' ? 'Yes' : 'No'}`, '', `Is the member happy with the quote? - ${isMemberHappyWithQuote ? 'Yes' : 'No'}`, '', `Other Comments- ${anyOtherComments}`, '', '', '', '___________ AFFORDABILITY TEST ___________', '', `Full Income and Expense Estimate Test (Reg 4AF) Completed? ${isIncomeExpensetestComplete === 'Y' ? 'Yes - The full income vs expense test completed with sufficient Surplus evident.' : 'No - The full income vs expense test is not complete. The loan will be withdrawn or declined'}`, '', `Likely income may be overestimated - Notes: ${incomeOverEstimatedComment}`, '', `Likely relevant expenses may be underestimated - Notes: ${expenseUnderEstimatedComment}`, '', `Or borrower may incur other expenses that cause them to suffer substantial hardship? ${otherExpenses === 'Y' ? 'No other expenses identified or likely that may cause the member to suffer financial hardship.' : 'Other expenses identified which may lead to financial hardship. The loan will be withdrawn/declined.'}`, '', `Based on the above answers, are you satisfied on reasonable grounds that the borrower will be able to make payments without suffering substantial hardship ${canPayWithoutSufferingHardship === 'Y' ? 'Yes, the borrower will be able to make repayments without suffering substantial hardship.' : 'No, the borrower may suffer financial hardship. The loan will be withdrawn/ declined.'}`, '', '', '', '___________ PRIVACY DECLARATION ___________', '', `Declaration Item 1 - Accpted? - ${declarationObject?.CreditWorthiness?.accept ? 'Yes' : 'No'}`, '', `Declaration Item 2 - Accpted? - ${declarationObject?.AuthoriseFCU?.accept ? 'Yes' : 'No'}`, '', `Declaration Item 3 - Accpted? - ${declarationObject?.TrueInformation?.accept ? 'Yes' : 'No'}`, '', `Declaration Item 4 - Accpted? - ${declarationObject?.AmlCftObligations?.accept ? 'Yes' : 'No'}`, '', `Declaration Item 5 - Accpted? - ${declarationObject?.StorePersonalInfo?.accept ? 'Yes' : 'No'}`, '', `Declaration Item 6 - Accpted? - ${declarationObject?.InsureLoan?.accept ? 'Yes' : 'No'}`]
 
   //TODO Privacy Declaration - Add to Memo Lines
   const declarationObject = useSelector((state) => state.authorisationReducer.declarationItems)
@@ -214,6 +218,9 @@ export default function Submission() {
   const expenses_insurance = useSelector((state) => state.sopExpenseReducer.insurance)
   const expenses_savings = useSelector((state) => state.sopExpenseReducer.savings)
 
+  //* Payment Instruction - Bank Account for Instalment Debit
+  const backAccountForInstalmentDebit = useSelector((state) => state.paymentInstructionReducer.backAccountForInstalmentDebit)
+
   const nsr = useSelector((state) => state.sopItemsReducer.nsr)
   const nsrWithoutPercent = nsr?.substring(0, nsr.length - 1)
 
@@ -222,7 +229,7 @@ export default function Submission() {
   const dispatch = useDispatch()
 
   function onSubmit() {
-    console.log('Privacy Declaration Submitted')
+    // console.log('Privacy Declaration Submitted')
   }
 
   function createMailingBodyData() {
@@ -233,9 +240,14 @@ export default function Submission() {
       interestRate: interestRate,
       repayAmount: lncalc_InstalmentAmount,
       repayFreq: repayFreq,
+      firstPmtDate: convertToUTCCustom(firstPaymentDate, 'useEffect'),
       loanPurpose: getLoanPurpose_FromValue(loanPurpose)?.key,
       term: term,
       tradingBranch: getTradingBranch_FromValue(tradingBranchCode)?.key,
+      paymentMethod: {
+        bankAccountNumber: backAccountForInstalmentDebit == null ? 'null' : backAccountForInstalmentDebit,
+        paymentMethod: 'DD',
+      },
       fees: documentationTypes?.map((fee) => {
         return fee.feeCode
       }),
@@ -340,6 +352,10 @@ export default function Submission() {
       loanPurpose: getLoanPurpose_FromValue(loanPurpose)?.key,
       term: term,
       tradingBranch: getTradingBranch_FromValue(tradingBranchCode)?.key,
+      paymentMethod: {
+        bankAccountNumber: backAccountForInstalmentDebit == null ? null : backAccountForInstalmentDebit,
+        paymentMethod: backAccountForInstalmentDebit == null ? 'AUTOPAY' : 'DD',
+      },
       fees: documentationTypes?.map((fee) => {
         return fee.feeCode
       }),
@@ -528,7 +544,7 @@ export default function Submission() {
               <WarningIcon color='warning' sx={{ fontSize: 80 }} />
             </Box>
             <Subtitle variant='h4' clor='primary' sx={{ textAlign: 'center' }}>
-              There was an issue while submittig the loan application.
+              There was an issue while submitting the loan application.
             </Subtitle>
           </Stack>
           <Stack direction='column' justifyContent='center' alignItems='center' spacing={1} sx={{ display: 'flex', flexGrow: 1, width: '100%' }}>
@@ -536,7 +552,7 @@ export default function Submission() {
               Please contact the <strong>Data and Innovation Team</strong> to fix the issue. Click
               <strong>
                 <a href={mailTo}>here </a>
-              </strong>{' '}
+              </strong>
               to send an email.
             </Typography>
           </Stack>
@@ -559,7 +575,6 @@ export default function Submission() {
             <Typography variant='body1' color='primary' sx={{ fontWeight: 'bold' }}>
               {applicationNumber}
             </Typography>
-
             <Stack direction='column' justifyContent='center' alignItems='center' spacing={1} sx={{ display: 'flex', flexGrow: 1, width: '100%' }}></Stack>
           </Stack>
         </Stack>

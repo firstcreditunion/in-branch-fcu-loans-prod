@@ -107,7 +107,7 @@ export default function ChangePasswordForm() {
         history.push('/signin')
       },
       onFailure: (err) => {
-        console.log('Confirm Password: ', err)
+        // console.log('Confirm Password: ', err)
       },
     })
   }

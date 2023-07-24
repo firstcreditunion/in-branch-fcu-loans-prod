@@ -17,6 +17,7 @@ import sopItemsSlice from './slices/sopItemsSlice'
 
 import sopRelatedQuestionsSlice from './slices/sopRelatedQuestionsSlice'
 import authorisationSlice from './slices/authorisationSlice'
+import paymentInstructionSlice from './slices/paymentInstructionSlice'
 import submissionSlice from './slices/submissionSlice'
 
 //* Setting up reducers
@@ -36,6 +37,7 @@ const store = configureStore({
     sopExpenseReducer: sopExpenseSlice.reducer,
     sopItemsReducer: sopItemsSlice.reducer,
     sopRelatedQuestionsReducer: sopRelatedQuestionsSlice.reducer,
+    paymentInstructionReducer: paymentInstructionSlice.reducer,
     authorisationReducer: authorisationSlice.reducer,
     submissionReducer: submissionSlice.reducer,
   },

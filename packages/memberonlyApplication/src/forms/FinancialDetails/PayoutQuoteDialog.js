@@ -9,6 +9,7 @@ import LoadingButton from '@mui/lab/LoadingButton'
 
 //* Custom Components
 import ComponentBlock from '../../layouts/ComponentBlock'
+import TransitionDialog from '../../components/TransitionDialog'
 
 //* MUI Icons
 import DoneIcon from '@mui/icons-material/Done'
@@ -62,6 +63,8 @@ const PayoutQuoteDialog = ({ openDialog = false, setOpenCostRecoveryModalParent 
   const [open, setOpen] = useState(false)
   const [openCostRecoveryModal, setOpenCostRecoveryModal] = useState(openDialog)
 
+  const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false)
+
   const handleOpenCostRecoveryModal = () => setOpenCostRecoveryModal(true)
 
   function handleCloseCostRecoveryModal(event, reason) {
@@ -69,10 +72,20 @@ const PayoutQuoteDialog = ({ openDialog = false, setOpenCostRecoveryModalParent 
     setOpenCostRecoveryModalParent(false)
   }
 
+  function handleOpenConfirmationDialog(event, reason) {
+    setOpenConfirmationDialog(true)
+  }
+
+  function handleCloseConfirmationDialog(event, reason) {
+    setOpenConfirmationDialog(false)
+  }
+
   const payoutquoteloading = useSelector((state) => state.loanDetailsReducer.payoutquoteloading)
+  const createpayoutquoteloading = useSelector((state) => state.loanDetailsReducer.createpayoutquoteloading)
   const payoutquoteerror = useSelector((state) => state.loanDetailsReducer.payoutquoteerror)
   const payoutquotecurrentRequestId = useSelector((state) => state.loanDetailsReducer.payoutquotecurrentRequestId)
   const payoutQuote_created = useSelector((state) => state.loanDetailsReducer.payoutQuote_created)
+  const payoutQuoteCreationAgreed = useSelector((state) => state.loanDetailsReducer.payoutQuoteCreationAgreed)
 
   const primeClientNumber = useSelector((state) => state.clientSearchReducer.primeclientNumber)
   const payoutLendingAccountNumber = useSelector((state) => state.loanDetailsReducer.payoutLendingAccountNumber)
@@ -108,8 +121,17 @@ const PayoutQuoteDialog = ({ openDialog = false, setOpenCostRecoveryModalParent 
     return
   }, [openDialog])
 
-  console.log('payoutAcc_arrearsBalance: ', payoutAcc_arrearsBalance)
-  console.log('payoutAcc_balanceOutstanding: ', payoutAcc_balanceOutstanding)
+  useEffect(async () => {
+    if (payoutQuote_created === true) return
+
+    if (payoutQuoteCreationAgreed === false) return
+
+    if (payoutQuoteCreationAgreed === true && payoutQuote_created === null) {
+      await createPayoutQuoteDetails()
+      await setPayoutQuote_created(true)
+      handleCloseCostRecoveryModal()
+    }
+  }, [payoutQuoteCreationAgreed])
 
   // Defualt Values for React Hook Form
   const defaultValues = {
@@ -174,134 +196,147 @@ const PayoutQuoteDialog = ({ openDialog = false, setOpenCostRecoveryModalParent 
       data: accountData,
     }
 
-    await dispatch(getPayoutQuote(payoutConfig))
+    await dispatch(createPayoutQuote(payoutConfig))
   }
 
   function setPayoutLendingAccountNumber(event) {
     dispatch(loanDetailsActions.setPayoutLendingAccountNumber(event.target.value))
   }
 
-  function setPayoutQuote_created(event) {
+  async function setPayoutQuote_created(event) {
     dispatch(loanDetailsActions.setPayoutQuote_created(true))
   }
 
-  async function handleCloseAndCreatePayoutQuote() {
-    await createPayoutQuoteDetails()
+  function setPayoutQuoteCreationAgreed() {
+    dispatch(loanDetailsActions.setPayoutQuoteCreationAgreed(true))
+    dispatch(loanDetailsActions.setPayoutQuoteCreationForAccount(payoutLendingAccountNumber))
+    handleCloseConfirmationDialog()
+  }
 
-    setPayoutQuote_created()
+  function setPayoutQuoteCreationCancalled() {
+    dispatch(loanDetailsActions.setPayoutQuoteCreationAgreed(false))
+    dispatch(loanDetailsActions.setPayoutQuoteCreationForAccount(''))
+    handleCloseConfirmationDialog()
+  }
+
+  async function handleCloseAndCreatePayoutQuote() {
+    await handleOpenConfirmationDialog()
   }
 
   const onSubmit = (event) => {
-    console.log('On Submit')
+    // console.log('On Submit')
   }
 
   return (
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      <Dialog open={openCostRecoveryModal} onClose={handleCloseCostRecoveryModal} fullWidth={true} maxWidth='md'>
-        <DialogTitle>
-          <Stack direction='column'>
-            <Typography variant='h6' color='primary' sx={{ fontWeight: 'bold' }}>
-              Payout Quotation
-            </Typography>
-            <Divider sx={{ width: '100%', my: 2 }} />
-          </Stack>
-        </DialogTitle>
-        <DialogContent>
-          <Paper sx={{ width: '100%' }}>
-            <Stack direction='column' spacing={2} sx={{ width: '100%' }}>
-              <Stack direction='column' justifyContent='space-between' alignItems='center' sx={{ py: 3 }}>
-                <RHFTextField
-                  name='payoutLendingAccountNumber'
-                  placeholder='Search Lending Account'
-                  label=''
-                  autoFocus={true}
-                  onInputChange={setPayoutLendingAccountNumber}
-                  value={payoutLendingAccountNumber}
-                  sx={{ maxWidth: 400 }}
-                  InputProps={{
-                    type: 'number',
-                    startAdornment: (
-                      <InputAdornment position='start'>
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                    endAdornment: (
-                      <InputAdornment position='end'>
-                        <LoadingButton onClick={getPayoutQuoteDetails} loading={payoutquoteloading === 'PENDING'} type='submit' variant='contained' color='secondary' sx={{ borderRadius: 20 }}>
-                          Search
-                        </LoadingButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </Stack>
-              {payoutquotecurrentRequestId != null && (
-                <>
-                  <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{ width: '100%' }}>
-                    <Typography variant='body1' sx={{ fontWeight: 'light' }}>
-                      Account Name
-                    </Typography>
-                    <Typography variant='subtitle2'>{payoutAcc_reportingName}</Typography>
-                  </Stack>
-                  <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{ width: '100%' }}>
-                    <Typography variant='body1' sx={{ fontWeight: 'light' }}>
-                      Account Start Date
-                    </Typography>
-                    <Typography variant='subtitle2'>{startDateConverted}</Typography>
-                  </Stack>
-                  <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{ width: '100%' }}>
-                    <Typography variant='body1' sx={{ fontWeight: 'light' }}>
-                      Account Status
-                    </Typography>
-                    <Typography variant='subtitle2'>{payoutAcc_status}</Typography>
-                  </Stack>
-                  <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{ width: '100%' }}>
-                    <Stack direction='column' justifyContent='center' alignItems='flex-start' spacing={1}>
-                      <Stack direction='row' justifyContent='flex-start' alignItems='center' spacing={1}>
-                        <Typography variant='body1' sx={{ fontWeight: 'light' }}>
-                          Outstanding Balance
-                        </Typography>
-                        {payoutAcc_balanceOutstanding + requestedLoanAmount > memberOnlyLoanThreshold && (
-                          <Tooltip title={`Total aggregate balance is above the threshold - ${fCurrency(memberOnlyLoanThreshold)}`}>
-                            <ErrorIcon fontSize='small' color='error' />
-                          </Tooltip>
-                        )}
-                      </Stack>
-                      <Typography variant='caption' sx={{ color: 'error.main' }}>
-                        Total aggregate balance is above the threshold - {fCurrency(memberOnlyLoanThreshold)}
-                      </Typography>
-                    </Stack>
-
-                    <Typography variant='subtitle2'>{fCurrency(payoutAcc_balanceOutstanding)}</Typography>
-                  </Stack>
-                  <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{ width: '100%' }}>
-                    <Typography variant='body1' sx={{ fontWeight: 'light' }}>
-                      Arrears Balance
-                    </Typography>
-                    <Typography variant='subtitle2'>{fCurrency(payoutAcc_arrearsBalance)}</Typography>
-                  </Stack>
-                  <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{ width: '100%' }}>
-                    <Typography variant='body1' sx={{ fontWeight: 'light' }}>
-                      Bank Account Number
-                    </Typography>
-                    <Typography variant='subtitle2'>{payoutAcc_bankAccountNumber}</Typography>
-                  </Stack>
-                </>
-              )}
+    <>
+      <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+        <Dialog open={openCostRecoveryModal} onClose={handleCloseCostRecoveryModal} fullWidth={true} maxWidth='md'>
+          <DialogTitle>
+            <Stack direction='column'>
+              <Typography variant='h6' color='primary' sx={{ fontWeight: 'bold' }}>
+                Payout Quotation
+              </Typography>
+              <Divider sx={{ width: '100%', my: 2 }} />
             </Stack>
-          </Paper>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseCostRecoveryModal} autoFocus>
-            Cancel
-          </Button>
-          {/* //! Add Disabled prop for ampunts above the thresold */}
-          <Button onClick={handleCloseAndCreatePayoutQuote} variant='contained' sx={{ borderRadius: 10 }}>
-            Create Quote
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </FormProvider>
+          </DialogTitle>
+          <DialogContent>
+            <Paper sx={{ width: '100%' }}>
+              <Stack direction='column' spacing={2} sx={{ width: '100%' }}>
+                <Stack direction='column' justifyContent='space-between' alignItems='center' sx={{ py: 3 }}>
+                  <RHFTextField
+                    name='payoutLendingAccountNumber'
+                    placeholder='Search Lending Account'
+                    label=''
+                    autoFocus={true}
+                    onInputChange={setPayoutLendingAccountNumber}
+                    value={payoutLendingAccountNumber}
+                    sx={{ maxWidth: 400 }}
+                    InputProps={{
+                      type: 'number',
+                      startAdornment: (
+                        <InputAdornment position='start'>
+                          <SearchIcon />
+                        </InputAdornment>
+                      ),
+                      endAdornment: (
+                        <InputAdornment position='end'>
+                          <LoadingButton onClick={getPayoutQuoteDetails} loading={payoutquoteloading === 'PENDING'} type='submit' variant='contained' color='secondary' sx={{ borderRadius: 20 }}>
+                            Search
+                          </LoadingButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Stack>
+                {payoutquotecurrentRequestId != null && (
+                  <>
+                    <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{ width: '100%' }}>
+                      <Typography variant='body1' sx={{ fontWeight: 'light' }}>
+                        Account Name
+                      </Typography>
+                      <Typography variant='subtitle2'>{payoutAcc_reportingName}</Typography>
+                    </Stack>
+                    <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{ width: '100%' }}>
+                      <Typography variant='body1' sx={{ fontWeight: 'light' }}>
+                        Account Start Date
+                      </Typography>
+                      <Typography variant='subtitle2'>{startDateConverted}</Typography>
+                    </Stack>
+                    <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{ width: '100%' }}>
+                      <Typography variant='body1' sx={{ fontWeight: 'light' }}>
+                        Account Status
+                      </Typography>
+                      <Typography variant='subtitle2'>{payoutAcc_status}</Typography>
+                    </Stack>
+                    <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{ width: '100%' }}>
+                      <Stack direction='column' justifyContent='center' alignItems='flex-start' spacing={1}>
+                        <Stack direction='row' justifyContent='flex-start' alignItems='center' spacing={1}>
+                          <Typography variant='body1' sx={{ fontWeight: 'light' }}>
+                            Outstanding Balance
+                          </Typography>
+                          {payoutAcc_balanceOutstanding + requestedLoanAmount > memberOnlyLoanThreshold && (
+                            <Tooltip title={`Total aggregate balance is above the threshold - ${fCurrency(memberOnlyLoanThreshold)}`}>
+                              <ErrorIcon fontSize='small' color='error' />
+                            </Tooltip>
+                          )}
+                        </Stack>
+                        <Typography variant='caption' sx={{ color: 'error.main' }}>
+                          Total aggregate balance is above the threshold - {fCurrency(memberOnlyLoanThreshold)}
+                        </Typography>
+                      </Stack>
+
+                      <Typography variant='subtitle2'>{fCurrency(payoutAcc_balanceOutstanding)}</Typography>
+                    </Stack>
+                    <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{ width: '100%' }}>
+                      <Typography variant='body1' sx={{ fontWeight: 'light' }}>
+                        Arrears Balance
+                      </Typography>
+                      <Typography variant='subtitle2'>{fCurrency(payoutAcc_arrearsBalance)}</Typography>
+                    </Stack>
+                    <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{ width: '100%' }}>
+                      <Typography variant='body1' sx={{ fontWeight: 'light' }}>
+                        Bank Account Number
+                      </Typography>
+                      <Typography variant='subtitle2'>{payoutAcc_bankAccountNumber}</Typography>
+                    </Stack>
+                  </>
+                )}
+              </Stack>
+            </Paper>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseCostRecoveryModal} autoFocus>
+              Cancel
+            </Button>
+            {/* //! Add Disabled prop for ampunts above the thresold */}
+            <LoadingButton onClick={handleCloseAndCreatePayoutQuote} loading={createpayoutquoteloading === 'PENDING'} variant='contained' sx={{ borderRadius: 10 }}>
+              Create Quote
+            </LoadingButton>
+          </DialogActions>
+        </Dialog>
+      </FormProvider>
+      <TransitionDialog dialogOnClose={handleCloseConfirmationDialog} dialogOpen={openConfirmationDialog} mainTitle='Confirm Settlement Quote' body={`Are you sure you want to create a settlement quote for account number - ${payoutLendingAccountNumber}?`} button1Text='Cancel' button1_OnClick={setPayoutQuoteCreationCancalled} button2Text='Agree' button2_OnClick={setPayoutQuoteCreationAgreed} />
+    </>
   )
 }
 

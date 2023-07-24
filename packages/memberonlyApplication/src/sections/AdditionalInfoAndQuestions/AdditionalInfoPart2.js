@@ -17,7 +17,16 @@ const AdditionalInfoAndQuestions = () => {
   }, [])
 
   return (
-    <Stack direction='column' justifyContent='center' alignItems='center' spacing={5} sx={{ minWidth: '100%', minHeight: '100%' }}>
+    <Stack
+      direction='column'
+      justifyContent='center'
+      alignItems='center'
+      spacing={5}
+      sx={{
+        minWidth: '100%',
+        minHeight: '100%',
+      }}
+    >
       <Typography
         variant='h4'
         color='primary'
@@ -28,7 +37,7 @@ const AdditionalInfoAndQuestions = () => {
           letterSpacing: 3,
         }}
       >
-        Sutability - Part 2
+        Sutability Test - Part 2
       </Typography>
       <Grid container alignItems='center' justifyContent='center' spacing={10} sx={{ width: '100%' }}>
         <Grid md={8}>

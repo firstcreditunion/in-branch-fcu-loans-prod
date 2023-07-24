@@ -38,7 +38,7 @@ export default function AuthLogoutForm() {
   const { userLogout } = useContext(LoginContext)
 
   useEffect(() => {
-    console.log('Logout Form mounted')
+    // console.log('Logout Form mounted')
     userLogout()
   }, [])
 

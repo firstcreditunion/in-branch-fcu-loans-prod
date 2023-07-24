@@ -128,7 +128,6 @@ const sopIncomeGridSlice = createSlice({
 
     //Wages
     setWagesAmount1: (state, action) => {
-      console.log('State Change triggered for Wages Amount 1 - ', action.payload)
       state.wages.amount1 = action.payload
     },
     setWagesAmount2: (state, action) => {

@@ -37,7 +37,7 @@ const EmploymentDetails = () => {
   //? Employment Details From Redux
   const employmentDetails = useSelector((state) => state.verifyPrimeDetailsReducer.employmentDetails)
 
-  console.log('Employment Details: ', employmentDetails)
+  // console.log('Employment Details: ', employmentDetails)
 
   //* Member Details
   const primeClientNumber = useSelector((state) => state.clientSearchReducer.primeclientNumber)
@@ -68,7 +68,7 @@ const EmploymentDetails = () => {
   } = methods
 
   const onSubmit = (event) => {
-    console.log('On Submit Loan Details')
+    // console.log('On Submit Loan Details')
   }
 
   function setPrimeEmploymentDetailsVerified(event) {

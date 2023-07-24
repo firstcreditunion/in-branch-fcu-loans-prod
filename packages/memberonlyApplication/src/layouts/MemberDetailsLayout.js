@@ -14,6 +14,7 @@ import { sopLiabilitiesActions } from '../redux/slices/sopLiabilitiesSlice'
 import { sopIncomeGridSliceActions } from '../redux/slices/sopIncomeSlice'
 import { sopExpenseAction } from '../redux/slices/sopExpenseSlice'
 import { sopRelatedQuestionActions } from '../redux/slices/sopRelatedQuestionsSlice'
+import { paymentInstructionActions } from '../redux/slices/paymentInstructionSlice'
 import { authorisationActions } from '../redux/slices/authorisationSlice'
 
 //* MUI
@@ -40,6 +41,7 @@ import SopAssetsAndLiabilities from '../sections/FinancialDetails/SopAssetsAndLi
 import SopIncomeAndExpense from '../sections/FinancialDetails/SopIncomeAndExpense'
 
 import ResponsibleLendingQuestions from '../sections/FinancialDetails/SOPRelatedQuestionsSections'
+import InstalmentDebit from '../sections/InstalmentDebit'
 import Ackwonlegement from '../sections/Ackwonlegement'
 import Submission from '../sections/Submission'
 
@@ -103,6 +105,10 @@ export default function MemberDetailsLayout() {
   // Privacy Declaration
   const isValidPrivacyActDeclaration = useSelector((state) => state.authorisationReducer.isValidPrivacyActDeclaration)
   const onSubmitPrivacyActDeclaration = useSelector((state) => state.authorisationReducer.onSubmitPrivacyActDeclaration)
+
+  // Privacy Declaration
+  const isValidPaymentInstruction = useSelector((state) => state.paymentInstructionReducer.isValidPaymentInstruction)
+  const onSubmitPaymentInstruction = useSelector((state) => state.paymentInstructionReducer.onSubmitPaymentInstruction)
 
   // Mmeber Details state
   const primeid = useSelector((state) => state.clientSearchReducer.primeid)
@@ -296,6 +302,24 @@ export default function MemberDetailsLayout() {
     {
       index: 11,
       stepCount: 12,
+      code: 'PAYINST',
+      label: 'Payment Instruction',
+      role: 'COMM',
+      render: <InstalmentDebit />,
+      showClientSearchBar: false,
+      showContinueButton: true,
+      paddingToAddToNavigationButtons: 0,
+      showStep: true,
+      skipStep: false,
+      customContainerWidth: 'lg',
+      customNextButtonText: null,
+      disableContinueButton: false,
+      showContinueButton: true,
+      showBackButton: true,
+    },
+    {
+      index: 12,
+      stepCount: 13,
       code: 'SUBLN',
       label: 'Submit Loan App',
       role: 'COMM',
@@ -381,6 +405,10 @@ export default function MemberDetailsLayout() {
       handleResponsibleLendingSubmit()
       return isValidResponsibleLending
     }
+    if (getCurrentStep[0]?.code === 'PAYINST') {
+      handlePaymentInstructionSubmit()
+      return isValidPaymentInstruction
+    }
   }
 
   function handleQuestionJointApplicantSubmit() {
@@ -464,6 +492,14 @@ export default function MemberDetailsLayout() {
       dispatch(authorisationActions.setOnSubmitPrivacyActDeclaration(true))
     } else {
       dispatch(authorisationActions.setOnSubmitPrivacyActDeclaration(!onSubmitPrivacyActDeclaration))
+    }
+  }
+
+  function handlePaymentInstructionSubmit() {
+    if (onSubmitPaymentInstruction === null) {
+      dispatch(paymentInstructionActions.setOnSubmitPaymentInstruction(true))
+    } else {
+      dispatch(paymentInstructionActions.setOnSubmitPaymentInstruction(!onSubmitPaymentInstruction))
     }
   }
 

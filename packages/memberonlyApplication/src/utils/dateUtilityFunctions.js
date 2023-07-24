@@ -13,9 +13,9 @@ export function subtractXDaysFromDate(dateToSubtractFrom, daysToSubtract) {
 
 export function subtractDurationFromDate(dateToSubtractFrom, duration) {
   const date = new Date(dateToSubtractFrom)
-  console.log('Date: ', date)
-  console.log('Date to Compare: ', duration)
-  console.log('Subtracted Date: ', sub(dateToSubtractFrom, { ...duration }))
+  // console.log('Date: ', date)
+  // console.log('Date to Compare: ', duration)
+  // console.log('Subtracted Date: ', sub(dateToSubtractFrom, { ...duration }))
 }
 
 export function numberOfDaysBetweenDates(date1, date2) {}

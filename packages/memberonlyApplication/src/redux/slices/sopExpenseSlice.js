@@ -19,6 +19,13 @@ export const initialState = {
     code: 'LSERV',
     desc: 'Liabilities servicing',
   },
+  proposedLoan: {
+    amount1: null,
+    amount2: null,
+    amount3: null,
+    code: 'PLLOAN',
+    desc: 'Proposed Loan',
+  },
   powerOrGas: {
     amount1: null,
     amount2: null,
@@ -135,6 +142,10 @@ const sopExpenseSlice = createSlice({
       state.liabilitiesServicing.amount2 = null
       state.liabilitiesServicing.amount3 = null
 
+      state.proposedLoan.amount1 = null
+      state.proposedLoan.amount2 = null
+      state.proposedLoan.amount3 = null
+
       state.powerOrGas.amount1 = null
       state.powerOrGas.amount2 = null
       state.powerOrGas.amount3 = null
@@ -197,6 +208,28 @@ const sopExpenseSlice = createSlice({
     },
     setRentingBoardingAmount3: (state, action) => {
       state.rentingBoarding.amount3 = action.payload
+    },
+
+    //Wages
+    setLiabilitiesServicingAmount1: (state, action) => {
+      state.liabilitiesServicing.amount1 = action.payload
+    },
+    setLiabilitiesServicingAmount2: (state, action) => {
+      state.liabilitiesServicing.amount2 = action.payload
+    },
+    setLiabilitiesServicingAmount3: (state, action) => {
+      state.liabilitiesServicing.amount3 = action.payload
+    },
+
+    //Wages
+    setProposedLoanAmount1: (state, action) => {
+      state.proposedLoan.amount1 = action.payload
+    },
+    setProposedLoanAmount2: (state, action) => {
+      state.proposedLoan.amount2 = action.payload
+    },
+    setProposedLoanAmount3: (state, action) => {
+      state.proposedLoan.amount3 = action.payload
     },
 
     //Wages

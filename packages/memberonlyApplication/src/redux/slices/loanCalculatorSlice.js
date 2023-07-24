@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { HTTP_STATUS } from '../utils/apiConstants'
+import addDays from 'date-fns/addDays'
+import getDate from 'date-fns/getDate'
 
 const namespace = 'loanCalculator'
 
@@ -18,6 +20,9 @@ export const initialState = {
   loading: HTTP_STATUS.IDLE,
   error: HTTP_STATUS.IDLE,
   currentRequestId: null,
+
+  //* Defualt Start Date
+  firstPaymentDate: addDays(new Date(), 7),
 
   //* Other Data
   lncalc_AmountFinanced: 0,
@@ -61,7 +66,7 @@ export const initialState = {
 
   lncalc_PaymentFrequency: {
     value: 1,
-    unit: '',
+    unit: 'W',
   },
 
   lncalc_PrimaryClientType: '',
@@ -96,7 +101,11 @@ export const initialState = {
 const loanCalculatorSlice = createSlice({
   name: namespace,
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    setFirstPaymentDate: (state, action) => {
+      state.firstPaymentDate = action.payload
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getRepaymentDetails.pending, (state, action) => {
@@ -160,26 +169,27 @@ const loanCalculatorSlice = createSlice({
           state.lncalc_PrimaryClientType = response?.primaryClientType
           state.lncalc_ProductCode = response?.productCode
 
-          //* Weekly Payment
-          if (repaymentOptions?.firstWeeklyPaymentDate) {
-            state.lncalc_RepaymentOptionsWeekly.firstPaymentDate = repaymentOptions?.firstWeeklyPaymentDate
-            state.lncalc_RepaymentOptionsWeekly.numberOfPayments = repaymentOptions?.numberOfWeeklyPayments
-            state.lncalc_RepaymentOptionsWeekly.paymentAmount = repaymentOptions?.weeklyAmount
-          }
+          //* Decided not to use these fields because they are not consistent with the other instalment date fields (such as instalment summary, and instalment breakdown)
+          // //* Weekly Payment
+          // if (repaymentOptions?.firstWeeklyPaymentDate) {
+          //   state.lncalc_RepaymentOptionsWeekly.firstPaymentDate = repaymentOptions?.firstWeeklyPaymentDate
+          //   state.lncalc_RepaymentOptionsWeekly.numberOfPayments = repaymentOptions?.numberOfWeeklyPayments
+          //   state.lncalc_RepaymentOptionsWeekly.paymentAmount = repaymentOptions?.weeklyAmount
+          // }
 
-          //* Fortnightly Payment
-          if (repaymentOptions?.firstFortnightlyPaymentDate) {
-            state.lncalc_RepaymentOptionsFortnightly.firstPaymentDate = repaymentOptions?.firstFortnightlyPaymentDate
-            state.lncalc_RepaymentOptionsFortnightly.numberOfPayments = repaymentOptions?.numberOfFortnightlyPayments
-            state.lncalc_RepaymentOptionsFortnightly.paymentAmount = repaymentOptions?.fortnightlyAmount
-          }
+          // //* Fortnightly Payment
+          // if (repaymentOptions?.firstFortnightlyPaymentDate) {
+          //   state.lncalc_RepaymentOptionsFortnightly.firstPaymentDate = repaymentOptions?.firstFortnightlyPaymentDate
+          //   state.lncalc_RepaymentOptionsFortnightly.numberOfPayments = repaymentOptions?.numberOfFortnightlyPayments
+          //   state.lncalc_RepaymentOptionsFortnightly.paymentAmount = repaymentOptions?.fortnightlyAmount
+          // }
 
-          //* Monthly Payment
-          if (repaymentOptions?.firstFortnightlyPaymentDate) {
-            state.lncalc_RepaymentOptionsMonthly.firstPaymentDate = repaymentOptions?.firstMonthlyPaymentDate
-            state.lncalc_RepaymentOptionsMonthly.numberOfPayments = repaymentOptions?.numberOfMonthlyPayments
-            state.lncalc_RepaymentOptionsMonthly.paymentAmount = repaymentOptions?.monthlyAmount
-          }
+          // //* Monthly Payment
+          // if (repaymentOptions?.firstFortnightlyPaymentDate) {
+          //   state.lncalc_RepaymentOptionsMonthly.firstPaymentDate = repaymentOptions?.firstMonthlyPaymentDate
+          //   state.lncalc_RepaymentOptionsMonthly.numberOfPayments = repaymentOptions?.numberOfMonthlyPayments
+          //   state.lncalc_RepaymentOptionsMonthly.paymentAmount = repaymentOptions?.monthlyAmount
+          // }
 
           state.lncalc_ResidualValue = response?.residualValue
           state.lncalc_SettlementDate = response?.settlementDate
@@ -194,10 +204,10 @@ const loanCalculatorSlice = createSlice({
           state.error = action.error
           state.currentRequestId = null
 
-          console.log('Rejected Error: ', action.error)
-          console.log('Rejected Payload: ', action.payload)
-          console.log('Rejected meta: ', action.meta)
-          console.log('Rejected Type: ', action.type)
+          // console.log('Rejected Error: ', action.error)
+          // console.log('Rejected Payload: ', action.payload)
+          // console.log('Rejected meta: ', action.meta)
+          // console.log('Rejected Type: ', action.type)
         }
       })
   },

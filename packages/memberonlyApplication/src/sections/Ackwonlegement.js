@@ -79,7 +79,7 @@ export default function Authorisation() {
 
   const declarationItems = Object.values(declarationObject)
 
-  console.log('declarationItems: ', declarationItems)
+  // console.log('declarationItems: ', declarationItems)
 
   const handleChange = (index, accept) => (event) => {
     if (index === 0) {
@@ -163,7 +163,7 @@ export default function Authorisation() {
   }, [onSubmitPrivacyActDeclaration])
 
   function onSubmit() {
-    console.log('Privacy Declaration Submitted')
+    // console.log('Privacy Declaration Submitted')
   }
 
   return (

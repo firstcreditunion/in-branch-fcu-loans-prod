@@ -57,6 +57,7 @@ export const initialState = {
   //* PRIME BORROWER
 
   primeclientNumber: '',
+  primeBankAccountNumbers: [],
 
   primeclientType: '',
   primedateOfBirth: null,
@@ -276,6 +277,7 @@ const clientSearchSlice = createSlice({
           const response = action.payload?.axiosResponse
           const generalDetails = response?.generalDetails
           const IRE_estimate = response?.IRE_estimate
+          state.primeBankAccountNumbers = response?.bankAccounts
           const funding = response?.funding
           const lending = response?.lending
           const recovery = response?.recovery
@@ -344,10 +346,10 @@ const clientSearchSlice = createSlice({
           state.primeerror = action.error
           state.primecurrentRequestId = null
 
-          console.log('Rejected Error: ', action.error)
-          console.log('Rejected Payload: ', action.payload)
-          console.log('Rejected meta: ', action.meta)
-          console.log('Rejected Type: ', action.type)
+          // console.log('Rejected Error: ', action.error)
+          // console.log('Rejected Payload: ', action.payload)
+          // console.log('Rejected meta: ', action.meta)
+          // console.log('Rejected Type: ', action.type)
         }
       })
 
@@ -436,10 +438,10 @@ const clientSearchSlice = createSlice({
           state.jointerror = action.error
           state.jointcurrentRequestId = null
 
-          console.log('Rejected Error: ', action.error)
-          console.log('Rejected Payload: ', action.payload)
-          console.log('Rejected meta: ', action.meta)
-          console.log('Rejected Type: ', action.type)
+          // console.log('Rejected Error: ', action.error)
+          // console.log('Rejected Payload: ', action.payload)
+          // console.log('Rejected meta: ', action.meta)
+          // console.log('Rejected Type: ', action.type)
         }
       })
 
@@ -455,7 +457,7 @@ const clientSearchSlice = createSlice({
         if (state.ireloading === 'PENDING' && state.irecurrentRequestId === requestId) {
           state.ireloading = HTTP_STATUS.IDLE
 
-          console.log('IRE Result: ', action.payload)
+          // console.log('IRE Result: ', action.payload)
 
           const response = action.payload?.axiosResponse?.IRE_estimate
 
@@ -471,10 +473,10 @@ const clientSearchSlice = createSlice({
           state.ireerror = action.error
           state.irecurrentRequestId = null
 
-          console.log('Rejected Error: ', action.error)
-          console.log('Rejected Payload: ', action.payload)
-          console.log('Rejected meta: ', action.meta)
-          console.log('Rejected Type: ', action.type)
+          // console.log('Rejected Error: ', action.error)
+          // console.log('Rejected Payload: ', action.payload)
+          // console.log('Rejected meta: ', action.meta)
+          // console.log('Rejected Type: ', action.type)
         }
       })
   },

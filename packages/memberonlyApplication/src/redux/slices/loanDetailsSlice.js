@@ -89,6 +89,9 @@ export const initialState = {
   payoutQuote_settlementAmount: null,
   payoutQuote_validThruDate: null,
 
+  payoutQuoteCreationAgreed: false,
+  payoutQuoteCreationForAccount: '',
+
   onSubmitLoanDetails: null,
   isValidLoanDetails: null,
 }
@@ -158,6 +161,12 @@ const loanDetailsSlice = createSlice({
     setPayoutQuote_created: (state, action) => {
       state.payoutQuote_created = action.payload
     },
+    setPayoutQuoteCreationAgreed: (state, action) => {
+      state.payoutQuoteCreationAgreed = action.payload
+    },
+    setPayoutQuoteCreationForAccount: (state, action) => {
+      state.payoutQuoteCreationForAccount = action.payload
+    },
 
     //* Interest Rates
     setBaseRateInterest: (state, action) => {
@@ -219,8 +228,6 @@ const loanDetailsSlice = createSlice({
         if (state.payoutquoteloading === 'PENDING' && state.payoutquotecurrentRequestId === requestId) {
           state.payoutquoteloading = HTTP_STATUS.IDLE
 
-          console.log('Payout Quote Data Data: ', action.payload)
-
           const payoutResult = action.payload?.axiosResponse[0]
 
           state.payoutAcc_arrearsBalance = payoutResult?.arrearsBalance
@@ -242,11 +249,6 @@ const loanDetailsSlice = createSlice({
           state.payoutquoteloading = 'IDLE'
           state.payoutquoteerror = action.error
           state.payoutquotecurrentRequestId = null
-
-          console.log('Rejected Error: ', action.error)
-          console.log('Rejected Payload: ', action.payload)
-          console.log('Rejected meta: ', action.meta)
-          console.log('Rejected Type: ', action.type)
         }
       })
 
@@ -262,13 +264,9 @@ const loanDetailsSlice = createSlice({
         if (state.createpayoutquoteloading === 'PENDING' && state.createpayoutquotecurrentRequestId === requestId) {
           state.createpayoutquoteloading = HTTP_STATUS.IDLE
 
-          console.log('Create Payout Quote Data: ', action.payload)
-
           const createPayoutResponse = action.payload?.axiosResponse?.body?.data?.attributes
 
-          // if (createPayoutResponse?.settlementAmount != 0) {
-          //   state.payoutQuote_created = true
-          // }
+          console.log('createPayoutResponse: ', createPayoutResponse)
 
           state.payoutQuote_eodRunning = createPayoutResponse?.eodRunning
           state.payoutQuote_lsqId = createPayoutResponse?.lsqId
@@ -286,10 +284,10 @@ const loanDetailsSlice = createSlice({
           state.createpayoutquoteerror = action.error
           state.createpayoutquotecurrentRequestId = null
 
-          console.log('Rejected Error: ', action.error)
-          console.log('Rejected Payload: ', action.payload)
-          console.log('Rejected meta: ', action.meta)
-          console.log('Rejected Type: ', action.type)
+          // console.log('Rejected Error: ', action.error)
+          // console.log('Rejected Payload: ', action.payload)
+          // console.log('Rejected meta: ', action.meta)
+          // console.log('Rejected Type: ', action.type)
         }
       })
   },

@@ -19,6 +19,7 @@ import SearchIcon from '@mui/icons-material/Search'
 import AccountCircle from '@mui/icons-material/AccountCircle'
 import MailIcon from '@mui/icons-material/Mail'
 import NotificationsIcon from '@mui/icons-material/Notifications'
+import LogoutIcon from '@mui/icons-material/Logout'
 import MoreIcon from '@mui/icons-material/MoreVert'
 import { Button } from '@mui/material'
 
@@ -60,7 +61,7 @@ export default function ApplicationHeader() {
 
   useEffect(() => {
     if (!logout) return
-    console.log('logging Out useEffect')
+    // console.log('logging Out useEffect')
     history.push('/logout')
   }, [logout])
 
@@ -80,8 +81,8 @@ export default function ApplicationHeader() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      {/* <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={handleMenuClose}>My account</MenuItem> */}
       <MenuItem onClick={handleLogout}>Logout</MenuItem>
     </Menu>
   )
@@ -102,7 +103,7 @@ export default function ApplicationHeader() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      {/* <MenuItem>
         <IconButton size='large' aria-label='show 4 new mails' color='inherit'>
           <Badge badgeContent={4} color='error'>
             <MailIcon />
@@ -117,12 +118,12 @@ export default function ApplicationHeader() {
           </Badge>
         </IconButton>
         <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
+      </MenuItem> */}
+      <MenuItem onClick={handleLogout}>
         <IconButton size='large' aria-label='account of current user' aria-controls='primary-search-account-menu' aria-haspopup='true' color='inherit'>
-          <AccountCircle />
+          <LogoutIcon />
         </IconButton>
-        <p>Profile</p>
+        <p>Logout</p>
       </MenuItem>
     </Menu>
   )

@@ -84,20 +84,20 @@ export default function AuthLoginForm() {
 
     authenticate(emailToLogin, login_password)
       .then((data) => {
-        console.log('AUTH Result Data: ', data)
+        // console.log('AUTH Result Data: ', data)
         history.push('/memberonlyloan')
 
         return
       })
       .catch((err) => {
-        console.log('Log In Failed!', err?.message)
+        // console.log('Log In Failed!', err?.message)
         dispatch(authenticationActions.setLoginFailResult(err?.message))
         return
       })
   }
 
   useEffect(() => {
-    console.log('hasSoverignProfile: ', hasSoverignProfile)
+    // console.log('hasSoverignProfile: ', hasSoverignProfile)
 
     if (hasSoverignProfile === 'Unauthorized' || hasSoverignProfile === null || hasSoverignProfile === undefined) return
 

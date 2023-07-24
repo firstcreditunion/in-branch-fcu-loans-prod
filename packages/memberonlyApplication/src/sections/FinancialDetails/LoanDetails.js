@@ -32,6 +32,9 @@ export default function LoanDetails() {
   const creditHistory = useSelector((state) => state.loanDetailsReducer.creditHistory)
   const primeClientNumber = useSelector((state) => state.clientSearchReducer.primeclientNumber)
 
+  const loading = useSelector((state) => state.loanCalculatorReducer.loading)
+  const currentRequestId = useSelector((state) => state.loanCalculatorReducer.currentRequestId)
+
   // const defaultValues = {
   //   showLoanSummary: showLoanSummary,
   // }
@@ -59,7 +62,7 @@ export default function LoanDetails() {
   }, [])
 
   useEffect(async () => {
-    console.log('Making Client Data Request')
+    // console.log('Making Client Data Request')
 
     var clientData = JSON.stringify({
       clientID: primeClientNumber,
@@ -67,7 +70,7 @@ export default function LoanDetails() {
       proposedLoan: requestedLoanAmount,
       creditHistory: getCreditHistory_FromValue(creditHistory)?.key,
     })
-    console.log('Making Client DATA', clientData)
+    // console.log('Making Client DATA', clientData)
     const personalDetialsConfig = {
       url: '/client-details',
       method: 'POST',
@@ -76,10 +79,10 @@ export default function LoanDetails() {
       timeout: 5000,
       data: clientData,
     }
-    console.log('Making Client Data Request CONFIG', personalDetialsConfig)
+    // console.log('Making Client Data Request CONFIG', personalDetialsConfig)
     const clientDetailsResult = await dispatch(updateInterestRateEstimation(personalDetialsConfig))
 
-    console.log('Making Client Data RESPONSE', clientDetailsResult)
+    // console.log('Making Client Data RESPONSE', clientDetailsResult)
   }, [creditHistory])
 
   function showSummary() {

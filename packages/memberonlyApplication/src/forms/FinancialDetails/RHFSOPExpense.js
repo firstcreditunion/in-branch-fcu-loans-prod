@@ -34,6 +34,10 @@ export default function LoanDetails() {
   const liabilitiesServicing2 = useSelector((state) => state.sopExpenseReducer.liabilitiesServicing.amount2)
   const liabilitiesServicing3 = useSelector((state) => state.sopExpenseReducer.liabilitiesServicing.amount3)
 
+  const proposedLoan1 = useSelector((state) => state.sopExpenseReducer.proposedLoan.amount1)
+  const proposedLoan2 = useSelector((state) => state.sopExpenseReducer.proposedLoan.amount2)
+  const proposedLoan3 = useSelector((state) => state.sopExpenseReducer.proposedLoan.amount3)
+
   const powerOrGas1 = useSelector((state) => state.sopExpenseReducer.powerOrGas.amount1)
   const powerOrGas2 = useSelector((state) => state.sopExpenseReducer.powerOrGas.amount2)
   const powerOrGas3 = useSelector((state) => state.sopExpenseReducer.powerOrGas.amount3)
@@ -137,6 +141,29 @@ export default function LoanDetails() {
     },
     {
       id: 3,
+      title: 'Proposed Loan',
+      groupBy: 'expense',
+      amount1: proposedLoan1,
+      amount2: proposedLoan2,
+      amount3: proposedLoan3,
+      amount1Disabled: true,
+      amount2Disabled: true,
+      amount3Disabled: true,
+      label: 'Proposed Loan',
+      sovereignKey: 'PLLOAN',
+      sovereignValue: 'Proposed Loan',
+      callbackfnAmt1: (event) => {
+        return dispatch(sopExpenseAction.setProposedLoanAmount1(parseFloat(event.target.value)))
+      },
+      callbackfnAmt2: (event) => {
+        return dispatch(sopExpenseAction.setProposedLoanAmount2(parseFloat(event.target.value)))
+      },
+      callbackfnAmt3: (event) => {
+        return dispatch(sopExpenseAction.setProposedLoanAmount3(parseFloat(event.target.value)))
+      },
+    },
+    {
+      id: 4,
       title: 'Power or Gas',
       groupBy: 'expense',
       amount1: powerOrGas1,
@@ -159,7 +186,7 @@ export default function LoanDetails() {
       },
     },
     {
-      id: 4,
+      id: 5,
       title: 'Groceries',
       groupBy: 'expense',
       amount1: groceries1,
@@ -182,7 +209,7 @@ export default function LoanDetails() {
       },
     },
     {
-      id: 5,
+      id: 6,
       title: 'Phone or Internet',
       groupBy: 'expense',
       amount1: phoneOrInternet1,
@@ -205,7 +232,7 @@ export default function LoanDetails() {
       },
     },
     {
-      id: 6,
+      id: 7,
       title: 'Fuel',
       groupBy: 'expense',
       amount1: fuel1,
@@ -228,7 +255,7 @@ export default function LoanDetails() {
       },
     },
     {
-      id: 7,
+      id: 8,
       title: 'S6 or Savings',
       groupBy: 'expense',
       amount1: s6_or_savings1,
@@ -251,7 +278,7 @@ export default function LoanDetails() {
       },
     },
     {
-      id: 8,
+      id: 9,
       title: 'Wof and Registration',
       groupBy: 'expense',
       amount1: wof_rego1,
@@ -274,7 +301,7 @@ export default function LoanDetails() {
       },
     },
     {
-      id: 9,
+      id: 10,
       title: 'Clothing',
       groupBy: 'expense',
       amount1: clothing1,
@@ -297,7 +324,7 @@ export default function LoanDetails() {
       },
     },
     {
-      id: 10,
+      id: 11,
       title: 'Medical Expense',
       groupBy: 'expense',
       amount1: medicalExpense1,
@@ -320,7 +347,7 @@ export default function LoanDetails() {
       },
     },
     {
-      id: 11,
+      id: 12,
       title: 'Gym',
       groupBy: 'expense',
       amount1: gym1,
@@ -343,7 +370,7 @@ export default function LoanDetails() {
       },
     },
     {
-      id: 12,
+      id: 13,
       title: 'Recreation',
       groupBy: 'expense',
       amount1: recreation1,
@@ -366,7 +393,7 @@ export default function LoanDetails() {
       },
     },
     {
-      id: 13,
+      id: 14,
       title: 'Tithing',
       groupBy: 'expense',
       amount1: tithing1,
@@ -389,7 +416,7 @@ export default function LoanDetails() {
       },
     },
     {
-      id: 14,
+      id: 15,
       title: 'Insurance',
       groupBy: 'expense',
       amount1: insurance1,
@@ -412,7 +439,7 @@ export default function LoanDetails() {
       },
     },
     {
-      id: 15,
+      id: 16,
       title: 'Savings',
       groupBy: 'expense',
       amount1: savings1,
@@ -445,6 +472,10 @@ export default function LoanDetails() {
     liabilitiesServicing1: liabilitiesServicing1,
     liabilitiesServicing2: liabilitiesServicing2,
     liabilitiesServicing3: liabilitiesServicing3,
+
+    proposedLoan1: proposedLoan1,
+    proposedLoan2: proposedLoan2,
+    proposedLoan3: proposedLoan3,
 
     powerOrGas1: powerOrGas1,
     powerOrGas2: powerOrGas2,
@@ -508,6 +539,10 @@ export default function LoanDetails() {
     liabilitiesServicing1: Yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Value should be greater than $0.00').nullable(),
     liabilitiesServicing2: Yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Value should be greater than $0.00').nullable(),
     liabilitiesServicing3: Yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Value should be greater than $0.00').nullable(),
+
+    proposedLoan1: Yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Value should be greater than $0.00').nullable(),
+    proposedLoan2: Yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Value should be greater than $0.00').nullable(),
+    proposedLoan3: Yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Value should be greater than $0.00').nullable(),
 
     powerOrGas1: Yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Value should be greater than $0.00').nullable(),
     powerOrGas2: Yup.number().typeError('Please remove non-numeric charaters').positive('Must be a greater than Zero').moreThan(0, 'Value should be greater than $0.00').nullable(),
@@ -579,7 +614,7 @@ export default function LoanDetails() {
   } = methods
 
   const onSubmit = (event) => {
-    console.log('On Submit Loan Details')
+    // console.log('On Submit Loan Details')
   }
 
   useEffect(() => {

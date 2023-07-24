@@ -72,7 +72,7 @@ const sopItemsSlice = createSlice({
         if (state.loading === 'PENDING' && state.currentRequestId === requestId) {
           state.loading = HTTP_STATUS.IDLE
 
-          console.log('PQLC RESPONSE: ', action.payload)
+          // console.log('PQLC RESPONSE: ', action.payload)
 
           const pqlcResult = action.payload?.axiosResponse?.result
           const pqlcRequest = action.payload?.axiosResponse?.request
@@ -84,7 +84,7 @@ const sopItemsSlice = createSlice({
           state.monthlyIncome = pqlcResult?.monthlyIncome
           state.surplusRatio = parseFloat(pqlcResult?.SR)
 
-          console.log('pqlcResult?.SR: ', pqlcResult?.SR)
+          // console.log('pqlcResult?.SR: ', pqlcResult?.SR)
 
           state.nsr = pqlcResult?.NSR
           state.nsrLower = pqlcResult?.NSR_lower
@@ -114,10 +114,10 @@ const sopItemsSlice = createSlice({
           state.error = action.error
           state.currentRequestId = null
 
-          console.log('Rejected Error: ', action.error)
-          console.log('Rejected Payload: ', action.payload)
-          console.log('Rejected meta: ', action.meta)
-          console.log('Rejected Type: ', action.type)
+          // console.log('Rejected Error: ', action.error)
+          // console.log('Rejected Payload: ', action.payload)
+          // console.log('Rejected meta: ', action.meta)
+          // console.log('Rejected Type: ', action.type)
         }
       })
   },

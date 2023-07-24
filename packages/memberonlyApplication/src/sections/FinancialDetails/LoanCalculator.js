@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { processNodeEnv, BASE_URL_AWS_APP, BASE_URL_LOCAL_APP } from '../../redux/utils/apiConstants'
 import { getRepaymentDetails } from '../../redux/slices/loanCalculatorSlice'
 import { loanDetailsActions } from '../../redux/slices/loanDetailsSlice'
+import { sopExpenseAction } from '../../redux/slices/sopExpenseSlice'
 
 import { convertToUTCCustom } from '../../utils/convertDatetoUTC'
 import { fCurrency, fNumberCust } from '../../utils/formatNumber'
@@ -50,6 +51,7 @@ const LoanCalculator = () => {
   const estimatedInterestRate = useSelector((state) => state.loanDetailsReducer.estimatedInterestRate)
   const loanTerm = useSelector((state) => state.loanDetailsReducer.loanTerm)
   const paymentFrequency = useSelector((state) => state.loanDetailsReducer.paymentFrequency)
+  const firstPaymentDate = useSelector((state) => state.loanCalculatorReducer.firstPaymentDate)
   const defEffectiveDate = new Date()
 
   const primeIreEstimate = useSelector((state) => state.clientSearchReducer.primeIreEstimate)
@@ -91,25 +93,28 @@ const LoanCalculator = () => {
   const lncalc_PrimaryClientType = useSelector((state) => state.loanCalculatorReducer.lncalc_PrimaryClientType)
   const lncalc_ProductCode = useSelector((state) => state.loanCalculatorReducer.lncalc_ProductCode)
 
-  //* Weekly Payment Details
-  const weekly_FirstPaymentDate = useSelector((state) => state.loanCalculatorReducer.lncalc_RepaymentOptionsWeekly.firstPaymentDate)
-  const weekly_NumberOfPayments = useSelector((state) => state.loanCalculatorReducer.lncalc_RepaymentOptionsWeekly.numberOfPayments)
-  const weekly_PaymentAmount = useSelector((state) => state.loanCalculatorReducer.lncalc_RepaymentOptionsWeekly.paymentAmount)
-
-  //* Fortnightly Payment Details
-  const fornightly_FirstPaymentDate = useSelector((state) => state.loanCalculatorReducer.lncalc_RepaymentOptionsFortnightly.firstPaymentDate)
-  const fornightly_NumberOfPayments = useSelector((state) => state.loanCalculatorReducer.lncalc_RepaymentOptionsFortnightly.numberOfPayments)
-  const fornightly_PaymentAmount = useSelector((state) => state.loanCalculatorReducer.lncalc_RepaymentOptionsFortnightly.paymentAmount)
-
-  //* Monthly Payment Details
-  const monthly_FirstPaymentDate = useSelector((state) => state.loanCalculatorReducer.lncalc_RepaymentOptionsMonthly.firstPaymentDate)
-  const monthly_NumberOfPayments = useSelector((state) => state.loanCalculatorReducer.lncalc_RepaymentOptionsMonthly.numberOfPayments)
-  const monthly_PaymentAmount = useSelector((state) => state.loanCalculatorReducer.lncalc_RepaymentOptionsMonthly.paymentAmount)
-
   const lncalc_ResidualValue = useSelector((state) => state.loanCalculatorReducer.lncalc_ResidualValue)
   const lncalc_SettlementDate = useSelector((state) => state.loanCalculatorReducer.lncalc_SettlementDate)
   const lncalc_TermUnit = useSelector((state) => state.loanCalculatorReducer.lncalc_Term.unit)
   const lncalc_TermValue = useSelector((state) => state.loanCalculatorReducer.lncalc_Term.value)
+
+  useEffect(() => {
+    if (lncalc_PaymentFrequencyUnit === 'W') {
+      dispatch(sopExpenseAction.setProposedLoanAmount1(lncalc_InstalmentAmount))
+      dispatch(sopExpenseAction.setProposedLoanAmount2(null))
+      dispatch(sopExpenseAction.setProposedLoanAmount3(null))
+    }
+    if (lncalc_PaymentFrequencyUnit === 'F') {
+      dispatch(sopExpenseAction.setProposedLoanAmount1(null))
+      dispatch(sopExpenseAction.setProposedLoanAmount2(lncalc_InstalmentAmount))
+      dispatch(sopExpenseAction.setProposedLoanAmount3(null))
+    }
+    if (lncalc_PaymentFrequencyUnit === 'M') {
+      dispatch(sopExpenseAction.setProposedLoanAmount1(null))
+      dispatch(sopExpenseAction.setProposedLoanAmount2(null))
+      dispatch(sopExpenseAction.setProposedLoanAmount3(lncalc_InstalmentAmount))
+    }
+  }, [lncalc_InstalmentAmount])
 
   useEffect(() => {
     if (requestedLoanAmount === 0.0 || requestedLoanAmount == null || isNaN(requestedLoanAmount)) return
@@ -120,13 +125,15 @@ const LoanCalculator = () => {
       return type?.feeCode
     })
 
+    console.log('First Payment Date from Loan Calc useEffect: ', firstPaymentDate)
+
     var financialData = JSON.stringify({
       product: 'MBRO',
       costOfGoods: requestedLoanAmount,
-      interestRate: estimatedInterestRateReCalc,
+      interestRate: estimatedInterestRateReCalc === null || estimatedInterestRateReCalc === undefined || estimatedInterestRateReCalc === '' ? 18 : estimatedInterestRateReCalc,
       term: loanTerm,
       paymentFrequency: paymentFrequency,
-      startDate: convertToUTCCustom(defEffectiveDate, 'useEffect'),
+      firstPmtDate: convertToUTCCustom(firstPaymentDate, 'useEffect'),
       insurance: insurance,
       fees: selectedDocumentTypes,
     })
@@ -141,13 +148,13 @@ const LoanCalculator = () => {
     }
 
     dispatch(getRepaymentDetails(config))
-  }, [requestedLoanAmount, estimatedInterestRate, feeCharged, loanTerm, paymentFrequency, lncalc_InstalmentAmount, documentationTypes, estimatedInterestRateReCalc])
+  }, [requestedLoanAmount, estimatedInterestRate, feeCharged, loanTerm, paymentFrequency, firstPaymentDate, lncalc_InstalmentAmount, documentationTypes, estimatedInterestRateReCalc])
 
   useEffect(() => {
-    if (lncalc_InstalmentStartDate === null || lncalc_InstalmentStartDate === undefined || lncalc_InstalmentStartDate === '') return
-
-    dispatch(loanDetailsActions.setFirstPaymentDate(new Date(lncalc_InstalmentStartDate)))
-  }, [lncalc_InstalmentStartDate])
+    console.log('Payment Frequency: ', lncalc_PaymentFrequencyUnit)
+    console.log('Default Start Date: ', firstPaymentDate)
+    console.log('Previous Default Start Date: ', defEffectiveDate)
+  }, [])
 
   if (lncalc_loading === 'PENDING') {
     return (

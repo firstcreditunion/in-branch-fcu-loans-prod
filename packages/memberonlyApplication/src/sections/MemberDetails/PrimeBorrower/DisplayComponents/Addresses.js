@@ -66,7 +66,7 @@ const Addresses = () => {
   } = methods
 
   const onSubmit = (event) => {
-    console.log('On Submit Loan Details')
+    // console.log('On Submit Loan Details')
   }
 
   function setPrimeAddressesVerified(event) {

@@ -67,9 +67,9 @@ export default function PersonalDetails() {
   const jointmemberNotFound = jointmemberNumberIsEmpty && jointatLeastOneReqestMade && jointrequestisNotPending
   const searchInitiatedAndCompleted = jointmemberNumberIsNotEmpty && jointatLeastOneReqestMade && jointrequestisNotPending
 
-  console.log('durationSinceJoinedInMonths: ', durationSinceJoinedInMonths)
-  console.log('memberSinceInMonthsDefault: ', memberSinceInMonthsDefault)
-  console.log('minMembershipLengthSatisfied: ', minMembershipLengthSatisfied)
+  // console.log('durationSinceJoinedInMonths: ', durationSinceJoinedInMonths)
+  // console.log('memberSinceInMonthsDefault: ', memberSinceInMonthsDefault)
+  // console.log('minMembershipLengthSatisfied: ', minMembershipLengthSatisfied)
 
   //Eligibility
   if (isAdult && durationSinceJoinedInMonths >= memberSinceInMonthsDefault && !(jointid == null) && !exceedsLoanExposureLimit && totalArrears <= 0 && jointActiveRecoveryCount + jointinactiveRecvAccountCount === 0) {

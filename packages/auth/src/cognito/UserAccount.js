@@ -64,15 +64,15 @@ const UserAccount = (props) => {
 
       user.authenticateUser(authDetails, {
         onSuccess: (data) => {
-          console.log('On Success: ', data)
+
           resolve(data)
         },
         onFailure: (err) => {
-          console.log('On Failure: ', err)
+
           reject(err)
         },
         newPasswordRequired: (data) => {
-          console.log('New Password Required: ', data)
+
         },
         // mfaSetup: (challengeName, challengeParameters) => {
         //   user.associateSoftwareToken(this)

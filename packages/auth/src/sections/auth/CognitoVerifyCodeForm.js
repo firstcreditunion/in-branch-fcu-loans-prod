@@ -88,15 +88,15 @@ export default function AuthSignUpForm() {
 
     const cognitoUser = new CognitoUser(userData)
 
-    console.log('userData: ', userData)
-    console.log('Verification Code: ', v_code)
+    // console.log('userData: ', userData)
+    // console.log('Verification Code: ', v_code)
 
     cognitoUser.confirmRegistration(v_code, true, function (err, result) {
       if (err) {
-        console.log('Verification Code Error - ', err?.message)
+        // console.log('Verification Code Error - ', err?.message)
         return
       }
-      console.log('Verification Code result - ', result)
+      // console.log('Verification Code result - ', result)
       if (result === 'SUCCESS') {
         dispatch(signupActions.setCongnitoResponseUsername(null))
         dispatch(signupActions.setCongnitoResponseuserSub(null))

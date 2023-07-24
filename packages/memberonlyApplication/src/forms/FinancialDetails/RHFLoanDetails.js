@@ -29,6 +29,7 @@ import { loanDetailsActions, getPayoutQuote } from '../../redux/slices/loanDetai
 import { clientSearchActions, getPrimeClientGeneralDetails } from '../../redux/slices/clientSearchSlice'
 import { additionalInfoPart2Actions } from '../../redux/slices/additionalInfoPart2Slice'
 
+import { loanCalculatorActions } from '../../redux/slices/loanCalculatorSlice'
 import { baseRateTypes, creditHistoryTypes, securityTypes } from '../../redux/codes/LoanDetailsCodes'
 import { dayOfWeek } from '../../redux/codes/DayOfWeek'
 
@@ -59,11 +60,12 @@ import { fontWeight } from '@mui/system'
 export default function LoanDetails() {
   const dispatch = useDispatch()
 
-  const [open, setOpen] = useState(false)
   const [openCostRecoveryModal, setOpenCostRecoveryModal] = useState(false)
+
   function handleOpenCostRecoveryModal(event, reason) {
     setOpenCostRecoveryModal(true)
   }
+
   function handleCloseCostRecoveryModal(event, reason) {
     setOpenCostRecoveryModal(false)
   }
@@ -82,14 +84,11 @@ export default function LoanDetails() {
 
   let validThruDateConverted = ''
 
-  const validThruDateIsDate = isDate(payoutQuote_validThruDate)
+  const validThruDateIsDate = isDate(new Date(payoutQuote_validThruDate))
 
   if (validThruDateIsDate) {
-    validThruDateConverted = fDate(startDateIsDate)
+    validThruDateConverted = fDate(payoutQuote_validThruDate)
   }
-
-  console.log('payoutQuote_settlementAmount: ', payoutQuote_settlementAmount)
-  console.log('payoutQuote_validThruDate: ', payoutQuote_validThruDate)
 
   const documentationTypes = useSelector((state) => state.loanDetailsReducer.documentationTypes)
 
@@ -105,8 +104,6 @@ export default function LoanDetails() {
   const loanHistCreditCheckDiscountCheck = useSelector((state) => state.loanDetailsReducer.loanHistCreditCheckDiscountCheck)
   const threrOrMoreProductDiscountCheck = useSelector((state) => state.loanDetailsReducer.threrOrMoreProductDiscountCheck)
 
-  //
-  const durationSinceJoinedInMonths = useSelector((state) => state.clientSearchReducer.primedurationSinceJoinedInMonths)
   const durationSinceJoined = useSelector((state) => state.clientSearchReducer.primedurationSinceJoined)
 
   const activeFundingProducts = useSelector((state) => state.clientSearchReducer.primeFunding.activeAccountCount)
@@ -117,7 +114,7 @@ export default function LoanDetails() {
   const numberOfDaysUpperLimitFromToday = useSelector((state) => state.loanDetailsReducer.numberOfDaysUpperLimitFromToday)
   const dayOfWeekState = useSelector((state) => state.loanDetailsReducer.dayOfWeek)
   const lncalc_InstalmentStartDate = useSelector((state) => state.loanCalculatorReducer.lncalc_InstalmentStartDate)
-  const firstPaymentDate = useSelector((state) => state.loanDetailsReducer.firstPaymentDate)
+  const firstPaymentDate = useSelector((state) => state.loanCalculatorReducer.firstPaymentDate)
   const loanTerm = useSelector((state) => state.loanDetailsReducer.loanTerm)
   const isCreditUsedForRefinance = useSelector((state) => state.additionalInfoPart2Reducer.isCreditUsedForRefinance)
 
@@ -126,74 +123,67 @@ export default function LoanDetails() {
   const primeClientNumber = useSelector((state) => state.clientSearchReducer.primeclientNumber)
   const finalCalculatedInterestRate = useSelector((state) => state.loanDetailsReducer.finalCalculatedInterestRate)
 
+  const loading = useSelector((state) => state.loanCalculatorReducer.loading)
+  const currentRequestId = useSelector((state) => state.loanCalculatorReducer.currentRequestId)
+
   const onSubmitLoanDetails = useSelector((state) => state.loanDetailsReducer.onSubmitLoanDetails)
 
-  // Defualt Values for React Hook Form
-  const defaultValues = {
-    requestedLoanAmount: requestedLoanAmount,
-    isCreditUsedForRefinance: isCreditUsedForRefinance,
-    creditHistory: creditHistory,
-    security: security,
-    loanHistCreditCheckDiscountCheck: loanHistCreditCheckDiscountCheck,
-    threrOrMoreProductDiscountCheck: threrOrMoreProductDiscountCheck,
-    paymentFrequency: paymentFrequency,
-    dayOfWeekState: dayOfWeekState,
-    firstPaymentDate: firstPaymentDate,
-    loanTerm: loanTerm,
-  }
-
-  // Schema
   const LoanDetailsSchema = Yup.object().shape({
-    requestedLoanAmount: Yup.string().required('Requested Loan Amount is required.'),
-    isCreditUsedForRefinance: Yup.string().required('Please choose an option.'),
-    creditHistory: Yup.string().required(),
+    requestedLoanAmount: Yup.string().required('Requested Loan Amount is required.').nullable(),
+    creditHistory: Yup.string().required('Credit history is required'),
     security: Yup.string(),
     membershipLoyaltyDiscountCheck: Yup.boolean(),
     loanHistCreditCheckDiscountCheck: Yup.boolean(),
     threrOrMoreProductDiscountCheck: Yup.boolean(),
     paymentFrequency: Yup.string().required('Payment frequency is required'),
-    dayOfWeekState: Yup.string().when('paymentFrequency', {
-      is: (paymentFrequency) => {
-        return paymentFrequency === 'W' || paymentFrequency === 'F'
-      },
-      then: Yup.string().required('Please add notes.'),
-      otherwise: Yup.string().nullable(),
-    }),
-    firstPaymentDate: Yup.string().required('First payment date is required.'),
     loanTerm: Yup.number(),
+    firstPaymentDate: Yup.mixed()
+      .test('Test date validity', 'Invalid date format. Date Format: DD/MM/YYYY', function (date) {
+        if (date?.$d === 'Invalid Date') {
+          return false
+        }
+
+        return true
+      })
+      .required('First payment date is required'),
   })
 
-  //UseForm Methods from RHF
+  const defaultValues = {
+    requestedLoanAmount: requestedLoanAmount,
+    creditHistory: creditHistory,
+    security: security,
+    membershipLoyaltyDiscountCheck: membershipLoyaltyDiscountCheck,
+    loanHistCreditCheckDiscountCheck: loanHistCreditCheckDiscountCheck,
+    threrOrMoreProductDiscountCheck: threrOrMoreProductDiscountCheck,
+    paymentFrequency: paymentFrequency,
+    loanTerm: loanTerm,
+    firstPaymentDate: firstPaymentDate,
+  }
+
   const methods = useForm({
     resolver: yupResolver(LoanDetailsSchema),
     defaultValues,
   })
 
-  // Destructure Methods
   const {
-    watch,
     reset,
-    control,
-    setValue,
+    setError,
     handleSubmit,
-    formState: { isSubmitting, isValid },
+    control,
+    formState: { errors, isSubmitting, isSubmitSuccessful, isValid },
   } = methods
-
-  const onSubmit = (event) => {
-    console.log('On Submit Loan Details')
-  }
 
   // Redux dispatch functions
   function setRequestedLoanAmount(event) {
     dispatch(loanDetailsActions.setRequestedLoanAmount(parseFloat(event.target.value)))
   }
-  function setPayoutLendingAccountNumber(event) {
-    dispatch(loanDetailsActions.setPayoutLendingAccountNumber(event.target.value))
-  }
+  // function setPayoutLendingAccountNumber(event) {
+  //   dispatch(loanDetailsActions.setPayoutLendingAccountNumber(event.target.value))
+  // }
 
-  function setDocumentationType(event) {
-    dispatch(loanDetailsActions.setDocumentationType(event.target.value))
-  }
+  // function setDocumentationType(event) {
+  //   dispatch(loanDetailsActions.setDocumentationType(event.target.value))
+  // }
 
   function setDocumentationTypes(event) {
     const lengthOfTypes = event.target.value.length
@@ -207,7 +197,7 @@ export default function LoanDetails() {
   }
 
   function setCreditHistory(event) {
-    console.log('Credit History Event: ', event.target.value)
+    // console.log('Credit History Event: ', event.target.value)
     dispatch(loanDetailsActions.setCreditHistory(event.target.value))
   }
 
@@ -236,14 +226,14 @@ export default function LoanDetails() {
     dispatch(loanDetailsActions.setPaymentFrequency(event.target.value))
   }
 
-  function setDayOfWeek(event) {
-    console.log('Day of Week EVENT: ', event.target.value)
-    dispatch(loanDetailsActions.setDayOfWeek(event.target.value))
-  }
+  // function setDayOfWeek(event) {
+  //   // console.log('Day of Week EVENT: ', event.target.value)
+  //   dispatch(loanDetailsActions.setDayOfWeek(event.target.value))
+  // }
 
   function setFirstPaymentDate(date) {
-    console.log('First Payment Date: ', date)
-    dispatch(loanDetailsActions.setFirstPaymentDate(date))
+    // console.log('First Payment Date: ', date)
+    dispatch(loanCalculatorActions.setFirstPaymentDate(date))
   }
 
   function setLoanTerm(event) {
@@ -270,13 +260,22 @@ export default function LoanDetails() {
 
   useEffect(() => {
     if (onSubmitLoanDetails == null) return
-
     handleSubmit(onSubmit())()
   }, [onSubmitLoanDetails])
 
   useEffect(() => {
     dispatch(loanDetailsActions.setIsValidLoanDetails(isValid))
   }, [isValid])
+
+  useEffect(() => {
+    if (lncalc_InstalmentStartDate === null || lncalc_InstalmentStartDate === undefined || lncalc_InstalmentStartDate === '') return
+
+    dispatch(loanDetailsActions.setFirstPaymentDate(new Date(lncalc_InstalmentStartDate)))
+  }, [paymentFrequency])
+
+  const onSubmit = (event) => {
+    // console.log('On Submit Loan Details')
+  }
 
   return (
     <>
@@ -301,9 +300,12 @@ export default function LoanDetails() {
                     ),
                   }}
                 />
-                {!payoutQuote_created && <Button onClick={handleOpenCostRecoveryModal}>Request for a Payout Quote</Button>}
+                {/* {!payoutQuote_created && <Button onClick={handleOpenCostRecoveryModal}>Request for a Payout Quote</Button>}
                 {payoutQuote_created && (
-                  <Stack direction='column' justifyContent='center' alignItems='flex-start' spacing={1}>
+                  <Stack direction='column' justifyContent='center' alignItems='flex-start' spacing={2} sx={{ width: '100%' }}>
+                    <Divider flexItem sx={{ py: 1 }}>
+                      <Chip label='Settlement Quote' color='secondary' />
+                    </Divider>
                     <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{ width: '100%' }}>
                       <Typography variant='body1' sx={{ fontWeight: 'light' }}>
                         Settlement Amount
@@ -314,10 +316,10 @@ export default function LoanDetails() {
                       <Typography variant='body1' sx={{ fontWeight: 'light' }}>
                         Quote Valid Until
                       </Typography>
-                      <Typography variant='subtitle2'>{payoutQuote_validThruDate}</Typography>
+                      <Typography variant='subtitle2'>{validThruDateConverted}</Typography>
                     </Stack>
                   </Stack>
-                )}
+                )} */}
               </Stack>
             </ComponentBlock>
 
@@ -343,7 +345,6 @@ export default function LoanDetails() {
                 </MenuItem>
               ))}
             </RHFSelect>
-            <RHFMultiSelect chip inputVariant='filled' checkbox name='documentationTypeMulti' label='Fees' onMultiSelectChange={setDocumentationTypes} values={documentationTypes} options={documentTypes} />
           </Stack>
           {/* //? To be used in the future - The % of security used, % of security left, No. of active assets */}
           {/* <Stack
@@ -431,6 +432,7 @@ export default function LoanDetails() {
                 <RHFCheckbox name='threrOrMoreProductDiscountCheck' label='Apply Discount for having three or more products?' onCheckboxChange={setThreeOrMoreProductsDiscountCheck} checked={threrOrMoreProductDiscountCheck} disabled={true} />
               </Stack>
             </Stack>
+            <RHFMultiSelect chip inputVariant='filled' checkbox name='documentationTypeMulti' label='Fees' onMultiSelectChange={setDocumentationTypes} values={documentationTypes} options={documentTypes} />
           </Stack>
           <Stack direction='column' justifyContent='flex-start' spacing={5} sx={{ width: '100%' }}>
             <Stack direction='column' justifyContent='flex-start' spacing={1} sx={{ width: '100%' }}>
@@ -463,11 +465,29 @@ export default function LoanDetails() {
             {/* <Divider flexItem>
               <Chip label='Choose First Payment Date' />
             </Divider> */}
-            <Stack direction='column' justifyContent='flex-start' spacing={1} sx={{ width: '100%' }}>
-              <Typography variant='caption' color='primary' sx={{ textAlign: 'left', textTransform: 'uppercase', fontWeight: 'bold', letterSpacing: 1 }}>
+            <Stack
+              direction='column'
+              justifyContent='flex-start'
+              spacing={1}
+              sx={{
+                width: '100%',
+              }}
+            >
+              <Typography
+                variant='caption'
+                color='primary'
+                sx={{
+                  textAlign: 'left',
+                  textTransform: 'uppercase',
+                  fontWeight: 'bold',
+                  letterSpacing: 1,
+                }}
+              >
                 First Payment Date
               </Typography>
-              <RHFLandscapeDatePicker name='firstPaymentDate' dateValue={firstPaymentDate} onDateChange={setFirstPaymentDate} minDate={startDate} maxDate={fortyDaysFromToday} />
+              <ComponentBlock>
+                <RHFLandscapeDatePicker name='firstPaymentDate' dateValue={firstPaymentDate} onDateChange={setFirstPaymentDate} minDate={startDate} maxDate={fortyDaysFromToday} />
+              </ComponentBlock>
             </Stack>
           </Stack>
         </Stack>

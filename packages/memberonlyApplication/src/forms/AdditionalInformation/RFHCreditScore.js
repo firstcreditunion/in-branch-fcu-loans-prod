@@ -108,14 +108,14 @@ const RFHCreditScore = () => {
   } = methods
 
   const onSubmit = (event) => {
-    console.log('On Submit Loan Details')
+    // console.log('On Submit Loan Details')
   }
 
   // Redux dispatch functions
   function setIsCreditScoreComplete(event) {
     dispatch(creditScoreActions.setIsCreditScoreComplete(event.target.value))
 
-    console.log('Is Credit Check Complete? - ', event.target.value)
+    // console.log('Is Credit Check Complete? - ', event.target.value)
 
     if (event.target.value === 'N') {
       dispatch(creditScoreActions.setCreditScoreExceedsThreshold(''))
