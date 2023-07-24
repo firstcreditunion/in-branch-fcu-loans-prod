@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { Link as RouterLink, useHistory } from 'react-router-dom'
 
-import { Link, Stack, Typography, Alert, InputAdornment, IconButton } from '@mui/material'
+import { Link, Stack, Typography, Alert, AlertTitle, InputAdornment, IconButton } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
 
 //* RHF And Yup
@@ -36,9 +36,11 @@ const SignupForm = () => {
   const signupclientnumber = useSelector((state) => state.signupReducer.clientnumber)
 
   const domain = useSelector((state) => state.signupReducer.domain)
-  const sovProfilecurrentRequestId = useSelector((state) => state.authenticationReducer.sovProfilecurrentRequestId)
+  const sovProfilecurrentRequestId = useSelector((state) => state.signupReducer.sovProfilecurrentRequestId)
   const hasSoverignProfile = useSelector((state) => state.signupReducer.hasSoverignProfile)
   const cognitoError = useSelector((state) => state.signupReducer.cognitoError)
+  const cognitoErrorName = useSelector((state) => state.signupReducer.cognitoErrorName)
+  const cognitoErrorStack = useSelector((state) => state.signupReducer.cognitoErrorStack)
   const congnitoResponseuserSub = useSelector((state) => state.signupReducer.congnitoResponseuserSub)
 
   const defaultValues = {
@@ -101,6 +103,7 @@ const SignupForm = () => {
   }
 
   async function registerUser() {
+    dispatch(signupActions.setHasSoverignProfile(null))
     const checkSovereignConfig = {
       url: '/validate',
       method: 'GET',
@@ -132,6 +135,8 @@ const SignupForm = () => {
         if (err) {
           // console.log('Sign Up Error: ', err?.message)
           dispatch(signupActions.setCognitoError(err?.message))
+          dispatch(signupActions.setCognitoErrorName(err?.name))
+          dispatch(signupActions.setCognitoErrorStack(err?.stack))
           return
         }
 
@@ -158,7 +163,6 @@ const SignupForm = () => {
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      {sovProfilecurrentRequestId != null && hasSoverignProfile === 'Unauthorized' && <Alert severity='error'>You are not authorised to login!</Alert>}
       <Stack
         direction='column'
         justifyContent='center'
@@ -169,7 +173,30 @@ const SignupForm = () => {
           width: '100%',
         }}
       >
-        {cognitoError != null && <Alert severity='error'>{cognitoError}</Alert>}
+        {sovProfilecurrentRequestId != null && hasSoverignProfile === 'Unauthorized' && (
+          <Alert severity='error'>
+            <AlertTitle>No Soveriegn Profile</AlertTitle>
+            You do not have an active sovereign profile! Please contact sovereign support team.
+          </Alert>
+        )}
+        {cognitoError === 'Password did not conform with policy: Password not long enough' && (
+          <Stack direction='column' justifyContent='center' alignItems='flex-start' spacing={3} sx={{ width: '100%' }}>
+            <Alert severity='error' sx={{ width: '100%' }}>
+              <AlertTitle>Password Policy Error</AlertTitle>
+              Password did not conform with policy: Password not long enough
+            </Alert>
+            <Alert severity='info' sx={{ width: '100%' }}>
+              <AlertTitle>Please read the password policy. Password must:</AlertTitle>
+              <Stack direction='column' justifyContent='center' alignItems='flex-start' spacing={0} sx={{ width: '100%' }}>
+                <Typography variant='caption'>- Have a minumum of 8 characters.</Typography>
+                <Typography variant='caption'>- Contain at least 1 number.</Typography>
+                <Typography variant='caption'>- Contain at least 1 special character.</Typography>
+                <Typography variant='caption'>- Contain at least 1 uppercase letter.</Typography>
+                <Typography variant='caption'>- Contain at least 1 lowercase letter.</Typography>
+              </Stack>
+            </Alert>
+          </Stack>
+        )}
         <RFHTextField
           name='signupemailAddress'
           label='Email Address'

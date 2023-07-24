@@ -28,6 +28,9 @@ export const initialState = {
   hasSoverignProfile: null,
 
   cognitoError: null,
+  cognitoErrorName: null,
+  cognitoErrorStack: null,
+
   congnitoResponseUsername: null,
   congnitoResponseuserSub: null,
 }
@@ -49,9 +52,20 @@ const signupSlice = createSlice({
     setClientNumber: (state, action) => {
       state.clientnumber = action.payload
     },
+    setHasSoverignProfile: (state, action) => {
+      state.hasSoverignProfile = action.payload
+    },
+
     setCognitoError: (state, action) => {
       state.cognitoError = action.payload
     },
+    setCognitoErrorName: (state, action) => {
+      state.cognitoErrorName = action.payload
+    },
+    setCognitoErrorStack: (state, action) => {
+      state.cognitoErrorStack = action.payload
+    },
+
     setCongnitoResponseUsername: (state, action) => {
       state.congnitoResponseUsername = action.payload
     },

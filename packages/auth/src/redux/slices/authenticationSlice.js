@@ -67,8 +67,6 @@ const authenticationSlice = createSlice({
         if (state.sovProfileloading === 'PENDING' && state.sovProfilecurrentRequestId === requestId) {
           state.sovProfileloading = HTTP_STATUS.IDLE
 
-
-
           state.hasSoverignProfile = action.payload?.axiosResponse?.Response
         }
       })
@@ -78,7 +76,6 @@ const authenticationSlice = createSlice({
           state.sovProfileloading = 'IDLE'
           state.sovProfileerror = action.error
           state.sovProfilecurrentRequestId = null
-
         }
       })
   },

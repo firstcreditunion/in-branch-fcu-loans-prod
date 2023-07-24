@@ -177,13 +177,6 @@ export default function LoanDetails() {
   function setRequestedLoanAmount(event) {
     dispatch(loanDetailsActions.setRequestedLoanAmount(parseFloat(event.target.value)))
   }
-  // function setPayoutLendingAccountNumber(event) {
-  //   dispatch(loanDetailsActions.setPayoutLendingAccountNumber(event.target.value))
-  // }
-
-  // function setDocumentationType(event) {
-  //   dispatch(loanDetailsActions.setDocumentationType(event.target.value))
-  // }
 
   function setDocumentationTypes(event) {
     const lengthOfTypes = event.target.value.length
@@ -225,11 +218,6 @@ export default function LoanDetails() {
   function setPaymentFrequency(event) {
     dispatch(loanDetailsActions.setPaymentFrequency(event.target.value))
   }
-
-  // function setDayOfWeek(event) {
-  //   // console.log('Day of Week EVENT: ', event.target.value)
-  //   dispatch(loanDetailsActions.setDayOfWeek(event.target.value))
-  // }
 
   function setFirstPaymentDate(date) {
     // console.log('First Payment Date: ', date)
