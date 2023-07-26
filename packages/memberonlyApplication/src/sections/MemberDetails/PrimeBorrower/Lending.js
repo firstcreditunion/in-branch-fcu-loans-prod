@@ -101,7 +101,7 @@ export default function PersonalDetails() {
           </Stack>
         </Stack>
         <Stack direction='row' justifyContent='flex-start' alignItems='flex-start' spacing={1} sx={{ px: 2 }}>
-          {totalArrears <= 0 ? <CheckIcon color='success' /> : <ErrorOutlineIcon color='error' />}
+          {activeRecvAccountCount > 0 ? <ErrorOutlineIcon color='error' /> : inactiveRecvAccountCount > 0 ? <ErrorOutlineIcon color='warning' /> : <CheckIcon color='success' />}
           <Stack direction='column' justifyContent='center' alignItems='flex-start' spacing={0.5}>
             <Typography variant='caption' sx={{ textTransform: 'uppercase', fontWeight: 'bold', color: 'text.secondary' }}>
               Recovery Account Balance

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 
 import { useTheme } from '@mui/material/styles'
 import { fDate } from '../utils/formatDateTime'
@@ -81,6 +82,8 @@ const override = css`
 `
 
 export default function Submission() {
+  const history = useHistory()
+
   const downMd = useMediaQuery((theme) => theme.breakpoints.down('md'))
   const downSm = useMediaQuery((theme) => theme.breakpoints.down('sm'))
 
@@ -91,6 +94,14 @@ export default function Submission() {
       behavior: 'smooth',
     })
   }, [])
+
+  const sovereignUser = useSelector((state) => state.globalReducer.sovereignUser)
+  let zeroPaddedLoadedBy = ''
+
+  if (sovereignUser != null || sovereignUser != '' || sovereignUser != undefined) {
+    const zeroConcatLoadedBy = '0000000000' + sovereignUser?.toString()
+    zeroPaddedLoadedBy = zeroConcatLoadedBy.substring(zeroConcatLoadedBy.length - 10, zeroConcatLoadedBy.length)
+  }
 
   const loading = useSelector((state) => state.submissionReducer.loading)
   const applicationNumber = useSelector((state) => state.submissionReducer.applicationNumber)
@@ -345,6 +356,7 @@ export default function Submission() {
     // * Prime
     return JSON.stringify({
       draft: 'N',
+      loadedByClientNumber: zeroPaddedLoadedBy,
       loanAmount: requestedLoanAmount,
       interestRate: interestRate,
       repayAmount: lncalc_InstalmentAmount,
@@ -575,7 +587,21 @@ export default function Submission() {
             <Typography variant='body1' color='primary' sx={{ fontWeight: 'bold' }}>
               {applicationNumber}
             </Typography>
-            <Stack direction='column' justifyContent='center' alignItems='center' spacing={1} sx={{ display: 'flex', flexGrow: 1, width: '100%' }}></Stack>
+            {/* <Stack direction='column' justifyContent='center' alignItems='center' spacing={1} sx={{ display: 'flex', flexGrow: 1, width: '100%' }}>
+              <Button
+                variant='contained'
+                color='secondary'
+                sx={{
+                  width: 350,
+                  borderRadius: 10,
+                }}
+                onClick={() => {
+                  history.push('/memberonlyloan')
+                }}
+              >
+                Return to Homepage
+              </Button>
+            </Stack> */}
           </Stack>
         </Stack>
       )}
