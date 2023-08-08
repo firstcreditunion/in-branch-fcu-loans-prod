@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext } from 'react'
 import { Link as RouterLink, useHistory } from 'react-router-dom'
 
 //* MUI
-import { Link, Stack, Alert, Typography, IconButton, InputAdornment } from '@mui/material'
+import { Link, Stack, Alert, AlertTitle, Typography, IconButton, InputAdornment } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
 
 //* Redux
@@ -31,8 +31,6 @@ import { processNodeEnv, BASE_URL_AWS_APP, BASE_URL_LOCAL_APP } from '../../redu
 export default function AuthLoginForm({ setSovereignUser }) {
   const dispatch = useDispatch()
   const history = useHistory()
-
-  console.log('Cognito Session Setters: ', setSovereignUser)
 
   const [showPassword, setShowPassword] = useState(false)
 
@@ -122,6 +120,10 @@ export default function AuthLoginForm({ setSovereignUser }) {
   }
 
   const onSubmit = async (event) => {
+    // event.preventDefault()
+
+    dispatch(authenticationActions.setHasSoverignProfile(null))
+
     const checkSovereignConfig = {
       url: '/validate',
       method: 'GET',
@@ -143,7 +145,6 @@ export default function AuthLoginForm({ setSovereignUser }) {
         <Typography variant='h4' sx={{ textAlign: 'center', fontWeight: 'light', py: 3 }}>
           Sign in to FCU Loan Application
         </Typography>
-
         <Stack
           direction='column'
           justifyContent='center'
@@ -198,8 +199,8 @@ export default function AuthLoginForm({ setSovereignUser }) {
           fullWidth
           color='primary'
           size='large'
-          type='submit'
           variant='contained'
+          onClick={onSubmit}
           sx={{
             borderRadius: '25px',
             bgcolor: 'primary.main',

@@ -5,6 +5,9 @@ import { Link as RouterLink, useHistory } from 'react-router-dom'
 import { Link, Stack, Typography, Alert, AlertTitle, InputAdornment, IconButton } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
 
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import InfoIcon from '@mui/icons-material/Info'
+
 //* RHF And Yup
 import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -23,6 +26,26 @@ import { useDispatch, useSelector } from 'react-redux'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 
+function hasNumber(str) {
+  return /[0-9]/.test(str)
+}
+
+function hasUppercase(str) {
+  return /[A-Z]/.test(str)
+}
+
+function hasLowercase(str) {
+  return /[a-z]/.test(str)
+}
+
+function hasSpecialCharacters(str) {
+  return /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(str)
+}
+
+function stringLength(str) {
+  return str.toString().length
+}
+
 const SignupForm = () => {
   const dispatch = useDispatch()
   const history = useHistory()
@@ -34,6 +57,7 @@ const SignupForm = () => {
   const signuppassword = useSelector((state) => state.signupReducer.password)
   const signupverifyPassword = useSelector((state) => state.signupReducer.verifyPassword)
   const signupclientnumber = useSelector((state) => state.signupReducer.clientnumber)
+  const onSubmitSignUpForm = useSelector((state) => state.signupReducer.onSubmitSignUpForm)
 
   const domain = useSelector((state) => state.signupReducer.domain)
   const sovProfilecurrentRequestId = useSelector((state) => state.signupReducer.sovProfilecurrentRequestId)
@@ -42,6 +66,16 @@ const SignupForm = () => {
   const cognitoErrorName = useSelector((state) => state.signupReducer.cognitoErrorName)
   const cognitoErrorStack = useSelector((state) => state.signupReducer.cognitoErrorStack)
   const congnitoResponseuserSub = useSelector((state) => state.signupReducer.congnitoResponseuserSub)
+
+  const passwordHasNumber = hasNumber(signuppassword)
+  const passwordHasUppercase = hasUppercase(signuppassword)
+  const passwordHasLowercase = hasLowercase(signuppassword)
+  const passwordHasSpecialCharacters = hasSpecialCharacters(signuppassword)
+  const passwordMinLengthMet = stringLength(signuppassword) >= 8
+
+  console.log('passwordMinLengthMet: ', passwordMinLengthMet)
+
+  const emptySpaceRegex = /^[\S]+.*[\S]+$/
 
   const defaultValues = {
     signupemailAddress: signupemailAddress,
@@ -59,7 +93,44 @@ const SignupForm = () => {
 
         return true
       }),
-    signuppassword: Yup.string().required('Password is required.'),
+    signuppassword: Yup.string()
+      .required('Password is required.')
+      .test('Passwords containes white space', 'Password contains empty space', function (signuppassword) {
+        if (!emptySpaceRegex.test(signuppassword)) {
+          return false
+        }
+        return true
+      })
+      .test('Password Policy', 'Password policy requirements not satisfied.', function (signuppassword) {
+        if (!passwordHasNumber) {
+          return false
+        }
+        return true
+      })
+      .test('Password Policy', 'Password policy requirements not satisfied.', function (signuppassword) {
+        if (!passwordHasUppercase) {
+          return false
+        }
+        return true
+      })
+      .test('Password Policy', 'Password policy requirements not satisfied.', function (signuppassword) {
+        if (!passwordHasLowercase) {
+          return false
+        }
+        return true
+      })
+      .test('Password Policy', 'Password policy requirements not satisfied.', function (signuppassword) {
+        if (!passwordHasSpecialCharacters) {
+          return false
+        }
+        return true
+      })
+      .test('Password Policy', 'Password policy requirements not satisfied.', function (signuppassword) {
+        if (!passwordMinLengthMet) {
+          return false
+        }
+        return true
+      }),
     signupverifyPassword: Yup.string()
       .required('Please confirm password.')
       .test('Passwords mismatch', 'The passwords does not match', function (verifyPassword) {
@@ -164,6 +235,12 @@ const SignupForm = () => {
 
   const onSubmit = (event) => {
     // console.log('On Submit Loan Details')
+    if (onSubmitSignUpForm === null) {
+      dispatch(signupActions.setOnSubmitSignUpForm(true))
+    } else {
+      dispatch(signupActions.setOnSubmitSignUpForm(!onSubmitSignUpForm))
+    }
+
     registerUser()
   }
 
@@ -179,6 +256,36 @@ const SignupForm = () => {
           width: '100%',
         }}
       >
+        <Alert severity='info' sx={{ width: '100%' }}>
+          <AlertTitle>Please read the password policy. Password must:</AlertTitle>
+          <Stack direction='column' justifyContent='center' alignItems='flex-start' spacing={0} sx={{ width: '100%' }}>
+            <Stack direction='row' spacing={1}>
+              {passwordMinLengthMet === true && <CheckCircleIcon fontSize='small' color='success' />}
+              {onSubmitSignUpForm != null && passwordMinLengthMet === false && <InfoIcon fontSize='small' color='error' />}
+              <Typography variant='caption'>Be atleast 8 characters in length.</Typography>
+            </Stack>
+            <Stack direction='row' spacing={1}>
+              {passwordHasNumber === true && <CheckCircleIcon fontSize='small' color='success' />}
+              {onSubmitSignUpForm != null && passwordHasNumber === false && <InfoIcon fontSize='small' color='error' />}
+              <Typography variant='caption'>Contain at least 1 number.</Typography>
+            </Stack>
+            <Stack direction='row' spacing={1}>
+              {passwordHasSpecialCharacters === true && <CheckCircleIcon fontSize='small' color='success' />}
+              {onSubmitSignUpForm != null && passwordHasSpecialCharacters === false && <InfoIcon fontSize='small' color='error' />}
+              <Typography variant='caption'>Contain at least 1 special character.</Typography>
+            </Stack>
+            <Stack direction='row' spacing={1}>
+              {passwordHasUppercase === true && <CheckCircleIcon fontSize='small' color='success' />}
+              {onSubmitSignUpForm != null && passwordHasUppercase === false && <InfoIcon fontSize='small' color='error' />}
+              <Typography variant='caption'>Contain at least 1 uppercase letter.</Typography>
+            </Stack>
+            <Stack direction='row' spacing={1}>
+              {passwordHasLowercase === true && <CheckCircleIcon fontSize='small' color='success' />}
+              {onSubmitSignUpForm != null && passwordHasLowercase === false && <InfoIcon fontSize='small' color='error' />}
+              <Typography variant='caption'>Contain at least 1 lowercase letter.</Typography>
+            </Stack>
+          </Stack>
+        </Alert>
         {sovProfilecurrentRequestId != null && hasSoverignProfile === 'Unauthorized' && (
           <Alert severity='error'>
             <AlertTitle>No Soveriegn Profile</AlertTitle>
@@ -218,7 +325,6 @@ const SignupForm = () => {
             ),
           }}
         />
-
         <RFHTextField
           name='signuppassword'
           label='Password'

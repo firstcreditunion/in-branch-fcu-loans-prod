@@ -245,19 +245,18 @@ export default function Submission() {
 
   function createMailingBodyData() {
     // * Prime
-    return {
+    return JSON.stringify({
       draft: 'N',
       loanAmount: requestedLoanAmount,
       interestRate: interestRate,
       repayAmount: lncalc_InstalmentAmount,
       repayFreq: repayFreq,
-      firstPmtDate: convertToUTCCustom(firstPaymentDate, 'useEffect'),
       loanPurpose: getLoanPurpose_FromValue(loanPurpose)?.key,
       term: term,
       tradingBranch: getTradingBranch_FromValue(tradingBranchCode)?.key,
       paymentMethod: {
-        bankAccountNumber: backAccountForInstalmentDebit == null ? 'null' : backAccountForInstalmentDebit,
-        paymentMethod: 'DD',
+        bankAccountNumber: backAccountForInstalmentDebit == null ? null : backAccountForInstalmentDebit,
+        paymentMethod: backAccountForInstalmentDebit == null ? 'AUTOPAY' : 'DD',
       },
       fees: documentationTypes?.map((fee) => {
         return fee.feeCode
@@ -349,14 +348,13 @@ export default function Submission() {
           },
         },
       ],
-    }
+    })
   }
 
   async function createSubmissionData() {
     // * Prime
     return JSON.stringify({
       draft: 'N',
-      loadedByClientNumber: zeroPaddedLoadedBy,
       loanAmount: requestedLoanAmount,
       interestRate: interestRate,
       repayAmount: lncalc_InstalmentAmount,
@@ -482,7 +480,16 @@ export default function Submission() {
     await dispatch(submitLoanApplication(config))
   }
 
-  const mailTo = `mailto:Isaac.Vicliph@firstcu.co.nz;Malakai.Curulala@firstcu.co.nz?cc=Herb.Wulff@firstcu.co.nz&subject=Loan Application Submission Failed&body=${createSubmissionData()}`
+  // let stringifiedSubmissionDataAsync = ''
+
+  const stringifiedSubmissionData = createMailingBodyData()
+  const submissionDataWithoutOpeningBraces = stringifiedSubmissionData.replace('{', '+')
+  const submissionDataWithoutBraces = submissionDataWithoutOpeningBraces.replace('}', '-')
+  const submissionDataWithoutQuotes = submissionDataWithoutBraces.replace('"', '?')
+
+  console.log('submissionDataWithoutBraces: ', submissionDataWithoutQuotes)
+
+  const mailTo = `mailto:Isaac.Vicliph@firstcu.co.nz;Malakai.Curulala@firstcu.co.nz?cc=Herb.Wulff@firstcu.co.nz&subject=Loan Application Submission Failed&body=${JSON.parse(createMailingBodyData())}`
 
   return (
     <>

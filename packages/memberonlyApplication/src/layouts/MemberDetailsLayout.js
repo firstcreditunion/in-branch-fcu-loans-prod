@@ -139,15 +139,15 @@ export default function MemberDetailsLayout({ cognitoToken, sovereignUser }) {
 
   const [activeStep, setActiveStep] = useState(0)
 
-  useEffect(() => {
-    if (cognitoToken != null && sovereignUser != null) {
-      dispatch(globalActions.setCognitoToken(cognitoToken))
-      dispatch(globalActions.setSovereignUser(sovereignUser))
-      return
-    }
+  // useEffect(() => {
+  //   if (cognitoToken != null && sovereignUser != null) {
+  //     dispatch(globalActions.setCognitoToken(cognitoToken))
+  //     dispatch(globalActions.setSovereignUser(sovereignUser))
+  //     return
+  //   }
 
-    history.push('/')
-  }, [])
+  //   history.push('/')
+  // }, [])
 
   const navigation = [
     {
@@ -156,7 +156,7 @@ export default function MemberDetailsLayout({ cognitoToken, sovereignUser }) {
       code: 'PBD',
       label: 'Prime Borrower Details',
       role: 'PRIMEB',
-      render: <PrimeEligibility />,
+      render: <Submission />,
       showClientSearchBar: true,
       showContinueButton: true,
       paddingToAddToNavigationButtons: 0,

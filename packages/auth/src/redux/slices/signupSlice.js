@@ -19,6 +19,8 @@ export const initialState = {
   sovProfileerror: HTTP_STATUS.IDLE,
   sovProfilecurrentRequestId: null,
 
+  onSubmitSignUpForm: null,
+
   emailAddress: '',
   password: '',
   verifyPassword: '',
@@ -71,6 +73,9 @@ const signupSlice = createSlice({
     },
     setCongnitoResponseuserSub: (state, action) => {
       state.congnitoResponseuserSub = action.payload
+    },
+    setOnSubmitSignUpForm: (state, action) => {
+      state.onSubmitSignUpForm = action.payload
     },
   },
   extraReducers: (builder) => {
