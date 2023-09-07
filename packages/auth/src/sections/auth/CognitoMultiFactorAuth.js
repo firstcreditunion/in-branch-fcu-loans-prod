@@ -96,7 +96,7 @@ export default function AuthLoginForm() {
       <Stack direction='column' justifyContent='center' alignItems='stretch' spacing={3} sx={{ display: 'block', width: '100%' }}>
         {!!errors.afterSubmit && <Alert severity='error'>{errors.afterSubmit.message}</Alert>}
         <Typography variant='h4' sx={{ textAlign: 'center', fontWeight: 'light', py: 3 }}>
-          Sign in to FCU Loan Application{' '}
+          Sign in to FCU Staff Portal{' '}
         </Typography>
         <Stack direction='column' justifyContent='center' alignItems='stretch' spacing={5} sx={{ display: 'block', width: '100%' }}>
           <RFHTextField name='multifactor_email' label='Email Address' onInputChange={onEmailAddressChange} value={multifactor_emailAddress} />

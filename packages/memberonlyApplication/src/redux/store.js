@@ -20,6 +20,8 @@ import authorisationSlice from './slices/authorisationSlice'
 import paymentInstructionSlice from './slices/paymentInstructionSlice'
 import submissionSlice from './slices/submissionSlice'
 
+import authenticationSlice from './slices/authenticationSlice'
+
 //* Setting up reducers
 const store = configureStore({
   reducer: {
@@ -40,6 +42,7 @@ const store = configureStore({
     paymentInstructionReducer: paymentInstructionSlice.reducer,
     authorisationReducer: authorisationSlice.reducer,
     submissionReducer: submissionSlice.reducer,
+    authenticationReducer: authenticationSlice.reducer,
   },
 })
 

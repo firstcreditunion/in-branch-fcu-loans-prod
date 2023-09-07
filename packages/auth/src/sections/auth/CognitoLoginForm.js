@@ -143,7 +143,7 @@ export default function AuthLoginForm({ setSovereignUser }) {
         {passwordChangeStatus === true && <Alert severity='success'>Password was changed succesfully. Please login!</Alert>}
         {loginFailResult != null && <Alert severity='error'>{loginFailResult}</Alert>}
         <Typography variant='h4' sx={{ textAlign: 'center', fontWeight: 'light', py: 3 }}>
-          Sign in to FCU Loan Application
+          Sign in to FCU Staff Portal
         </Typography>
         <Stack
           direction='column'

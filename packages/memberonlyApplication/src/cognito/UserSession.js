@@ -2,7 +2,6 @@ import React, { useState, useContext, useEffect } from 'react'
 import { LoginContext } from './UserAccount'
 import { Button, Typography } from '@mui/material'
 
-
 export default () => {
   const [status, setStatus] = useState(false)
 

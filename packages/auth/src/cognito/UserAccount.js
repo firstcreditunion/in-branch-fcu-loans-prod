@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js'
 import UserPool from './UserPool'
 
+import useIdleTimeout from '../cognito/useIdleTimeout'
+
 import { authenticationActions } from '../redux/slices/authenticationSlice'
 
 const LoginContext = createContext()
@@ -53,31 +55,44 @@ const UserAccount = (props) => {
         reject()
       }
     })
+
   // Function to let the user login
   const authenticate = async (Username, Password) => {
     await new Promise((resolve, reject) => {
       const user = new CognitoUser({
         Username: Username,
         Pool: UserPool,
+        Storage: window.sessionStorage
       })
       const authDetails = new AuthenticationDetails({
         Username: Username,
         Password: Password,
+        Storage: window.sessionStorage
       })
 
       user.authenticateUser(authDetails, {
         onSuccess: (data) => {
           resolve(data)
-
           console.log('Login Data: ', data)
           const sessionJwt = data?.accessToken?.jwtToken
           const sessionTime = data?.idToken?.payload?.auth_time
           const sessionExpiry = data?.idToken?.payload?.exp
           const sessionIat = data?.idToken?.payload?.iat
+          const refreshToken = data?.refreshToken?.token
 
-          const sessionDetails = { jwt: sessionJwt, auth_time: sessionTime, expiry: sessionExpiry, iat: sessionIat }
+          const sessionDetails = {
+            jwt: sessionJwt, // Session
+            auth_time: sessionTime, // Session Time
+            expiry: sessionExpiry, // Session Expiry
+            iat: sessionIat, // Session IAT
+          }
+
+          console.log('setExpiryTime: ', props.setExpiryTime)
+          console.log('setRefreshToken: ', props.setRefreshToken)
 
           props?.setCognitoToken(sessionDetails)
+          props?.setExpiryTime(sessionExpiry)
+          props?.setRefreshToken(refreshToken)
 
           return data
         },
@@ -86,7 +101,7 @@ const UserAccount = (props) => {
           console.log('Login Error: ', err)
           return err
         },
-        newPasswordRequired: (data) => {},
+        newPasswordRequired: (data) => { },
         // mfaSetup: (challengeName, challengeParameters) => {
         //   user.associateSoftwareToken(this)
         // },

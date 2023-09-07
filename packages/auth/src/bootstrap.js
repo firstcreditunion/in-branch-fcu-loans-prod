@@ -9,7 +9,7 @@ import { Provider } from 'react-redux'
 import store from './redux/store'
 
 // Mount funcion to start up the app
-const mount = (el, { onNavigate, defaultHistory, initialPath, setCognitoToken, setSovereignUser }) => {
+const mount = (el, { onNavigate, defaultHistory, initialPath, setCognitoToken, setSovereignUser, setExpiryTime, setRefreshToken }) => {
   // uses Default history in isolation mode. Uses createMemoryHistory in production mode
   const history =
     defaultHistory ||
@@ -23,7 +23,7 @@ const mount = (el, { onNavigate, defaultHistory, initialPath, setCognitoToken, s
   ReactDOM.render(
     <HelmetProvider>
       <Provider store={store}>
-        <App history={history} setCognitoToken={setCognitoToken} setSovereignUser={setSovereignUser} />
+        <App history={history} setCognitoToken={setCognitoToken} setSovereignUser={setSovereignUser} setExpiryTime={setExpiryTime} setRefreshToken={setRefreshToken} />
       </Provider>
     </HelmetProvider>,
     el

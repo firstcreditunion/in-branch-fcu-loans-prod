@@ -1,6 +1,8 @@
 import React from 'react'
 import { format, getTime, formatDistance, formatDistanceStrict, isAfter, sub } from 'date-fns'
 
+import fromUnixTime from 'date-fns/fromUnixTime'
+
 export function dateIsAfter(date, dateToCompare) {
   return isAfter(date, dateToCompare)
 }
@@ -18,7 +20,7 @@ export function subtractDurationFromDate(dateToSubtractFrom, duration) {
   // console.log('Subtracted Date: ', sub(dateToSubtractFrom, { ...duration }))
 }
 
-export function numberOfDaysBetweenDates(date1, date2) {}
+export function numberOfDaysBetweenDates(date1, date2) { }
 
 export function distanceBetweenDateInWords(date, baseDate, options = []) {
   return formatDistance(date, baseDate, options)
@@ -26,6 +28,10 @@ export function distanceBetweenDateInWords(date, baseDate, options = []) {
 
 export function distanceBetweenDatesStrict(date, baseDate, options) {
   return formatDistanceStrict(date, baseDate, options)
+}
+
+export function getDateTimeFromUnix(unix) {
+  return fromUnixTime(unix)
 }
 
 export function getDateArrayFromStartDateAndEndDate(startDate, endDate) {

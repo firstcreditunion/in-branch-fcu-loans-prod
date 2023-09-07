@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useHistory } from 'react-router-dom'
 
 //* Redux
@@ -18,6 +18,11 @@ import { sopExpenseAction } from '../redux/slices/sopExpenseSlice'
 import { sopRelatedQuestionActions } from '../redux/slices/sopRelatedQuestionsSlice'
 import { paymentInstructionActions } from '../redux/slices/paymentInstructionSlice'
 import { authorisationActions } from '../redux/slices/authorisationSlice'
+import { authenticationActions } from '../redux/slices/authenticationSlice'
+
+
+//! Continue here
+import Timer from '../components/Timer'
 
 //* MUI
 import { Box, Container, Grid, Paper, Typography, Alert, AlertTitle, Stack, Button, Divider, Chip } from '@mui/material'
@@ -47,7 +52,7 @@ import InstalmentDebit from '../sections/InstalmentDebit'
 import Ackwonlegement from '../sections/Ackwonlegement'
 import Submission from '../sections/Submission'
 
-export default function MemberDetailsLayout({ cognitoToken, sovereignUser }) {
+export default function MemberDetailsLayout({ cognitoToken, sovereignUser, expiryTime, refreshToken }) {
   const dispatch = useDispatch()
   const history = useHistory()
 
@@ -139,15 +144,25 @@ export default function MemberDetailsLayout({ cognitoToken, sovereignUser }) {
 
   const [activeStep, setActiveStep] = useState(0)
 
-  // useEffect(() => {
-  //   if (cognitoToken != null && sovereignUser != null) {
-  //     dispatch(globalActions.setCognitoToken(cognitoToken))
-  //     dispatch(globalActions.setSovereignUser(sovereignUser))
-  //     return
-  //   }
+  useEffect(() => {
+    if (cognitoToken != null && sovereignUser != null) {
+      dispatch(globalActions.setCognitoToken(cognitoToken))
+      dispatch(globalActions.setSovereignUser(sovereignUser))
+      dispatch(authenticationActions.setExpiryTime(expiryTime))
+      dispatch(authenticationActions.setRefreshToken(refreshToken))
 
-  //   history.push('/')
-  // }, [])
+      sessionStorage.setItem('fcuportalSessionExpiry', expiryTime)
+      sessionStorage.setItem('fcuportalSessionRefreshToken', refreshToken)
+      return
+    }
+
+    history.push('/')
+
+    return () => {
+      sessionStorage.removeItem('fcuportalSessionExpiry')
+      sessionStorage.removeItem('fcuportalSessionRefreshToken')
+    }
+  }, [])
 
   const navigation = [
     {
@@ -156,7 +171,7 @@ export default function MemberDetailsLayout({ cognitoToken, sovereignUser }) {
       code: 'PBD',
       label: 'Prime Borrower Details',
       role: 'PRIMEB',
-      render: <Submission />,
+      render: <PrimeEligibility />,
       showClientSearchBar: true,
       showContinueButton: true,
       paddingToAddToNavigationButtons: 0,

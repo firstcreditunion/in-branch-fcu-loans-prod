@@ -25,9 +25,7 @@ const ROOT_APPLICATION = '/application'
 const ROOT_MEMBERONLYLOAN = '/memberonlyloan'
 const ROOT_LOANCALCULATOR = '/loanCalculator'
 
-// const Auth = lazy(() => import('../components/AuthenticationApp'))
 const LoanCalculator = lazy(() => import('../components/LoanCalculator'))
-// const Application = lazy(() => import('../components/ApplicationApp'))
 const Authentication = lazy(() => import('../components/AuthenticationApp'))
 const MemberOnlyLoanApplication = lazy(() => import('../components/MemberOnlyApplicationApp'))
 
@@ -88,8 +86,8 @@ export default function RouterMain(props) {
 
   const [cognitoToken, setCognitoToken] = useState(null)
   const [sovereignUser, setSovereignUser] = useState(null)
-
-
+  const [expiryTime, setExpiryTime] = useState(null)
+  const [refreshToken, setRefreshToken] = useState(null)
 
   // * Loan Cost Recovery Fee useStates
   const [creditCheck, setcreditCheck] = useState(4.6)
@@ -127,10 +125,10 @@ export default function RouterMain(props) {
             <LoanCalculator onLoanAmountChange={setLoanAmount} onInterestChange={setInterestRate} onTermChange={setTerm} onPaymentFrequencyChange={setPaymentFrequency} setCreditSense={setcreditSense} setCreditCheck={setcreditCheck} setMotorwebCheck={setmotorWebCheck} setPPSR={setppsrRegistration} setDocusign={setdocuSignSigning} setCloudCheckId={setcloudCheckIdVerification} setCloudCheckPEP={setcloudCheckPEP} sethasLpiPrimeDeath={sethasLpiPrimeDeath} sethasLpiPrimeDisability={sethasLpiPrimeDisability} sethasLpiPrimeCriticalIllness={sethasLpiPrimeCriticalIllness} sethasLpiPrimeBankruptcy={sethasLpiPrimeBankruptcy} setLPIUpfrontFee={setawsCalculatedLpiAmount} />
           </Route>
           <Route path={ROOT_MEMBERONLYLOAN}>
-            <MemberOnlyLoanApplication cognitoToken={cognitoToken} sovereignUser={sovereignUser} />
+            <MemberOnlyLoanApplication cognitoToken={cognitoToken} sovereignUser={sovereignUser} expiryTime={expiryTime} refreshToken={refreshToken} />
           </Route>
           <Route path={ROOT_AUTHENTICATION}>
-            <Authentication setCognitoToken={setCognitoToken} setSovereignUser={setSovereignUser} />
+            <Authentication setCognitoToken={setCognitoToken} setSovereignUser={setSovereignUser} setExpiryTime={setExpiryTime} setRefreshToken={setRefreshToken} />
           </Route>
         </Switch>
       </Suspense>

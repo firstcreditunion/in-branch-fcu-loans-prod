@@ -8,25 +8,27 @@ import GlobalStyles from './theme/globalStyles'
 import ThemePrimaryColor from './components/ui/FCUTheme'
 
 import MBROApplicationRouter from './routes/MBROApplicationRouter'
-
 import Placeholder from './pages/Placeholder'
-
 import SearchClientNumber from './forms/SearchMember/SearchClientNumber'
 
-export default ({ history, cognitoToken, sovereignUser }) => {
+import { UserAccount } from './cognito/UserAccount'
+
+export default ({ history, cognitoToken, sovereignUser, expiryTime, refreshToken }) => {
   return (
     <>
       <HelmetProvider>
         <ThemeConfig>
           <ThemePrimaryColor>
             <GlobalStyles />
-            <Router history={history}>
-              <Switch>
-                <Route path='/memberonlyloan'>
-                  <MBROApplicationRouter history={history} cognitoToken={cognitoToken} sovereignUser={sovereignUser} />
-                </Route>
-              </Switch>
-            </Router>
+            <UserAccount>
+              <Router history={history}>
+                <Switch>
+                  <Route path='/memberonlyloan'>
+                    <MBROApplicationRouter history={history} cognitoToken={cognitoToken} sovereignUser={sovereignUser} expiryTime={expiryTime} refreshToken={refreshToken} />
+                  </Route>
+                </Switch>
+              </Router>
+            </UserAccount>
           </ThemePrimaryColor>
         </ThemeConfig>
       </HelmetProvider>
