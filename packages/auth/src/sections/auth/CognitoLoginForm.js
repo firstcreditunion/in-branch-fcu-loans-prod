@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext } from 'react'
-
 import { Link as RouterLink, useHistory } from 'react-router-dom'
 
 //* MUI
@@ -76,7 +75,8 @@ export default function AuthLoginForm({ setSovereignUser }) {
     reset,
     setError,
     handleSubmit,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: {
+      errors, isSubmitting, isSubmitSuccessful },
   } = methods
 
   function authenticateUser() {
@@ -142,7 +142,9 @@ export default function AuthLoginForm({ setSovereignUser }) {
         {verificationSuccess === true && <Alert severity='success'>Verification was successful. Please login below!</Alert>}
         {passwordChangeStatus === true && <Alert severity='success'>Password was changed succesfully. Please login!</Alert>}
         {loginFailResult != null && <Alert severity='error'>{loginFailResult}</Alert>}
-        <Typography variant='h4' sx={{ textAlign: 'center', fontWeight: 'light', py: 3 }}>
+        <Typography variant='h4' sx={{
+          textAlign: 'center', fontWeight: 'light', py: 3
+        }}>
           Sign in to FCU Staff Portal
         </Typography>
         <Stack
@@ -230,3 +232,6 @@ export default function AuthLoginForm({ setSovereignUser }) {
     </FormProvider>
   )
 }
+
+
+// Git Commit Control 1

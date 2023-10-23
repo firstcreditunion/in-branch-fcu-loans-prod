@@ -15,7 +15,8 @@ RHFCodes.propTypes = {
   inputs: PropTypes.arrayOf(PropTypes.string),
 }
 
-export default function RHFCodes({ keyName = '', inputs = [], ...other }) {
+export default function RHFCodes({
+  keyName = '', inputs = [], ...other }) {
   const codesRef = useRef(null)
 
   const { control, setValue } = useFormContext()

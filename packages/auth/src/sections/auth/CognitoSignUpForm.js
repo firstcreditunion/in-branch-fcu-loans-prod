@@ -73,8 +73,6 @@ const SignupForm = () => {
   const passwordHasSpecialCharacters = hasSpecialCharacters(signuppassword)
   const passwordMinLengthMet = stringLength(signuppassword) >= 8
 
-  console.log('passwordMinLengthMet: ', passwordMinLengthMet)
-
   const emptySpaceRegex = /^[\S]+.*[\S]+$/
 
   const defaultValues = {
@@ -165,6 +163,7 @@ const SignupForm = () => {
   function setPassword(event) {
     dispatch(signupActions.setPassword(event.target.value))
   }
+
   function setVerifyPassword(event) {
     dispatch(signupActions.setVerifyPassword(event.target.value))
   }
@@ -187,15 +186,12 @@ const SignupForm = () => {
   }
 
   useEffect(() => {
-    console.log('Cognito Error: ', cognitoError)
-    console.log('Cognito Error: ', cognitoErrorName)
-    console.log('Cognito Error: ', cognitoErrorStack)
-  }, [cognitoError])
 
-  useEffect(() => {
+
     if (hasSoverignProfile === 'Unauthorized' || hasSoverignProfile === null || hasSoverignProfile === undefined) return
 
     const emailToRegister = signupemailAddress + domain
+
     dispatch(signupActions.setCognitoError(null))
 
     UserPool.signUp(
@@ -210,10 +206,11 @@ const SignupForm = () => {
       null,
       (err, data) => {
         if (err) {
-          // console.log('Sign Up Error: ', err?.message)
+
           dispatch(signupActions.setCognitoError(err?.message))
           dispatch(signupActions.setCognitoErrorName(err?.name))
           dispatch(signupActions.setCognitoErrorStack(err?.stack))
+          dispatch(signupActions.setSignUpFailResult(err?.message))
           return
         }
 
@@ -223,6 +220,7 @@ const SignupForm = () => {
         }
       }
     )
+
   }, [hasSoverignProfile])
 
   useEffect(() => {
@@ -310,6 +308,7 @@ const SignupForm = () => {
             </Alert>
           </Stack>
         )}
+        {cognitoError != null && <Alert severity='error'>{cognitoError}</Alert>}
         <RFHTextField
           name='signupemailAddress'
           label='Email Address'

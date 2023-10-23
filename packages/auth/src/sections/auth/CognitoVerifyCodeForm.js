@@ -35,7 +35,9 @@ export default function AuthSignUpForm() {
   const history = useHistory()
 
   const username = useSelector((state) => state.signupReducer.emailAddress)
+  const password = useSelector((state) => state.signupReducer.password)
   const domain = useSelector((state) => state.signupReducer.domain)
+  const verifyCodeResult = useSelector((state) => state.verifyCodeReducer.verifyCodeResult)
 
   const VerifyCodeSchema = Yup.object().shape({
     code1: Yup.string().required('Code is required'),
@@ -71,15 +73,6 @@ export default function AuthSignUpForm() {
 
     const v_code = data.target[0]?.value + data.target[2]?.value + data.target[4]?.value + data.target[6]?.value + data.target[8]?.value + data.target[10]?.value
 
-    // console.log('Verification Code 1 - ', data)
-    // console.log('Verification Code - ', v_code)
-
-    // console.log('Verification Code 1 - ', data.target[0]?.value)
-    // console.log('Verification Code 2 - ', data.target[2]?.value)
-    // console.log('Verification Code 3 - ', data.target[4]?.value)
-    // console.log('Verification Code 4 - ', data.target[6]?.value)
-    // console.log('Verification Code 5 - ', data.target[8]?.value)
-    // console.log('Verification Code 6 - ', data.target[10]?.value)
     const emailToRegister = username + domain
     const userData = {
       Username: emailToRegister,
@@ -88,20 +81,15 @@ export default function AuthSignUpForm() {
 
     const cognitoUser = new CognitoUser(userData)
 
-    // console.log('userData: ', userData)
-    // console.log('Verification Code: ', v_code)
-
     cognitoUser.confirmRegistration(v_code, true, function (err, result) {
       if (err) {
-        // console.log('Verification Code Error - ', err?.message)
+        dispatch(verifycodeActions.setVerifyCodeResult(err?.message))
         return
       }
-      // console.log('Verification Code result - ', result)
       if (result === 'SUCCESS') {
         dispatch(signupActions.setCongnitoResponseUsername(null))
         dispatch(signupActions.setCongnitoResponseuserSub(null))
         dispatch(verifycodeActions.setVerificationSuccess(true))
-
         dispatch(authenticationActions.clearSignInForm())
 
         history.push('/signin')
@@ -109,10 +97,29 @@ export default function AuthSignUpForm() {
     })
   }
 
+  const resendConfirmationCode = () => {
+    const emailToRegister = username + domain
+    const userData = {
+      Username: emailToRegister,
+      Pool: UserPool,
+    }
+
+    const cognitoUser = new CognitoUser(userData)
+    cognitoUser.resendConfirmationCode((err, result) => {
+      if (err) {
+        console.log('Code request Error')
+        return
+      }
+      return
+    })
+
+  }
+
+
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
       <Stack direction='column' justifyContent='center' alignItems='stretch' spacing={5} sx={{ display: 'block', width: '100%' }}>
-        {/* {!!errors.afterSubmit && <Alert severity='error'>{errors.afterSubmit.message}</Alert>} */}
+        {verifyCodeResult != null && <Alert severity='error'>{verifyCodeResult}</Alert>}
         <Typography variant='h4' sx={{ textAlign: 'center', fontWeight: 'light', py: 3 }}>
           Please Check You Email
         </Typography>
@@ -131,11 +138,9 @@ export default function AuthSignUpForm() {
         </LoadingButton>
       </Stack>
 
-      {/* <Stack alignItems='flex-end' sx={{ my: 2 }}>
-        <Link component={RouterLink} to={PATH_AUTH.resetPassword} variant='body2' color='inherit' underline='always'>
-          Forgot password?
-        </Link>
-      </Stack> */}
+      <LoadingButton fullWidth size='large' onClick={resendConfirmationCode} variant='text' loading={isSubmitting} sx={{ mt: 3 }}>
+        Resend Code
+      </LoadingButton>
     </FormProvider>
   )
 }

@@ -57,6 +57,14 @@ const signupSlice = createSlice({
     setHasSoverignProfile: (state, action) => {
       state.hasSoverignProfile = action.payload
     },
+    clearSignUpForm: (state, action) => {
+      state.emailAddress = ''
+      state.password = ''
+      state.verifyPassword = ''
+      state.clientnumber = ''
+      state.hasSoverignProfile = null
+      state.signUpFailResult = null
+    },
 
     setCognitoError: (state, action) => {
       state.cognitoError = action.payload

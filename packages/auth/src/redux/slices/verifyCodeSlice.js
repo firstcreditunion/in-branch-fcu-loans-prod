@@ -6,6 +6,7 @@ const namespace = 'verifycode'
 export const initialState = {
   verificationcode: '',
   verificationSuccess: false,
+  verifyCodeResult: null,
 }
 
 const verifycodeSlice = createSlice({
@@ -23,6 +24,12 @@ const verifycodeSlice = createSlice({
     },
     setVerificationSuccess: (state, action) => {
       state.verificationSuccess = action.payload
+    },
+    setVerificationSuccess: (state, action) => {
+      state.verificationSuccess = action.payload
+    },
+    setVerifyCodeResult: (state, action) => {
+      state.verifyCodeResult = action.payload
     },
   },
 })
