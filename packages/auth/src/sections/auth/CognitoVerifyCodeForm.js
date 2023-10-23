@@ -123,10 +123,8 @@ export default function AuthSignUpForm() {
         <Typography variant='h4' sx={{ textAlign: 'center', fontWeight: 'light', py: 3 }}>
           Please Check You Email
         </Typography>
-
         <Stack spacing={3}>
           <RHFCodes keyName='code' inputs={['code1', 'code2', 'code3', 'code4', 'code5', 'code6']} />
-
           {(!!errors.code1 || !!errors.code2 || !!errors.code3 || !!errors.code4 || !!errors.code5 || !!errors.code6) && (
             <FormHelperText error sx={{ px: 2 }}>
               Code is required
@@ -137,7 +135,6 @@ export default function AuthSignUpForm() {
           Verify
         </LoadingButton>
       </Stack>
-
       <LoadingButton fullWidth size='large' onClick={resendConfirmationCode} variant='text' loading={isSubmitting} sx={{ mt: 3 }}>
         Resend Code
       </LoadingButton>
