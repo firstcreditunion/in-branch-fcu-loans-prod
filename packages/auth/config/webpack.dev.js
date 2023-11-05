@@ -6,6 +6,9 @@ const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPl
 const commonConfig = require('./webpack.common')
 const packageJson = require('../package.json')
 
+const webpack = require('webpack')
+const dotenv = require('dotenv').config()
+
 const devConfig = {
   mode: 'development',
   output: {
@@ -25,6 +28,12 @@ const devConfig = {
         './AuthApp': './src/bootstrap',
       },
       shared: packageJson.dependencies,
+    }),
+    new webpack.DefinePlugin({
+      'process.env': {
+        REACT_APP_CLIENT_ID: JSON.stringify(process.env.REACT_APP_CLIENT_ID),
+        REACT_APP_USER_POOL_ID: JSON.stringify(process.env.REACT_APP_USER_POOL_ID)
+      }
     }),
     new HtmlWebpackPlugin({
       template: './public/index.html',

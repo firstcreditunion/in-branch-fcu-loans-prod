@@ -3,6 +3,7 @@ const OCC_BASE_URL_APP = 'https://x8cqelk6q6.execute-api.ap-southeast-2.amazonaw
 const OCC_BASE_URL_APP_LOAN_CALC = 'https://6s6pe9scql.execute-api.ap-southeast-2.amazonaws.com'
 
 const location_origin = window.location.origin
+
 //* Resources - Application
 export const BASE_URL_LOCAL_APP = `${OCC_BASE_URL_APP}/${getCloudFrontEnvironment()}`
 export const BASE_URL_AWS_APP = `${OCC_BASE_URL_APP}/${getCloudFrontEnvironment()}`
@@ -27,8 +28,20 @@ export const SUBMISSION_STATUS = Object.freeze({
 })
 
 export const processNodeEnv = () => {
+
   return process.env.NODE_ENV
 }
+
+// export const cognitoUserDetails = () => {
+
+//   const userPoolId = process.env.REACT_APP_USER_POOL_ID_TEST
+//   const clientId = process.env.REACT_APP_CLIENT_ID_TEST
+
+//   console.log('Pool ID: ', userPoolId)
+//   console.log('Client ID: ', clientId)
+
+//   return { userPoolId: userPoolId, clientId: clientId }
+// }
 
 export function getCloudFrontEnvironment() {
   if (location_origin === 'https://drpef2o7h0f6v.cloudfront.net' || location_origin === 'https://portal.firstcreditunion.co.nz') {
@@ -47,11 +60,3 @@ export function getCloudFrontEnvironmentLoanCalc() {
     return 'SS-DEV'
   }
 }
-
-// export const awKMSAccessKey = () => {
-//   return process.env.REACT_APP_KMS_GUEST_ACCESS_KEY
-// }
-
-// export const awKMSSecretKey = () => {
-//   return process.env.REACT_APP_KMS_GUEST_SECRET_KEY
-// }

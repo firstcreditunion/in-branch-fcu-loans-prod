@@ -115,7 +115,6 @@ export default function AuthSignUpForm() {
 
   }
 
-
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
       <Stack direction='column' justifyContent='center' alignItems='stretch' spacing={5} sx={{ display: 'block', width: '100%' }}>
