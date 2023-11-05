@@ -8,8 +8,4 @@ const poolData = {
  ClientId: `${process.env.REACT_APP_CLIENT_ID}`,
 }
 
-console.log('User Pool: ', process.env.REACT_APP_USER_POOL_ID)
-console.log('Cleint ID: ', process.env.REACT_APP_CLIENT_ID)
-
-
 export default new CognitoUserPool(poolData)
