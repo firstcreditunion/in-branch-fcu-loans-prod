@@ -32,16 +32,6 @@ export const processNodeEnv = () => {
   return process.env.NODE_ENV
 }
 
-// export const cognitoUserDetails = () => {
-
-//   const userPoolId = process.env.REACT_APP_USER_POOL_ID_TEST
-//   const clientId = process.env.REACT_APP_CLIENT_ID_TEST
-
-//   console.log('Pool ID: ', userPoolId)
-//   console.log('Client ID: ', clientId)
-
-//   return { userPoolId: userPoolId, clientId: clientId }
-// }
 
 export function getCloudFrontEnvironment() {
   if (location_origin === 'https://drpef2o7h0f6v.cloudfront.net' || location_origin === 'https://portal.firstcreditunion.co.nz') {

@@ -15,7 +15,7 @@ const LoginContext = createContext()
 const UserAccount = (props) => {
   // Function to check if the user is logged in (Session for user)
 
-  console.log('Props Set Cognito Token', props?.setCognitoToken)
+  // console.log('Props Set Cognito Token', props?.setCognitoToken)
 
   const getUserSession = async () =>
     await new Promise((resolve, reject) => {

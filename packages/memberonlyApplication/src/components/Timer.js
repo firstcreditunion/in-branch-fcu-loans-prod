@@ -18,7 +18,7 @@ import { useCountdownDate } from '../hooks/use-countdown';
 
 export default function Timer({ date }) {
 
- console.log('TIMER Date: ', date)
+ // console.log('TIMER Date: ', date)
 
  const { days, hours, minutes, seconds } = useCountdownDate(new Date(date));
 

@@ -71,7 +71,7 @@ const UserAccount = (props) => {
    user.authenticateUser(authDetails, {
     onSuccess: (data) => {
      resolve(data)
-     console.log('Login Data: ', data)
+     // console.log('Login Data: ', data)
      const sessionJwt = data?.accessToken?.jwtToken
      const sessionTime = data?.idToken?.payload?.auth_time
      const sessionExpiry = data?.idToken?.payload?.exp
@@ -88,7 +88,7 @@ const UserAccount = (props) => {
     },
     onFailure: (err) => {
      reject(err)
-     console.log('Login Error: ', err)
+     // console.log('Login Error: ', err)
      return err
     },
     newPasswordRequired: (data) => { },
@@ -124,35 +124,35 @@ const UserAccount = (props) => {
 
 export { LoginContext, UserAccount }
 
- // const userAttributes = async (Username, Password) => {
- //   await new Promise((resolve, reject) => {
- //     const user = new CognitoUser({
- //       Username: Username,
- //       Pool: UserPool,
- //     })
- //     const authDetails = new AuthenticationDetails({
- //       Username: Username,
- //       Password: Password,
- //     })
+// const userAttributes = async (Username, Password) => {
+//   await new Promise((resolve, reject) => {
+//     const user = new CognitoUser({
+//       Username: Username,
+//       Pool: UserPool,
+//     })
+//     const authDetails = new AuthenticationDetails({
+//       Username: Username,
+//       Password: Password,
+//     })
 
- //     user.authenticateUser(authDetails, {
- //       onSuccess: (data) => {
- //         console.log('On Success: ', data)
- //         resolve(data)
- //       },
- //       onFailure: (err) => {
- //         console.log('On Failure: ', err)
- //         reject(err)
- //       },
- //       newPasswordRequired: (data) => {
- //         console.log('New Password Required: ', data)
- //       },
- //       // mfaSetup: (challengeName, challengeParameters) => {
- //       //   user.associateSoftwareToken(this)
- //       // },
- //     })
+//     user.authenticateUser(authDetails, {
+//       onSuccess: (data) => {
+//         console.log('On Success: ', data)
+//         resolve(data)
+//       },
+//       onFailure: (err) => {
+//         console.log('On Failure: ', err)
+//         reject(err)
+//       },
+//       newPasswordRequired: (data) => {
+//         console.log('New Password Required: ', data)
+//       },
+//       // mfaSetup: (challengeName, challengeParameters) => {
+//       //   user.associateSoftwareToken(this)
+//       // },
+//     })
 
- //     return user
- //   })
- // }
+//     return user
+//   })
+// }
 

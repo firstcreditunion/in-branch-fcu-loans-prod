@@ -487,7 +487,7 @@ export default function Submission() {
   const submissionDataWithoutBraces = submissionDataWithoutOpeningBraces.replace('}', '-')
   const submissionDataWithoutQuotes = submissionDataWithoutBraces.replace('"', '?')
 
-  console.log('submissionDataWithoutBraces: ', submissionDataWithoutQuotes)
+  // console.log('submissionDataWithoutBraces: ', submissionDataWithoutQuotes)
 
   const mailTo = `mailto:Isaac.Vicliph@firstcu.co.nz;Malakai.Curulala@firstcu.co.nz?cc=Herb.Wulff@firstcu.co.nz&subject=Loan Application Submission Failed&body=${JSON.parse(createMailingBodyData())}`
 
