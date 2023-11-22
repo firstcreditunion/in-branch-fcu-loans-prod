@@ -12,7 +12,7 @@ import { styled } from '@mui/material/styles'
 
 //* Redux
 import { useDispatch, useSelector } from 'react-redux'
-import { submissionActions, submitLoanApplication } from '../redux/slices/submissionSlice'
+import { submissionActions, submitLoanApplication, generateLoanApplicationReport } from '../redux/slices/submissionSlice'
 
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { Typography, Alert, AlertTitle, Stack, Divider, Box, Card, Button, Paper } from '@mui/material'
@@ -44,11 +44,12 @@ import Slide from '@mui/material/Slide'
 import Snackbar from '@mui/material/Snackbar'
 
 //* API Constants
-import { BASE_URL_LOCAL_APP, BASE_URL_AWS_APP, processNodeEnv } from '../redux/utils/apiConstants'
+import { BASE_URL_LOCAL_APP, BASE_URL_AWS_APP, processNodeEnv, getCloudFrontEnvironment } from '../redux/utils/apiConstants'
 import { getLoanPurpose_FromValue, getTradingBranch_FromValue } from '../redux/codes/getKeysOrValues'
 
 //* Utils
 import { convertToUTCCustom } from '../utils/convertDatetoUTC'
+import { fDateCustom } from '../utils/formatDateTime'
 
 const ContentStyle = styled(Paper)(({ theme }) => ({
   borderRadius: 25,
@@ -102,26 +103,28 @@ export default function Submission() {
     const zeroConcatLoadedBy = '0000000000' + sovereignUser?.toString()
     zeroPaddedLoadedBy = zeroConcatLoadedBy.substring(zeroConcatLoadedBy.length - 10, zeroConcatLoadedBy.length)
   }
-
+  //* Submission Results
   const loading = useSelector((state) => state.submissionReducer.loading)
   const applicationNumber = useSelector((state) => state.submissionReducer.applicationNumber)
   const serverError = useSelector((state) => state.submissionReducer.serverError)
+  const submissionStatusCode = useSelector((state) => state.submissionReducer.submissionStatusCode)
+  const submissionFulfilled = useSelector((state) => state.submissionReducer.submissionFulfilled)
 
-  const requestedLoanAmount = useSelector((state) => state.loanDetailsReducer.requestedLoanAmount)
-  const interestRate = useSelector((state) => state.clientSearchReducer.primeIreEstimate.estimatedInterestRate)
+  const requestedLoanAmount = useSelector((state) => state.loanDetailsReducer.requestedLoanAmount) //Added to pdf
+  const interestRate = useSelector((state) => state.clientSearchReducer.primeIreEstimate.estimatedInterestRate) //Added to pdf
 
   //* Repayment Amount
-  const lncalc_InterestAmount = useSelector((state) => state.loanCalculatorReducer.lncalc_InterestAmount)
-  const feeCharged = useSelector((state) => state.loanCalculatorReducer.feeCharged)
-  const lncalc_AmountPayable = useSelector((state) => state.loanCalculatorReducer.lncalc_AmountPayable)
+  const lncalc_InterestAmount = useSelector((state) => state.loanCalculatorReducer.lncalc_InterestAmount) //Added to pdf
+  const feeCharged = useSelector((state) => state.loanCalculatorReducer.feeCharged) //Added to pdf
+  const lncalc_AmountPayable = useSelector((state) => state.loanCalculatorReducer.lncalc_AmountPayable) //Added to pdf
   const lncalc_PaymentFrequencyUnit = useSelector((state) => state.loanCalculatorReducer.lncalc_PaymentFrequency.unit)
-  const lncalc_TermValue = useSelector((state) => state.loanCalculatorReducer.lncalc_Term.value)
+  const lncalc_TermValue = useSelector((state) => state.loanCalculatorReducer.lncalc_Term.value) //Added to pdf
   const lncalc_InterestRate = useSelector((state) => state.loanCalculatorReducer.lncalc_InterestRate)
-  const firstPaymentDate = useSelector((state) => state.loanCalculatorReducer.firstPaymentDate)
-  const documentationTypes = useSelector((state) => state.loanDetailsReducer.documentationTypes)
+  const firstPaymentDate = useSelector((state) => state.loanCalculatorReducer.firstPaymentDate) //Added to pdf
+  const documentationTypes = useSelector((state) => state.loanDetailsReducer.documentationTypes) //Added to pdf
 
-  const repayFreq = useSelector((state) => state.loanCalculatorReducer.lncalc_PaymentFrequency?.unit)
-  const lncalc_InstalmentAmount = useSelector((state) => state.loanCalculatorReducer.lncalc_InstalmentAmount)
+  const repayFreq = useSelector((state) => state.loanCalculatorReducer.lncalc_PaymentFrequency?.unit) //Added to pdf
+  const lncalc_InstalmentAmount = useSelector((state) => state.loanCalculatorReducer.lncalc_InstalmentAmount) //Added to pdf
 
   const term = useSelector((state) => state.loanDetailsReducer.loanTerm)
 
@@ -170,11 +173,11 @@ export default function Submission() {
 
   //* Personal Details
 
-  const primetitle = useSelector((state) => state.clientSearchReducer.primetitle)
-  const primeforenames = useSelector((state) => state.clientSearchReducer.primeforenames)
-  const primesurname = useSelector((state) => state.clientSearchReducer.primesurname)
-  const primegender = useSelector((state) => state.clientSearchReducer.primegender)
-  const primedateOfBirth = useSelector((state) => state.clientSearchReducer.primedateOfBirth)
+  const primetitle = useSelector((state) => state.clientSearchReducer.primetitle) //Added To Pdf
+  const primeforenames = useSelector((state) => state.clientSearchReducer.primeforenames) //Added To Pdf
+  const primesurname = useSelector((state) => state.clientSearchReducer.primesurname)  //Added To Pdf
+  const primegender = useSelector((state) => state.clientSearchReducer.primegender) //Added To Pdf
+  const primedateOfBirth = useSelector((state) => state.clientSearchReducer.primedateOfBirth) //Added To Pdf
 
   //* SOP Details
   //? Assets
@@ -199,35 +202,224 @@ export default function Submission() {
   const liabilityAll = [liability_mortgage, liability_storecard, liability_mastercard, liability_visa, liability_studentloan, liability_otherloan1]
 
   //? Income
-  const income_wages = useSelector((state) => state.sopIncomeDataGridReducer.wages)
-  const income_secondWages = useSelector((state) => state.sopIncomeDataGridReducer.secondWages)
-  const income_winzBenefit = useSelector((state) => state.sopIncomeDataGridReducer.winzBenefit)
-  const income_selfEmployed = useSelector((state) => state.sopIncomeDataGridReducer.selfEmployed)
-  const income_nzSuper = useSelector((state) => state.sopIncomeDataGridReducer.nzSuper)
-  const income_studyLink = useSelector((state) => state.sopIncomeDataGridReducer.studyLink)
-  const income_rentalIncome = useSelector((state) => state.sopIncomeDataGridReducer.rentalIncome)
-  const income_childSupport = useSelector((state) => state.sopIncomeDataGridReducer.childSupport)
-  const income_workingForFamilies = useSelector((state) => state.sopIncomeDataGridReducer.workingForFamilies)
-  const income_boarderIncome = useSelector((state) => state.sopIncomeDataGridReducer.boarderIncome)
+  const income_wages = useSelector((state) => state.sopIncomeDataGridReducer.wages) //Added To Pdf
+  const income_secondWages = useSelector((state) => state.sopIncomeDataGridReducer.secondWages) //Added To Pdf
+  const income_winzBenefit = useSelector((state) => state.sopIncomeDataGridReducer.winzBenefit) //Added To Pdf
+  const income_selfEmployed = useSelector((state) => state.sopIncomeDataGridReducer.selfEmployed) //Added To Pdf
+  const income_nzSuper = useSelector((state) => state.sopIncomeDataGridReducer.nzSuper) //Added To Pdf
+  const income_studyLink = useSelector((state) => state.sopIncomeDataGridReducer.studyLink) //Added To Pdf
+  const income_rentalIncome = useSelector((state) => state.sopIncomeDataGridReducer.rentalIncome) //Added To Pdf
+  const income_childSupport = useSelector((state) => state.sopIncomeDataGridReducer.childSupport) //Added To Pdf
+  const income_workingForFamilies = useSelector((state) => state.sopIncomeDataGridReducer.workingForFamilies) //Added To Pdf
+  const income_boarderIncome = useSelector((state) => state.sopIncomeDataGridReducer.boarderIncome) //Added To Pdf
 
   const inomceAll = [income_wages, income_secondWages, income_winzBenefit, income_selfEmployed, income_nzSuper, income_studyLink, income_rentalIncome, income_childSupport, income_workingForFamilies, income_boarderIncome]
 
+  const primeIncome = [
+    {
+      amount1: income_wages.amount1,
+      amount2: income_wages.amount2,
+      amount3: income_wages.amount3,
+      code: income_wages.code,
+      desc: income_wages.desc,
+    },
+    {
+      amount1: income_secondWages.amount1,
+      amount2: income_secondWages.amount2,
+      amount3: income_secondWages.amount3,
+      code: income_secondWages.code,
+      desc: income_secondWages.desc,
+    },
+    {
+      amount1: income_winzBenefit.amount1,
+      amount2: income_winzBenefit.amount2,
+      amount3: income_winzBenefit.amount3,
+      code: income_winzBenefit.code,
+      desc: income_winzBenefit.desc,
+    },
+    {
+      amount1: income_selfEmployed.amount1,
+      amount2: income_selfEmployed.amount2,
+      amount3: income_selfEmployed.amount3,
+      code: income_selfEmployed.code,
+      desc: income_selfEmployed.desc,
+    },
+    {
+      amount1: income_nzSuper.amount1,
+      amount2: income_nzSuper.amount2,
+      amount3: income_nzSuper.amount3,
+      code: income_nzSuper.code,
+      desc: income_nzSuper.desc,
+    },
+    {
+      amount1: income_studyLink.amount1,
+      amount2: income_studyLink.amount2,
+      amount3: income_studyLink.amount3,
+      code: income_studyLink.code,
+      desc: income_studyLink.desc,
+    },
+    {
+      amount1: income_rentalIncome.amount1,
+      amount2: income_rentalIncome.amount2,
+      amount3: income_rentalIncome.amount3,
+      code: income_rentalIncome.code,
+      desc: income_rentalIncome.desc,
+    },
+    {
+      amount1: income_childSupport.amount1,
+      amount2: income_childSupport.amount2,
+      amount3: income_childSupport.amount3,
+      code: income_childSupport.code,
+      desc: income_childSupport.desc,
+    },
+    {
+      amount1: income_workingForFamilies.amount1,
+      amount2: income_workingForFamilies.amount2,
+      amount3: income_workingForFamilies.amount3,
+      code: income_workingForFamilies.code,
+      desc: income_workingForFamilies.desc,
+    },
+    {
+      amount1: income_boarderIncome.amount1,
+      amount2: income_boarderIncome.amount2,
+      amount3: income_boarderIncome.amount3,
+      code: income_boarderIncome.code,
+      desc: income_boarderIncome.desc,
+    },
+  ]
+
   //? Expenses
-  const expenses_rentingBoarding = useSelector((state) => state.sopExpenseReducer.rentingBoarding)
-  const expenses_liabilitiesServicing = useSelector((state) => state.sopExpenseReducer.liabilitiesServicing)
-  const expenses_powerOrGas = useSelector((state) => state.sopExpenseReducer.powerOrGas)
-  const expenses_groceries = useSelector((state) => state.sopExpenseReducer.groceries)
-  const expenses_phoneOrInternet = useSelector((state) => state.sopExpenseReducer.phoneOrInternet)
-  const expenses_fuel = useSelector((state) => state.sopExpenseReducer.fuel)
-  const expenses_s6_or_savings = useSelector((state) => state.sopExpenseReducer.s6_or_savings)
-  const expenses_wof_rego = useSelector((state) => state.sopExpenseReducer.wof_rego)
-  const expenses_clothing = useSelector((state) => state.sopExpenseReducer.clothing)
-  const expenses_medicalExpense = useSelector((state) => state.sopExpenseReducer.medicalExpense)
-  const expenses_gym = useSelector((state) => state.sopExpenseReducer.gym)
-  const expenses_recreation = useSelector((state) => state.sopExpenseReducer.recreation)
-  const expenses_tithing = useSelector((state) => state.sopExpenseReducer.tithing)
-  const expenses_insurance = useSelector((state) => state.sopExpenseReducer.insurance)
-  const expenses_savings = useSelector((state) => state.sopExpenseReducer.savings)
+  const expenses_rentingBoarding = useSelector((state) => state.sopExpenseReducer.rentingBoarding)  //Added To Pdf
+  const expenses_liabilitiesServicing = useSelector((state) => state.sopExpenseReducer.liabilitiesServicing)  //Added To Pdf
+  const expenses_powerOrGas = useSelector((state) => state.sopExpenseReducer.powerOrGas)  //Added To Pdf
+  const expenses_groceries = useSelector((state) => state.sopExpenseReducer.groceries) //Added To Pdf
+  const expenses_phoneOrInternet = useSelector((state) => state.sopExpenseReducer.phoneOrInternet) //Added To Pdf
+  const expenses_fuel = useSelector((state) => state.sopExpenseReducer.fuel) //Added To Pdf
+  const expenses_s6_or_savings = useSelector((state) => state.sopExpenseReducer.s6_or_savings) //Added To Pdf
+  const expenses_wof_rego = useSelector((state) => state.sopExpenseReducer.wof_rego) //Added To Pdf
+  const expenses_clothing = useSelector((state) => state.sopExpenseReducer.clothing) //Added To Pdf
+  const expenses_medicalExpense = useSelector((state) => state.sopExpenseReducer.medicalExpense) //Added To Pdf
+  const expenses_gym = useSelector((state) => state.sopExpenseReducer.gym) //Added To Pdf
+  const expenses_recreation = useSelector((state) => state.sopExpenseReducer.recreation) //Added To Pdf
+  const expenses_tithing = useSelector((state) => state.sopExpenseReducer.tithing) //Added To Pdf
+  const expenses_insurance = useSelector((state) => state.sopExpenseReducer.insurance) //Added To Pdf
+  const expenses_savings = useSelector((state) => state.sopExpenseReducer.savings) //Added To Pdf
+
+  //Added To Pdf
+  const primeExpenses = [
+    {
+      amount1: expenses_rentingBoarding.amount1,
+      amount2: expenses_rentingBoarding.amount2,
+      amount3: expenses_rentingBoarding.amount3,
+      code: expenses_rentingBoarding.code,
+      desc: expenses_rentingBoarding.desc,
+    },
+    {
+      amount1: expenses_liabilitiesServicing.amount1,
+      amount2: expenses_liabilitiesServicing.amount2,
+      amount3: expenses_liabilitiesServicing.amount3,
+      code: expenses_liabilitiesServicing.code,
+      desc: expenses_liabilitiesServicing.desc,
+    },
+    {
+      amount1: expenses_powerOrGas.amount1,
+      amount2: expenses_powerOrGas.amount2,
+      amount3: expenses_powerOrGas.amount3,
+      code: expenses_powerOrGas.code,
+      desc: expenses_powerOrGas.desc,
+    },
+    {
+      amount1: expenses_groceries.amount1,
+      amount2: expenses_groceries.amount2,
+      amount3: expenses_groceries.amount3,
+      code: expenses_groceries.code,
+      desc: expenses_groceries.desc,
+    },
+    {
+      amount1: expenses_phoneOrInternet.amount1,
+      amount2: expenses_phoneOrInternet.amount2,
+      amount3: expenses_phoneOrInternet.amount3,
+      code: expenses_phoneOrInternet.code,
+      desc: expenses_phoneOrInternet.desc,
+    },
+    {
+      amount1: expenses_fuel.amount1,
+      amount2: expenses_fuel.amount2,
+      amount3: expenses_fuel.amount3,
+      code: expenses_fuel.code,
+      desc: expenses_fuel.desc,
+    },
+    {
+      amount1: expenses_s6_or_savings.amount1,
+      amount2: expenses_s6_or_savings.amount2,
+      amount3: expenses_s6_or_savings.amount3,
+      code: expenses_s6_or_savings.code,
+      desc: expenses_s6_or_savings.desc,
+    },
+    {
+      amount1: expenses_wof_rego.amount1,
+      amount2: expenses_wof_rego.amount2,
+      amount3: expenses_wof_rego.amount3,
+      code: expenses_wof_rego.code,
+      desc: expenses_wof_rego.desc,
+    },
+    {
+      amount1: expenses_clothing.amount1,
+      amount2: expenses_clothing.amount2,
+      amount3: expenses_clothing.amount3,
+      code: expenses_clothing.code,
+      desc: expenses_clothing.desc,
+    },
+    {
+      amount1: expenses_medicalExpense.amount1,
+      amount2: expenses_medicalExpense.amount2,
+      amount3: expenses_medicalExpense.amount3,
+      code: expenses_medicalExpense.code,
+      desc: expenses_medicalExpense.desc,
+    },
+    {
+      amount1: expenses_gym.amount1,
+      amount2: expenses_gym.amount2,
+      amount3: expenses_gym.amount3,
+      code: expenses_gym.code,
+      desc: expenses_gym.desc,
+    },
+    {
+      amount1: expenses_recreation.amount1,
+      amount2: expenses_recreation.amount2,
+      amount3: expenses_recreation.amount3,
+      code: expenses_recreation.code,
+      desc: expenses_recreation.desc,
+    },
+    {
+      amount1: expenses_tithing.amount1,
+      amount2: expenses_tithing.amount2,
+      amount3: expenses_tithing.amount3,
+      code: expenses_tithing.code,
+      desc: expenses_tithing.desc,
+    },
+    {
+      amount1: expenses_insurance.amount1,
+      amount2: expenses_insurance.amount2,
+      amount3: expenses_insurance.amount3,
+      code: expenses_insurance.code,
+      desc: expenses_insurance.desc,
+    },
+    {
+      amount1: expenses_savings.amount1,
+      amount2: expenses_savings.amount2,
+      amount3: expenses_savings.amount3,
+      code: expenses_savings.code,
+      desc: expenses_savings.desc,
+    }
+  ]
+
+  const actualLivingExpense = useSelector((state) => state.sopItemsReducer.actualLivingExpense)
+  const actualMonthlyCommitments = useSelector((state) => state.sopItemsReducer.actualMonthlyCommitments)
+  const monthlyIncome = useSelector((state) => state.sopItemsReducer.monthlyIncome)
+  const surplusRatio = useSelector((state) => state.sopItemsReducer.surplusRatio)
+  const monthlySurplus = useSelector((state) => state.sopItemsReducer.monthlySurplus)
+
 
   //* Payment Instruction - Bank Account for Instalment Debit
   const backAccountForInstalmentDebit = useSelector((state) => state.paymentInstructionReducer.backAccountForInstalmentDebit)
@@ -473,6 +665,121 @@ export default function Submission() {
 
     return config
   }
+
+
+  useEffect(() => {
+    if (submissionFulfilled == null) return
+
+    const timestamp = new Date()
+    const generatePdfConfig = {
+      url: `${getCloudFrontEnvironment() === 'Member-Only-Test' ? '/generate-pdf-test' : '/generate-pdf'}`,
+      method: 'POST',
+      baseURL: `${processNodeEnv() === 'development' ? BASE_URL_LOCAL_APP : BASE_URL_AWS_APP}`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      timeout: 60000,
+      data: JSON.stringify({
+        applicationData: createPdfData(),
+        applicationNumber: applicationNumber == null ? primeforenames + ' ' + primesurname + ' ' + fDateCustom(timestamp) : applicationNumber,
+        submissionAPIResults: {
+          submissionStatusCode: submissionStatusCode,
+          submissionFulfilled: submissionFulfilled,
+          serverError: serverError,
+        },
+      }),
+    }
+
+    dispatch(generateLoanApplicationReport(generatePdfConfig))
+
+  }, [submissionFulfilled])
+
+
+  function createPdfData() {
+
+    return {
+      loanApplicationDetails: {
+        loanPurpose: loanPurpose,
+        tradingBranchCode: tradingBranchCode,
+      },
+      primeDetails: {
+        applicationNumber: applicationNumber,
+        individualDetails: {
+          title: primetitle,
+          forename: primeforenames,
+          surname: primesurname,
+          gender: primegender,
+          dateOfBirth: fDate(convertToUTCCustom(primedateOfBirth, 'dob')),
+        },
+        incomes: primeIncome,
+        expenses: primeExpenses,
+        incomeExpenseSummary: {
+          actualLivingExpense: actualLivingExpense,
+          actualMonthlyCommitments: actualMonthlyCommitments,
+          monthlyIncome: monthlyIncome,
+          surplusRatio: surplusRatio,
+          monthlySurplus: monthlySurplus,
+          nsr: !(nsrWithoutPercent == null) ? nsrWithoutPercent : 0,
+        }
+      },
+      financialDetails: {
+        loanAmount: requestedLoanAmount,
+        interestRate: interestRate,
+        repayAmount: lncalc_InstalmentAmount,
+        repayFreq: repayFreq,
+        lncalc_PaymentFrequencyUnit: lncalc_PaymentFrequencyUnit,
+        term: lncalc_TermValue,
+        lncalc_InterestAmount: lncalc_InterestAmount,
+        feeCharged: feeCharged,
+        lncalc_AmountPayable: lncalc_AmountPayable,
+        firstPaymentDate: firstPaymentDate,
+        documentationTypes: documentationTypes,
+      },
+      sutabilityTestPart1: {
+        isCreditScoreComplete: isCreditScoreComplete,
+        isScoreExceedsThreshold: isScoreExceedsThreshold,
+        creditScoreThreshold: creditScoreThreshold,
+        hasUnpaidDefualtCollections: hasUnpaidDefualtCollections,
+        detailsUnpaidDefualt: detailsUnpaidDefualt,
+        isMemberUnderHardship: isMemberUnderHardship,
+        hasMemberBeenBankrupt: hasMemberBeenBankrupt,
+        isMemberInArrearsWithFCU: isMemberInArrearsWithFCU,
+        creditBeingSought: creditBeingSought,
+        termForCreditBeingSought: termForCreditBeingSought,
+        isCreditScoreComplete: isCreditScoreComplete,
+      },
+      sutabilityTestPart2: {
+        inquiryMadeToObtainQuotes: inquiryMadeToObtainQuotes,
+        qualifyForMbroAndPern: qualifyForMbroAndPern,
+        didMemberAcceptMbro: didMemberAcceptMbro,
+        whyMemberAcceptedMbro: whyMemberAcceptedMbro,
+        isCreditUsedForRefinance: isCreditUsedForRefinance,
+        isCreditUsedForRefinanceComments: isCreditUsedForRefinanceComments,
+        ninetyDayBankStatementObtained: ninetyDayBankStatementObtained,
+        isMemberHappyWithQuote: isMemberHappyWithQuote,
+        anyOtherComments: anyOtherComments,
+      },
+      sutabilityTestPart2: {
+        inquiryMadeToObtainQuotes: inquiryMadeToObtainQuotes,
+        qualifyForMbroAndPern: qualifyForMbroAndPern,
+        didMemberAcceptMbro: didMemberAcceptMbro,
+        whyMemberAcceptedMbro: whyMemberAcceptedMbro,
+        isCreditUsedForRefinance: isCreditUsedForRefinance,
+        isCreditUsedForRefinanceComments: isCreditUsedForRefinanceComments,
+        ninetyDayBankStatementObtained: ninetyDayBankStatementObtained,
+        isMemberHappyWithQuote: isMemberHappyWithQuote,
+        anyOtherComments: anyOtherComments,
+      },
+      affordabilityTest: {
+        isIncomeExpensetestComplete: isIncomeExpensetestComplete,
+        incomeOverEstimatedComment: incomeOverEstimatedComment,
+        expenseUnderEstimatedComment: expenseUnderEstimatedComment,
+        otherExpenses: otherExpenses,
+        canPayWithoutSufferingHardship: canPayWithoutSufferingHardship,
+      }
+    }
+  }
+
 
   async function submitApplication() {
     const config = await getRequestConfig()

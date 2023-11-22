@@ -14,10 +14,28 @@ export const submitLoanApplication = createAsyncThunk(`${namespace}/submitLoanAp
     })
 })
 
+export const generateLoanApplicationReport = createAsyncThunk(`${namespace}/generateLoanApplicationReport`, async (pdfConfig) => {
+  return await axios(pdfConfig)
+    .then(function (response) {
+      return { axiosResponse: response.data }
+    })
+    .catch(function (error) {
+      return { error: error }
+    })
+})
+
 export const initialState = {
+
+  submissionStatusCode: null,
+  submissionFulfilled: null,
+
   loading: HTTP_STATUS.IDLE,
   error: HTTP_STATUS.IDLE,
   currentRequestId: null,
+
+  pdfloading: HTTP_STATUS.IDLE,
+  pdferror: HTTP_STATUS.IDLE,
+  pdfcurrentRequestId: null,
 
   applicationNumber: null,
   serverError: null,
@@ -32,16 +50,18 @@ const submissionSlice = createSlice({
   initialState: initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder
+    builder // Submission builders
       .addCase(submitLoanApplication.pending, (state, action) => {
         if (state.loading === 'IDLE') {
           state.loading = HTTP_STATUS.PENDING
           state.currentRequestId = action.meta.requestId
         }
-        // console.log('PENDING PAYLOAD: ', action.payload)
       })
       .addCase(submitLoanApplication.fulfilled, (state, action) => {
         const { requestId } = action.meta
+
+        state.submissionFulfilled = true
+
         if (state.loading === 'PENDING' && state.currentRequestId === requestId) {
           state.loading = HTTP_STATUS.IDLE
           const axiosResponse = action.payload?.axiosResponse
@@ -50,7 +70,6 @@ const submissionSlice = createSlice({
           state.applicationNumber = submissionAttributes?.applicationRef
           state.serverError = axiosResponse
         }
-        // console.log('FULFILLED PAYLOAD: ', action.payload)
       })
       .addCase(submitLoanApplication.rejected, (state, action) => {
         const { requestId } = action.meta
@@ -58,13 +77,31 @@ const submissionSlice = createSlice({
           state.loading = 'IDLE'
           state.error = action.error
           state.currentRequestId = null
-
-          // console.log('Rejected Error: ', action.error)
-          // console.log('Rejected Payload: ', action.payload)
-          // console.log('Rejected meta: ', action.meta)
-          // console.log('Rejected Type: ', action.type)
         }
-        // console.log('ERROR PAYLOAD: ', action.payload)
+      })
+
+
+      // Pdf builder cases
+      .addCase(generateLoanApplicationReport.pending, (state, action) => {
+        if (state.pdfloading === 'IDLE') {
+          state.pdfloading = HTTP_STATUS.PENDING
+          state.pdfcurrentRequestId = action.meta.requestId
+        }
+      })
+      .addCase(generateLoanApplicationReport.fulfilled, (state, action) => {
+        const { requestId } = action.meta
+        if (state.loading === 'PENDING' && state.currentRequestId === requestId) {
+          state.pdfloading = HTTP_STATUS.IDLE
+        }
+      })
+      .addCase(generateLoanApplicationReport.rejected, (state, action) => {
+        const { requestId } = action.meta
+        if (state.pdfloading === 'PENDING' && state.pdfcurrentRequestId === requestId) {
+          state.pdfloading = 'IDLE'
+          state.pdferror = action.error
+          state.pdfcurrentRequestId = null
+
+        }
       })
   },
 })
