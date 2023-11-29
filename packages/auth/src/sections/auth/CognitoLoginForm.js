@@ -2,7 +2,9 @@ import React, { useEffect, useState, useContext } from 'react'
 import { Link as RouterLink, useHistory } from 'react-router-dom'
 
 //* MUI
-import { Link, Stack, Alert, AlertTitle, Typography, IconButton, InputAdornment } from '@mui/material'
+import {
+  Link, Stack, Alert, AlertTitle, Typography, IconButton, InputAdornment, Avatar, Chip, Divider
+} from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
 
 //* Redux
@@ -25,11 +27,14 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 
 import useMediaQuery from '@mui/material/useMediaQuery'
 
-import { processNodeEnv, BASE_URL_AWS_APP, BASE_URL_LOCAL_APP } from '../../redux/utils/apiConstants'
+import { processNodeEnv, BASE_URL_AWS_APP, BASE_URL_LOCAL_APP, getCloudFrontEnvironment } from '../../redux/utils/apiConstants'
 
 export default function AuthLoginForm({ setSovereignUser }) {
   const dispatch = useDispatch()
   const history = useHistory()
+
+  const downMd = useMediaQuery((theme) => theme.breakpoints.down('md'))
+  const downSm = useMediaQuery((theme) => theme.breakpoints.down('sm'))
 
   const [showPassword, setShowPassword] = useState(false)
 
@@ -142,11 +147,25 @@ export default function AuthLoginForm({ setSovereignUser }) {
         {verificationSuccess === true && <Alert severity='success'>Verification was successful. Please login below!</Alert>}
         {passwordChangeStatus === true && <Alert severity='success'>Password was changed succesfully. Please login!</Alert>}
         {loginFailResult != null && <Alert severity='error'>{loginFailResult}</Alert>}
-        <Typography variant='h4' sx={{
-          textAlign: 'center', fontWeight: 'light', py: 3
-        }}>
-          Sign in to FCU Staff Portal
-        </Typography>
+        <Stack direction='column' justifyContent='center' alignItems='center' sx={{ width: '100%', pb: downMd ? 0 : 3 }} spacing={3} >
+          <Chip color={getCloudFrontEnvironment() === 'Member-Only-Prod' ? 'primary' : 'secondary'} label={getCloudFrontEnvironment() === 'Member-Only-Prod' ? 'Production' : 'Test Environment'} />
+          <Stack direction='row' justifyContent='center' alignItems='center' sx={{ width: '100%', pb: downMd ? 0 : 3 }} spacing={2} >
+            <Typography variant='h4' color='primary' sx={{
+              textAlign: 'center', fontWeight: 'light', textTransform: 'uppercase', letterSpacing: -0.1
+            }}
+            >
+              Sign in
+            </Typography>
+
+            <Typography variant='h4' color='secondary' sx={{
+              textAlign: 'center', fontWeight: 'light', textTransform: 'uppercase', letterSpacing: -0.1
+            }}>
+              FCU Staff Portal
+            </Typography>
+          </Stack>
+        </Stack>
+
+
         <Stack
           direction='column'
           justifyContent='center'
@@ -223,12 +242,6 @@ export default function AuthLoginForm({ setSovereignUser }) {
           </Link>
         </Stack>
       </Stack>
-
-      {/* <Stack alignItems='flex-end' sx={{ my: 2 }}>
-        <Link component={RouterLink} to={PATH_AUTH.resetPassword} variant='body2' color='inherit' underline='always'>
-          Forgot password?
-        </Link>
-      </Stack> */}
     </FormProvider>
   )
 }

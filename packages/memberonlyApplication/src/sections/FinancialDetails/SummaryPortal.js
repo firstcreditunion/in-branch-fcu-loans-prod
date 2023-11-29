@@ -78,7 +78,7 @@ export default function PreviewLoanDetailsPortal() {
   const totalSettledRecvCount = primesettledRecvCount + jointsettledRecvCount
   const totalrecoveryBalance = primeRecvBalance + jointRecvBalance
 
-  var newLoanAmount = requestedLoanAmount + totalExposure + feeCharged
+  var newLoanAmount = requestedLoanAmount + feeCharged
 
   const isLoanOverMaxTotalExposure = totalExposure > totalLoanExposureUpperLimit
 
@@ -111,12 +111,12 @@ export default function PreviewLoanDetailsPortal() {
         <Divider sx={{ my: 0.5 }} />
         <Stack direction='column' justifyContent='center' alignItems='flex-start' spacing={2} sx={{ width: '100%', pb: 5 }}>
           <Stack direction='column' justifyContent='center' alignItems='flex-start' spacing={1} sx={{ width: '100%' }}>
-            <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{ width: '100%' }}>
+            {/* <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{ width: '100%' }}>
               <Typography variant='subtitle2' sx={{ fontWeight: 'light' }}>
                 Existing Loan
               </Typography>
               <Typography variant='subtitle2'>{fCurrency(primetotalExposure + jointtotalExposure)}</Typography>
-            </Stack>
+            </Stack> */}
             <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{ width: '100%' }}>
               <Typography variant='subtitle2' sx={{ fontWeight: 'light' }}>
                 Approved Loan

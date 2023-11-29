@@ -43,14 +43,7 @@ const AdditionalInfoAndQuestions = () => {
         <Grid md={8}>
           <AdditionalInfoPart2 />
         </Grid>
-        {/* <Grid md={6}>
-          <RFHCreditScore />
-        </Grid> */}
       </Grid>
-      {/* <Stack direction='column' justifyContent='center' alignItems='center' spacing={3} sx={{ display: 'block', width: '100%' }}>
-        <RFHCreditScore />
-        <RFHCreditScore />
-      </Stack> */}
     </Stack>
   )
 }

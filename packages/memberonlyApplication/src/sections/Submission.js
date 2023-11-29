@@ -160,10 +160,14 @@ export default function Submission() {
   const anyOtherComments = useSelector((state) => state.additionalInfoPart2Reducer.anyOtherComments)
 
   const isIncomeExpensetestComplete = useSelector((state) => state.sopRelatedQuestionsReducer.isIncomeExpensetestComplete)
+  const isIncomeExpensetestCompleteDesc = useSelector((state) => state.sopRelatedQuestionsReducer.isIncomeExpensetestCompleteDesc)
   const incomeOverEstimatedComment = useSelector((state) => state.sopRelatedQuestionsReducer.incomeOverEstimatedComment)
   const expenseUnderEstimatedComment = useSelector((state) => state.sopRelatedQuestionsReducer.expenseUnderEstimatedComment)
   const otherExpenses = useSelector((state) => state.sopRelatedQuestionsReducer.otherExpenses)
   const canPayWithoutSufferingHardship = useSelector((state) => state.sopRelatedQuestionsReducer.canPayWithoutSufferingHardship)
+
+  console.log('isIncomeExpensetestComplete: ', isIncomeExpensetestComplete)
+  console.log('isIncomeExpensetestCompleteDesc: ', isIncomeExpensetestCompleteDesc)
 
   const memoLines = ['', '___________ SUTABILITY TEST - PART 1 ___________', '', `Is the Credit Report Complete?: ${isCreditScoreComplete === 'Y' ? 'Yes' : 'No'}`, '', `Did credit score exceed 300? ${isScoreExceedsThreshold === 'Y' ? 'Yes' : 'No'}`, '', `Does the member have any unpaid defualts? - ${hasUnpaidDefualtCollections === 'Y' ? 'Yes' : 'No'}`, '', `Unpaid Default Notes - ${hasUnpaidDefualtCollections === 'Y' ? detailsUnpaidDefualt : 'N/A'}`, '', `Is the member under any hardship arrangement? - ${isMemberUnderHardship === 'Y' ? 'Yes' : 'No'}`, '', `Has the member been bankrupt? - ${hasMemberBeenBankrupt === 'Y' ? 'Yes' : 'No'}`, '', `Is member in arrears with FCU? - ${isMemberInArrearsWithFCU === 'Y' ? 'Yes' : 'No'}`, '', `Credit Limit - How much credit is being sought? - ${creditBeingSought}`, '', `How long is the credit being sought for? - ${termForCreditBeingSought}`, '', '', '', '___________ SUTABILITY TEST - PART 2 ___________', '', `Inquiry made to obtain quotes? - ${inquiryMadeToObtainQuotes === 'Y' ? 'Yes' : 'No'}`, '', `Does member qualify for both Member-Only loan and personal loan? - ${qualifyForMbroAndPern === 'Y' ? 'Yes' : 'No'}`, '', `Did member accept Member-Only loan? - ${didMemberAcceptMbro === 'Y' ? 'Yes' : 'No'}`, '', `Why did the member accept or decline Member-Only loan? - ${whyMemberAcceptedMbro}`, '', `Is the credit used to refinance another lender and/or an exisitng FCU loan? If so is the member aware of the additional costs? - ${isCreditUsedForRefinance === 'Y' ? 'Yes' : 'No'}`, '', `Refinance Notes - ${isCreditUsedForRefinanceComments}`, '', `90 days bank statement obtained? - ${ninetyDayBankStatementObtained === 'Y' ? 'Yes' : 'No'}`, '', `Is the quote/proposed loan suitable to the member? - ${isMemberHappyWithQuote === 'Y' ? 'Yes' : 'No'}`, '', `Is the member happy with the quote? - ${isMemberHappyWithQuote ? 'Yes' : 'No'}`, '', `Other Comments- ${anyOtherComments}`, '', '', '', '___________ AFFORDABILITY TEST ___________', '', `Full Income and Expense Estimate Test (Reg 4AF) Completed? ${isIncomeExpensetestComplete === 'Y' ? 'Yes - The full income vs expense test completed with sufficient Surplus evident.' : 'No - The full income vs expense test is not complete. The loan will be withdrawn or declined'}`, '', `Likely income may be overestimated - Notes: ${incomeOverEstimatedComment}`, '', `Likely relevant expenses may be underestimated - Notes: ${expenseUnderEstimatedComment}`, '', `Or borrower may incur other expenses that cause them to suffer substantial hardship? ${otherExpenses === 'Y' ? 'No other expenses identified or likely that may cause the member to suffer financial hardship.' : 'Other expenses identified which may lead to financial hardship. The loan will be withdrawn/declined.'}`, '', `Based on the above answers, are you satisfied on reasonable grounds that the borrower will be able to make payments without suffering substantial hardship ${canPayWithoutSufferingHardship === 'Y' ? 'Yes, the borrower will be able to make repayments without suffering substantial hardship.' : 'No, the borrower may suffer financial hardship. The loan will be withdrawn/ declined.'}`, '', '', '', '___________ PRIVACY DECLARATION ___________', '', `Declaration Item 1 - Accpted? - ${declarationObject?.CreditWorthiness?.accept ? 'Yes' : 'No'}`, '', `Declaration Item 2 - Accpted? - ${declarationObject?.AuthoriseFCU?.accept ? 'Yes' : 'No'}`, '', `Declaration Item 3 - Accpted? - ${declarationObject?.TrueInformation?.accept ? 'Yes' : 'No'}`, '', `Declaration Item 4 - Accpted? - ${declarationObject?.AmlCftObligations?.accept ? 'Yes' : 'No'}`, '', `Declaration Item 5 - Accpted? - ${declarationObject?.StorePersonalInfo?.accept ? 'Yes' : 'No'}`, '', `Declaration Item 6 - Accpted? - ${declarationObject?.InsureLoan?.accept ? 'Yes' : 'No'}`]
 
@@ -546,6 +550,7 @@ export default function Submission() {
   async function createSubmissionData() {
     // * Prime
     return JSON.stringify({
+      loadedByClientNumber: zeroPaddedLoadedBy,
       draft: 'N',
       loanAmount: requestedLoanAmount,
       interestRate: interestRate,
@@ -670,6 +675,17 @@ export default function Submission() {
   useEffect(() => {
     if (submissionFulfilled == null) return
 
+    console.log('Raw PDF Data: ', createPdfData())
+    console.log('JSON Stringified PDF Data: ', JSON.stringify({
+      applicationData: createPdfData(),
+      applicationNumber: applicationNumber == null ? primeforenames + ' ' + primesurname + ' ' + fDateCustom(timestamp) : applicationNumber,
+      submissionAPIResults: {
+        submissionStatusCode: submissionStatusCode,
+        submissionFulfilled: submissionFulfilled,
+        serverError: serverError,
+      },
+    }))
+
     const timestamp = new Date()
     const generatePdfConfig = {
       url: `${getCloudFrontEnvironment() === 'Member-Only-Test' ? '/generate-pdf-test' : '/generate-pdf'}`,
@@ -693,6 +709,45 @@ export default function Submission() {
     dispatch(generateLoanApplicationReport(generatePdfConfig))
 
   }, [submissionFulfilled])
+
+  function getIncomeExpenseTestResult(value) {
+    const incomeExpenseTestItems = [
+      { value: 'Y', label: 'Yes - The full income vs expense test completed with sufficient Surplus evident.' },
+      { value: 'N', label: 'No - The full income vs expense test is not complete. The loan will be withdrawn or declined' },
+    ]
+
+    return incomeExpenseTestItems.find((item) => {
+      return item.value === value
+    })
+  }
+
+  function getOtherExpensesCausingHardship(value) {
+    const otheExpensesCausingHardship = [
+      { value: 'Y', label: 'No other expenses identified or likely that may cause the member to suffer financial hardship.' },
+      { value: 'N', label: 'Other expenses identified which may lead to financial hardship. The loan will be withdrawn/declined.' },
+    ]
+
+    return otheExpensesCausingHardship.find((item) => {
+      return item.value === value
+    })
+  }
+
+  function canMemberPayWithoutHardship(value) {
+    const canTheMemberPayWithoutHardship = [
+      {
+        value: 'Y',
+        label: 'Yes, the borrower will be able to make repayments without suffering substantial hardship.',
+      },
+      {
+        value: 'N',
+        label: 'No, the borrower may suffer financial hardship. The loan will be withdrawn / declined.',
+      },
+    ]
+
+    return canTheMemberPayWithoutHardship.find((item) => {
+      return item.value === value
+    })
+  }
 
 
   function createPdfData() {
@@ -746,18 +801,6 @@ export default function Submission() {
         isMemberInArrearsWithFCU: isMemberInArrearsWithFCU,
         creditBeingSought: creditBeingSought,
         termForCreditBeingSought: termForCreditBeingSought,
-        isCreditScoreComplete: isCreditScoreComplete,
-      },
-      sutabilityTestPart2: {
-        inquiryMadeToObtainQuotes: inquiryMadeToObtainQuotes,
-        qualifyForMbroAndPern: qualifyForMbroAndPern,
-        didMemberAcceptMbro: didMemberAcceptMbro,
-        whyMemberAcceptedMbro: whyMemberAcceptedMbro,
-        isCreditUsedForRefinance: isCreditUsedForRefinance,
-        isCreditUsedForRefinanceComments: isCreditUsedForRefinanceComments,
-        ninetyDayBankStatementObtained: ninetyDayBankStatementObtained,
-        isMemberHappyWithQuote: isMemberHappyWithQuote,
-        anyOtherComments: anyOtherComments,
       },
       sutabilityTestPart2: {
         inquiryMadeToObtainQuotes: inquiryMadeToObtainQuotes,
@@ -771,14 +814,16 @@ export default function Submission() {
         anyOtherComments: anyOtherComments,
       },
       affordabilityTest: {
-        isIncomeExpensetestComplete: isIncomeExpensetestComplete,
+        isIncomeExpensetestComplete: getIncomeExpenseTestResult(isIncomeExpensetestComplete)?.label,
         incomeOverEstimatedComment: incomeOverEstimatedComment,
         expenseUnderEstimatedComment: expenseUnderEstimatedComment,
-        otherExpenses: otherExpenses,
-        canPayWithoutSufferingHardship: canPayWithoutSufferingHardship,
+        otherExpenses: getOtherExpensesCausingHardship(otherExpenses)?.label,
+        canPayWithoutSufferingHardship: canMemberPayWithoutHardship(canPayWithoutSufferingHardship)?.label,
       }
     }
   }
+
+
 
 
   async function submitApplication() {

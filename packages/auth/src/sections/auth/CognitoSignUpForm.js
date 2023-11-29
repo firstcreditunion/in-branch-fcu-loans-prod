@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { Link as RouterLink, useHistory } from 'react-router-dom'
 
-import { Link, Stack, Typography, Alert, AlertTitle, InputAdornment, IconButton } from '@mui/material'
+import { Link, Stack, Typography, Alert, AlertTitle, InputAdornment, IconButton, Chip } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
 
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
@@ -12,7 +12,7 @@ import InfoIcon from '@mui/icons-material/Info'
 import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller } from 'react-hook-form'
-import { processNodeEnv, BASE_URL_AWS_APP, BASE_URL_LOCAL_APP } from '../../redux/utils/apiConstants'
+import { processNodeEnv, BASE_URL_AWS_APP, BASE_URL_LOCAL_APP, getCloudFrontEnvironment } from '../../redux/utils/apiConstants'
 
 import { signupActions, checkSovereignProfile } from '../../redux/slices/signupSlice'
 
@@ -25,6 +25,8 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
+
+import useMediaQuery from '@mui/material/useMediaQuery'
 
 function hasNumber(str) {
   return /[0-9]/.test(str)
@@ -49,6 +51,9 @@ function stringLength(str) {
 const SignupForm = () => {
   const dispatch = useDispatch()
   const history = useHistory()
+
+  const downMd = useMediaQuery((theme) => theme.breakpoints.down('md'))
+  const downSm = useMediaQuery((theme) => theme.breakpoints.down('sm'))
 
   const [showPassword, setShowPassword] = useState(false)
   const [showVerifyPassword, setVerifyShowPassword] = useState(false)
@@ -254,6 +259,23 @@ const SignupForm = () => {
           width: '100%',
         }}
       >
+        <Stack direction='column' justifyContent='center' alignItems='center' sx={{ width: '100%', pb: downMd ? 0 : 3 }} spacing={3} >
+          <Chip color={getCloudFrontEnvironment() === 'Member-Only-Prod' ? 'primary' : 'secondary'} label={getCloudFrontEnvironment() === 'Member-Only-Prod' ? 'Production' : 'Test Environment'} />
+          <Stack direction='row' justifyContent='center' alignItems='center' sx={{ width: '100%', pb: downMd ? 0 : 3 }} spacing={2} >
+            <Typography variant='h4' color='primary' sx={{
+              textAlign: 'center', fontWeight: 'light', textTransform: 'uppercase', letterSpacing: -0.1
+            }}
+            >
+              Sign Up
+            </Typography>
+
+            <Typography variant='h4' color='secondary' sx={{
+              textAlign: 'center', fontWeight: 'light', textTransform: 'uppercase', letterSpacing: -0.1
+            }}>
+              FCU Staff Portal
+            </Typography>
+          </Stack>
+        </Stack>
         <Alert severity='info' sx={{ width: '100%' }}>
           <AlertTitle>Please read the password policy. Password must:</AlertTitle>
           <Stack direction='column' justifyContent='center' alignItems='flex-start' spacing={0} sx={{ width: '100%' }}>

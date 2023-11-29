@@ -9,12 +9,15 @@ export const initialState = {
   currentRequestId: null,
 
   isIncomeExpensetestComplete: '',
+  isIncomeExpensetestCompleteDesc: '',
 
   incomeOverEstimatedComment: '',
   expenseUnderEstimatedComment: '',
   otherExpenses: '',
+  otherExpensesDesc: '',
 
   canPayWithoutSufferingHardship: '',
+  canPayWithoutSufferingHardshipDesc: '',
 
   onSubmitResponsibleLending: null,
   isValidResponsibleLending: null,
@@ -26,14 +29,20 @@ const sopRelatedQuestionSlice = createSlice({
   reducers: {
     clearAffordabilityTest: (state, action) => {
       state.isIncomeExpensetestComplete = ''
+      state.isIncomeExpensetestCompleteDesc = ''
       state.incomeOverEstimatedComment = ''
       state.expenseUnderEstimatedComment = ''
       state.otherExpenses = ''
+      state.otherExpensesDesc = ''
       state.canPayWithoutSufferingHardship = ''
+      state.canPayWithoutSufferingHardshipDesc = ''
     },
 
     setIsIncomeExpensetestComplete: (state, action) => {
       state.isIncomeExpensetestComplete = action.payload
+    },
+    setIsIncomeExpensetestCompleteDesc: (state, action) => {
+      state.isIncomeExpensetestCompleteDesc = action.payload
     },
 
     setIncomeOverEstimatedComment: (state, action) => {
@@ -45,9 +54,15 @@ const sopRelatedQuestionSlice = createSlice({
     setOtherExpenses: (state, action) => {
       state.otherExpenses = action.payload
     },
+    setOtherExpensesDesc: (state, action) => {
+      state.otherExpensesDesc = action.payload
+    },
 
     setCanPayWithoutSufferingHardship: (state, action) => {
       state.canPayWithoutSufferingHardship = action.payload
+    },
+    setCanPayWithoutSufferingHardshipDesc: (state, action) => {
+      state.canPayWithoutSufferingHardshipDesc = action.payload
     },
 
     setOnSubmitResponsibleLending: (state, action) => {

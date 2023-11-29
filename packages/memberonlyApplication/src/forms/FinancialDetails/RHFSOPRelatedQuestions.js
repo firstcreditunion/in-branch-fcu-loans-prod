@@ -33,10 +33,17 @@ export default function LoanDetails() {
 
   // Redux Selectors
   const isIncomeExpensetestComplete = useSelector((state) => state.sopRelatedQuestionsReducer.isIncomeExpensetestComplete)
+  const isIncomeExpensetestCompleteDesc = useSelector((state) => state.sopRelatedQuestionsReducer.isIncomeExpensetestCompleteDesc)
+
   const incomeOverEstimatedComment = useSelector((state) => state.sopRelatedQuestionsReducer.incomeOverEstimatedComment)
   const expenseUnderEstimatedComment = useSelector((state) => state.sopRelatedQuestionsReducer.expenseUnderEstimatedComment)
+
   const otherExpenses = useSelector((state) => state.sopRelatedQuestionsReducer.otherExpenses)
+  const otherExpensesDesc = useSelector((state) => state.sopRelatedQuestionsReducer.otherExpensesDesc)
+
   const canPayWithoutSufferingHardship = useSelector((state) => state.sopRelatedQuestionsReducer.canPayWithoutSufferingHardship)
+  const canPayWithoutSufferingHardshipDesc = useSelector((state) => state.sopRelatedQuestionsReducer.canPayWithoutSufferingHardshipDesc)
+
   const onSubmitResponsibleLending = useSelector((state) => state.sopRelatedQuestionsReducer.onSubmitResponsibleLending)
   const isValidResponsibleLending = useSelector((state) => state.sopRelatedQuestionsReducer.isValidResponsibleLending)
 
@@ -78,7 +85,14 @@ export default function LoanDetails() {
     // console.log('On Submit Loan Details')
   }
 
+
   // Redux dispatch functions
+  function setIsIncomeExpensetestComplete(event) {
+
+    console.log('Income Expense Test: ', event)
+
+    dispatch(sopRelatedQuestionActions.setIsIncomeExpensetestComplete(event.target.value))
+  }
   function setIsIncomeExpensetestComplete(event) {
     dispatch(sopRelatedQuestionActions.setIsIncomeExpensetestComplete(event.target.value))
   }
@@ -138,7 +152,6 @@ export default function LoanDetails() {
               ]}
             />
           </Stack>
-
           <Stack direction='column' justifyContent='center' alignItems='flex-start' spacing={2} sx={{ width: '100%', py: 3, m: 0 }}>
             <Divider flexItem>
               <Chip label='Financial Hardship' color='primary' />
@@ -203,7 +216,7 @@ export default function LoanDetails() {
                 },
                 {
                   value: 'N',
-                  label: 'No, the borrower may suffer financial hardship. The loan will be withdrawn/ declined.',
+                  label: 'No, the borrower may suffer financial hardship. The loan will be withdrawn / declined.',
                 },
               ]}
             />
