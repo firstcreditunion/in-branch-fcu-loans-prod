@@ -126,6 +126,7 @@ const LoanCalculator = () => {
     })
 
     console.log('First Payment Date from Loan Calc useEffect: ', firstPaymentDate)
+    console.log('UTC TimeStamp: ', firstPaymentDate)
 
     var financialData = JSON.stringify({
       product: 'MBRO',

@@ -787,7 +787,7 @@ export default function Submission() {
         lncalc_InterestAmount: lncalc_InterestAmount,
         feeCharged: feeCharged,
         lncalc_AmountPayable: lncalc_AmountPayable,
-        firstPaymentDate: firstPaymentDate,
+        firstPaymentDate: convertToUTCCustom(firstPaymentDate, 'firstPaymentDate'),
         documentationTypes: documentationTypes,
       },
       sutabilityTestPart1: {

@@ -125,7 +125,7 @@ export default function PreviewLoanDetailsPortal() {
             </Stack>
             <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{ width: '100%' }}>
               <Typography variant='subtitle2' sx={{ fontWeight: 'light' }}>
-                Application Fee
+                Cost Recovery Fees
               </Typography>
               <Typography variant='subtitle2'>{fCurrency(feeCharged)}</Typography>
             </Stack>
