@@ -11,6 +11,7 @@ import LoadingButton from '@mui/lab/LoadingButton'
 import ComponentBlock from '../../layouts/ComponentBlock'
 import PayoutQuoteDialog from './PayoutQuoteDialog'
 
+
 //* MUI Icons
 import DoneIcon from '@mui/icons-material/Done'
 import SearchIcon from '@mui/icons-material/Search'
@@ -51,7 +52,7 @@ import { useForm, Controller } from 'react-hook-form'
 import { BASE_URL_LOCAL_APP, BASE_URL_AWS_APP, processNodeEnv } from '../../redux/utils/apiConstants'
 
 //* RHF Components
-import FormProvider, { RHFEditor, RHFSelect, RHFUpload, RHFSwitch, RHFSlider, RHFCheckbox, RHFTextField, RHFRadioGroup, RHFMultiSelect, RHFAutocomplete, RHFMultiCheckbox, RHFLandscapeDatePicker } from '../../components/RHF-mui-compoments'
+import FormProvider, { RHFEditor, RHFSelect, RHFUpload, RHFSwitch, RHFSlider, RHFCheckbox, RHFTextField, RHFRadioGroup, RHFMultiSelect, RHFAutocomplete, RHFMultiCheckbox, RHFLandscapeDatePicker, RHFDatePicker } from '../../components/RHF-mui-compoments'
 
 import { getDocumentType_FromValue, getCreditHistory_FromValue, getSecurity_FromKey } from '../../redux/codes/getKeysOrValues'
 import { documentTypes } from '../../redux/codes/DocumentType'
@@ -474,7 +475,8 @@ export default function LoanDetails() {
                 First Payment Date
               </Typography>
               <ComponentBlock>
-                <RHFLandscapeDatePicker name='firstPaymentDate' dateValue={firstPaymentDate} onDateChange={setFirstPaymentDate} minDate={startDate} maxDate={fortyDaysFromToday} />
+                {/* <RHFLandscapeDatePicker name='firstPaymentDate' dateValue={firstPaymentDate} onDateChange={setFirstPaymentDate} minDate={startDate} maxDate={fortyDaysFromToday} /> */}
+                <RHFDatePicker name='firstPaymentDate' date={firstPaymentDate} onDateChange={setFirstPaymentDate} minDate={startDate} maxDate={fortyDaysFromToday} label='First Payment Date' format='DD/MM/YYYY' isRequired={true} disabled={false} />
               </ComponentBlock>
             </Stack>
           </Stack>

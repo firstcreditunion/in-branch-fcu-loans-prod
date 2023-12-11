@@ -126,7 +126,7 @@ const LoanCalculator = () => {
     })
 
     console.log('First Payment Date from Loan Calc useEffect: ', firstPaymentDate)
-    console.log('UTC TimeStamp: ', firstPaymentDate)
+    console.log('UTC TimeStamp: ', convertToUTCCustom(firstPaymentDate, 'test UTC First Payment Date'))
 
     var financialData = JSON.stringify({
       product: 'MBRO',
@@ -151,11 +151,6 @@ const LoanCalculator = () => {
     dispatch(getRepaymentDetails(config))
   }, [requestedLoanAmount, estimatedInterestRate, feeCharged, loanTerm, paymentFrequency, firstPaymentDate, lncalc_InstalmentAmount, documentationTypes, estimatedInterestRateReCalc])
 
-  useEffect(() => {
-    console.log('Payment Frequency: ', lncalc_PaymentFrequencyUnit)
-    console.log('Default Start Date: ', firstPaymentDate)
-    console.log('Previous Default Start Date: ', defEffectiveDate)
-  }, [])
 
   if (lncalc_loading === 'PENDING') {
     return (
