@@ -2,14 +2,16 @@ import React from 'react'
 
 import { fDateYYYY_MM_DD } from '../utils/formatDateTime'
 
-function convertUnixToUTCTimestamp(date) {
+export function convertUnixToUTCTimestamp(date, callfrom) {
   const unixTimestamp = date
 
   const dateFormat = new Date(unixTimestamp)
 
-  dateFormat.setUTCHours(0, 0, 0, 0)
-  const isoDate = dateFormat.toISOString()
-  return isoDate
+  const timeZoneOffsetInHours = (-1 * dateFormat.getTimezoneOffset()) / 60
+
+  const sovereignDate = fDateYYYY_MM_DD(dateFormat)
+
+  return sovereignDate
 }
 
 export function convertToUTCTimestamp(date) {
@@ -22,6 +24,7 @@ export function convertToUTCTimestamp(date) {
   }
 
   const dateFormat = new Date(date).setUTCHours(0, 0, 0, 0)
+
   if (typeof dateFormat === 'number') {
     return convertUnixToUTCTimestamp(dateFormat)
   }
@@ -30,23 +33,34 @@ export function convertToUTCTimestamp(date) {
   return isoDate
 }
 
+//* Currently used in Loan Calculator
 export function convertToUTCCustom(date, callfrom) {
+
+  //Correct
   if (date === null) {
     return
   }
 
+  //Correct
   if (typeof date === 'number') {
     return convertUnixToUTCTimestamp(date)
   }
 
+  //Correct
   const dateFormat = new Date(date)
-  const timeZoneOffsetInHours = (-1 * dateFormat.getTimezoneOffset()) / 60
-  dateFormat.setUTCHours(timeZoneOffsetInHours, 0, 0, 0)
 
+  //Correct
+  const timeZoneOffsetInHours = (-1 * dateFormat.getTimezoneOffset()) / 60
+
+  // dateFormat.setUTCHours(timeZoneOffsetInHours, 0, 0, 0)
+
+  //Correct
   if (typeof dateFormat === 'number') {
     return convertUnixToUTCTimestamp(dateFormat)
   }
 
   const sovereignDate = fDateYYYY_MM_DD(dateFormat)
+
   return sovereignDate
+
 }
