@@ -24,4 +24,4 @@ export default () => {
   )
 }
 
-// Git commit control 1
+// Git commit control 2
