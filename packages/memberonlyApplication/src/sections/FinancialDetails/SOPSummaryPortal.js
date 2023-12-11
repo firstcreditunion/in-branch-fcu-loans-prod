@@ -455,9 +455,9 @@ export default function PreviewSOPSummaryPortal() {
           // console.log('Income Item in MAP: ', incomeItem)
           return {
             type: incomeItem?.sovereignKey,
-            amount1: incomeItem?.amount1 === null || incomeItem?.amount1 === undefined || incomeItem?.amount1 === NaN ? 0 : incomeItem?.amount1,
-            amount2: incomeItem?.amount2 === null || incomeItem?.amount2 === undefined || incomeItem?.amount2 === NaN ? 0 : incomeItem?.amount2,
-            amount3: incomeItem?.amount3 === null || incomeItem?.amount3 === undefined || incomeItem?.amount3 === NaN ? 0 : incomeItem?.amount3,
+            amount1: incomeItem?.amount1 === null || incomeItem?.amount1 === undefined || isNaN(incomeItem?.amount1) ? 0 : incomeItem?.amount1,
+            amount2: incomeItem?.amount2 === null || incomeItem?.amount2 === undefined || isNaN(incomeItem?.amount2) ? 0 : incomeItem?.amount2,
+            amount3: incomeItem?.amount3 === null || incomeItem?.amount3 === undefined || isNaN(incomeItem?.amount3) ? 0 : incomeItem?.amount3,
           }
         }
       })
@@ -470,24 +470,26 @@ export default function PreviewSOPSummaryPortal() {
         if (!(expenseItem?.amount1 == null) || !(expenseItem?.amount2 == null) || !(expenseItem?.amount3 == null)) {
           return {
             type: expenseItem?.sovereignKey,
-            amount1: expenseItem?.amount1 === null || expenseItem?.amount1 === undefined || expenseItem?.amount1 === NaN ? 0 : expenseItem?.amount1,
-            amount2: expenseItem?.amount2 === null || expenseItem?.amount2 === undefined || expenseItem?.amount2 === NaN ? 0 : expenseItem?.amount2,
-            amount3: expenseItem?.amount3 === null || expenseItem?.amount3 === undefined || expenseItem?.amount3 === NaN ? 0 : expenseItem?.amount3,
+            amount1: expenseItem?.amount1 === null || expenseItem?.amount1 === undefined || isNaN(expenseItem?.amount1) ? 0 : expenseItem?.amount1,
+            amount2: expenseItem?.amount2 === null || expenseItem?.amount2 === undefined || isNaN(expenseItem?.amount2) ? 0 : expenseItem?.amount2,
+            amount3: expenseItem?.amount3 === null || expenseItem?.amount3 === undefined || isNaN(expenseItem?.amount3) ? 0 : expenseItem?.amount3,
           }
         }
-      })
-      ?.filter((expenseItem) => {
+      })?.filter((expenseItem) => {
         return !(expenseItem == null)
       })
+
 
     if (incomeData?.length === 0 && expenseData?.length === 0) return
 
     // console.log('Income NON-MUMBERS - ', Inc_amount1NotANumber, Inc_amount2NotANumber, Inc_amount3NotANumber)
-    // console.log('Expense NON-MUMBERS - ', Exp_amount1NotANumber, Exp_amount2NotANumber, Exp_amount3NotANumber)
+    // console.log('Expense NON-MUMBERS - ', Exp_amosaunt1NotANumber, Exp_amount2NotANumber, Exp_amount3NotANumber)
 
     //! - Double check this logic
     // if (Inc_amount1NotANumber?.length != 0 || Inc_amount2NotANumber?.length != 0 || Inc_amount3NotANumber?.length != 0) return
     // if (Exp_amount1NotANumber?.length != 0 || Exp_amount2NotANumber?.length != 0 || Exp_amount3NotANumber?.length != 0) return
+
+
 
     const sopData = JSON.stringify({
       assets: [],
