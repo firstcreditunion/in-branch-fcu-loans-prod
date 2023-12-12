@@ -187,6 +187,7 @@ export default function LoanDetails() {
             value={requestedLoanAmount}
             InputProps={{
               type: 'number',
+              onwheel: (event) => { event.preventDefault() },
               startAdornment: (
                 <InputAdornment position='start'>
                   <AttachMoneyIcon />

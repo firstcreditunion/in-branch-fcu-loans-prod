@@ -14,6 +14,8 @@ import SearchClientNumber from './forms/SearchMember/SearchClientNumber'
 import { UserAccount } from './cognito/UserAccount'
 
 export default ({ history, cognitoToken, sovereignUser, expiryTime, refreshToken }) => {
+
+
   return (
     <>
       <HelmetProvider>

@@ -36,6 +36,7 @@ export default function RHFTextField({ name, onInputChange, value, helperText, t
           fullWidth
           type={type}
           value={value}
+          onWheel={(event) => event.currentTarget.blur()}
           onChange={(value) => {
             onInputChange(value)
             onBlur(value)
@@ -45,7 +46,8 @@ export default function RHFTextField({ name, onInputChange, value, helperText, t
           helperText={error ? error?.message : helperText}
           {...other}
         />
-      )}
+      )
+      }
     />
   )
 }
