@@ -174,10 +174,15 @@ const SignupForm = () => {
   }
 
   function setClientNumber(event) {
+
     dispatch(signupActions.setClientNumber(event.target.value))
   }
 
   async function registerUser() {
+
+    console.log('Length of Client NUmber', signupclientnumber.toString().length)
+
+
     dispatch(signupActions.setHasSoverignProfile(null))
     const checkSovereignConfig = {
       url: '/validate',
@@ -192,6 +197,15 @@ const SignupForm = () => {
 
   useEffect(() => {
 
+    let zeroPaddedClientNumber = ''
+    let slicedClientNumber = ''
+
+    const isCLientNumberShort = signupclientnumber.toString().length < 6
+
+    if (signupclientnumber.toString().length < 6) {
+      zeroPaddedClientNumber = "000000" + signupclientnumber
+      slicedClientNumber = zeroPaddedClientNumber.slice(-6)
+    }
 
     if (hasSoverignProfile === 'Unauthorized' || hasSoverignProfile === null || hasSoverignProfile === undefined) return
 
@@ -205,7 +219,7 @@ const SignupForm = () => {
       [
         {
           Name: 'custom:client_number',
-          Value: signupclientnumber,
+          Value: isCLientNumberShort ? slicedClientNumber : signupclientnumber
         },
       ],
       null,
@@ -215,7 +229,6 @@ const SignupForm = () => {
           dispatch(signupActions.setCognitoError(err?.message))
           dispatch(signupActions.setCognitoErrorName(err?.name))
           dispatch(signupActions.setCognitoErrorStack(err?.stack))
-          dispatch(signupActions.setSignUpFailResult(err?.message))
           return
         }
 
