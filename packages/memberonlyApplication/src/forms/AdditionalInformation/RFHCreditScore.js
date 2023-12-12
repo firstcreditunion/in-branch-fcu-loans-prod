@@ -165,40 +165,40 @@ const RFHCreditScore = () => {
 
   const varCreditScoreThreshold = isCreditScoreComplete
     ? varFade({
-        distance: 50,
-        durationIn: 0.32,
-        durationOut: 0.32,
-      }).inUp
+      distance: 50,
+      durationIn: 0.32,
+      durationOut: 0.32,
+    }).inUp
     : varFade({
-        distance: 50,
-        durationIn: 0.32,
-        durationOut: 0.32,
-      }).outDown
+      distance: 50,
+      durationIn: 0.32,
+      durationOut: 0.32,
+    }).outDown
 
   const varCreditScoreUnpaidDef = isCreditScoreComplete
     ? varFade({
-        distance: 50,
-        durationIn: 0.5,
-        durationOut: 0.32,
-      }).inUp
+      distance: 50,
+      durationIn: 0.5,
+      durationOut: 0.32,
+    }).inUp
     : varFade({
-        distance: 50,
-        durationIn: 0.32,
-        durationOut: 0.32,
-      }).outDown
+      distance: 50,
+      durationIn: 0.32,
+      durationOut: 0.32,
+    }).outDown
 
   const varCreditScoreUnpaidDefNotes =
     hasUnpaidDefualtCollections === 'Y'
       ? varFade({
-          distance: 50,
-          durationIn: 0.5,
-          durationOut: 0.32,
-        }).inUp
+        distance: 50,
+        durationIn: 0.5,
+        durationOut: 0.32,
+      }).inUp
       : varFade({
-          distance: 50,
-          durationIn: 0.32,
-          durationOut: 0.32,
-        }).outDown
+        distance: 50,
+        durationIn: 0.32,
+        durationOut: 0.32,
+      }).outDown
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -257,7 +257,7 @@ const RFHCreditScore = () => {
               />
             </Stack>
           )}
-          {hasUnpaidDefualtCollections === 'Y' && <RHFTextField component={motion.div} {...varCreditScoreUnpaidDefNotes} name='detailsUnpaidDefualt' label='Enter details about the unpaid default' multiline rows={4} variant='filled' onInputChange={setDetailsUnpaidDefault} value={detailsUnpaidDefualt} />}
+          {hasUnpaidDefualtCollections === 'Y' && <RHFTextField component={motion.div} {...varCreditScoreUnpaidDefNotes} name='detailsUnpaidDefualt' label='Mitigate details about the credit score and unpaid default' multiline rows={4} variant='filled' onInputChange={setDetailsUnpaidDefault} value={detailsUnpaidDefualt} />}
         </Stack>
 
         <Stack direction='column' justifyContent='flex-start' spacing={5} sx={{ width: '100%', pb: 3 }}>

@@ -62,7 +62,6 @@ export default function LoanDetails() {
   }, [])
 
   useEffect(async () => {
-    // console.log('Making Client Data Request')
 
     var clientData = JSON.stringify({
       clientID: primeClientNumber,
