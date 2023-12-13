@@ -75,6 +75,86 @@ const sopLiabilitiesSlice = createSlice({
   initialState: initialState,
   reducers: {
     //Wages
+    clearAll: (state, action) => {
+
+      state.mortgage.consolidate = null
+
+      state.mortgage.creditLimit = null
+
+      state.mortgage.outstandingBalance = null
+
+      state.mortgage.amount1 = null
+
+      state.mortgage.amount2 = null
+
+      state.mortgage.amount3 = null
+
+
+      state.storecard.consolidate = null
+
+      state.storecard.creditLimit = null
+
+      state.storecard.outstandingBalance = null
+
+      state.storecard.amount1 = null
+
+      state.storecard.amount2 = null
+
+      state.storecard.amount3 = null
+
+      state.mastercard.consolidate = null
+
+      state.mastercard.creditLimit = null
+
+      state.mastercard.outstandingBalance = null
+
+      state.mastercard.amount1 = null
+
+      state.mastercard.amount2 = null
+
+      state.mastercard.amount3 = null
+
+      state.visa.consolidate = null
+
+      state.visa.creditLimit = null
+
+      state.visa.outstandingBalance = null
+
+      state.visa.amount1 = null
+
+      state.visa.amount2 = null
+
+      state.visa.amount3 = null
+
+      state.studentloan.consolidate = null
+
+      state.studentloan.creditLimit = null
+
+      state.studentloan.outstandingBalance = null
+
+      state.studentloan.amount1 = null
+
+      state.studentloan.amount2 = null
+
+      state.studentloan.amount3 = null
+
+      state.otherloan1.consolidate = null
+
+      state.otherloan1.creditLimit = null
+
+      state.otherloan1.outstandingBalance = null
+
+      state.otherloan1.amount1 = null
+
+      state.otherloan1.amount2 = null
+
+      state.otherloan1.amount3 = null
+
+      state.onSubmitLiabilityDetails = null
+
+      state.isValidLiabilityDetails = null
+
+    },
     setMortgageConsolidate: (state, action) => {
       state.mortgage.consolidate = action.payload
     },

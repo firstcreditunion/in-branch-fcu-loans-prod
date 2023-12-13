@@ -100,6 +100,35 @@ const verifyPrimeDetailsSlice = createSlice({
   name: namespace,
   initialState: initialState,
   reducers: {
+    clearAll: (state, action) => {
+      state.identificationloading = HTTP_STATUS.IDLE
+      state.identificationerror = HTTP_STATUS.IDLE
+      state.identificationcurrentRequestId = null
+      state.employmentloading = HTTP_STATUS.IDLE
+      state.employmenterror = HTTP_STATUS.IDLE
+      state.employmentcurrentRequestId = null
+      state.contactloading = HTTP_STATUS.IDLE
+      state.contacterror = HTTP_STATUS.IDLE
+      state.contactcurrentRequestId = null
+      state.addressloading = HTTP_STATUS.IDLE
+      state.addresserror = HTTP_STATUS.IDLE
+      state.addresscurrentRequestId = null
+      state.identifications = []
+      state.employmentDetails = []
+      state.clientContact = []
+      state.addresses = []
+      state.primePersonalDetailsVerified = false
+      state.primeIdentificationDetailsVerified = false
+      state.hasIdentifications = null
+      state.primeEmploymentDetailsVerified = false
+      state.hasEmploymentDetails = null
+      state.primeContactDetailsVerified = false
+      state.hasContactDetails = null
+      state.primeAddressesVerified = false
+      state.hasAddresses = null
+      state.onSubmitVerifyPrimeDetails = null
+      state.isValidVerifyPrimeDetails = null
+    },
     setPrimePersonalDetailsVerified: (state, action) => {
       state.primePersonalDetailsVerified = action.payload
     },

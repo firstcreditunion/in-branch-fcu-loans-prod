@@ -68,6 +68,21 @@ const authorisationSlice = createSlice({
   initialState: initialState,
   reducers: {
     // Form Submission setters
+    clearAll: (state, action) => {
+      state.Loading = HTTP_STATUS.IDLE
+      state.Error = HTTP_STATUS.IDLE
+      state.currentRequestId = null
+
+      state.declarationItems.CreditWorthiness.accept = false
+      state.declarationItems.AuthoriseFCU.accept = false
+      state.declarationItems.TrueInformation.accept = false
+      state.declarationItems.AmlCftObligations.accept = false
+      state.declarationItems.StorePersonalInfo.accept = false
+      state.declarationItems.InsureLoan.accept = false
+
+      state.onSubmitPrivacyActDeclaration = null
+      state.isValidPrivacyActDeclaration = null
+    },
     setOnSubmitPrivacyActDeclaration: (state, action) => {
       state.onSubmitPrivacyActDeclaration = action.payload
     },

@@ -197,6 +197,123 @@ const clientSearchSlice = createSlice({
   name: namespace,
   initialState: initialState,
   reducers: {
+    clearAll: (state, action) => {
+      state.primeloading = HTTP_STATUS.IDLE
+      state.primecurrentRequestId = null
+      state.primeerror = null
+
+      state.jointloading = HTTP_STATUS.IDLE
+      state.jointcurrentRequestId = null
+      state.jointerror = null
+
+      state.ireloading = HTTP_STATUS.IDLE
+      state.irecurrentRequestId = null
+      state.ireerror = null
+
+      state.isJointLoan = 'N'
+
+      state.primeclientNumber = ''
+      state.primeBankAccountNumbers = []
+
+      state.primeclientType = ''
+      state.primedateOfBirth = null
+      state.primeforenames = ''
+      state.primegender = ''
+      state.primeid = ''
+      state.primeloadedDate = null
+      state.primemaritalStatus = ''
+      state.primerecordStatus = ''
+      state.primesurname = ''
+      state.primetitle = ''
+
+      state.totalLoanExposureUpperLimit = 4000
+      state.primememberSinceInMonthsDefault = 3
+      state.primeisAdult = false
+      state.primeage = ''
+      state.primedurationSinceJoined = ''
+      state.primedurationSinceJoinedInMonths = ''
+      state.primemissingDateOfBirth = ''
+      state.primeeligibleForMemberOnlyLoans = false
+
+      state.jointclientNumber = ''
+
+      state.jointclientType = ''
+      state.jointdateOfBirth = null
+      state.jointforenames = ''
+      state.jointgender = ''
+      state.jointid = ''
+      state.jointloadedDate = null
+      state.jointmaritalStatus = ''
+      state.jointrecordStatus = ''
+      state.jointsurname = ''
+      state.jointtitle = ''
+
+      state.jointmemberSinceInMonthsDefault = 3
+      state.jointisAdult = false
+      state.jointage = ''
+      state.jointdurationSinceJoined = ''
+      state.jointdurationSinceJoinedInMonths = ''
+      state.jointmissingDateOfBirth = ''
+      state.jointeligibleForMemberOnlyLoans = false
+
+      state.primeIreEstimate.baseRate = 0
+      state.primeIreEstimate.discounts.history = 0
+      state.primeIreEstimate.discounts.loyalty = 0
+      state.primeIreEstimate.discounts.products = 0
+      state.primeIreEstimate.estimatedInterestRate = 0
+      state.primeIreEstimate.security = 0
+      state.primeIreEstimate.creditHistory = 0
+
+      // Funding
+      state.primeFunding.activeAccountCount = 0
+      state.primeFunding.settledAccountCount = 0
+      state.primeFunding.s6Balance = 0
+
+      // Lending
+      state.primeLending.activeAccountCount = 0
+      state.primeLending.settledAccountCount = 0
+      state.primeLending.totalExposure = 0
+      state.primeLending.totalArrears = 0
+
+      // Recovery
+      state.primeRecovery.activeAccountCount = 0
+      state.primeRecovery.inactiveAccountCount = 0
+      state.primeRecovery.balance = 0
+
+      // Security
+      state.primeSecurity.securityPercentage = 0
+
+      state.jointIreEstimate.baseRate = 0
+      state.jointIreEstimate.discounts.history = 0
+      state.jointIreEstimate.discounts.loyalty = 0
+      state.jointIreEstimate.discounts.products = 0
+      state.jointIreEstimate.estimatedInterestRate = 0
+      state.jointIreEstimate.security = 0
+      state.jointIreEstimate.creditHistory = 0
+
+      // Funding
+      state.jointFunding.activeAccountCount = 0
+      state.jointFunding.settledAccountCount = 0
+      state.jointFunding.s6Balance = 0
+
+      // Lending
+      state.jointLending.activeAccountCount = 0
+      state.jointLending.settledAccountCount = 0
+      state.jointLending.totalExposure = 0
+      state.jointLending.totalArrears = 0
+
+      // Recovery
+      state.jointRecovery.activeAccountCount = 0
+      state.jointRecovery.inactiveAccountCount = 0
+      state.jointRecovery.balance = 0
+
+      // Security
+      state.jointSecurity.securityPercentage = 0
+
+      state.onSubmitQuestionJointApplicant = null
+      state.isValidQuestionJointApplicant = null
+    },
+
     setIsJointLoan: (state, action) => {
       state.isJointLoan = action.payload
     },

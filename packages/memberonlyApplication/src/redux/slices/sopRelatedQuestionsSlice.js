@@ -27,6 +27,25 @@ const sopRelatedQuestionSlice = createSlice({
   name: namespace,
   initialState: initialState,
   reducers: {
+    clearAll: (state, action) => {
+      state.loading = HTTP_STATUS.IDLE
+      state.error = HTTP_STATUS.IDLE
+      state.currentRequestId = null
+
+      state.isIncomeExpensetestComplete = ''
+      state.isIncomeExpensetestCompleteDesc = ''
+
+      state.incomeOverEstimatedComment = ''
+      state.expenseUnderEstimatedComment = ''
+      state.otherExpenses = ''
+      state.otherExpensesDesc = ''
+
+      state.canPayWithoutSufferingHardship = ''
+      state.canPayWithoutSufferingHardshipDesc = ''
+
+      state.onSubmitResponsibleLending = null
+      state.isValidResponsibleLending = null
+    },
     clearAffordabilityTest: (state, action) => {
       state.isIncomeExpensetestComplete = ''
       state.isIncomeExpensetestCompleteDesc = ''

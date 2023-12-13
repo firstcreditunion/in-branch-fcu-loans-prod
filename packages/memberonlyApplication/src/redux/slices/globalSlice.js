@@ -22,6 +22,16 @@ const globalSlice = createSlice({
   name: namespace,
   initialState: initialState,
   reducers: {
+    clearAll: (state, action) => {
+      state.Loading = HTTP_STATUS.IDLE
+      state.HTTP_STATUS.IDLE
+      state.currentRequestId = null
+
+      state.skipRootNode = false
+      state.onMount = true
+
+      state.isMemberEligible = true
+    },
     setIsMemberEligible: (state, action) => {
       state.isMemberEligible = action.payload
     },
@@ -36,3 +46,4 @@ const globalSlice = createSlice({
 
 export const globalActions = globalSlice.actions
 export default globalSlice
+

@@ -34,6 +34,18 @@ const authenticationSlice = createSlice({
   name: namespace,
   initialState: initialState,
   reducers: {
+    clearAll: (state, action) => {
+      state.sovProfileloading = HTTP_STATUS.IDLE
+      state.sovProfileerror = HTTP_STATUS.IDLE
+      state.sovProfilecurrentRequestId = null
+      state.hasSoverignProfile = null
+      state.emailAddress = ''
+      state.password = ''
+      state.clientNumber = ''
+      state.loginFailResult = null
+      state.expiryTime = null
+      state.refreshToken = null
+    },
     setEmailAddress: (state, action) => {
       state.emailAddress = action.payload
     },

@@ -84,6 +84,50 @@ const sopIncomeGridSlice = createSlice({
   name: namespace,
   initialState: initialState,
   reducers: {
+    clearAll: (state, action) => {
+      state.wages.amount1 = null
+      state.wages.amount2 = null
+      state.wages.amount3 = null
+
+      state.secondWages.amount1 = null
+      state.secondWages.amount2 = null
+      state.secondWages.amount3 = null
+
+      state.winzBenefit.amount1 = null
+      state.winzBenefit.amount2 = null
+      state.winzBenefit.amount3 = null
+
+      state.selfEmployed.amount1 = null
+      state.selfEmployed.amount2 = null
+      state.selfEmployed.amount3 = null
+
+      state.nzSuper.amount1 = null
+      state.nzSuper.amount2 = null
+      state.nzSuper.amount3 = null
+
+      state.studyLink.amount1 = null
+      state.studyLink.amount2 = null
+      state.studyLink.amount3 = null
+
+      state.rentalIncome.amount1 = null
+      state.rentalIncome.amount2 = null
+      state.rentalIncome.amount3 = null
+
+      state.childSupport.amount1 = null
+      state.childSupport.amount2 = null
+      state.childSupport.amount3 = null
+
+      state.workingForFamilies.amount1 = null
+      state.workingForFamilies.amount2 = null
+      state.workingForFamilies.amount3 = null
+
+      state.boarderIncome.amount1 = null
+      state.boarderIncome.amount2 = null
+      state.boarderIncome.amount3 = null
+
+      state.onSubmitIncomeDetails = null
+      state.isValidIncomeDetails = null
+    },
     clearIncome: (state, action) => {
       state.wages.amount1 = null
       state.wages.amount2 = null

@@ -133,6 +133,76 @@ const sopExpenseSlice = createSlice({
   name: namespace,
   initialState: initialState,
   reducers: {
+    clearAll: (state, action) => {
+      state.rentingBoarding.amount1 = null
+      state.rentingBoarding.amount2 = null
+      state.rentingBoarding.amount3 = null
+
+      state.liabilitiesServicing.amount1 = null
+      state.liabilitiesServicing.amount2 = null
+      state.liabilitiesServicing.amount3 = null
+
+      state.proposedLoan.amount1 = null
+      state.proposedLoan.amount2 = null
+      state.proposedLoan.amount3 = null
+
+      state.powerOrGas.amount1 = null
+      state.powerOrGas.amount2 = null
+      state.powerOrGas.amount3 = null
+
+      state.groceries.amount1 = null
+      state.groceries.amount2 = null
+      state.groceries.amount3 = null
+
+      state.phoneOrInternet.amount1 = null
+      state.phoneOrInternet.amount2 = null
+      state.phoneOrInternet.amount3 = null
+
+      state.fuel.amount1 = null
+      state.fuel.amount2 = null
+      state.fuel.amount3 = null
+
+      state.s6_or_savings.amount1 = null
+      state.s6_or_savings.amount2 = null
+      state.s6_or_savings.amount3 = null
+
+      state.wof_rego.amount1 = null
+      state.wof_rego.amount2 = null
+      state.wof_rego.amount3 = null
+
+      state.clothing.amount1 = null
+      state.clothing.amount2 = null
+      state.clothing.amount3 = null
+
+      state.medicalExpense.amount1 = null
+      state.medicalExpense.amount2 = null
+      state.medicalExpense.amount3 = null
+
+      state.gym.amount1 = null
+      state.gym.amount2 = null
+      state.gym.amount3 = null
+
+      state.recreation.amount1 = null
+      state.recreation.amount2 = null
+      state.recreation.amount3 = null
+
+      state.tithing.amount1 = null
+      state.tithing.amount2 = null
+      state.tithing.amount3 = null
+
+      state.insurance.amount1 = null
+      state.insurance.amount2 = null
+      state.insurance.amount3 = null
+
+      state.savings.amount1 = null
+      state.savings.amount2 = null
+      state.savings.amount3 = null
+
+      state.onSubmitExpenseDetails = null
+      state.isValidExpenseDetails = null
+
+    },
+
     clearExpense: (state, action) => {
       state.rentingBoarding.amount1 = null
       state.rentingBoarding.amount2 = null

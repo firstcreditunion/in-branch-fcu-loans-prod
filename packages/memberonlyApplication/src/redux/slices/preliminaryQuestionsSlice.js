@@ -23,6 +23,20 @@ const preliminaryQuestionsSlice = createSlice({
   initialState: initialState,
   reducers: {
     // Prelim Questions
+    clearAll: (state, action) => {
+      state.Loading = HTTP_STATUS.IDLE
+      state.Error = HTTP_STATUS.IDLE
+      state.currentRequestId = null
+
+      state.isJointLoan = null
+      state.jointApplicantHasSeperateIncome = null
+      state.loanPurpose = null
+
+      state.loanPurpose = null
+
+      state.onSubmitPrelimQuestions = null
+      state.isValidPrelimQuestions = null
+    },
     setIsJointLoan: (state, action) => {
       state.isJointLoan = action.payload
     },

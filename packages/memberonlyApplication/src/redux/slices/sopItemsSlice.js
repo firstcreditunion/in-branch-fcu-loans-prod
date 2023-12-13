@@ -46,6 +46,32 @@ const sopItemsSlice = createSlice({
   initialState: initialState,
   reducers: {
     //Wages
+    clearAll: (state, action) => {
+      state.loading = HTTP_STATUS.IDLE
+      state.error = HTTP_STATUS.IDLE
+      state.currentRequestId = null
+
+      // Each amount is for a different frequecy
+      state.sopAssets = []
+      state.sopLiability = []
+      state.sopIncome = []
+      state.sopExpense = []
+
+      state.actualLivingExpense = null
+      state.actualMonthlyCommitments = null
+      state.benchmarkableCCCFAExpense = null
+      state.monthlyExpense = null
+      state.monthlyIncome = null
+      state.surplusRatio = null
+      state.nsr = null
+      state.nsrLower = null
+      state.nsrUpper = null
+      state.netAssets = null
+      state.totalAssets = null
+      state.totalLiabilities = null
+      state.liabilityServicing = null
+      state.monthlySurplus = null
+    },
     setSopAssets: (state, action) => {
       state.sopAssets = action.payload
     },

@@ -50,6 +50,17 @@ const sopAssetSlice = createSlice({
   initialState: initialState,
   reducers: {
     //Wages
+    clearAll: (state, action) => {
+      state.home.amount1 = null
+      state.homeAndContents.amount1 = null
+      state.vehicles.amount1 = null
+      state.boat.amount1 = null
+      state.savings.amount1 = null
+      state.kiwisaver.amount1 = null
+      state.s6.amount1 = null
+      state.onSubmitAssetDetails = null
+      state.isValidAssetDetails = null
+    },
     sethomeAmount1: (state, action) => {
       state.home.amount1 = action.payload
     },

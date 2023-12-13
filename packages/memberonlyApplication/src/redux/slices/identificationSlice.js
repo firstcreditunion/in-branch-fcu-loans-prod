@@ -16,6 +16,12 @@ const identificationSlice = createSlice({
   initialState: initialState,
   reducers: {
     //Wages
+    clearAll: (state, action) => {
+      state.mostRecentIdentifications = []
+
+      state.onSubmitIdentificationDetails = null
+      state.isValidIdentificationDetails = null
+    },
     setMostRecentIdentifications: (state, action) => {
       state.mostRecentIdentifications = action.payload
     },

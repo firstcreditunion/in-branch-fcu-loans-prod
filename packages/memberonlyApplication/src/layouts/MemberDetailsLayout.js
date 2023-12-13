@@ -161,7 +161,7 @@ export default function MemberDetailsLayout({ cognitoToken, sovereignUser, expir
     // console.log('Session Storage fcuportalSessionExpiry- ', sessionStorage.getItem('fcuportalSessionExpiry'))
     // console.log('Session Storage fcuportalSessionExpiry Converted- ', new Date(sessionStorage.getItem('fcuportalSessionExpiry')))
 
-    history.push('/')
+    // history.push('/')
 
     return () => {
       sessionStorage.removeItem('fcuportalSessionExpiry')
@@ -176,7 +176,7 @@ export default function MemberDetailsLayout({ cognitoToken, sovereignUser, expir
       code: 'PBD',
       label: 'Prime Borrower Details',
       role: 'PRIMEB',
-      render: <PrimeEligibility />,
+      render: <Submission />,
       showClientSearchBar: true,
       showContinueButton: true,
       paddingToAddToNavigationButtons: 0,

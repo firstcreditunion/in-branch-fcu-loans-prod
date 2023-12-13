@@ -1224,7 +1224,7 @@ export default function Submission() {
             <Typography variant='body1' color='primary' sx={{ fontWeight: 'bold' }}>
               {applicationNumber}
             </Typography>
-            {/* <Stack direction='column' justifyContent='center' alignItems='center' spacing={1} sx={{ display: 'flex', flexGrow: 1, width: '100%' }}>
+            <Stack direction='column' justifyContent='center' alignItems='center' spacing={1} sx={{ display: 'flex', flexGrow: 1, width: '100%' }}>
               <Button
                 variant='contained'
                 color='secondary'
@@ -1238,7 +1238,7 @@ export default function Submission() {
               >
                 Return to Homepage
               </Button>
-            </Stack> */}
+            </Stack>
           </Stack>
         </Stack>
       )}

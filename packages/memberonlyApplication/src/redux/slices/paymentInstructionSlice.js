@@ -18,6 +18,16 @@ const paymentInstructionSlice = createSlice({
   name: namespace,
   initialState: initialState,
   reducers: {
+    clearAll: (state, action) => {
+      state.loading = HTTP_STATUS.IDLE
+      state.error = HTTP_STATUS.IDLE
+      state.currentRequestId = null
+
+      state.backAccountForInstalmentDebit = null
+
+      state.onSubmitPaymentInstruction = null
+      state.isValidPaymentInstruction = null
+    },
     setBackAccountForInstalmentDebit: (state, action) => {
       // console.log('Chosen Bank Account - ', action.payload)
       state.backAccountForInstalmentDebit = action.payload

@@ -48,7 +48,27 @@ export const initialState = {
 const submissionSlice = createSlice({
   name: namespace,
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    clearAll: (state, action) => {
+      state.submissionStatusCode = null
+      state.submissionFulfilled = null
+
+      state.loading = HTTP_STATUS.IDLE
+      state.error = HTTP_STATUS.IDLE
+      state.currentRequestId = null
+
+      state.pdfloading = HTTP_STATUS.IDLE
+      state.pdferror = HTTP_STATUS.IDLE
+      state.pdfcurrentRequestId = null
+
+      state.applicationNumber = null
+      state.serverError = null
+
+      state.skipRootNode = false
+      state.onMount = true
+    },
+
+  },
   extraReducers: (builder) => {
     builder // Submission builders
       .addCase(submitLoanApplication.pending, (state, action) => {

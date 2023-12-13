@@ -102,6 +102,57 @@ const loanCalculatorSlice = createSlice({
   name: namespace,
   initialState: initialState,
   reducers: {
+    clearAll: (state, action) => {
+      state.loading = HTTP_STATUS.IDLE
+      state.error = HTTP_STATUS.IDLE
+      state.currentRequestId = null
+
+      //* Defualt Start Date
+      state.firstPaymentDate = addDays(new Date(), 7)
+
+      //* Other Data
+      state.lncalc_AmountFinanced = 0
+      state.lncalc_AmountPayable = 0
+      state.lncalc_costOfGoodsValue = 0
+      state.lncalc_disclosedRate = 0
+
+      //* Fees
+      state.feeCharged = null
+
+      //* Amortisation
+      state.lncalc_Instalments = []
+
+      state.lncalc_InstalmentBreakdownTotal.gst = 0.00
+      state.lncalc_InstalmentBreakdownTotal.interest = 0.00
+      state.lncalc_InstalmentBreakdownTotal.nonCapitalisedFees = 0.00
+      state.lncalc_InstalmentBreakdownTotal.principal = 0.00
+
+      state.lncalc_InstalmentAmount = 0.00
+      state.lncalc_InstalmentType = ''
+      state.lncalc_InstalmentStartDate = ''
+      state.lncalc_InstalmentEndDate = ''
+      state.lncalc_NumberofInstalments = null
+
+      state.lncalc_FinalInstalmentAmount = 0
+      state.lncalc_FinalInstalmentType = ''
+      state.lncalc_FinalInstalmentStartDate = ''
+      state.lncalc_FinalInstalmentEndDate = ''
+      state.lncalc_FinalInstalmentCount = ''
+
+      state.lncalc_InterestAmount = 0.0
+      state.lncalc_InterestRate = 0.0
+      state.lncalc_MaturityDate = ''
+      state.lncalc_PaymentFrequency.value = 1
+      state.lncalc_PaymentFrequency.unit = 'W'
+      state.lncalc_PrimaryClientType = ''
+      state.lncalc_ProductCode = ''
+
+      state.lncalc_ResidualValue = 0.0
+      state.lncalc_SettlementDate = ''
+      state.lncalc_Term.unit = ''
+      state.lncalc_Term.value = 0.0
+
+    },
     setFirstPaymentDate: (state, action) => {
       state.firstPaymentDate = action.payload
     },

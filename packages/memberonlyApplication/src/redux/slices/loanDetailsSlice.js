@@ -101,6 +101,77 @@ const loanDetailsSlice = createSlice({
   initialState: initialState,
   reducers: {
     // Portal
+    clearAll: (state, action) => {
+      state.payoutquoteloading = HTTP_STATUS.IDLE
+      state.payoutquoteerror = HTTP_STATUS.IDLE
+      state.payoutquotecurrentRequestId = null
+
+      state.createpayoutquoteloading = HTTP_STATUS.IDLE
+      state.createpayoutquoteerror = HTTP_STATUS.IDLE
+      state.createpayoutquotecurrentRequestId = null
+
+      //* Portal
+      state.showSummary = true
+
+      // Loan Details
+      state.requestedLoanAmount = 1000
+      state.memberOnlyLoanThreshold = 4000
+      state.payoutLendingAccountNumber = ''
+      state.documentationType = ''
+      state.documentationTypes = []
+
+      // Interest Rates
+
+      state.baseInterestRate = 13.95
+      state.creditHistory = ''
+      state.security = ''
+      state.estimatedInterestRate = ''
+
+      state.membershipLoyaltyDiscountCheck = false
+      state.loanHistCreditCheckDiscountCheck = false
+      state.threrOrMoreProductDiscountCheck = false
+
+      //Repayments
+      state.paymentFrequency = 'W'
+      state.numberOfDaysUpperLimitFromToday = 40
+      state.dayOfWeek = ''
+      state.firstPaymentDate = ''
+      state.loanTerm = 12
+      state.creditBeingSought = 0
+
+      // Loan Detials Summary
+      state.existingLoan = 1000
+      state.applicationFee = 10.0
+      state.creditReportAndDocusign = 5.0
+      state.finalCalculatedInterestRate = 0.0
+
+      state.payoutAcc_arrearsBalance = 0
+      state.payoutAcc_balanceOutstanding = 0
+      state.payoutAcc_bankAccountNumber = null
+      state.payoutAcc_client = null
+      state.payoutAcc_contractEffectiveDate = ''
+      state.payoutAcc_externalAccountNumber = null
+      state.payoutAcc_productDescription = null
+      state.payoutAcc_reportingName = null
+      state.payoutAcc_startDate = ''
+      state.payoutAcc_status = ''
+      state.payoutAcc_statusCode = ''
+
+      state.payoutQuote_created = null
+      state.payoutQuote_eodRunning = null
+      state.payoutQuote_lsqId = null
+      state.payoutQuote_reasonDesc = null
+      state.payoutQuote_reasonSubDesc = null
+      state.payoutQuote_rebateAmount = null
+      state.payoutQuote_settlementAmount = null
+      state.payoutQuote_validThruDate = null
+
+      state.payoutQuoteCreationAgreed = false
+      state.payoutQuoteCreationForAccount = ''
+
+      state.onSubmitLoanDetails = null
+      state.isValidLoanDetails = null
+    },
     setShowSummary: (state, action) => {
       state.showSummary = action.payload
     },

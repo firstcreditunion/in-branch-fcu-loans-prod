@@ -36,6 +36,34 @@ const additionalInfoPart2Slice = createSlice({
   name: namespace,
   initialState: initialState,
   reducers: {
+    clearAll: (state, action) => {
+      state.Loading = HTTP_STATUS.IDLE
+      state.Error = HTTP_STATUS.IDLE
+      state.currentRequestId = null
+
+      state.loanPurposeCode = ''
+      state.tradingBranch = ''
+      state.inquiryMadeToAmtRequested = ''
+      state.inquiryMadeToObtainQuotes = ''
+      state.inquiryMadeToDateNeededBy = ''
+      state.inquiryMadeToOtherLoanProductsThatMayMeetNeed = ''
+      state.inquiryMadeToOtherLoanProductsThatMayMeetNeedComment = ''
+      state.qualifyForMbroAndPern = ''
+      state.didMemberAcceptMbro = ''
+      state.whyMemberAcceptedMbro = ''
+      state.ninetyDayBankStatementObtained = ''
+      state.otherInquiries = ''
+      state.otherInquiriesComments = ''
+
+      state.isCreditUsedForRefinance = ''
+      state.isCreditUsedForRefinanceComments = ''
+
+      state.isMemberHappyWithQuote = ''
+      state.anyOtherComments = ''
+
+      state.onSubmitAddtionInfoPart2 = null
+      state.isValidAdditionalInfoPart2 = null
+    },
     setLoanPurposeCode: (state, action) => {
       state.loanPurposeCode = action.payload
     },

@@ -30,6 +30,28 @@ const creditScoreSlice = createSlice({
   name: namespace,
   initialState: initialState,
   reducers: {
+    clearAll: (state, action) => {
+      state.Loading = HTTP_STATUS.IDLE
+      state.Error = HTTP_STATUS.IDLE
+      state.currentRequestId = null
+
+      state.creditScoreThreshold = 300
+
+      state.isCreditScoreComplete = ''
+      state.isScoreExceedsThreshold = ''
+      state.hasUnpaidDefualtCollections = ''
+      state.detailsUnpaidDefualt = ''
+
+      state.isMemberUnderHardship = ''
+      state.hasMemberBeenBankrupt = ''
+      state.isMemberInArrearsWithFCU = ''
+
+      state.creditBeingSought = ''
+      state.termForCreditBeingSought = ''
+
+      state.onSubmitCreditScoreDetails = null
+      state.isValidCreditScoreDetails = null
+    },
     setIsCreditScoreComplete: (state, action) => {
       state.isCreditScoreComplete = action.payload
     },
