@@ -52,6 +52,8 @@ import InstalmentDebit from '../sections/InstalmentDebit'
 import Ackwonlegement from '../sections/Ackwonlegement'
 import Submission from '../sections/Submission'
 
+import { convertUnixToUTCTimestamp } from '../utils/formatDateTime'
+
 export default function MemberDetailsLayout({ cognitoToken, sovereignUser, expiryTime, refreshToken }) {
   const dispatch = useDispatch()
   const history = useHistory()
@@ -156,7 +158,10 @@ export default function MemberDetailsLayout({ cognitoToken, sovereignUser, expir
       return
     }
 
-    history.push('/')
+    console.log('Session Storage fcuportalSessionExpiry- ', sessionStorage.getItem('fcuportalSessionExpiry'))
+    console.log('Session Storage fcuportalSessionExpiry Converted- ', new Date(sessionStorage.getItem('fcuportalSessionExpiry')))
+
+    // history.push('/')
 
     return () => {
       sessionStorage.removeItem('fcuportalSessionExpiry')
@@ -171,7 +176,7 @@ export default function MemberDetailsLayout({ cognitoToken, sovereignUser, expir
       code: 'PBD',
       label: 'Prime Borrower Details',
       role: 'PRIMEB',
-      render: <PrimeEligibility />,
+      render: <AdditionalInfoPart1 />,
       showClientSearchBar: true,
       showContinueButton: true,
       paddingToAddToNavigationButtons: 0,

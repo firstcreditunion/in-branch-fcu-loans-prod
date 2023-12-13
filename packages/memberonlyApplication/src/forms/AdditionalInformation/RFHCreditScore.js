@@ -31,6 +31,8 @@ import FormProvider, { RHFEditor, RHFSelect, RHFUpload, RHFSwitch, RHFSlider, RH
 
 import { fCurrency } from '../../utils/formatNumber'
 
+var maxLength = 60
+
 const RFHCreditScore = () => {
   const dispatch = useDispatch()
 

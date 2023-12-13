@@ -10,6 +10,8 @@ import PeopleAltIcon from '@mui/icons-material/PeopleAlt'
 //* MUI - Styles
 import { styled } from '@mui/material/styles'
 
+
+
 //* Redux
 import { useDispatch, useSelector } from 'react-redux'
 import { submissionActions, submitLoanApplication, generateLoanApplicationReport } from '../redux/slices/submissionSlice'
@@ -675,43 +677,43 @@ export default function Submission() {
   }
 
 
-  // useEffect(() => {
-  //   if (submissionFulfilled == null) return
+  useEffect(() => {
+    if (submissionFulfilled == null) return
 
-  //   console.log('Raw PDF Data: ', createPdfData())
-  //   console.log('JSON Stringified PDF Data: ', JSON.stringify({
-  //     applicationData: createPdfData(),
-  //     applicationNumber: applicationNumber == null ? primeforenames + ' ' + primesurname + ' ' + fDateCustom(timestamp) : applicationNumber,
-  //     submissionAPIResults: {
-  //       submissionStatusCode: submissionStatusCode,
-  //       submissionFulfilled: submissionFulfilled,
-  //       serverError: serverError,
-  //     },
-  //   }))
+    console.log('Raw PDF Data: ', createPdfData())
+    console.log('JSON Stringified PDF Data: ', JSON.stringify({
+      applicationData: createPdfData(),
+      applicationNumber: applicationNumber == null ? primeforenames + ' ' + primesurname + ' ' + fDateCustom(timestamp) : applicationNumber,
+      submissionAPIResults: {
+        submissionStatusCode: submissionStatusCode,
+        submissionFulfilled: submissionFulfilled,
+        serverError: serverError,
+      },
+    }))
 
-  //   const timestamp = new Date()
-  //   const generatePdfConfig = {
-  //     url: `${getCloudFrontEnvironment() === 'Member-Only-Test' ? '/generate-pdf-test' : '/generate-pdf'}`,
-  //     method: 'POST',
-  //     baseURL: `${processNodeEnv() === 'development' ? BASE_URL_LOCAL_APP : BASE_URL_AWS_APP}`,
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     timeout: 60000,
-  //     data: JSON.stringify({
-  //       applicationData: createPdfData(),
-  //       applicationNumber: applicationNumber == null ? primeforenames + ' ' + primesurname + ' ' + fDateCustom(timestamp) : applicationNumber,
-  //       submissionAPIResults: {
-  //         submissionStatusCode: submissionStatusCode,
-  //         submissionFulfilled: submissionFulfilled,
-  //         serverError: serverError,
-  //       },
-  //     }),
-  //   }
+    const timestamp = new Date()
+    const generatePdfConfig = {
+      url: `${getCloudFrontEnvironment() === 'Member-Only-Test' ? '/generate-pdf-test' : '/generate-pdf'}`,
+      method: 'POST',
+      baseURL: `${processNodeEnv() === 'development' ? BASE_URL_LOCAL_APP : BASE_URL_AWS_APP}`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      timeout: 60000,
+      data: JSON.stringify({
+        applicationData: createPdfData(),
+        applicationNumber: applicationNumber == null ? primeforenames + ' ' + primesurname + ' ' + fDateCustom(timestamp) : applicationNumber,
+        submissionAPIResults: {
+          submissionStatusCode: submissionStatusCode,
+          submissionFulfilled: submissionFulfilled,
+          serverError: serverError,
+        },
+      }),
+    }
 
-  //   dispatch(generateLoanApplicationReport(generatePdfConfig))
+    dispatch(generateLoanApplicationReport(generatePdfConfig))
 
-  // }, [submissionFulfilled])
+  }, [submissionFulfilled])
 
   function getIncomeExpenseTestResult(value) {
     const incomeExpenseTestItems = [
@@ -753,83 +755,87 @@ export default function Submission() {
   }
 
 
-  // function createPdfData() {
+  function createPdfData() {
 
-  //   return {
-  //     loanApplicationDetails: {
-  //       loanPurpose: loanPurpose,
-  //       tradingBranchCode: tradingBranchCode,
-  //     },
-  //     primeDetails: {
-  //       applicationNumber: applicationNumber,
-  //       individualDetails: {
-  //         title: primetitle,
-  //         forename: primeforenames,
-  //         surname: primesurname,
-  //         gender: primegender,
-  //         dateOfBirth: fDate(convertToUTCCustom(primedateOfBirth, 'dob')),
-  //       },
-  //       incomes: primeIncome,
-  //       expenses: primeExpenses,
-  //       incomeExpenseSummary: {
-  //         actualLivingExpense: actualLivingExpense,
-  //         actualMonthlyCommitments: actualMonthlyCommitments,
-  //         monthlyIncome: monthlyIncome,
-  //         surplusRatio: surplusRatio,
-  //         monthlySurplus: monthlySurplus,
-  //         nsr: !(nsrWithoutPercent == null) ? nsrWithoutPercent : 0,
-  //       }
-  //     },
-  //     financialDetails: {
-  //       loanAmount: requestedLoanAmount,
-  //       interestRate: interestRate,
-  //       repayAmount: lncalc_InstalmentAmount,
-  //       repayFreq: repayFreq,
-  //       lncalc_PaymentFrequencyUnit: lncalc_PaymentFrequencyUnit,
-  //       term: lncalc_TermValue,
-  //       lncalc_InterestAmount: lncalc_InterestAmount,
-  //       feeCharged: feeCharged,
-  //       lncalc_AmountPayable: lncalc_AmountPayable,
-  //       firstPaymentDate: convertToUTCCustom(firstPaymentDate, 'firstPaymentDate'),
-  //       documentationTypes: documentationTypes,
-  //     },
-  //     sutabilityTestPart1: {
-  //       isCreditScoreComplete: isCreditScoreComplete,
-  //       isScoreExceedsThreshold: isScoreExceedsThreshold,
-  //       creditScoreThreshold: creditScoreThreshold,
-  //       hasUnpaidDefualtCollections: hasUnpaidDefualtCollections,
-  //       detailsUnpaidDefualt: detailsUnpaidDefualt,
-  //       isMemberUnderHardship: isMemberUnderHardship,
-  //       hasMemberBeenBankrupt: hasMemberBeenBankrupt,
-  //       isMemberInArrearsWithFCU: isMemberInArrearsWithFCU,
-  //       creditBeingSought: creditBeingSought,
-  //       termForCreditBeingSought: termForCreditBeingSought,
-  //     },
-  //     sutabilityTestPart2: {
-  //       inquiryMadeToObtainQuotes: inquiryMadeToObtainQuotes,
-  //       qualifyForMbroAndPern: qualifyForMbroAndPern,
-  //       didMemberAcceptMbro: didMemberAcceptMbro,
-  //       whyMemberAcceptedMbro: whyMemberAcceptedMbro,
-  //       isCreditUsedForRefinance: isCreditUsedForRefinance,
-  //       isCreditUsedForRefinanceComments: isCreditUsedForRefinanceComments,
-  //       ninetyDayBankStatementObtained: ninetyDayBankStatementObtained,
-  //       isMemberHappyWithQuote: isMemberHappyWithQuote,
-  //       anyOtherComments: anyOtherComments,
-  //     },
-  //     affordabilityTest: {
-  //       isIncomeExpensetestComplete: getIncomeExpenseTestResult(isIncomeExpensetestComplete)?.label,
-  //       incomeOverEstimatedComment: incomeOverEstimatedComment,
-  //       expenseUnderEstimatedComment: expenseUnderEstimatedComment,
-  //       otherExpenses: getOtherExpensesCausingHardship(otherExpenses)?.label,
-  //       canPayWithoutSufferingHardship: canMemberPayWithoutHardship(canPayWithoutSufferingHardship)?.label,
-  //     }
-  //   }
-  // }
+    return {
+      loanApplicationDetails: {
+        loanPurpose: loanPurpose,
+        tradingBranchCode: tradingBranchCode,
+      },
+      primeDetails: {
+        applicationNumber: applicationNumber,
+        individualDetails: {
+          title: primetitle,
+          forename: primeforenames,
+          surname: primesurname,
+          gender: primegender,
+          dateOfBirth: fDate(convertToUTCCustom(primedateOfBirth, 'dob')),
+        },
+        incomes: primeIncome,
+        expenses: primeExpenses,
+        incomeExpenseSummary: {
+          actualLivingExpense: actualLivingExpense,
+          actualMonthlyCommitments: actualMonthlyCommitments,
+          monthlyIncome: monthlyIncome,
+          surplusRatio: surplusRatio,
+          monthlySurplus: monthlySurplus,
+          nsr: !(nsrWithoutPercent == null) ? nsrWithoutPercent : 0,
+        }
+      },
+      financialDetails: {
+        loanAmount: requestedLoanAmount,
+        interestRate: interestRate,
+        repayAmount: lncalc_InstalmentAmount,
+        repayFreq: repayFreq,
+        lncalc_PaymentFrequencyUnit: lncalc_PaymentFrequencyUnit,
+        term: lncalc_TermValue,
+        lncalc_InterestAmount: lncalc_InterestAmount,
+        feeCharged: feeCharged,
+        lncalc_AmountPayable: lncalc_AmountPayable,
+        firstPaymentDate: convertToUTCCustom(firstPaymentDate, 'firstPaymentDate'),
+        documentationTypes: documentationTypes,
+      },
+      sutabilityTestPart1: {
+        isCreditScoreComplete: isCreditScoreComplete,
+        isScoreExceedsThreshold: isScoreExceedsThreshold,
+        creditScoreThreshold: creditScoreThreshold,
+        hasUnpaidDefualtCollections: hasUnpaidDefualtCollections,
+        detailsUnpaidDefualt: detailsUnpaidDefualt,
+        isMemberUnderHardship: isMemberUnderHardship,
+        hasMemberBeenBankrupt: hasMemberBeenBankrupt,
+        isMemberInArrearsWithFCU: isMemberInArrearsWithFCU,
+        creditBeingSought: creditBeingSought,
+        termForCreditBeingSought: termForCreditBeingSought,
+      },
+      sutabilityTestPart2: {
+        inquiryMadeToObtainQuotes: inquiryMadeToObtainQuotes,
+        qualifyForMbroAndPern: qualifyForMbroAndPern,
+        didMemberAcceptMbro: didMemberAcceptMbro,
+        whyMemberAcceptedMbro: whyMemberAcceptedMbro,
+        isCreditUsedForRefinance: isCreditUsedForRefinance,
+        isCreditUsedForRefinanceComments: isCreditUsedForRefinanceComments,
+        ninetyDayBankStatementObtained: ninetyDayBankStatementObtained,
+        isMemberHappyWithQuote: isMemberHappyWithQuote,
+        anyOtherComments: anyOtherComments,
+      },
+      affordabilityTest: {
+        isIncomeExpensetestComplete: getIncomeExpenseTestResult(isIncomeExpensetestComplete)?.label,
+        incomeOverEstimatedComment: incomeOverEstimatedComment,
+        expenseUnderEstimatedComment: expenseUnderEstimatedComment,
+        otherExpenses: getOtherExpensesCausingHardship(otherExpenses)?.label,
+        canPayWithoutSufferingHardship: canMemberPayWithoutHardship(canPayWithoutSufferingHardship)?.label,
+      }
+    }
+  }
 
   async function submitApplication() {
     const config = await getRequestConfig()
 
     await dispatch(submitLoanApplication(config))
+  }
+
+  function returnHome() {
+
   }
 
   // let stringifiedSubmissionDataAsync = ''
@@ -850,6 +856,7 @@ export default function Submission() {
           <SyncLoader color='#bbbb14' />
         </Stack>
       )}
+      {/* //? Summary before submitting */}
       {loading === 'IDLE' && applicationNumber === null && (
         <Stack direction='column' justifyContent='center' alignItems='center' spacing={5} sx={{ display: 'flex', flexGrow: 1, width: '100%', minHeight: '70vh' }}>
           <ContentStyle sx={{ width: '100%', maxWidth: 700 }}>
@@ -908,6 +915,8 @@ export default function Submission() {
           </Button>
         </Stack>
       )}
+
+      {/* //? If there is an error while submitting */}
       {loading === 'IDLE' && applicationNumber == null && serverError === '' && (
         <Stack direction='column' justifyContent='center' alignItems='center' spacing={1} sx={{ display: 'flex', flexGrow: 1, width: '100%', minHeight: '70vh' }}>
           <Stack direction='column' justifyContent='center' alignItems='center' spacing={2} sx={{ display: 'flex', flexGrow: 1, width: '100%' }}>
@@ -927,8 +936,25 @@ export default function Submission() {
               to send an email.
             </Typography>
           </Stack>
+          {/* <Stack direction='column' justifyContent='center' alignItems='center' spacing={1} sx={{ display: 'flex', flexGrow: 1, width: '100%' }}>
+            <Button
+              variant='contained'
+              color='secondary'
+              sx={{
+                width: 350,
+                borderRadius: 10,
+              }}
+              onClick={() => {
+                history.push('/memberonlyloan')
+              }}
+            >
+              Return to Homepage
+            </Button>
+          </Stack> */}
         </Stack>
       )}
+
+      {/* //? When submission is successful */}
       {loading === 'IDLE' && applicationNumber != null && (
         <Stack direction='column' justifyContent='center' alignItems='center' spacing={5} sx={{ display: 'flex', flexGrow: 1, width: '100%', minHeight: '70vh' }}>
           <Stack direction='column' justifyContent='center' alignItems='center' spacing={2} sx={{ display: 'flex', flexGrow: 1, width: '100%' }}>

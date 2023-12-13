@@ -73,7 +73,6 @@ const UserAccount = (props) => {
       user.authenticateUser(authDetails, {
         onSuccess: (data) => {
           resolve(data)
-          console.log('Login Data: ', data)
           const sessionJwt = data?.accessToken?.jwtToken
           const sessionTime = data?.idToken?.payload?.auth_time
           const sessionExpiry = data?.idToken?.payload?.exp
@@ -87,8 +86,7 @@ const UserAccount = (props) => {
             iat: sessionIat, // Session IAT
           }
 
-          console.log('setExpiryTime: ', props.setExpiryTime)
-          console.log('setRefreshToken: ', props.setRefreshToken)
+          sessionStorage.setItem('authfcuportalsessionexpiry', sessionExpiry)
 
           props?.setCognitoToken(sessionDetails)
           props?.setExpiryTime(sessionExpiry)
