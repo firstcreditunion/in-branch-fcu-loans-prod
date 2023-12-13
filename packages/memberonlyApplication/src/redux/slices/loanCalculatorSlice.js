@@ -119,7 +119,7 @@ const loanCalculatorSlice = createSlice({
         if (state.loading === 'PENDING' && state.currentRequestId === requestId) {
           state.loading = HTTP_STATUS.IDLE
 
-          console.log('REPAYMENT RESPONSE: ', action.payload)
+          // console.log('REPAYMENT RESPONSE: ', action.payload)
 
           const response = action.payload?.axiosResponse?.body?.data?.attributes
           const instalmentBreakdownTotals = action.payload?.axiosResponse?.body?.data?.attributes?.instalmentBreakdown?.total

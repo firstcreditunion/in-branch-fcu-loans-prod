@@ -19,7 +19,7 @@ const paymentInstructionSlice = createSlice({
   initialState: initialState,
   reducers: {
     setBackAccountForInstalmentDebit: (state, action) => {
-      console.log('Chosen Bank Account - ', action.payload)
+      // console.log('Chosen Bank Account - ', action.payload)
       state.backAccountForInstalmentDebit = action.payload
     },
     setOnSubmitPaymentInstruction: (state, action) => {

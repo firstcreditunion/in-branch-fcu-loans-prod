@@ -266,7 +266,7 @@ const loanDetailsSlice = createSlice({
 
           const createPayoutResponse = action.payload?.axiosResponse?.body?.data?.attributes
 
-          console.log('createPayoutResponse: ', createPayoutResponse)
+          // console.log('createPayoutResponse: ', createPayoutResponse)
 
           state.payoutQuote_eodRunning = createPayoutResponse?.eodRunning
           state.payoutQuote_lsqId = createPayoutResponse?.lsqId

@@ -168,8 +168,8 @@ export default function Submission() {
   const otherExpenses = useSelector((state) => state.sopRelatedQuestionsReducer.otherExpenses)
   const canPayWithoutSufferingHardship = useSelector((state) => state.sopRelatedQuestionsReducer.canPayWithoutSufferingHardship)
 
-  console.log('isIncomeExpensetestComplete: ', isIncomeExpensetestComplete)
-  console.log('isIncomeExpensetestCompleteDesc: ', isIncomeExpensetestCompleteDesc)
+  // console.log('isIncomeExpensetestComplete: ', isIncomeExpensetestComplete)
+  // console.log('isIncomeExpensetestCompleteDesc: ', isIncomeExpensetestCompleteDesc)
 
   const memoLines = ['', '___________ SUTABILITY TEST - PART 1 ___________', '', `Is the Credit Report Complete?: ${isCreditScoreComplete === 'Y' ? 'Yes' : 'No'}`, '', `Did credit score exceed 300? ${isScoreExceedsThreshold === 'Y' ? 'Yes' : 'No'}`, '', `Does the member have any unpaid defualts? - ${hasUnpaidDefualtCollections === 'Y' ? 'Yes' : 'No'}`, '', `Unpaid Default Notes - ${hasUnpaidDefualtCollections === 'Y' ? detailsUnpaidDefualt : 'N/A'}`, '', `Is the member under any hardship arrangement? - ${isMemberUnderHardship === 'Y' ? 'Yes' : 'No'}`, '', `Has the member been bankrupt? - ${hasMemberBeenBankrupt === 'Y' ? 'Yes' : 'No'}`, '', `Is member in arrears with FCU? - ${isMemberInArrearsWithFCU === 'Y' ? 'Yes' : 'No'}`, '', `Credit Limit - How much credit is being sought? - ${creditBeingSought}`, '', `How long is the credit being sought for? - ${termForCreditBeingSought}`, '', '', '', '___________ SUTABILITY TEST - PART 2 ___________', '', `Inquiry made to obtain quotes? - ${inquiryMadeToObtainQuotes === 'Y' ? 'Yes' : 'No'}`, '', `Does member qualify for both Member-Only loan and personal loan? - ${qualifyForMbroAndPern === 'Y' ? 'Yes' : 'No'}`, '', `Did member accept Member-Only loan? - ${didMemberAcceptMbro === 'Y' ? 'Yes' : 'No'}`, '', `Why did the member accept or decline Member-Only loan? - ${whyMemberAcceptedMbro}`, '', `Is the credit used to refinance another lender and/or an exisitng FCU loan? If so is the member aware of the additional costs? - ${isCreditUsedForRefinance === 'Y' ? 'Yes' : 'No'}`, '', `Refinance Notes - ${isCreditUsedForRefinanceComments}`, '', `90 days bank statement obtained? - ${ninetyDayBankStatementObtained === 'Y' ? 'Yes' : 'No'}`, '', `Is the quote/proposed loan suitable to the member? - ${isMemberHappyWithQuote === 'Y' ? 'Yes' : 'No'}`, '', `Is the member happy with the quote? - ${isMemberHappyWithQuote ? 'Yes' : 'No'}`, '', `Other Comments- ${anyOtherComments}`, '', '', '', '___________ AFFORDABILITY TEST ___________', '', `Full Income and Expense Estimate Test (Reg 4AF) Completed? ${isIncomeExpensetestComplete === 'Y' ? 'Yes - The full income vs expense test completed with sufficient Surplus evident.' : 'No - The full income vs expense test is not complete. The loan will be withdrawn or declined'}`, '', `Likely income may be overestimated - Notes: ${incomeOverEstimatedComment}`, '', `Likely relevant expenses may be underestimated - Notes: ${expenseUnderEstimatedComment}`, '', `Or borrower may incur other expenses that cause them to suffer substantial hardship? ${otherExpenses === 'Y' ? 'No other expenses identified or likely that may cause the member to suffer financial hardship.' : 'Other expenses identified which may lead to financial hardship. The loan will be withdrawn/declined.'}`, '', `Based on the above answers, are you satisfied on reasonable grounds that the borrower will be able to make payments without suffering substantial hardship ${canPayWithoutSufferingHardship === 'Y' ? 'Yes, the borrower will be able to make repayments without suffering substantial hardship.' : 'No, the borrower may suffer financial hardship. The loan will be withdrawn/ declined.'}`, '', '', '', '___________ PRIVACY DECLARATION ___________', '', `Declaration Item 1 - Accpted? - ${declarationObject?.CreditWorthiness?.accept ? 'Yes' : 'No'}`, '', `Declaration Item 2 - Accpted? - ${declarationObject?.AuthoriseFCU?.accept ? 'Yes' : 'No'}`, '', `Declaration Item 3 - Accpted? - ${declarationObject?.TrueInformation?.accept ? 'Yes' : 'No'}`, '', `Declaration Item 4 - Accpted? - ${declarationObject?.AmlCftObligations?.accept ? 'Yes' : 'No'}`, '', `Declaration Item 5 - Accpted? - ${declarationObject?.StorePersonalInfo?.accept ? 'Yes' : 'No'}`, '', `Declaration Item 6 - Accpted? - ${declarationObject?.InsureLoan?.accept ? 'Yes' : 'No'}`]
 
@@ -551,7 +551,7 @@ export default function Submission() {
 
   async function createSubmissionData() {
 
-    console.log('First Payment Date TEST: ', convertToUTCCustom(firstPaymentDate))
+    // console.log('First Payment Date TEST: ', convertToUTCCustom(firstPaymentDate))
     // * Prime
     return JSON.stringify({
       loadedByClientNumber: zeroPaddedLoadedBy,
@@ -680,16 +680,16 @@ export default function Submission() {
   useEffect(() => {
     if (submissionFulfilled == null) return
 
-    console.log('Raw PDF Data: ', createPdfData())
-    console.log('JSON Stringified PDF Data: ', JSON.stringify({
-      applicationData: createPdfData(),
-      applicationNumber: applicationNumber == null ? primeforenames + ' ' + primesurname + ' ' + fDateCustom(timestamp) : applicationNumber,
-      submissionAPIResults: {
-        submissionStatusCode: submissionStatusCode,
-        submissionFulfilled: submissionFulfilled,
-        serverError: serverError,
-      },
-    }))
+    // console.log('Raw PDF Data: ', createPdfData())
+    // console.log('JSON Stringified PDF Data: ', JSON.stringify({
+    //   applicationData: createPdfData(),
+    //   applicationNumber: applicationNumber == null ? primeforenames + ' ' + primesurname + ' ' + fDateCustom(timestamp) : applicationNumber,
+    //   submissionAPIResults: {
+    //     submissionStatusCode: submissionStatusCode,
+    //     submissionFulfilled: submissionFulfilled,
+    //     serverError: serverError,
+    //   },
+    // }))
 
     const timestamp = new Date()
     const generatePdfConfig = {
@@ -716,30 +716,30 @@ export default function Submission() {
   }, [submissionFulfilled])
 
 
-  function triggerPDFGeneration() {
-    const timestamp = new Date()
-    const generatePdfConfig = {
-      url: `${getCloudFrontEnvironment() === 'Member-Only-Test' ? '/generate-pdf-test' : '/generate-pdf'}`,
-      method: 'POST',
-      baseURL: `${processNodeEnv() === 'development' ? BASE_URL_LOCAL_APP : BASE_URL_AWS_APP}`,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      timeout: 60000,
-      data: JSON.stringify({
-        applicationData: createPdfDataTest(),
-        applicationNumber: applicationNumber == null ? primeforenames + ' ' + primesurname + ' ' + fDateCustom(timestamp) : applicationNumber,
-        submissionAPIResults: {
-          submissionStatusCode: submissionStatusCode,
-          submissionFulfilled: submissionFulfilled,
-          serverError: serverError,
-        },
-      }),
-    }
+  // function triggerPDFGeneration() {
+  //   const timestamp = new Date()
+  //   const generatePdfConfig = {
+  //     url: `${getCloudFrontEnvironment() === 'Member-Only-Test' ? '/generate-pdf-test' : '/generate-pdf'}`,
+  //     method: 'POST',
+  //     baseURL: `${processNodeEnv() === 'development' ? BASE_URL_LOCAL_APP : BASE_URL_AWS_APP}`,
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     timeout: 60000,
+  //     data: JSON.stringify({
+  //       applicationData: createPdfDataTest(),
+  //       applicationNumber: applicationNumber == null ? primeforenames + ' ' + primesurname + ' ' + fDateCustom(timestamp) : applicationNumber,
+  //       submissionAPIResults: {
+  //         submissionStatusCode: submissionStatusCode,
+  //         submissionFulfilled: submissionFulfilled,
+  //         serverError: serverError,
+  //       },
+  //     }),
+  //   }
 
-    dispatch(generateLoanApplicationReport(generatePdfConfig))
+  //   dispatch(generateLoanApplicationReport(generatePdfConfig))
 
-  }
+  // }
 
   function getIncomeExpenseTestResult(value) {
     const incomeExpenseTestItems = [
@@ -781,218 +781,218 @@ export default function Submission() {
   }
 
 
-  function createPdfDataTest() {
+  // function createPdfDataTest() {
 
-    return {
-      loanApplicationDetails: {
-        loanPurpose: 'Test',
-        tradingBranchCode: 'Test',
-      },
-      primeDetails: {
-        applicationNumber: 'Test',
-        individualDetails: {
-          title: 'Test',
-          forename: 'Test',
-          surname: 'Test',
-          gender: 'Test',
-          dateOfBirth: fDate(convertToUTCCustom(new Date(), 'dob')),
-        },
-        incomes: [
-          {
-            amount: 3000,
-            code: 'WAGES',
-            description: 'Wages',
-            frequency: 'W',
-          },
-          {
-            amount: 400,
-            code: 'OTHIN1',
-            description: 'Other Income',
-            frequency: 'W',
-          },
-          {
-            amount: null,
-            code: 'BENFIT',
-            description: 'WINZ Benefit',
-            frequency: 'W',
-          },
-          {
-            amount: null,
-            code: 'SLFEMP',
-            description: 'Self Employed',
-            frequency: 'W',
-          },
-          {
-            amount: null,
-            code: 'SUPER',
-            description: 'Superannuation',
-            frequency: 'W',
-          },
-          {
-            amount: null,
-            code: 'STDYLK',
-            description: 'Study Link',
-            frequency: 'W',
-          },
-          {
-            amount: 1500,
-            code: 'RENTAL',
-            description: 'Rental Income',
-            frequency: 'W',
-          },
-          {
-            amount: null,
-            code: 'CHDSUP',
-            description: 'Child Support',
-            frequency: 'W',
-          },
-          {
-            amount: null,
-            code: 'WKFAM',
-            description: 'Working for Families',
-            frequency: 'W',
-          },
-          {
-            amount: null,
-            code: 'PYGBRD',
-            description: 'Boarder Income',
-            frequency: 'W',
-          },
-        ],
-        expenses: [
-          {
-            amount: 250,
-            code: 'RENTI',
-            description: 'Renting or Boarding',
-            frequency: 'W',
-          },
-          {
-            amount: null,
-            code: 'S6',
-            description: 'S6/Savings',
-            frequency: 'W',
-          },
-          {
-            amount: 175,
-            code: 'GROCER',
-            description: 'Groceries',
-            frequency: 'W',
-          },
-          {
-            amount: 50,
-            code: 'POWER',
-            description: 'Power or Gas',
-            frequency: 'W',
-          },
-          {
-            amount: 12,
-            code: 'PHONE',
-            description: 'Phone or Internet',
-            frequency: 'W',
-          },
-          {
-            amount: 15,
-            code: 'FUEL',
-            description: 'Fuel',
-            frequency: 'W',
-          },
-          {
-            amount: null,
-            code: 'VEH',
-            description: 'Vehicle on road costs',
-            frequency: 'W',
-          },
-          {
-            amount: 100,
-            code: 'CLOTH',
-            description: 'Clothing',
-            frequency: 'W',
-          },
-          {
-            amount: null,
-            code: 'MEDC',
-            description: 'Medical',
-            frequency: 'W',
-          },
-          {
-            amount: 17,
-            code: 'GYM',
-            description: 'Gym',
-            frequency: 'W',
-          },
-          {
-            amount: null,
-            code: 'RECR',
-            description: 'Recreation',
-            frequency: 'W',
-          },
-          {
-            amount: null,
-            code: 'TITH',
-            description: 'Tithing',
-            frequency: 'W',
-          },
-          {
-            amount: null,
-            code: 'SAVG',
-            description: 'Savings',
-            frequency: 'W',
-          },
-        ],
-        incomeExpenseSummary: {
-          actualLivingExpense: 100,
-          actualMonthlyCommitments: 100,
-          monthlyIncome: 100,
-          surplusRatio: 0.8,
-          monthlySurplus: monthlySurplus,
-          nsr: 84,
-        }
-      },
-      financialDetails: {
-        loanAmount: 100,
-        interestRate: 18,
-        repayAmount: 1,
-        repayFreq: 1,
-        lncalc_PaymentFrequencyUnit: 'W',
-        term: 36,
-        lncalc_InterestAmount: 100,
-        feeCharged: 10,
-        lncalc_AmountPayable: 120,
-        firstPaymentDate: convertToUTCCustom(new Date(), 'firstPaymentDate'),
-        documentationTypes: ['ABCD', 'EFGH'],
-      },
-      sutabilityTestPart1: {
-        isCreditScoreComplete: 'Yes',
-        isScoreExceedsThreshold: isScoreExceedsThreshold,
-        creditScoreThreshold: creditScoreThreshold,
-        hasUnpaidDefualtCollections: hasUnpaidDefualtCollections,
-        detailsUnpaidDefualt: 'here are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which dont look even slightly believable.If you are going to use a passage of Lorem Ipsum, you need to be sure there isnt anything embarrassing hidden in the middle of text.All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable.The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non- characteristic words etc.',
-        isMemberUnderHardship: isMemberUnderHardship,
-        hasMemberBeenBankrupt: hasMemberBeenBankrupt,
-        isMemberInArrearsWithFCU: isMemberInArrearsWithFCU,
-        creditBeingSought: 'here are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which dont look even slightly believable.If you are going to use a passage of Lorem Ipsum, you need to be sure there isnt anything embarrassing hidden in the middle of text.All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable.The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non- characteristic words etc.',
-        termForCreditBeingSought: 'here are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which dont look even slightly believable.If you are going to use a passage of Lorem Ipsum, you need to be sure there isnt anything embarrassing hidden in the middle of text.All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable.The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non- characteristic words etc.',
-      },
-      sutabilityTestPart2: {
-        inquiryMadeToObtainQuotes: inquiryMadeToObtainQuotes,
-        qualifyForMbroAndPern: qualifyForMbroAndPern,
-        didMemberAcceptMbro: didMemberAcceptMbro,
-        whyMemberAcceptedMbro: 'here are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which dont look even slightly believable.If you are going to use a passage of Lorem Ipsum, you need to be sure there isnt anything embarrassing hidden in the middle of text.All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable.The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non- characteristic words etc.',
-        isCreditUsedForRefinance: isCreditUsedForRefinance,
-        isCreditUsedForRefinanceComments: isCreditUsedForRefinanceComments,
-        ninetyDayBankStatementObtained: ninetyDayBankStatementObtained,
-        isMemberHappyWithQuote: isMemberHappyWithQuote,
-        anyOtherComments: 'here are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which dont look even slightly believable.If you are going to use a passage of Lorem Ipsum, you need to be sure there isnt anything embarrassing hidden in the middle of text.All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable.The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non- characteristic words etc.',
-      },
-      affordabilityTest: {
-        isIncomeExpensetestComplete: 'Test',
-        incomeOverEstimatedComment: 'Test',
-        expenseUnderEstimatedComment: 'Test',
-        otherExpenses: 'Test',
-        canPayWithoutSufferingHardship: 'Test',
-      }
-    }
-  }
+  //   return {
+  //     loanApplicationDetails: {
+  //       loanPurpose: 'Test',
+  //       tradingBranchCode: 'Test',
+  //     },
+  //     primeDetails: {
+  //       applicationNumber: 'Test',
+  //       individualDetails: {
+  //         title: 'Test',
+  //         forename: 'Test',
+  //         surname: 'Test',
+  //         gender: 'Test',
+  //         dateOfBirth: fDate(convertToUTCCustom(new Date(), 'dob')),
+  //       },
+  //       incomes: [
+  //         {
+  //           amount: 3000,
+  //           code: 'WAGES',
+  //           description: 'Wages',
+  //           frequency: 'W',
+  //         },
+  //         {
+  //           amount: 400,
+  //           code: 'OTHIN1',
+  //           description: 'Other Income',
+  //           frequency: 'W',
+  //         },
+  //         {
+  //           amount: null,
+  //           code: 'BENFIT',
+  //           description: 'WINZ Benefit',
+  //           frequency: 'W',
+  //         },
+  //         {
+  //           amount: null,
+  //           code: 'SLFEMP',
+  //           description: 'Self Employed',
+  //           frequency: 'W',
+  //         },
+  //         {
+  //           amount: null,
+  //           code: 'SUPER',
+  //           description: 'Superannuation',
+  //           frequency: 'W',
+  //         },
+  //         {
+  //           amount: null,
+  //           code: 'STDYLK',
+  //           description: 'Study Link',
+  //           frequency: 'W',
+  //         },
+  //         {
+  //           amount: 1500,
+  //           code: 'RENTAL',
+  //           description: 'Rental Income',
+  //           frequency: 'W',
+  //         },
+  //         {
+  //           amount: null,
+  //           code: 'CHDSUP',
+  //           description: 'Child Support',
+  //           frequency: 'W',
+  //         },
+  //         {
+  //           amount: null,
+  //           code: 'WKFAM',
+  //           description: 'Working for Families',
+  //           frequency: 'W',
+  //         },
+  //         {
+  //           amount: null,
+  //           code: 'PYGBRD',
+  //           description: 'Boarder Income',
+  //           frequency: 'W',
+  //         },
+  //       ],
+  //       expenses: [
+  //         {
+  //           amount: 250,
+  //           code: 'RENTI',
+  //           description: 'Renting or Boarding',
+  //           frequency: 'W',
+  //         },
+  //         {
+  //           amount: null,
+  //           code: 'S6',
+  //           description: 'S6/Savings',
+  //           frequency: 'W',
+  //         },
+  //         {
+  //           amount: 175,
+  //           code: 'GROCER',
+  //           description: 'Groceries',
+  //           frequency: 'W',
+  //         },
+  //         {
+  //           amount: 50,
+  //           code: 'POWER',
+  //           description: 'Power or Gas',
+  //           frequency: 'W',
+  //         },
+  //         {
+  //           amount: 12,
+  //           code: 'PHONE',
+  //           description: 'Phone or Internet',
+  //           frequency: 'W',
+  //         },
+  //         {
+  //           amount: 15,
+  //           code: 'FUEL',
+  //           description: 'Fuel',
+  //           frequency: 'W',
+  //         },
+  //         {
+  //           amount: null,
+  //           code: 'VEH',
+  //           description: 'Vehicle on road costs',
+  //           frequency: 'W',
+  //         },
+  //         {
+  //           amount: 100,
+  //           code: 'CLOTH',
+  //           description: 'Clothing',
+  //           frequency: 'W',
+  //         },
+  //         {
+  //           amount: null,
+  //           code: 'MEDC',
+  //           description: 'Medical',
+  //           frequency: 'W',
+  //         },
+  //         {
+  //           amount: 17,
+  //           code: 'GYM',
+  //           description: 'Gym',
+  //           frequency: 'W',
+  //         },
+  //         {
+  //           amount: null,
+  //           code: 'RECR',
+  //           description: 'Recreation',
+  //           frequency: 'W',
+  //         },
+  //         {
+  //           amount: null,
+  //           code: 'TITH',
+  //           description: 'Tithing',
+  //           frequency: 'W',
+  //         },
+  //         {
+  //           amount: null,
+  //           code: 'SAVG',
+  //           description: 'Savings',
+  //           frequency: 'W',
+  //         },
+  //       ],
+  //       incomeExpenseSummary: {
+  //         actualLivingExpense: 100,
+  //         actualMonthlyCommitments: 100,
+  //         monthlyIncome: 100,
+  //         surplusRatio: 0.8,
+  //         monthlySurplus: monthlySurplus,
+  //         nsr: 84,
+  //       }
+  //     },
+  //     financialDetails: {
+  //       loanAmount: 100,
+  //       interestRate: 18,
+  //       repayAmount: 1,
+  //       repayFreq: 1,
+  //       lncalc_PaymentFrequencyUnit: 'W',
+  //       term: 36,
+  //       lncalc_InterestAmount: 100,
+  //       feeCharged: 10,
+  //       lncalc_AmountPayable: 120,
+  //       firstPaymentDate: convertToUTCCustom(new Date(), 'firstPaymentDate'),
+  //       documentationTypes: ['ABCD', 'EFGH'],
+  //     },
+  //     sutabilityTestPart1: {
+  //       isCreditScoreComplete: isCreditScoreComplete === 'Y' ? 'Yes' : 'No',
+  //       isScoreExceedsThreshold: isScoreExceedsThreshold === 'Y' ? 'Yes' : 'No',
+  //       creditScoreThreshold: creditScoreThreshold === 'Y' ? 'Yes' : 'No',
+  //       hasUnpaidDefualtCollections: hasUnpaidDefualtCollections === 'Y' ? 'Yes' : 'No',
+  //       detailsUnpaidDefualt: detailsUnpaidDefualt,
+  //       isMemberUnderHardship: isMemberUnderHardship === 'Y' ? 'Yes' : 'No',
+  //       hasMemberBeenBankrupt: hasMemberBeenBankrupt === 'Y' ? 'Yes' : 'No',
+  //       isMemberInArrearsWithFCU: isMemberInArrearsWithFCU === 'Y' ? 'Yes' : 'No',
+  //       creditBeingSought: 'Test',
+  //       termForCreditBeingSought: 'Test',
+  //     },
+  //     sutabilityTestPart2: {
+  //       inquiryMadeToObtainQuotes: inquiryMadeToObtainQuotes === 'Y' ? 'Yes' : 'No',
+  //       qualifyForMbroAndPern: qualifyForMbroAndPern === 'Y' ? 'Yes' : 'No',
+  //       didMemberAcceptMbro: didMemberAcceptMbro === 'Y' ? 'Yes' : 'No',
+  //       whyMemberAcceptedMbro: 'Test',
+  //       isCreditUsedForRefinance: isCreditUsedForRefinance === 'Y' ? 'Yes' : 'No',
+  //       isCreditUsedForRefinanceComments: 'Test',
+  //       ninetyDayBankStatementObtained: ninetyDayBankStatementObtained === 'Y' ? 'Yes' : 'No',
+  //       isMemberHappyWithQuote: isMemberHappyWithQuote === 'Y' ? 'Yes' : 'No',
+  //       anyOtherComments: 'Test',
+  //     },
+  //     affordabilityTest: {
+  //       isIncomeExpensetestComplete: 'Test',
+  //       incomeOverEstimatedComment: 'Test',
+  //       expenseUnderEstimatedComment: 'Test',
+  //       otherExpenses: 'Test',
+  //       canPayWithoutSufferingHardship: 'Test',
+  //     }
+  //   }
+  // }
 
   function createPdfData() {
 
@@ -1035,26 +1035,26 @@ export default function Submission() {
         documentationTypes: documentationTypes,
       },
       sutabilityTestPart1: {
-        isCreditScoreComplete: isCreditScoreComplete,
-        isScoreExceedsThreshold: isScoreExceedsThreshold,
-        creditScoreThreshold: creditScoreThreshold,
-        hasUnpaidDefualtCollections: hasUnpaidDefualtCollections,
+        isCreditScoreComplete: isCreditScoreComplete === 'Y' ? 'Yes' : 'No',
+        isScoreExceedsThreshold: isScoreExceedsThreshold === 'Y' ? 'Yes' : 'No',
+        creditScoreThreshold: creditScoreThreshold === 'Y' ? 'Yes' : 'No',
+        hasUnpaidDefualtCollections: hasUnpaidDefualtCollections === 'Y' ? 'Yes' : 'No',
         detailsUnpaidDefualt: detailsUnpaidDefualt,
-        isMemberUnderHardship: isMemberUnderHardship,
-        hasMemberBeenBankrupt: hasMemberBeenBankrupt,
-        isMemberInArrearsWithFCU: isMemberInArrearsWithFCU,
+        isMemberUnderHardship: isMemberUnderHardship === 'Y' ? 'Yes' : 'No',
+        hasMemberBeenBankrupt: hasMemberBeenBankrupt === 'Y' ? 'Yes' : 'No',
+        isMemberInArrearsWithFCU: isMemberInArrearsWithFCU === 'Y' ? 'Yes' : 'No',
         creditBeingSought: creditBeingSought,
         termForCreditBeingSought: termForCreditBeingSought,
       },
       sutabilityTestPart2: {
-        inquiryMadeToObtainQuotes: inquiryMadeToObtainQuotes,
-        qualifyForMbroAndPern: qualifyForMbroAndPern,
-        didMemberAcceptMbro: didMemberAcceptMbro,
+        inquiryMadeToObtainQuotes: inquiryMadeToObtainQuotes === 'Y' ? 'Yes' : 'No',
+        qualifyForMbroAndPern: qualifyForMbroAndPern === 'Y' ? 'Yes' : 'No',
+        didMemberAcceptMbro: didMemberAcceptMbro === 'Y' ? 'Yes' : 'No',
         whyMemberAcceptedMbro: whyMemberAcceptedMbro,
-        isCreditUsedForRefinance: isCreditUsedForRefinance,
+        isCreditUsedForRefinance: isCreditUsedForRefinance === 'Y' ? 'Yes' : 'No',
         isCreditUsedForRefinanceComments: isCreditUsedForRefinanceComments,
-        ninetyDayBankStatementObtained: ninetyDayBankStatementObtained,
-        isMemberHappyWithQuote: isMemberHappyWithQuote,
+        ninetyDayBankStatementObtained: ninetyDayBankStatementObtained === 'Y' ? 'Yes' : 'No',
+        isMemberHappyWithQuote: isMemberHappyWithQuote === 'Y' ? 'Yes' : 'No',
         anyOtherComments: anyOtherComments,
       },
       affordabilityTest: {
@@ -1152,7 +1152,7 @@ export default function Submission() {
           <Button variant='contained' color='secondary' onClick={submitApplication} sx={{ borderRadius: 49 }} endIcon={<SendIcon />}>
             Submit Application
           </Button>
-          <Stack direction='column' justifyContent='center' alignItems='center' spacing={1} sx={{ display: 'flex', flexGrow: 1, width: '100%' }}>
+          {/* <Stack direction='column' justifyContent='center' alignItems='center' spacing={1} sx={{ display: 'flex', flexGrow: 1, width: '100%' }}>
             <Button
               variant='contained'
               color='secondary'
@@ -1164,7 +1164,7 @@ export default function Submission() {
             >
               Test PDF
             </Button>
-          </Stack>
+          </Stack> */}
         </Stack>
       )}
 

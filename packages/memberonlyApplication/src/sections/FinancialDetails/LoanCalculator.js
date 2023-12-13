@@ -125,8 +125,8 @@ const LoanCalculator = () => {
       return type?.feeCode
     })
 
-    console.log('First Payment Date from Loan Calc useEffect: ', firstPaymentDate)
-    console.log('UTC TimeStamp: ', convertToUTCCustom(firstPaymentDate, 'test UTC First Payment Date'))
+    // console.log('First Payment Date from Loan Calc useEffect: ', firstPaymentDate)
+    // console.log('UTC TimeStamp: ', convertToUTCCustom(firstPaymentDate, 'test UTC First Payment Date'))
 
     var financialData = JSON.stringify({
       product: 'MBRO',

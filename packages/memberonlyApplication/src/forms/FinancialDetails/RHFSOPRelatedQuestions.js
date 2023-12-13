@@ -89,7 +89,7 @@ export default function LoanDetails() {
   // Redux dispatch functions
   function setIsIncomeExpensetestComplete(event) {
 
-    console.log('Income Expense Test: ', event)
+    // console.log('Income Expense Test: ', event)
 
     dispatch(sopRelatedQuestionActions.setIsIncomeExpensetestComplete(event.target.value))
   }
