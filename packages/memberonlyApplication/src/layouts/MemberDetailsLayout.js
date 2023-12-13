@@ -176,7 +176,7 @@ export default function MemberDetailsLayout({ cognitoToken, sovereignUser, expir
       code: 'PBD',
       label: 'Prime Borrower Details',
       role: 'PRIMEB',
-      render: <AdditionalInfoPart1 />,
+      render: <Submission />,
       showClientSearchBar: true,
       showContinueButton: true,
       paddingToAddToNavigationButtons: 0,
