@@ -16,6 +16,8 @@ export const initialState = {
 
   cognitoToken: null,
   sovereignUser: null,
+
+  returnToHome: null,
 }
 
 const globalSlice = createSlice({
@@ -24,13 +26,16 @@ const globalSlice = createSlice({
   reducers: {
     clearAll: (state, action) => {
       state.Loading = HTTP_STATUS.IDLE
-      state.HTTP_STATUS.IDLE
+      state.Error = HTTP_STATUS.IDLE
       state.currentRequestId = null
 
       state.skipRootNode = false
       state.onMount = true
 
       state.isMemberEligible = true
+    },
+    setReturnToHome: (state, action) => {
+      state.returnToHome = action.payload
     },
     setIsMemberEligible: (state, action) => {
       state.isMemberEligible = action.payload

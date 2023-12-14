@@ -10,8 +10,6 @@ import PeopleAltIcon from '@mui/icons-material/PeopleAlt'
 //* MUI - Styles
 import { styled } from '@mui/material/styles'
 
-
-
 //* Redux
 import { useDispatch, useSelector } from 'react-redux'
 import { submissionActions, submitLoanApplication, generateLoanApplicationReport } from '../redux/slices/submissionSlice'
@@ -41,6 +39,7 @@ import IconButton from '@mui/material/IconButton'
 import CommentIcon from '@mui/icons-material/Comment'
 import WarningIcon from '@mui/icons-material/Warning'
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded'
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
 
 import Slide from '@mui/material/Slide'
 import Snackbar from '@mui/material/Snackbar'
@@ -52,6 +51,7 @@ import { getLoanPurpose_FromValue, getTradingBranch_FromValue } from '../redux/c
 //* Utils
 import { convertToUTCCustom } from '../utils/convertDatetoUTC'
 import { fDateCustom } from '../utils/formatDateTime'
+import { globalActions } from '../redux/slices/globalSlice'
 
 const ContentStyle = styled(Paper)(({ theme }) => ({
   borderRadius: 25,
@@ -105,6 +105,10 @@ export default function Submission() {
     const zeroConcatLoadedBy = '0000000000' + sovereignUser?.toString()
     zeroPaddedLoadedBy = zeroConcatLoadedBy.substring(zeroConcatLoadedBy.length - 10, zeroConcatLoadedBy.length)
   }
+
+  //* Golbal
+  const returnToHome = useSelector((state) => state.globalReducer.returnToHome)
+
   //* Submission Results
   const loading = useSelector((state) => state.submissionReducer.loading)
   const applicationNumber = useSelector((state) => state.submissionReducer.applicationNumber)
@@ -676,6 +680,7 @@ export default function Submission() {
     return config
   }
 
+  const alternateApplicationRef = primeforenames + ' ' + primesurname + ' ' + fDateCustom(new Date())
 
   useEffect(() => {
     if (submissionFulfilled == null) return
@@ -702,7 +707,7 @@ export default function Submission() {
       timeout: 60000,
       data: JSON.stringify({
         applicationData: createPdfData(),
-        applicationNumber: applicationNumber == null ? primeforenames + ' ' + primesurname + ' ' + fDateCustom(timestamp) : applicationNumber,
+        applicationNumber: applicationNumber == null ? alternateApplicationRef : applicationNumber,
         submissionAPIResults: {
           submissionStatusCode: submissionStatusCode,
           submissionFulfilled: submissionFulfilled,
@@ -1073,7 +1078,14 @@ export default function Submission() {
     await dispatch(submitLoanApplication(config))
   }
 
-  function returnHome() {
+  function startANewApplication() {
+
+    if (returnToHome === null) {
+      dispatch(globalActions.setReturnToHome(true))
+      return
+    }
+
+    dispatch(globalActions.setReturnToHome(!returnToHome))
 
   }
 
@@ -1170,8 +1182,8 @@ export default function Submission() {
 
       {/* //? If there is an error while submitting */}
       {loading === 'IDLE' && applicationNumber == null && serverError === '' && (
-        <Stack direction='column' justifyContent='center' alignItems='center' spacing={1} sx={{ display: 'flex', flexGrow: 1, width: '100%', minHeight: '70vh' }}>
-          <Stack direction='column' justifyContent='center' alignItems='center' spacing={2} sx={{ display: 'flex', flexGrow: 1, width: '100%' }}>
+        <Stack direction='column' justifyContent='center' alignItems='center' spacing={1} sx={{ width: '100%', minHeight: '70vh' }}>
+          <Stack direction='column' justifyContent='center' alignItems='center' spacing={2} >
             <Box sx={{ py: 2 }}>
               <WarningIcon color='warning' sx={{ fontSize: 80 }} />
             </Box>
@@ -1179,13 +1191,15 @@ export default function Submission() {
               There was an issue while submitting the loan application.
             </Subtitle>
           </Stack>
-          <Stack direction='column' justifyContent='center' alignItems='center' spacing={1} sx={{ display: 'flex', flexGrow: 1, width: '100%' }}>
+          <Stack direction='column' justifyContent='center' alignItems='center' spacing={1} sx={{ width: '100%' }}>
             <Typography variant='h6' sx={{ fontWeight: 'light', textAlign: 'center' }}>
-              Please contact the <strong>Data and Innovation Team</strong> to fix the issue. Click
-              <strong>
-                <a href={mailTo}>here </a>
-              </strong>
-              to send an email.
+              Please contact the Data and Innovation Team to report the issue and provide the following reference:
+            </Typography>
+            <Typography variant='h6' sx={{ fontWeight: 'light', textAlign: 'center' }}>
+              <strong>{alternateApplicationRef}</strong>
+            </Typography>
+            <Typography variant='h6' sx={{ fontWeight: 'light', textAlign: 'center' }}>
+              The application details will be sent to welcome@firstcu.co.nz.
             </Typography>
           </Stack>
           {/* <Stack direction='column' justifyContent='center' alignItems='center' spacing={1} sx={{ display: 'flex', flexGrow: 1, width: '100%' }}>
@@ -1208,8 +1222,8 @@ export default function Submission() {
 
       {/* //? When submission is successful */}
       {loading === 'IDLE' && applicationNumber != null && (
-        <Stack direction='column' justifyContent='center' alignItems='center' spacing={5} sx={{ display: 'flex', flexGrow: 1, width: '100%', minHeight: '70vh' }}>
-          <Stack direction='column' justifyContent='center' alignItems='center' spacing={2} sx={{ display: 'flex', flexGrow: 1, width: '100%' }}>
+        <Stack direction='column' justifyContent='center' alignItems='center' spacing={5} sx={{ width: '100%', minHeight: '70vh' }}>
+          <Stack direction='column' justifyContent='center' alignItems='center' spacing={2} sx={{ width: '100%', pb: 3 }}>
             <Box sx={{ py: 2 }}>
               <CheckCircleIcon color='success' sx={{ fontSize: 80 }} />
             </Box>
@@ -1217,26 +1231,16 @@ export default function Submission() {
               Application has been submitted successfully!
             </Subtitle>
           </Stack>
-          <Stack direction='column' justifyContent='center' alignItems='center' spacing={1} sx={{ display: 'flex', flexGrow: 1, width: '100%' }}>
+          <Stack direction='column' justifyContent='center' alignItems='center' spacing={1} sx={{ width: '100%' }}>
             <Typography variant='body1' sx={{ fontWeight: 'light' }}>
               Application Number is:
             </Typography>
             <Typography variant='body1' color='primary' sx={{ fontWeight: 'bold' }}>
               {applicationNumber}
             </Typography>
-            <Stack direction='column' justifyContent='center' alignItems='center' spacing={1} sx={{ display: 'flex', flexGrow: 1, width: '100%' }}>
-              <Button
-                variant='contained'
-                color='secondary'
-                sx={{
-                  width: 350,
-                  borderRadius: 10,
-                }}
-                onClick={() => {
-                  history.push('/memberonlyloan')
-                }}
-              >
-                Return to Homepage
+            <Stack direction='column' justifyContent='center' alignItems='center' spacing={1} sx={{ width: '100%', py: 5 }}>
+              <Button variant="contained" endIcon={<EditRoundedIcon />} onClick={startANewApplication} sx={{ textTransform: 'uppercase', fontWeight: 'light', letterSpacing: 1, borderRadius: 20, maxWidth: '350px', px: 5, py: 1 }}>
+                Start a New Application
               </Button>
             </Stack>
           </Stack>

@@ -9,6 +9,7 @@ import LoadingButton from '@mui/lab/LoadingButton'
 //* MUI Icons
 import SearchIcon from '@mui/icons-material/Search'
 
+
 //* Redux
 import { useDispatch, useSelector } from 'react-redux'
 import { clientSearchActions } from '../../redux/slices/clientSearchSlice'

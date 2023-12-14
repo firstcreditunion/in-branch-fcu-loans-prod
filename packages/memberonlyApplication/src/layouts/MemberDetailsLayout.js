@@ -19,6 +19,11 @@ import { sopRelatedQuestionActions } from '../redux/slices/sopRelatedQuestionsSl
 import { paymentInstructionActions } from '../redux/slices/paymentInstructionSlice'
 import { authorisationActions } from '../redux/slices/authorisationSlice'
 import { authenticationActions } from '../redux/slices/authenticationSlice'
+import { identificationActions } from '../redux/slices/identificationSlice'
+import { loanCalculatorActions } from '../redux/slices/loanCalculatorSlice'
+import { preliminaryQuestionsActions } from '../redux/slices/preliminaryQuestionsSlice'
+import { sopItemsActions } from '../redux/slices/sopItemsSlice'
+import { submissionActions } from '../redux/slices/submissionSlice'
 
 
 //! Continue here
@@ -62,6 +67,9 @@ export default function MemberDetailsLayout({ cognitoToken, sovereignUser, expir
   const downSm = useMediaQuery((theme) => theme.breakpoints.down('sm'))
 
   const redirect = useSelector((state) => state.globalReducer.redirect)
+
+  // Golbal
+  const returnToHome = useSelector((state) => state.globalReducer.returnToHome)
 
   const applicationNumber = useSelector((state) => state.submissionReducer.applicationNumber)
 
@@ -120,6 +128,9 @@ export default function MemberDetailsLayout({ cognitoToken, sovereignUser, expir
   const isValidPaymentInstruction = useSelector((state) => state.paymentInstructionReducer.isValidPaymentInstruction)
   const onSubmitPaymentInstruction = useSelector((state) => state.paymentInstructionReducer.onSubmitPaymentInstruction)
 
+  // Submission Panel
+  const submissionFulfilled = useSelector((state) => state.submissionReducer.submissionFulfilled)
+
   // Mmeber Details state
   const primeid = useSelector((state) => state.clientSearchReducer.primeid)
   const jointid = useSelector((state) => state.clientSearchReducer.jointid)
@@ -169,6 +180,18 @@ export default function MemberDetailsLayout({ cognitoToken, sovereignUser, expir
     }
   }, [])
 
+
+  useEffect(() => {
+
+    if (returnToHome === null) return
+
+    startANewApplication()
+
+    return () => {
+      dispatch(globalActions.setReturnToHome(null))
+    }
+  }, [returnToHome])
+
   const navigation = [
     {
       index: 0,
@@ -176,7 +199,7 @@ export default function MemberDetailsLayout({ cognitoToken, sovereignUser, expir
       code: 'PBD',
       label: 'Prime Borrower Details',
       role: 'PRIMEB',
-      render: <Submission />,
+      render: <PrimeEligibility />,
       showClientSearchBar: true,
       showContinueButton: true,
       paddingToAddToNavigationButtons: 0,
@@ -399,6 +422,30 @@ export default function MemberDetailsLayout({ cognitoToken, sovereignUser, expir
     } else {
       setActiveStep(completedSteps[completedStepsLength - 1]?.index)
     }
+  }
+
+  function startANewApplication() {
+    setActiveStep(0)
+
+    dispatch(additionalInfoPart2Actions.clearAll())
+    dispatch(authorisationActions.clearAll())
+    dispatch(clientSearchActions.clearAll())
+    dispatch(creditScoreActions.clearAll())
+    dispatch(globalActions.clearAll())
+    dispatch(identificationActions.clearAll())
+    dispatch(loanCalculatorActions.clearAll())
+    dispatch(loanDetailsActions.clearAll())
+    dispatch(paymentInstructionActions.clearAll())
+    dispatch(preliminaryQuestionsActions.clearAll())
+    dispatch(sopAssetActions.clearAll())
+    dispatch(sopExpenseAction.clearAll())
+    dispatch(sopIncomeGridSliceActions.clearAll())
+    dispatch(sopItemsActions.clearAll())
+    dispatch(sopLiabilitiesActions.clearAll())
+    dispatch(sopRelatedQuestionActions.clearAll())
+    dispatch(submissionActions.clearAll())
+    dispatch(verifyPrimeDetailsActions.clearAll())
+
   }
 
   function validateFields() {
@@ -625,16 +672,6 @@ export default function MemberDetailsLayout({ cognitoToken, sovereignUser, expir
               </Paper>
             </Box>
           )}
-          {/* {!primememberNotFound && primesearchInitiatedAndCompleted && getCurrentStep[0]?.code === 'PBD' && (
-            <>
-              <Divider sx={{ width: '40rem' }}>
-                <Chip label='Joint Application?' color={numberOfApplicantsNotSelected ? 'error' : isJointLoan === 'Y' ? 'secondary' : 'default'} />
-              </Divider>
-              <Stack direction='row' justifyContent='center' alignItems='center' sx={{ width: '100%' }}>
-                <QuestionJointApplicant />
-              </Stack>
-            </>
-          )} */}
         </Stack>
       </Box>
     </Container>
