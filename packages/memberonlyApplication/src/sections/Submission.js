@@ -697,8 +697,10 @@ export default function Submission() {
     // }))
 
     const timestamp = new Date()
+
+    //! Lambda function for test env. hasn't been created.
     const generatePdfConfig = {
-      url: `${getCloudFrontEnvironment() === 'Member-Only-Test' ? '/generate-pdf-test' : '/generate-pdf'}`,
+      url: `${getCloudFrontEnvironment() === 'Member-Only-Test' ? '/generate-pdf-test' : '/generate-pdf-test'}`,
       method: 'POST',
       baseURL: `${processNodeEnv() === 'development' ? BASE_URL_LOCAL_APP : BASE_URL_AWS_APP}`,
       headers: {
