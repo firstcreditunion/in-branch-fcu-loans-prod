@@ -1164,7 +1164,7 @@ export default function Submission() {
       sutabilityTestPart1: {
         isCreditScoreComplete: isCreditScoreComplete === 'Y' ? 'Yes' : 'No',
         isScoreExceedsThreshold: isScoreExceedsThreshold === 'Y' ? 'Yes' : 'No',
-        creditScoreThreshold: creditScoreThreshold === 'Y' ? 'Yes' : 'No',
+        creditScoreThreshold: creditScoreThreshold,
         hasUnpaidDefualtCollections: hasUnpaidDefualtCollections === 'Y' ? 'Yes' : 'No',
         detailsUnpaidDefualt: detailsUnpaidDefualt,
         isMemberUnderHardship: isMemberUnderHardship === 'Y' ? 'Yes' : 'No',
