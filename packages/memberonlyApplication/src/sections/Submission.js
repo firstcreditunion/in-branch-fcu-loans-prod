@@ -431,6 +431,16 @@ export default function Submission() {
   const monthlySurplus = useSelector((state) => state.sopItemsReducer.monthlySurplus)
 
 
+  //* Interest Rate Margin
+  const primeIreEstimate = useSelector((state) => state.clientSearchReducer.primeIreEstimate)
+  const historyDiscount = primeIreEstimate?.discounts?.history == null ? 0 : primeIreEstimate?.discounts?.history
+  const loyaltyDiscount = primeIreEstimate?.discounts?.loyalty == null ? 0 : primeIreEstimate?.discounts?.loyalty
+  const productsDiscount = primeIreEstimate?.discounts?.products == null ? 0 : primeIreEstimate?.discounts?.products
+  const securityDiscount = primeIreEstimate?.discounts?.value == null ? 0 : primeIreEstimate?.discounts?.value
+  const creditHistoryDiscount = primeIreEstimate?.discounts?.creditHistory == null ? 0 : primeIreEstimate?.discounts?.creditHistory
+
+  const interestRateMargin = historyDiscount + loyaltyDiscount + productsDiscount + securityDiscount + creditHistoryDiscount
+
   //* Payment Instruction - Bank Account for Instalment Debit
   const backAccountForInstalmentDebit = useSelector((state) => state.paymentInstructionReducer.backAccountForInstalmentDebit)
 
@@ -553,7 +563,120 @@ export default function Submission() {
     })
   }
 
-  async function createSubmissionData() {
+  async function createSubmissionDataTest() {
+
+    // console.log('First Payment Date TEST: ', convertToUTCCustom(firstPaymentDate))
+    // * Prime
+    return JSON.stringify({
+      loadedByClientNumber: zeroPaddedLoadedBy,
+      draft: 'N',
+      loanAmount: requestedLoanAmount,
+      interestRate: interestRate,
+      interestrateMargin: interestRateMargin,
+      repayAmount: lncalc_InstalmentAmount,
+      repayFreq: repayFreq,
+      firstPmtDate: convertToUTCCustom(firstPaymentDate),
+      loanPurpose: getLoanPurpose_FromValue(loanPurpose)?.key,
+      term: term,
+      tradingBranch: getTradingBranch_FromValue(tradingBranchCode)?.key,
+      paymentMethod: {
+        bankAccountNumber: backAccountForInstalmentDebit == null ? null : backAccountForInstalmentDebit,
+        paymentMethod: backAccountForInstalmentDebit == null ? 'AUTOPAY' : 'DD',
+      },
+      fees: documentationTypes?.map((fee) => {
+        return fee.feeCode
+      }),
+      NSR: !(nsrWithoutPercent == null) ? nsrWithoutPercent : '0',
+      associatedClients: {
+        data: [
+          {
+            id: zeroPaddedClientNumber,
+            type: 'associatedClients',
+          },
+        ],
+      },
+      securities: {
+        data: [],
+      },
+      memoLines: memoLines.map((item) => {
+        return item
+      }),
+      included: [
+        {
+          type: 'associatedClients',
+          id: zeroPaddedClientNumber,
+          attributes: {
+            role: 'PRIMEB',
+            seq: '1',
+            signatureRequired: 'M',
+            creditCheckAuthorised: declarationItems?.StorePersonalInfo?.accept === true ? 'Y' : 'N',
+            order: '1',
+            clientReference: zeroPaddedClientNumber,
+            clientMaint: {
+              clientID: zeroPaddedClientNumber,
+              generalDetails: {
+                externalSystemReference: '',
+                clientType: 'I',
+                status: {
+                  code: 'A',
+                },
+                gna: 'N',
+                existingClient: 'Y',
+                individualDetails: {
+                  title: primetitle,
+                  forename: primeforenames,
+                  surname: primesurname,
+                  clientOtherNamesExist: 'N',
+                  gender: primegender,
+                  dateOfBirth: primedateOfBirth,
+                },
+              },
+              clientCapacity: {
+                capacityAssessment: {
+                  anyExpectedChanges: 'Y',
+                  changeDetails: 'N',
+                  assessmentQuestionsAsked: 'Y',
+                  selfDeclarationAccepted: 'Y',
+                },
+                joint: 'N',
+                assets: asstesAll
+                  ?.filter((asset) => {
+                    return asset?.amount1 != null
+                  })
+                  .map((asset) => {
+                    return { amount: asset?.amount1 == null ? 0 : parseFloat(asset?.amount1), description: asset?.desc, code: asset?.code }
+                  }),
+                liabilities: liabilityAll
+                  ?.filter((liability) => {
+                    return liability?.outstandingBalance != null
+                  })
+                  .map((liability) => {
+                    return { amount: liability?.outstandingBalance == null ? 0 : parseFloat(liability?.outstandingBalance), description: liability?.desc, code: liability?.code }
+                  }),
+                incomes: inomceAll
+                  ?.filter((income) => {
+                    return income?.amount1 != null || income?.amount2 != null || income?.amount3 != null
+                  })
+                  .map((income) => {
+                    return { amount1: { value: income?.amount1 == null || isNaN(income?.amount1) ? 0 : parseFloat(income?.amount1) }, amount2: { value: income?.amount2 == null || isNaN(income?.amount2) ? 0 : parseFloat(income?.amount2) }, amount3: { value: income?.amount3 == null || isNaN(income?.amount3) ? 0 : parseFloat(income?.amount3) }, description: income?.desc, code: income?.code }
+                  }),
+                expenses: expensesAll
+                  ?.filter((expense) => {
+                    return expense?.amount1 != null || expense?.amount2 != null || expense?.amount3 != null
+                  })
+                  .map((expense) => {
+                    return { amount1: { value: expense?.amount1 == null || isNaN(expense?.amount1) ? 0 : parseFloat(expense?.amount1) }, amount2: { value: expense?.amount2 == null || isNaN(expense?.amount2) ? 0 : parseFloat(expense?.amount2) }, amount3: { value: expense?.amount3 == null || isNaN(expense?.amount3) ? 0 : parseFloat(expense?.amount3) }, description: expense?.desc, code: expense?.code }
+                  }),
+              },
+              mode: 'Add',
+            },
+          },
+        },
+      ],
+    })
+  }
+
+  async function createSubmissionDataProd() {
 
     // console.log('First Payment Date TEST: ', convertToUTCCustom(firstPaymentDate))
     // * Prime
@@ -674,7 +797,7 @@ export default function Submission() {
         'Content-Type': 'application/json',
       },
       timeout: 60000,
-      data: await createSubmissionData(),
+      data: `${getCloudFrontEnvironment() === 'Member-Only-Test' ? await createSubmissionDataTest() : await createSubmissionDataProd()}`,
     }
 
     return config
@@ -696,8 +819,6 @@ export default function Submission() {
     //   },
     // }))
 
-    const timestamp = new Date()
-
     //! Lambda function for test env. hasn't been created.
     const generatePdfConfig = {
       url: `${getCloudFrontEnvironment() === 'Member-Only-Test' ? '/generate-pdf-test' : '/generate-pdf-test'}`,
@@ -710,9 +831,8 @@ export default function Submission() {
       data: JSON.stringify({
         applicationData: createPdfData(),
         applicationNumber: applicationNumber == null ? alternateApplicationRef : applicationNumber,
+        environment: `${processNodeEnv() === 'development' ? 'test' : 'prod'}`,
         submissionAPIResults: {
-          submissionStatusCode: submissionStatusCode,
-          submissionFulfilled: submissionFulfilled,
           serverError: serverError,
         },
       }),

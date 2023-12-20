@@ -84,11 +84,11 @@ const submissionSlice = createSlice({
 
         if (state.loading === 'PENDING' && state.currentRequestId === requestId) {
           state.loading = HTTP_STATUS.IDLE
-          const axiosResponse = action.payload?.axiosResponse
+          const axiosResponseErrors = action.payload?.axiosResponse?.errors
           const submissionAttributes = action.payload?.axiosResponse?.body?.data?.attributes
 
           state.applicationNumber = submissionAttributes?.applicationRef
-          state.serverError = axiosResponse
+          state.serverError = axiosResponseErrors
         }
       })
       .addCase(submitLoanApplication.rejected, (state, action) => {
@@ -99,7 +99,6 @@ const submissionSlice = createSlice({
           state.currentRequestId = null
         }
       })
-
 
       // Pdf builder cases
       .addCase(generateLoanApplicationReport.pending, (state, action) => {
