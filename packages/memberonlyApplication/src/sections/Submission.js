@@ -823,7 +823,7 @@ export default function Submission() {
     const generatePdfConfig = {
       url: `${getCloudFrontEnvironment() === 'Member-Only-Test' ? '/generate-pdf-test' : '/generate-pdf-test'}`,
       method: 'POST',
-      baseURL: `${processNodeEnv() === 'development' ? BASE_URL_LOCAL_APP : BASE_URL_AWS_APP}`,
+      baseURL: `${processNodeEnv() === 'development' ? BASE_URL_LOCAL_APP : BASE_URL_LOCAL_APP}`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -831,7 +831,7 @@ export default function Submission() {
       data: JSON.stringify({
         applicationData: createPdfData(),
         applicationNumber: applicationNumber == null ? alternateApplicationRef : applicationNumber,
-        environment: `${processNodeEnv() === 'development' ? 'test' : 'prod'}`,
+        environment: `${getCloudFrontEnvironment() === 'Member-Only-Test' ? 'test' : 'prod'}`,
         submissionAPIResults: {
           serverError: serverError,
         },
