@@ -80,6 +80,7 @@ export const initialState = {
       products: 0,
     },
     estimatedInterestRate: 0,
+    estimatedInterestRateMargin: 0,
     security: 0,
   },
 
@@ -418,6 +419,7 @@ const clientSearchSlice = createSlice({
           state.primeIreEstimate.discounts.loyalty = IRE_estimate?.Discounts?.Loyalty
           state.primeIreEstimate.discounts.products = IRE_estimate?.Discounts?.Products
           state.primeIreEstimate.estimatedInterestRate = IRE_estimate?.Estimated_interest_rate
+          state.primeIreEstimate.estimatedInterestRateMargin = IRE_estimate?.Estimated_interest_margin
           state.primeIreEstimate.security = IRE_estimate?.Security
           state.primeIreEstimate.creditHistory = IRE_estimate?.creditHistory
 
@@ -581,6 +583,7 @@ const clientSearchSlice = createSlice({
           state.primeIreEstimate.creditHistory = response?.creditHistory
 
           state.primeIreEstimate.estimatedInterestRate = response?.Estimated_interest_rate
+          state.primeIreEstimate.estimatedInterestRateMargin = response?.Estimated_interest_margin
         }
       })
       .addCase(updateInterestRateEstimation.rejected, (state, action) => {

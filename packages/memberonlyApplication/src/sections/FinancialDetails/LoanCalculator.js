@@ -58,6 +58,7 @@ const LoanCalculator = () => {
   const documentationTypes = useSelector((state) => state.loanDetailsReducer.documentationTypes)
 
   const estimatedInterestRateReCalc = useSelector((state) => state.clientSearchReducer.primeIreEstimate.estimatedInterestRate)
+  const estimatedInterestRateMargin = useSelector((state) => state.clientSearchReducer.primeIreEstimate.estimatedInterestRateMargin)
 
   //* Financial Calculator API response
 

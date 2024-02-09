@@ -118,6 +118,7 @@ export default function Submission() {
 
   const requestedLoanAmount = useSelector((state) => state.loanDetailsReducer.requestedLoanAmount) //Added to pdf
   const interestRate = useSelector((state) => state.clientSearchReducer.primeIreEstimate.estimatedInterestRate) //Added to pdf
+  const estimatedInterestRateMargin = useSelector((state) => state.clientSearchReducer.primeIreEstimate.estimatedInterestRateMargin)
 
   //* Repayment Amount
   const lncalc_InterestAmount = useSelector((state) => state.loanCalculatorReducer.lncalc_InterestAmount) //Added to pdf
@@ -461,6 +462,7 @@ export default function Submission() {
       draft: 'N',
       loanAmount: requestedLoanAmount,
       interestRate: interestRate,
+      interestrateMargin: estimatedInterestRateMargin,
       repayAmount: lncalc_InstalmentAmount,
       repayFreq: repayFreq,
       loanPurpose: getLoanPurpose_FromValue(loanPurpose)?.key,
@@ -572,7 +574,7 @@ export default function Submission() {
       draft: 'N',
       loanAmount: requestedLoanAmount,
       interestRate: interestRate,
-      interestrateMargin: interestRateMargin,
+      interestrateMargin: estimatedInterestRateMargin,
       repayAmount: lncalc_InstalmentAmount,
       repayFreq: repayFreq,
       firstPmtDate: convertToUTCCustom(firstPaymentDate),
@@ -685,6 +687,7 @@ export default function Submission() {
       draft: 'N',
       loanAmount: requestedLoanAmount,
       interestRate: interestRate,
+      interestrateMargin: estimatedInterestRateMargin,
       repayAmount: lncalc_InstalmentAmount,
       repayFreq: repayFreq,
       firstPmtDate: convertToUTCCustom(firstPaymentDate),
