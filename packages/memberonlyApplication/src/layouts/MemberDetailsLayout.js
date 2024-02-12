@@ -158,12 +158,22 @@ export default function MemberDetailsLayout({ cognitoToken, sovereignUser, expir
   const [activeStep, setActiveStep] = useState(0)
 
   useEffect(() => {
-    if (cognitoToken != null && sovereignUser != null) {
+
+    const loadedByClientNumber = sessionStorage.getItem("fculoadedByClientNumber")
+
+    if (loadedByClientNumber != null) {
+      dispatch(globalActions.setSovereignUser(loadedByClientNumber))
+    }
+
+    console.log('loadedByClientNumber: ', loadedByClientNumber)
+
+    if ((cognitoToken != null && sovereignUser != null) || loadedByClientNumber == null) {
       dispatch(globalActions.setCognitoToken(cognitoToken))
       dispatch(globalActions.setSovereignUser(sovereignUser))
       dispatch(authenticationActions.setExpiryTime(expiryTime))
       dispatch(authenticationActions.setRefreshToken(refreshToken))
 
+      sessionStorage.setItem('fculoadedByClientNumber', sovereignUser)
       sessionStorage.setItem('fcuportalSessionExpiry', expiryTime)
       sessionStorage.setItem('fcuportalSessionRefreshToken', refreshToken)
       return
@@ -175,6 +185,7 @@ export default function MemberDetailsLayout({ cognitoToken, sovereignUser, expir
     // history.push('/')
 
     return () => {
+      // sessionStorage.removeItem('fculoadedByClientNumber')
       sessionStorage.removeItem('fcuportalSessionExpiry')
       sessionStorage.removeItem('fcuportalSessionRefreshToken')
     }

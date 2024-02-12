@@ -30,18 +30,22 @@ export default function PersonalDetails() {
   const id = useSelector((state) => state.clientSearchReducer.primeid)
   const primes6Balance = useSelector((state) => state.clientSearchReducer.primeFunding.s6Balance)
 
+  const hasS6Account = primes6Balance == null ? false : true
+
+  console.log('hasS6Account', hasS6Account, primes6Balance)
+
   return (
     <Stack direction='column' spacing={3} sx={{ width: '100%', maxWidth: '700px' }}>
       <Stack direction='column' spacing={2} sx={{ width: '100%' }}>
         <Stack direction='row' justifyContent='flex-start' alignItems='flex-start' spacing={1} sx={{ px: 2 }}>
-          {primes6Balance <= 0 ? <WarningIcon color='warning' /> : <CheckIcon color='success' />}
+          {!hasS6Account ? <WarningIcon color='warning' /> : <CheckIcon color='success' />}
           <Stack direction='column' justifyContent='center' alignItems='flex-start' spacing={0.5}>
             <Typography variant='caption' sx={{ textTransform: 'uppercase', fontWeight: 'bold', color: 'text.secondary' }}>
               S6 Loan Provider Balance
             </Typography>
             <Stack direction='column' justifyContent='center' alignItems='flex-start' spacing={0.5} sx={{ width: '100%' }}>
               <Typography variant='body1'>{fCurrency(primes6Balance)}</Typography>
-              {primes6Balance <= 0 && (
+              {!hasS6Account && (
                 <Typography variant='overline' sx={{ textTransform: 'uppercase' }}>
                   Member does not have an S6 account.
                 </Typography>
