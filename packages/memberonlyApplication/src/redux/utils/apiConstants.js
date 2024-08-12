@@ -34,21 +34,21 @@ export const processNodeEnv = () => {
 export function getCloudFrontEnvironment() {
 
   // Production portal domain and custom domain for the domain
-  if (location_origin === 'https://drpef2o7h0f6v.cloudfront.net' || location_origin === 'https://portal.firstcreditunion.co.nz') {
+  if (location_origin === 'http://localhost:3001' || location_origin === 'https://drpef2o7h0f6v.cloudfront.net' || location_origin === 'https://portal.firstcreditunion.co.nz') {
     return 'Member-Only-Prod'
   }
   // Local Host and test portal domain for CouldFront
-  if (location_origin === 'http://localhost:3001' || location_origin === 'https://d32y8rruwsttdk.cloudfront.net') {
+  if (location_origin === 'https://d32y8rruwsttdk.cloudfront.net') {
     return 'Member-Only-Test'
   }
 }
 
 export function getCloudFrontEnvironmentLoanCalc() {
-  if (location_origin === 'https://drpef2o7h0f6v.cloudfront.net' || location_origin === 'https://portal.firstcreditunion.co.nz') {
+  if (location_origin === 'http://localhost:3001' || location_origin === 'https://drpef2o7h0f6v.cloudfront.net' || location_origin === 'https://portal.firstcreditunion.co.nz') {
     return 'SS-PROD'
   }
 
-  if (location_origin === 'http://localhost:3001' || location_origin === 'https://d32y8rruwsttdk.cloudfront.net') {
+  if (location_origin === 'https://d32y8rruwsttdk.cloudfront.net') {
     return 'SS-DEV'
   }
 }
