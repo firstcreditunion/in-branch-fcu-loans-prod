@@ -454,7 +454,7 @@ export default function LoanDetails() {
             {/* <Divider flexItem>
               <Chip label='Choose First Payment Date' />
             </Divider> */}
-            <Stack
+            {/* <Stack
               direction='column'
               justifyContent='flex-start'
               spacing={1}
@@ -475,10 +475,10 @@ export default function LoanDetails() {
                 First Payment Date
               </Typography>
               <ComponentBlock>
-                {/* <RHFLandscapeDatePicker name='firstPaymentDate' dateValue={firstPaymentDate} onDateChange={setFirstPaymentDate} minDate={startDate} maxDate={fortyDaysFromToday} /> */}
+                <RHFLandscapeDatePicker name='firstPaymentDate' dateValue={firstPaymentDate} onDateChange={setFirstPaymentDate} minDate={startDate} maxDate={fortyDaysFromToday} />
                 <RHFDatePicker name='firstPaymentDate' date={firstPaymentDate} onDateChange={setFirstPaymentDate} minDate={startDate} maxDate={fortyDaysFromToday} label='First Payment Date' format='DD/MM/YYYY' isRequired={true} disabled={false} />
               </ComponentBlock>
-            </Stack>
+            </Stack> */}
           </Stack>
         </Stack>
       </FormProvider>

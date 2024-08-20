@@ -252,10 +252,10 @@ const LoanCalculator = () => {
             <DataLabelTypography variant='subtitle1'>Number of Payments</DataLabelTypography>
             <DataValueTypography variant='subtitle1'>{lncalc_NumberofInstalments}</DataValueTypography>
           </Stack>
-          <Stack direction='row' justifyContent='space-between' alignItems='center'>
+          {/* <Stack direction='row' justifyContent='space-between' alignItems='center'>
             <DataLabelTypography variant='subtitle1'>First Payment Date</DataLabelTypography>
             {!(lncalc_InstalmentStartDate == null) && lncalc_InstalmentStartDate != '' && <DataValueTypography variant='subtitle1'>{!(lncalc_InstalmentStartDate == null) && lncalc_InstalmentStartDate != '' ? fDate(new Date(lncalc_InstalmentStartDate)) : ''}</DataValueTypography>}
-          </Stack>
+          </Stack> */}
         </Stack>
         <Stack direction='column' spacing={1} sx={{ width: '100%', py: 2 }}>
           <Typography variant='overline' color='primary'>
