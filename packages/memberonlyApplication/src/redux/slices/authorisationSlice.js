@@ -49,14 +49,6 @@ export const initialState = {
       openChildren: false,
       accept: false,
     },
-    InsureLoan: {
-      index: 5,
-      title: { key: 'INSRLN', value: 'Insure the loan in case of death.' },
-      header: 'I understand First Credit Union has insured the loan in case of the death of any borrower.',
-      children: ['This means in the event of a death of a borrower, the loan balance remaining to be paid is fully cleared and no indebtedness remains.'],
-      openChildren: true,
-      accept: false,
-    },
   },
 
   onSubmitPrivacyActDeclaration: null,
