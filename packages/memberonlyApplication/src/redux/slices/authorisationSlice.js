@@ -70,7 +70,6 @@ const authorisationSlice = createSlice({
       state.declarationItems.TrueInformation.accept = false
       state.declarationItems.AmlCftObligations.accept = false
       state.declarationItems.StorePersonalInfo.accept = false
-      state.declarationItems.InsureLoan.accept = false
 
       state.onSubmitPrivacyActDeclaration = null
       state.isValidPrivacyActDeclaration = null
@@ -87,7 +86,6 @@ const authorisationSlice = createSlice({
       state.declarationItems.TrueInformation.accept = action.payload
       state.declarationItems.AmlCftObligations.accept = action.payload
       state.declarationItems.StorePersonalInfo.accept = action.payload
-      state.declarationItems.InsureLoan.accept = action.payload
     },
 
     // Declaration setters
@@ -106,9 +104,6 @@ const authorisationSlice = createSlice({
     setAcceptStorePersonalInfo: (state, action) => {
       state.declarationItems.StorePersonalInfo.accept = action.payload
     },
-    setAcceptInsureLoan: (state, action) => {
-      state.declarationItems.InsureLoan.accept = action.payload
-    },
 
     // Setters to show or hide children
     setOpenChildrenCreditWorthiness: (state, action) => {
@@ -125,9 +120,6 @@ const authorisationSlice = createSlice({
     },
     setOpenChildrenStorePersonalInfo: (state, action) => {
       state.declarationItems.StorePersonalInfo.openChildren = action.payload
-    },
-    setOpenChildrenInsureLoanInfo: (state, action) => {
-      state.declarationItems.InsureLoan.openChildren = action.payload
     },
   },
 })

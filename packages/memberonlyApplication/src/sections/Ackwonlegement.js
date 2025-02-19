@@ -102,10 +102,6 @@ export default function Authorisation() {
       dispatch(authorisationActions.setAcceptStorePersonalInfo(!accept))
       return
     }
-    if (index === 5) {
-      dispatch(authorisationActions.setAcceptInsureLoan(!accept))
-      return
-    }
   }
 
   const handleChildren = (index, openChildren) => {
@@ -129,14 +125,10 @@ export default function Authorisation() {
       dispatch(authorisationActions.setOpenChildrenStorePersonalInfo(!openChildren))
       return
     }
-    if (index === 5) {
-      dispatch(authorisationActions.setOpenChildrenInsureLoanInfo(!openChildren))
-      return
-    }
   }
 
   useEffect(() => {
-    if (declarationObject.CreditWorthiness.accept && declarationObject.AuthoriseFCU.accept && declarationObject.TrueInformation.accept && declarationObject.AmlCftObligations.accept && declarationObject.StorePersonalInfo.accept && declarationObject.InsureLoan.accept) {
+    if (declarationObject.CreditWorthiness.accept && declarationObject.AuthoriseFCU.accept && declarationObject.TrueInformation.accept && declarationObject.AmlCftObligations.accept && declarationObject.StorePersonalInfo.accept) {
       dispatch(authorisationActions.setIsValidPrivacyActDeclaration(true))
       // let endTime = new Date()
       // let timeSpentMillis = endTime - startTime
@@ -150,10 +142,10 @@ export default function Authorisation() {
       return
     }
     dispatch(authorisationActions.setIsValidPrivacyActDeclaration(false))
-  }, [declarationObject.CreditWorthiness.accept, declarationObject.AuthoriseFCU.accept, declarationObject.TrueInformation.accept, declarationObject.AmlCftObligations.accept, declarationObject.StorePersonalInfo.accept, declarationObject.InsureLoan.accept])
+  }, [declarationObject.CreditWorthiness.accept, declarationObject.AuthoriseFCU.accept, declarationObject.TrueInformation.accept, declarationObject.AmlCftObligations.accept, declarationObject.StorePersonalInfo.accept])
 
   useEffect(() => {
-    if (declarationObject.CreditWorthiness.accept && declarationObject.AuthoriseFCU.accept && declarationObject.TrueInformation.accept && declarationObject.AmlCftObligations.accept && declarationObject.StorePersonalInfo.accept && declarationObject.InsureLoan.accept) {
+    if (declarationObject.CreditWorthiness.accept && declarationObject.AuthoriseFCU.accept && declarationObject.TrueInformation.accept && declarationObject.AmlCftObligations.accept && declarationObject.StorePersonalInfo.accept) {
       setOpen(false)
       return
     }
