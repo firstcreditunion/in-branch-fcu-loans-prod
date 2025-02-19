@@ -38,4 +38,4 @@ export default ({ history, cognitoToken, sovereignUser, expiryTime, refreshToken
   )
 }
 
-// Git commit control 7
+// Git commit control 8
